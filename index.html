@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>QLA Mathematics — Lessons Portal</title>
 
-  <!-- Tailwind (CDN, no build needed) -->
+  <!-- Tailwind (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Inter font -->
@@ -24,11 +24,14 @@
     .tab-btn[aria-selected="false"]{ background:transparent; color:#fff; border-color:rgba(255,255,255,.35); }
     .card:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,.07); }
     .kbd{ font-variant-numeric:tabular-nums; font-weight:700; padding:.1rem .35rem; border-radius:.4rem; border:1px solid #d1d5db; background:#fff; }
+    .pill{ font-size:11px; padding:.15rem .5rem; border-radius:999px; border:1px solid #e5e7eb; background:#f9fafb; color:#374151 }
+    .soon{ background:#f3f4f6; color:#6b7280; border-color:#e5e7eb }
+    .ok{ background:var(--gold); color:#111 }
   </style>
 </head>
 <body>
 
-  <!-- TOP HERO / BANNER -->
+  <!-- HERO -->
   <header class="brand-grad text-white">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
       <div class="flex items-center justify-between py-4">
@@ -45,11 +48,11 @@
       <!-- Tabs -->
       <div class="mt-2 flex items-center gap-2 pb-4">
         <button id="tab7" class="tab-btn inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-extrabold transition"
-                aria-selected="true" data-target="#panel7">
+                aria-selected="true" data-target="#panel7" title="Show Grade 7">
           Grade 7
         </button>
         <button id="tab8" class="tab-btn inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-extrabold transition"
-                aria-selected="false" data-target="#panel8">
+                aria-selected="false" data-target="#panel8" title="Show Grade 8">
           Grade 8
         </button>
         <div class="ml-auto flex items-center gap-2 bg-white/10 rounded-xl px-3 py-2">
@@ -66,106 +69,391 @@
     <!-- SEARCH -->
     <div class="rounded-2xl bg-white border border-gray-200 shadow-sm p-4">
       <label class="block text-sm font-semibold text-gray-700 mb-1" for="search">Search lessons (title, keywords)…</label>
-      <input id="search" type="search" placeholder="e.g., Opposites, BIDMAS, Recurring decimals, Pythagoras"
+      <input id="search" type="search" placeholder="e.g., Orientation, Opposites, BIDMAS, Fractions, Pythagoras"
              class="w-full rounded-lg border-gray-300 focus:ring-[var(--gold)] focus:border-[var(--gold)] px-3 py-2"/>
-      <div class="mt-1 text-xs text-gray-500">Tip: press <span class="kbd">/</span> to focus search. Use the tabs to switch grades.</div>
+      <div class="mt-1 text-xs text-gray-500">Press <span class="kbd">/</span> to focus search. Use tabs to switch grades.</div>
     </div>
 
-    <!-- PANELS -->
+    <!-- GRADE 7 -->
     <section id="panel7" class="mt-6">
-      <h2 class="text-xl font-extrabold text-[var(--maroon)]">Grade 7 — Lessons</h2>
-      <p class="text-sm text-gray-600 mt-1">Select a lesson to launch the full interactive page.</p>
+      <h2 class="text-xl font-extrabold text-[var(--maroon)]">Grade 7 — Lessons (Course Outline)</h2>
+      <p class="text-sm text-gray-600 mt-1">Aligned to the Course Outline & Scope–Sequence. Lesson 1 is Welcome & Orientation.</p>
 
-      <div id="grid7" class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- EXAMPLE CARDS (edit or add more; links must exist in /grade7/) -->
-        <article class="card group rounded-2xl border border-gray-200 bg-white p-4 transition">
+      <!-- Pinned: Welcome -->
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="card group rounded-2xl border border-gray-200 bg-white p-4 transition" data-href="grade7/welcome.html">
           <div class="flex items-start gap-3">
-            <div class="rounded-lg bg-[var(--gold)]/20 p-2">7️⃣</div>
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">🎓</div>
             <div class="flex-1">
-              <a href="grade7/lesson-1.html" class="text-[var(--maroon)] font-extrabold group-hover:underline">Lesson 1 — Opposites (Positive & Negative)</a>
-              <p class="text-sm text-gray-600 mt-0.5">Number line lab • Opposites • |x| as distance from 0</p>
+              <a class="link text-[var(--maroon)] font-extrabold group-hover:underline">Lesson 1 — Welcome & Orientation</a>
+              <p class="text-sm text-gray-600 mt-0.5">Course overview • Expectations • Digital tools • Quick icebreaker</p>
               <div class="mt-2 flex flex-wrap gap-2">
-                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">number line</span>
-                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">absolute value</span>
+                <span class="pill">orientation</span>
+                <span class="pill">class routines</span>
               </div>
             </div>
           </div>
-          <div class="mt-3 flex justify-end">
-            <a href="grade7/lesson-1.html" class="inline-flex items-center rounded-lg bg-[var(--gold)] px-3 py-1.5 text-sm font-bold">Open</a>
-          </div>
+          <div class="mt-3 flex justify-end"><a class="btn ok px-3 py-1.5 rounded-lg font-bold">Open</a></div>
         </article>
+      </div>
 
-        <article class="card group rounded-2xl border border-gray-200 bg-white p-4 transition">
+      <!-- Units from Course Outline -->
+      <h3 class="mt-6 text-sm font-extrabold text-gray-700">Units overview</h3>
+      <div id="grid7" class="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Unit 1 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
           <div class="flex items-start gap-3">
-            <div class="rounded-lg bg-[var(--gold)]/20 p-2">7️⃣</div>
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">1️⃣</div>
             <div class="flex-1">
-              <a href="grade7/lesson-2.html" class="text-[var(--maroon)] font-extrabold group-hover:underline">Lesson 2 — Recurring Decimals → Fractions</a>
-              <p class="text-sm text-gray-600 mt-0.5">Explanation → guided examples → interactive practice</p>
-              <div class="mt-2 flex flex-wrap gap-2">
-                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">decimals</span>
-                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">fractions</span>
+              <div class="text-[var(--maroon)] font-extrabold">Unit 1 — Numbers (Rational Numbers)</div>
+              <p class="text-sm text-gray-600 mt-0.5">Opposites • ± with rationals • × ÷ with rationals • Combined operations (BEDMAS)</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2"
+                   data-href="grade7/lesson-2.html">
+                  <span>Opposites — Positive & Negative</span>
+                  <span class="pill soon">Coming soon</span>
+                </a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2"
+                   data-href="grade7/lesson-3.html">
+                  <span>Add & Subtract Rational Numbers</span>
+                  <span class="pill soon">Coming soon</span>
+                </a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2"
+                   data-href="grade7/lesson-4.html">
+                  <span>Multiply & Divide Rational Numbers</span>
+                  <span class="pill soon">Coming soon</span>
+                </a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2"
+                   data-href="grade7/lesson-5.html">
+                  <span>Combined Operations (BEDMAS)</span>
+                  <span class="pill soon">Coming soon</span>
+                </a>
               </div>
             </div>
           </div>
-          <div class="mt-3 flex justify-end">
-            <a href="grade7/lesson-2.html" class="inline-flex items-center rounded-lg bg-[var(--gold)] px-3 py-1.5 text-sm font-bold">Open</a>
+        </article>
+
+        <!-- Unit 2 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">2️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 2 — Properties of Numbers & Fractions</div>
+              <p class="text-sm text-gray-600 mt-0.5">Factors/Multiples • HCF/LCM • Prime/Composite • Fraction operations</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-6.html">
+                  <span>Factors & Multiples • HCF & LCM</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-7.html">
+                  <span>Equivalent / Proper / Improper Fractions</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-8.html">
+                  <span>Simplify • Compare • + / − Fractions</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-9.html">
+                  <span>× / ÷ Fractions + Word Problems</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
           </div>
         </article>
 
-        <!-- Add additional Grade 7 lessons by copying a card -->
+        <!-- Unit 3 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">3️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 3 — Expressions</div>
+              <p class="text-sm text-gray-600 mt-0.5">Write expressions • Like terms • Products • Evaluate • Expand/Factor</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-10.html">
+                  <span>Rules & Like Terms</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-11.html">
+                  <span>Algebraic Products & Evaluation</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-12.html">
+                  <span>Expand & Factor (W/S)</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 4 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">4️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 4 — Equations</div>
+              <p class="text-sm text-gray-600 mt-0.5">One-step • Two-step • Multi-step linear equations</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-13.html">
+                  <span>Solve Linear Equations (1–2 steps)</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-14.html">
+                  <span>Multi-step Equations</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 5 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">5️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 5 — Ratios & Proportional Relationships</div>
+              <p class="text-sm text-gray-600 mt-0.5">Express • Simplify • Problem solving • Divide quantities</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-15.html">
+                  <span>Ratios: Forms & Simplifying</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-16.html">
+                  <span>Proportions & Division by Ratio</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 7 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">7️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 7 — Coordinates</div>
+              <p class="text-sm text-gray-600 mt-0.5">Plotting • Lines • Intercepts • Linear graphs</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-17.html">
+                  <span>Coordinate Plane & Plotting</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-18.html">
+                  <span>Graphing Lines & Intercepts</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 8 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">8️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 8 — Statistics</div>
+              <p class="text-sm text-gray-600 mt-0.5">Tally/Frequency • Bar charts • Stem–leaf • Mean/Median/Mode</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-19.html">
+                  <span>Data Displays & Measures</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 9 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">9️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 9 — Simple Probability</div>
+              <p class="text-sm text-gray-600 mt-0.5">Sample space • Theoretical probability • Complementary events</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade7/lesson-20.html">
+                  <span>Simple & Compound Events</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
 
+    <!-- GRADE 8 -->
     <section id="panel8" class="mt-10 hidden">
-      <h2 class="text-xl font-extrabold text-[var(--maroon)]">Grade 8 — Lessons</h2>
-      <p class="text-sm text-gray-600 mt-1">Orientation deck and core Unit 1 materials.</p>
+      <h2 class="text-xl font-extrabold text-[var(--maroon)]">Grade 8 — Lessons (Course Outline)</h2>
+      <p class="text-sm text-gray-600 mt-1">Aligned to the Course Outline & Scope–Sequence. Lesson 1 is Welcome & Orientation.</p>
 
-      <div id="grid8" class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <article class="card group rounded-2xl border border-gray-200 bg-white p-4 transition">
+      <!-- Pinned: Welcome -->
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="card group rounded-2xl border border-gray-200 bg-white p-4 transition" data-href="grade8/welcome.html">
           <div class="flex items-start gap-3">
-            <div class="rounded-lg bg-[var(--gold)]/20 p-2">8️⃣</div>
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">🎓</div>
             <div class="flex-1">
-              <a href="grade8/lesson-1.html" class="text-[var(--maroon)] font-extrabold group-hover:underline">Lesson 1 — Orientation & Week 1</a>
-              <p class="text-sm text-gray-600 mt-0.5">Interactive slideshow (keyboard: <span class="kbd">→</span> <span class="kbd">←</span> <span class="kbd">O</span> <span class="kbd">F</span> <span class="kbd">T</span> <span class="kbd">?</span>)</p>
+              <a class="link text-[var(--maroon)] font-extrabold group-hover:underline">Lesson 1 — Welcome & Orientation</a>
+              <p class="text-sm text-gray-600 mt-0.5">Course overview • Expectations • Digital tools • Quick icebreaker</p>
               <div class="mt-2 flex flex-wrap gap-2">
-                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">orientation</span>
-                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">unit overview</span>
+                <span class="pill">orientation</span>
+                <span class="pill">class routines</span>
               </div>
             </div>
           </div>
-          <div class="mt-3 flex justify-end">
-            <a href="grade8/lesson-1.html" class="inline-flex items-center rounded-lg bg-[var(--gold)] px-3 py-1.5 text-sm font-bold">Open</a>
-          </div>
+          <div class="mt-3 flex justify-end"><a class="btn ok px-3 py-1.5 rounded-lg font-bold">Open</a></div>
         </article>
+      </div>
 
-        <article class="card group rounded-2xl border border-gray-200 bg-white p-4 transition">
+      <!-- Units from Course Outline -->
+      <h3 class="mt-6 text-sm font-extrabold text-gray-700">Units overview</h3>
+      <div id="grid8" class="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Unit 1 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
           <div class="flex items-start gap-3">
-            <div class="rounded-lg bg-[var(--gold)]/20 p-2">8️⃣</div>
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">1️⃣</div>
             <div class="flex-1">
-              <a href="grade8/lesson-2.html" class="text-[var(--maroon)] font-extrabold group-hover:underline">Lesson 2 — BIDMAS Review</a>
-              <p class="text-sm text-gray-600 mt-0.5">Order of operations with live step-tracing</p>
-              <div class="mt-2 flex flex-wrap gap-2">
-                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">BIDMAS</span>
-                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">practice</span>
+              <div class="text-[var(--maroon)] font-extrabold">Unit 1 — The Number System</div>
+              <p class="text-sm text-gray-600 mt-0.5">BEDMAS + |x| • Recurring decimals • Rounding • Squares/Roots • Fractions ops</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-2.html">
+                  <span>BIDMAS Review & Absolute Value</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-3.html">
+                  <span>Recurring Decimals → Fractions</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-4.html">
+                  <span>Rounding • Squares & Roots</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-5.html">
+                  <span>Operations on Fractions</span><span class="pill soon">Coming soon</span></a>
               </div>
             </div>
           </div>
-          <div class="mt-3 flex justify-end">
-            <a href="grade8/lesson-2.html" class="inline-flex items-center rounded-lg bg-[var(--gold)] px-3 py-1.5 text-sm font-bold">Open</a>
+        </article>
+
+        <!-- Unit 2 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">2️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 2 — Geometry of Polygons</div>
+              <p class="text-sm text-gray-600 mt-0.5">Angle facts • Triangles • Quadrilaterals • Parallel lines • Polygons</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-6.html">
+                  <span>Angle Facts & Triangles</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-7.html">
+                  <span>Quadrilaterals & Polygons</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-8.html">
+                  <span>Algebra in Geometry (W/S)</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
           </div>
         </article>
 
-        <!-- Add additional Grade 8 lessons by copying a card -->
+        <!-- Unit 3 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">3️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 3 — Transformations & Congruence</div>
+              <p class="text-sm text-gray-600 mt-0.5">Translations • Rotations • Reflections • Enlargements</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-9.html">
+                  <span>Translations & Rotations</span><span class="pill soon">Coming soon</span></a>
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-10.html">
+                  <span>Reflections & Enlargements</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 4 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">4️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 4 — Statistics</div>
+              <p class="text-sm text-gray-600 mt-0.5">Pie charts • Histograms • Bivariate ideas (intro)</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-11.html">
+                  <span>Pie Charts & Histograms</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 5 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">5️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 5 — Pythagorean Theorem</div>
+              <p class="text-sm text-gray-600 mt-0.5">Theorem & converse • Solve for sides • Coordinate distance</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-12.html">
+                  <span>Theorem, Converse & Problems</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 6 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">6️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 6 — Expressions & Equations (Systems)</div>
+              <p class="text-sm text-gray-600 mt-0.5">Two/three-step eqns • Elimination • Substitution • Equating</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-13.html">
+                  <span>Linear Equations & Systems</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 7 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">7️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 7 — Geometry Measurement</div>
+              <p class="text-sm text-gray-600 mt-0.5">Metric conversions • Circles • Perimeter/Area • Volume</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-14.html">
+                  <span>Circles, Areas & Volumes</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 8 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">8️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 8 — Compound Probability</div>
+              <p class="text-sm text-gray-600 mt-0.5">Simple & compound events • Trees • Simulation</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-15.html">
+                  <span>Compound Events & Trees</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 9 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">9️⃣</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 9 — Congruence & Similarity (Constructions)</div>
+              <p class="text-sm text-gray-600 mt-0.5">Construct ASA • SAS • SSS</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-16.html">
+                  <span>Triangle Constructions</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Unit 10 -->
+        <article class="card rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">🔟</div>
+            <div class="flex-1">
+              <div class="text-[var(--maroon)] font-extrabold">Unit 10 — Percentages</div>
+              <p class="text-sm text-gray-600 mt-0.5">Forms • Decimal↔% • % of a quantity • % change</p>
+              <div class="mt-2 grid gap-2">
+                <a class="inline-flex items-center justify-between rounded-lg border px-3 py-2" data-href="grade8/lesson-17.html">
+                  <span>Percent Skills & Problems</span><span class="pill soon">Coming soon</span></a>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
 
     <!-- FOOTER -->
     <div class="mt-12 mb-10 text-center text-sm text-gray-500">
-      © <span id="year"></span> Qatar Leadership Academy — Member of Qatar Foundation
+      © <span id="year"></span> Qatar Leadership Academy — Member of Qatar Foundation •
+      <span class="font-semibold">Created by Mohammad Abu Ghuwaleh</span>
     </div>
   </main>
 
-  <!-- ACCESSIBILITY & INTERACTIONS -->
+  <!-- INTERACTIONS -->
   <script>
     const tab7 = document.querySelector('#tab7');
     const tab8 = document.querySelector('#tab8');
@@ -179,28 +467,23 @@
       tab8.setAttribute('aria-selected', g7 ? 'false' : 'true');
       panel7.classList.toggle('hidden', !g7);
       panel8.classList.toggle('hidden', g7);
-      // Clear search when switching to avoid confusion
       search.value = '';
       filterCards('');
-      // Persist
       localStorage.setItem('qla_portal_grade', g7 ? '7' : '8');
     }
     tab7.addEventListener('click', () => showGrade(7));
     tab8.addEventListener('click', () => showGrade(8));
 
-    // Search filter over visible panel only
     function filterCards(q){
       const panel = panel7.classList.contains('hidden') ? panel8 : panel7;
-      const cards = panel.querySelectorAll('.card');
+      const cards = panel.querySelectorAll('.card, a[data-href]');
       const query = (q || '').toLowerCase();
-      cards.forEach(card => {
-        const text = card.innerText.toLowerCase();
-        card.style.display = text.includes(query) ? '' : 'none';
+      cards.forEach(el => {
+        const text = el.innerText.toLowerCase();
+        el.style.display = text.includes(query) ? '' : 'none';
       });
     }
     search.addEventListener('input', e => filterCards(e.target.value));
-
-    // Keyboard: "/" focuses search, "g" toggles grade
     document.addEventListener('keydown', (e) => {
       if (e.key === '/') { e.preventDefault(); search.focus(); }
       if (e.key.toLowerCase() === 'g') {
@@ -209,11 +492,46 @@
       }
     });
 
-    // Persist last chosen grade between visits
+    // Turn each card with data-href into a functional link and show "Open"/"Coming soon"
+    async function wireLinks(){
+      document.querySelectorAll('[data-href]').forEach(el => {
+        const href = el.getAttribute('data-href');
+        const link = el.querySelector('.link') || el;
+        const btn  = el.querySelector('.btn') || el.querySelector('.pill');
+
+        // Make the whole card clickable
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', (evt) => {
+          // Avoid double navigation if clicking on a nested anchor
+          if (evt.target.tagName.toLowerCase() === 'a' && evt.target.getAttribute('href')) return;
+          if (el.dataset.exists === '1') window.location.href = href;
+        });
+
+        // Probe if the file exists (same-origin fetch)
+        fetch(href, { method:'HEAD' }).then(res => {
+          const ok = res.ok;
+          el.dataset.exists = ok ? '1' : '0';
+          if (link && link.classList.contains('link')) {
+            if (ok) { link.setAttribute('href', href); }
+          }
+          const pill = el.querySelector('.pill') || btn;
+          if (pill){
+            if (ok) { pill.className = 'pill ok'; pill.textContent = 'Open'; }
+            else    { pill.className = 'pill soon'; pill.textContent = 'Coming soon'; }
+          }
+        }).catch(() => {
+          el.dataset.exists = '0';
+          const pill = el.querySelector('.pill') || btn;
+          if (pill){ pill.className = 'pill soon'; pill.textContent = 'Coming soon'; }
+        });
+      });
+    }
+
     (function init(){
       const saved = localStorage.getItem('qla_portal_grade');
       showGrade(saved === '8' ? 8 : 7);
       document.querySelector('#year').textContent = new Date().getFullYear();
+      wireLinks();
     })();
   </script>
 </body>
