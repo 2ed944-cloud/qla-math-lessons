@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Grade 7 • Unit 1 • L2 Opposites & L3 Recurring Decimals → Fractions (QLA)</title>
+
+<!-- Fonts & Tailwind -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root{
+    --maroon:#6C1D45; --gold:#C7A34F; --dark:#2C2C2E; --light:#F5F5F5; --accent:#E8D5B7;
+  }
+  html,body{height:100%;background:#2d3748;color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+  /* Stage */
+  #deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
+  #slides{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
+  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
+  .slide.active{opacity:1;transform:none;pointer-events:auto}
+
+  .bg-maroon{background-color:var(--maroon)} .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
+  .banner{width:100%;height:140px;background:#fff url('../assets/qla_banner.png') center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
+  .card{border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
+  .chip{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.05);border-radius:9999px;padding:.35rem .75rem;cursor:pointer}
+  .chip:hover{outline:2px solid var(--gold)}
+  .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
+  .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+  .btn:hover{filter:brightness(0.98)}
+
+  #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
+  #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700}
+  #controls button:hover{transform:scale(1.06)}
+  #counter{color:#fff;font-weight:700;min-width:84px;text-align:center}
+  #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:30;transition:width .35s ease}
+  #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
+
+  /* Popover (glossary) */
+  #pop{position:fixed;inset:auto auto 20px 20px;max-width:min(560px,90vw);background:#fff;border:2px solid var(--gold);border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.25);padding:14px 16px;z-index:40;display:none;text-align:left}
+  #pop strong{color:var(--maroon)}
+  #pop .close{float:right;color:#666;cursor:pointer;font-weight:800}
+
+  /* Number line */
+  .nl-wrap{width:100%;max-width:900px}
+  canvas.nline{width:100%;height:140px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
+
+  /* Sortable helpers */
+  .sortable li{user-select:none}
+  .sortable .dragging{opacity:.5}
+
+  /* Recurring notation: overbar and dots (no LaTeX) */
+  .overbar{ text-decoration: overline; text-decoration-thickness: 2px; }
+  .repdot{ position:relative; padding:0 .12em; }
+  .repdot::before,.repdot::after{content:'•'; position:absolute; top:-0.8em; font-weight:900; line-height:1; }
+  .repdot::before{ left:-.05em; } .repdot::after{ right:-.05em; }
+
+  /* Confetti */
+  .confetti{position:fixed;pointer-events:none;z-index:50}
+
+  /* Drop zones (match game) */
+  .drop{min-height:44px;border:2px dashed #d1d5db;border-radius:10px;background:#fff}
+  .drag{cursor:grab}
+</style>
+</head>
+<body>
+
+<div id="deck" aria-live="polite">
+  <div id="slides" class="relative">
+    <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
+
+    <!-- 0 • Title -->
+    <section class="slide active bg-maroon text-white">
+      <div class="w-full h-16 banner mb-6 rounded-md" aria-label="QLA Partner Banner"></div>
+      <div class="flex items-center gap-8">
+        <img src="../assets/qla_logo.png" alt="QLA Logo" class="h-28 w-auto" onerror="this.style.display='none'"/>
+        <div class="text-left">
+          <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Unit 1 — The Number System</h1>
+          <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">L2: Opposites (Positive & Negative) • L3: Recurring Decimals → Fractions</p>
+          <p class="mt-2 text-lg">Qatar Leadership Academy — Mr. Mohammad Abu‑Ghuwaleh</p>
+        </div>
+      </div>
+      <div class="absolute bottom-6 text-sm text-gray-100">Member of Qatar Foundation</div>
+    </section>
+
+    <!-- LESSON 2 -->
+    <!-- 1 • L2 LOs + Keywords -->
+    <section class="slide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Lesson 2 — Opposites (Positive & Negative)</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Objectives</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Explain and identify <span class="chip" data-key="opposite">opposites</span> (additive inverses) and relate them to <span class="chip" data-key="abs">distance from 0</span>.</li>
+            <li>Translate real‑world statements into signed integers and determine their <span class="chip" data-key="opposite">opposites</span>.</li>
+            <li>Order and compare integers/decimals using a <span class="chip" data-key="numberline">number line</span> and inequality symbols.</li>
+          </ul>
+          <p class="text-xs text-gray-500 mt-2">Aligned with AERO 7.NS.1a–1c (Unit‑1 focus). <em>See school scope/sequence.</em></p>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <div class="flex flex-wrap gap-2 text-lg">
+            <span class="chip" data-key="opposite">opposite</span>
+            <span class="chip" data-key="inverse">additive inverse</span>
+            <span class="chip" data-key="positive">positive</span>
+            <span class="chip" data-key="negative">negative</span>
+            <span class="chip" data-key="abs">absolute value |x|</span>
+            <span class="chip" data-key="compare">&lt;  &gt;  =</span>
+          </div>
+          <p class="text-sm text-gray-500 mt-3">Covers Worksheet #1 Q1–Q2.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 • L2 Explanations + Explorer -->
+    <section id="oppoSlide" class="slide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-1">Opposites & Absolute Value</h2>
+      <div class="grid lg:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">Idea</h3>
+          <p class="mt-2">Two numbers are <strong>opposites</strong> if they are the same distance from 0 on the number line, in opposite directions. They add to zero.</p>
+          <div class="mt-3 grid gap-2">
+            <div class="chip"><strong>Example:</strong> +5 and −5 → sum 0, |+5|=|−5|=5</div>
+            <div class="chip"><strong>Context:</strong> “a loss of $1250” → −1250; opposite is “a gain of $1250” → +1250</div>
+            <div class="chip"><strong>Distance:</strong> distance between a and b is |a−b|</div>
+          </div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-1">Opposites Explorer</h3>
+          <div class="nl-wrap"><canvas id="oppoLine" class="nline" aria-label="Interactive number line"></canvas></div>
+          <div class="mt-3 flex flex-wrap items-center gap-2 text-sm">
+            <span class="chip"><b>p</b>=<span id="pVal">–</span></span>
+            <span class="chip"><b>−p</b>=<span id="negPVal">–</span></span>
+            <span class="chip">sum=<span id="sumVal">–</span></span>
+            <span class="chip">|p|=<span id="absVal">–</span></span>
+            <button id="randP" class="btn">Randomize</button>
+            <button id="snapGrid" class="btn">Snap to tenths</button>
+            <button id="resetP" class="btn">Reset</button>
+          </div>
+          <p class="text-xs text-gray-500 mt-2">Drag the maroon point; gold shows the opposite.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 • L2 Q1 -->
+    <section class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Q1 — From Words to Integers & Opposites</h2>
+      <p class="text-gray-600 mb-2">Click the <strong>keyword</strong> in each statement, enter the number (with sign), choose the opposite word, and type the opposite number.</p>
+      <div id="q1Area" class="w-full max-w-5xl grid gap-3"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="checkQ1" class="btn maroon">Check Q1</button>
+        <button id="resetQ1" class="btn">Reset</button>
+      </div>
+      <div id="q1Fb" class="mt-2 h-6 font-semibold"></div>
+      <p class="text-xs text-gray-500 mt-1">Matches Worksheet #1 Q1 (A–E).</p>
+    </section>
+
+    <!-- 4 • L2 Q2 -->
+    <section class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Q2 — Write an Integer for Each Description</h2>
+      <div id="q2Area" class="w-full max-w-5xl grid gap-3"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="checkQ2" class="btn maroon">Check Q2</button>
+        <button id="resetQ2" class="btn">Reset</button>
+      </div>
+      <div id="q2Fb" class="mt-2 h-6 font-semibold"></div>
+      <p class="text-xs text-gray-500 mt-1">Matches Worksheet #1 Q2 (a–f).</p>
+    </section>
+
+    <!-- 5 • L2 Order & Compare -->
+    <section class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Order & Compare</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">Order (Ascending / Descending)</h3>
+          <div class="mb-1 font-semibold">Ascending: −5, 3, −7, 1, −3</div>
+          <ul id="ascList" class="sortable space-y-2"></ul>
+          <div class="mt-2 font-semibold">Descending: 4, −7, −3, 9, −8</div>
+          <ul id="descList" class="sortable space-y-2"></ul>
+          <div class="mt-2 flex gap-2">
+            <button id="checkOrder" class="btn maroon">Check</button>
+            <button id="resetOrder" class="btn">Reset</button>
+          </div>
+          <div id="orderFb" class="mt-2 h-6 font-semibold"></div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">Compare (&lt;  &gt;)</h3>
+          <div class="grid gap-3 text-2xl font-bold">
+            <div class="flex items-center gap-3">
+              <span>−1</span>
+              <div class="flex gap-2">
+                <button class="btn cmp" data-pair="a" data-op="<">&lt;</button>
+                <button class="btn cmp" data-pair="a" data-op=">">&gt;</button>
+              </div>
+              <span>7</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span>6</span>
+              <div class="flex gap-2">
+                <button class="btn cmp" data-pair="b" data-op="<">&lt;</button>
+                <button class="btn cmp" data-pair="b" data-op=">">&gt;</button>
+              </div>
+              <span>2</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span>−6</span>
+              <div class="flex gap-2">
+                <button class="btn cmp" data-pair="c" data-op="<">&lt;</button>
+                <button class="btn cmp" data-pair="c" data-op=">">&gt;</button>
+              </div>
+              <span>0</span>
+            </div>
+          </div>
+          <div id="cmpFb" class="mt-3 h-6 font-semibold"></div>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mt-2">Covers Worksheet #1, Q4 & Q5.</p>
+    </section>
+
+    <!-- 6 • L2 Mini‑Challenge -->
+    <section class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Mini‑Challenge: Signs from Situations</h2>
+      <p class="text-gray-600 mb-3">Decide <strong>positive</strong> or <strong>negative</strong> (and type the integer). 5 quick items.</p>
+      <div id="miniSituations" class="w-full max-w-4xl grid md:grid-cols-2 gap-3"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="checkMini" class="btn maroon">Check</button>
+        <button id="newMini" class="btn">New Set</button>
+      </div>
+      <div id="miniFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- LESSON 3 -->
+    <!-- 7 • L3 LOs + Keywords -->
+    <section class="slide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Lesson 3 — Recurring Decimals → Fractions</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Objectives</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Explain why recurring decimals are <span class="chip" data-key="rational">rational numbers</span>.</li>
+            <li>Convert <span class="chip" data-key="pure">pure</span>/<span class="chip" data-key="mixed">mixed</span> recurring decimals to <strong>simplest fractions</strong> using algebra.</li>
+            <li>Check work and justify equivalence.</li>
+          </ul>
+          <p class="text-xs text-gray-500 mt-2">AERO 7.NS.2d (Unit‑1). <em>See school scope/sequence.</em></p>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Notation (tap to learn)</h3>
+          <div class="flex flex-wrap gap-2 text-lg">
+            <span class="chip" data-key="bar">Bar notation: 0.<span class="overbar">34</span></span>
+            <span class="chip" data-key="dots">Dot notation: 0.1<span class="repdot">6</span></span>
+            <span class="chip" data-key="block">repeating block</span>
+            <span class="chip" data-key="nonrep">non‑repeating part</span>
+            <span class="chip" data-key="I">integer part</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 • L3 Methods (CLEAN & CLEAR) -->
+    <section class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Two Conversion Methods — Clean, Correct, Clickable</h2>
+      <div class="grid lg:grid-cols-2 gap-6 text-left max-w-5xl">
+
+        <!-- PURE -->
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">1) Pure Repeating: 0.<span class="overbar">b</span></h3>
+          <p class="mt-2">Digits repeat immediately (no non‑repeating part). Let the repeating block have <em>n</em> digits.</p>
+          <div class="mt-2 space-y-2 text-sm bg-white rounded p-3 border">
+            <div><strong>Example A:</strong> Let x = 0.<span class="overbar">4</span></div>
+            <div>10x = 4.<span class="overbar">4</span></div>
+            <div>10x − x = 4 ⇒ <strong>9x = 4</strong> ⇒ x = <strong>4/9</strong></div>
+            <hr/>
+            <div><strong>Example B:</strong> Let x = 0.<span class="overbar">34</span></div>
+            <div>100x = 34.<span class="overbar">34</span></div>
+            <div>100x − x = 34 ⇒ <strong>99x = 34</strong> ⇒ x = <strong>34/99</strong></div>
+          </div>
+          <div class="mt-3 p-3 rounded bg-white border">
+            <div class="font-semibold">General formula:</div>
+            <div class="mt-1"><strong>x = <span class="chip" data-key="block">b</span> / (10<sup>n</sup> − 1)</strong></div>
+            <div class="text-xs text-gray-600 mt-1">Click <span class="chip" data-key="block">b</span> or <span class="chip" data-key="n">n</span> to recall meanings.</div>
+          </div>
+        </div>
+
+        <!-- MIXED -->
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">2) Mixed Repeating: 0.a<span class="overbar">b</span> or I.a<span class="overbar">b</span></h3>
+          <p class="mt-2">Let <em>a</em> be the non‑repeating part (length <em>k</em>) and <em>b</em> the repeating block (length <em>n</em>), with integer part <em>I</em> (possibly 0).</p>
+          <div class="mt-2 space-y-2 text-sm bg-white rounded p-3 border">
+            <div><strong>Example C:</strong> x = 0.1<span class="overbar">6</span></div>
+            <div>10x = 1.<span class="overbar">6</span> &nbsp;&nbsp;&nbsp; 100x = 16.<span class="overbar">6</span></div>
+            <div>100x − 10x = 15 ⇒ <strong>90x = 15</strong> ⇒ x = <strong>1/6</strong></div>
+            <hr/>
+            <div><strong>General Derivation:</strong></div>
+            <ol class="list-decimal list-inside space-y-1">
+              <li>Let x = <span class="chip" data-key="I">I</span>.<span class="chip" data-key="a">a</span><span class="overbar">b</span>, where <strong>k = |a|</strong> and <strong>n = |b|</strong>.</li>
+              <li>Multiply by 10<sup>k</sup>: 10<sup>k</sup>x = (Ia) + 0.<span class="overbar">b</span></li>
+              <li>Multiply by 10<sup>k+n</sup>: 10<sup>k+n</sup>x = (Iab) + 0.<span class="overbar">b</span></li>
+              <li>Subtract: (10<sup>k+n</sup> − 10<sup>k</sup>)x = (Iab) − (Ia)</li>
+              <li><strong>Therefore</strong> <span class="bg-yellow-50 rounded px-1">x = [(Iab) − (Ia)] / (10<sup>k+n</sup> − 10<sup>k</sup>)</span>, then simplify.</li>
+            </ol>
+          </div>
+          <div class="mt-3 p-3 rounded bg-white border">
+            <div class="font-semibold">Click a token to learn it:</div>
+            <div class="mt-1 flex flex-wrap gap-2">
+              <span class="chip" data-key="I">I</span>
+              <span class="chip" data-key="a">a</span>
+              <span class="chip" data-key="block">b</span>
+              <span class="chip" data-key="k">k</span>
+              <span class="chip" data-key="n">n</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 9 • Identify pure/mixed & block -->
+    <section class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Identify Type & Repeating Block</h2>
+      <p class="text-gray-600 mb-3">For each decimal, choose whether it’s <em>Pure</em> or <em>Mixed</em>, and type the repeating block.</p>
+      <div id="idList" class="w-full max-w-4xl grid gap-2"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="idCheck" class="btn maroon">Check</button>
+        <button id="idNew" class="btn">New Set</button>
+      </div>
+      <div id="idFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- 10 • Equation Builder (with steps) -->
+    <section class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Equation Builder (bar or dots)</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <label class="font-semibold text-sm">Integer part</label>
+          <input id="ebInt" type="number" min="0" step="1" class="mt-1 w-full px-3 py-2 rounded border" placeholder="e.g., 0 or 1"/>
+          <label class="font-semibold text-sm mt-3 block">Non‑repeating digits (optional)</label>
+          <input id="ebNon" class="mt-1 w-full px-3 py-2 rounded border" placeholder="e.g., 2 in 1.2(3)"/>
+          <label class="font-semibold text-sm mt-3 block">Repeating block (required)</label>
+          <input id="ebRep" class="mt-1 w-full px-3 py-2 rounded border" placeholder="e.g., 34 or 3"/>
+          <div class="mt-3 flex items-center gap-4">
+            <span class="font-semibold text-sm">Show as:</span>
+            <label><input type="radio" name="repr" value="bar" checked> Bar</label>
+            <label><input type="radio" name="repr" value="dot"> Dots</label>
+          </div>
+          <div class="mt-2 flex gap-2">
+            <button id="buildEq" class="btn maroon">Build & Convert</button>
+            <button id="clearEq" class="btn">Clear</button>
+          </div>
+          <div class="mt-3"><span class="font-semibold">Preview:</span> <span id="decPreview" class="text-xl font-extrabold"></span></div>
+          <div id="eqError" class="mt-2 text-red-700 font-semibold"></div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-1">Steps & Result</h3>
+          <div id="eqSteps" class="text-sm leading-6 max-h-64 overflow-auto bg-white rounded p-3 border" aria-live="polite"></div>
+          <div id="eqResult" class="mt-2 text-lg font-bold"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 • Step Sorter -->
+    <section class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Step Sorter — Put the Algebra in Order</h2>
+      <p class="text-gray-600 mb-3">Drag to order the steps to convert x = 0.<span class="overbar">12</span> into a fraction.</p>
+      <ul id="sortSteps" class="sortable w-full max-w-4xl space-y-2"></ul>
+      <div class="mt-3 flex gap-2">
+        <button id="sortCheck" class="btn maroon">Check</button>
+        <button id="sortReset" class="btn">Reset</button>
+      </div>
+      <div id="sortFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- 12 • Trainer -->
+    <section id="trainerSlide" class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Trainer — Convert the Set</h2>
+      <div class="mb-2 flex items-center gap-4">
+        <span class="font-semibold text-sm">Display style:</span>
+        <label><input type="radio" name="repr2" value="bar" checked> Bar</label>
+        <label><input type="radio" name="repr2" value="dot"> Dots</label>
+      </div>
+      <div id="trainList" class="w-full max-w-3xl grid gap-2"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="checkTrain" class="btn maroon">Check</button>
+        <button id="resetTrain" class="btn">Reset</button>
+      </div>
+      <div id="trainFb" class="mt-2 h-6 font-semibold"></div>
+      <p class="text-xs text-gray-500 mt-1">Set mirrors Worksheet 2 (0.<span class="overbar">4</span>, 0.<span class="overbar">3</span>, 0.<span class="overbar">12</span>, 0.<span class="overbar">34</span>, 0.<span class="overbar">46</span>).</p>
+    </section>
+
+    <!-- 13 • Match Game -->
+    <section class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Match Game — Decimal ⇄ Fraction</h2>
+      <div class="grid md:grid-cols-2 gap-6 w-full max-w-5xl">
+        <div>
+          <h3 class="text-lg font-bold text-maroon mb-1">Decimals</h3>
+          <div id="mgDecs" class="grid gap-2"></div>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-maroon mb-1">Fractions (drag)</h3>
+          <div id="mgFracs" class="grid gap-2"></div>
+        </div>
+      </div>
+      <div class="mt-3 flex gap-2">
+        <button id="mgCheck" class="btn maroon">Check</button>
+        <button id="mgNew" class="btn">New</button>
+      </div>
+      <div id="mgFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- 14 • One‑Minute Sprint -->
+    <section class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">1‑Minute Sprint — Convert Fast!</h2>
+      <div class="card p-5 w-full max-w-2xl text-left">
+        <div class="flex items-center justify-between">
+          <div>Time: <span id="spTime" class="font-bold">60</span> s</div>
+          <div>Score: <span id="spScore" class="font-bold">0</span></div>
+        </div>
+        <div class="mt-3 text-2xl font-extrabold">x = <span id="spQ"></span></div>
+        <input id="spAns" class="mt-3 w-64 px-3 py-2 rounded border" placeholder="e.g., 34/99" />
+        <div class="mt-3 flex gap-2">
+          <button id="spStart" class="btn maroon">Start</button>
+          <button id="spStop" class="btn">Stop</button>
+        </div>
+        <div id="spFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- 15 • Exit Ticket -->
+    <section class="slide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">Reflect (3–2–1)</h3>
+          <ul class="list-disc list-inside">
+            <li>3 ideas about <strong>opposites</strong> or <strong>comparing numbers</strong></li>
+            <li>2 steps for converting a recurring decimal</li>
+            <li>1 question you still have</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">Up Next</h3>
+          <p>Operations with rational numbers begin <strong>after</strong> the diagnostic—announced now, taken later.</p>
+        </div>
+      </div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[120px] banner rounded-md"></div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Controls -->
+<div id="controls" role="group" aria-label="Slideshow controls">
+  <button id="prev" title="Previous (←)">&laquo;</button>
+  <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
+  <div id="counter">1 / 16</div>
+  <button id="next" title="Next (→)">&raquo;</button>
+</div>
+<div id="progress"></div>
+
+<!-- Glossary popover -->
+<div id="pop" role="dialog" aria-modal="true" aria-live="polite">
+  <span class="close" title="Close">✕</span>
+  <div id="popBody"></div>
+</div>
+
+<script>
+/* ---------- Deck Navigation & Fullscreen ---------- */
+(function(){
+  const slides = [...document.querySelectorAll('.slide')];
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const counter = document.getElementById('counter');
+  const progress = document.getElementById('progress');
+  const fsBtn = document.getElementById('fs');
+  let i=0;
+
+  function show(k){
+    i = (k+slides.length)%slides.length;
+    slides.forEach((s,idx)=>s.classList.toggle('active', idx===i));
+    counter.textContent = (i+1) + ' / ' + slides.length;
+    progress.style.width = ((i+1)/slides.length*100) + '%';
+    const id = slides[i].id || '';
+    if (id==='oppoSlide') drawOpposites();
+    if (id==='trainerSlide' && !trainerInit) buildTrainer();
+  }
+  prev.addEventListener('click', ()=>show(i-1));
+  next.addEventListener('click', ()=>show(i+1));
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='ArrowRight') show(i+1);
+    if(e.key==='ArrowLeft') show(i-1);
+    if(e.key.toLowerCase()==='f') toggleFS();
+  });
+  function toggleFS(){
+    const el = document.getElementById('slides');
+    if (!document.fullscreenElement){
+      (el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen).call(el);
+    } else {
+      (document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen).call(document);
+    }
+  }
+  fsBtn.addEventListener('click', toggleFS);
+
+  /* Utilities */
+  const $ = (x)=>document.getElementById(x);
+  const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1}
+  const simp=(n,d)=>{ let g=gcd(n,d); d<0&&(g=-g); return [n/g,d/g]; }
+  const fracEq=(a,b,c,d)=> a*d===b*c;
+  const toSup = n => `10<sup>${n}</sup>`;
+  const concatNum = (I,a,b='') => Number(String(I)+String(a||'')+String(b||''));
+  function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
+    for(let k=0;k<16;k++){
+      const div=document.createElement('div');
+      div.className='confetti'; div.style.left=x+'px'; div.style.top=y+'px';
+      div.style.width='8px'; div.style.height='8px';
+      div.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8a3d64'][k%4];
+      document.body.appendChild(div);
+      const dx=(Math.random()*2-1)*240, dy=(Math.random()*-1-0.2)*300, rot=(Math.random()*720);
+      div.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],{duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>div.remove();
+    }
+  }
+
+  /* ---------- Glossary (click a chip to show definition) ---------- */
+  const GLOS = {
+    opposite: '<strong>Opposites</strong> (additive inverses) are numbers the same distance from 0 on a number line, in opposite directions; they sum to 0.',
+    inverse: '<strong>Additive inverse</strong> of <em>p</em> is <em>−p</em>. Together they make 0: p + (−p) = 0.',
+    abs: '<strong>Absolute value</strong> |x| is the distance of x from 0. Always non‑negative.',
+    numberline: 'A <strong>number line</strong> shows numbers in order; distance represents absolute value and direction represents sign.',
+    positive: '<strong>Positive</strong> means greater than 0.',
+    negative: '<strong>Negative</strong> means less than 0.',
+    compare: 'Use <strong>&lt;, &gt;, =</strong> to compare two numbers. On a number line, left is less; right is greater.',
+    rational: '<strong>Rational numbers</strong> are numbers that can be written as a fraction of integers. Their decimal forms terminate or repeat.',
+    pure: '<strong>Pure repeating</strong> decimals repeat immediately after the decimal point, e.g., 0.<span class="overbar">34</span>.',
+    mixed: '<strong>Mixed repeating</strong> decimals have a non‑repeating part followed by a repeating block, e.g., 0.1<span class="overbar">6</span>.',
+    bar: '<strong>Bar notation</strong>: an overline marks the repeating block, e.g., 0.<span class="overbar">46</span>.',
+    dots: '<strong>Dot notation</strong>: dots above the first and last repeating digits, e.g., 0.1<span class="repdot">6</span>.',
+    block: '<strong>b</strong> = the repeating block of digits.',
+    nonrep: '<strong>a</strong> = the non‑repeating digits after the decimal; length is <strong>k</strong>.',
+    I: '<strong>I</strong> = integer part (digits before the decimal).',
+    k: '<strong>k</strong> = number of digits in the non‑repeating part <strong>a</strong>.',
+    n: '<strong>n</strong> = number of digits in the repeating block <strong>b</strong>.'
+  };
+  const POP = $('pop'), POP_BODY=$('popBody');
+  function showPop(html, anchor){
+    POP_BODY.innerHTML = html;
+    POP.style.display='block';
+    if(anchor){
+      const r = anchor.getBoundingClientRect();
+      POP.style.left = Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px';
+      POP.style.bottom = (window.innerHeight - r.top + 10)+'px';
+    }else{
+      POP.style.left='20px'; POP.style.bottom='20px';
+    }
+  }
+  POP.querySelector('.close').addEventListener('click', ()=>{POP.style.display='none'});
+  document.addEventListener('click', (e)=>{
+    const el = e.target.closest('.chip[data-key]');
+    if(el){
+      const key = el.dataset.key;
+      if(GLOS[key]) showPop(GLOS[key], el);
+    }
+  });
+
+  /* ---------- LESSON 2: Opposites Explorer ---------- */
+  const oppoCanvas = $('oppoLine');
+  const pDisp=$('pVal'), negPDisp=$('negPVal'), sumDisp=$('sumVal'), absDisp=$('absVal');
+  const randBtn=$('randP'), resetBtn=$('resetP'), snapBtn=$('snapGrid');
+  let NL={min:-10,max:10,p:-3.2,dragging:false,snap:false};
+  function map(x,a1,a2,b1,b2){return b1+(x-a1)*(b2-b1)/(a2-a1)}
+  function unmap(px,a1,a2,b1,b2){return a1+(px-b1)*(a2-a1)/(b2-b1)}
+  function drawOpposites(){
+    if(!oppoCanvas) return;
+    const c=oppoCanvas.getContext('2d');
+    const W=oppoCanvas.width=oppoCanvas.clientWidth*devicePixelRatio;
+    const H=oppoCanvas.height=oppoCanvas.clientHeight*devicePixelRatio;
+    c.scale(devicePixelRatio,devicePixelRatio);
+    c.clearRect(0,0,oppoCanvas.clientWidth,oppoCanvas.clientHeight);
+    const m=24, y=oppoCanvas.clientHeight/2;
+    c.lineWidth=2; c.strokeStyle='#6C1D45'; c.beginPath(); c.moveTo(m,y); c.lineTo(oppoCanvas.clientWidth-m,y); c.stroke();
+    for(let t=NL.min;t<=NL.max;t++){
+      const x=map(t,NL.min,NL.max,m,oppoCanvas.clientWidth-m);
+      c.beginPath(); c.moveTo(x,y-8); c.lineTo(x,y+8); c.stroke();
+      if(t%2===0){c.fillStyle='#555'; c.font='12px Inter'; c.fillText(String(t),x-6,y+22);}
+    }
+    const px=map(NL.p,NL.min,NL.max,m,oppoCanvas.clientWidth-m);
+    const q=-NL.p, qx=map(q,NL.min,NL.max,m,oppoCanvas.clientWidth-m);
+    c.strokeStyle='#C7A34F'; c.lineWidth=4; c.beginPath(); c.moveTo(px,y); c.lineTo(qx,y); c.stroke();
+    c.fillStyle='#6C1D45'; c.beginPath(); c.arc(px,y,9,0,Math.PI*2); c.fill();
+    c.fillStyle='#C7A34F'; c.beginPath(); c.arc(qx,y,9,0,Math.PI*2); c.fill();
+    pDisp.textContent=NL.p.toFixed(2); negPDisp.textContent=(-NL.p).toFixed(2);
+    sumDisp.textContent=(NL.p+(-NL.p)).toFixed(0); absDisp.textContent=Math.abs(NL.p).toFixed(2);
+  }
+  function handleOppoPointer(e){
+    const r=oppoCanvas.getBoundingClientRect(); const clientX = (e.touches?e.touches[0].clientX:e.clientX);
+    let val=unmap(clientX-r.left,NL.min,NL.max,24,oppoCanvas.clientWidth-24);
+    if(NL.snap) val=Math.round(val*10)/10;
+    NL.p=Math.max(NL.min,Math.min(NL.max,val)); drawOpposites();
+  }
+  if(oppoCanvas){
+    oppoCanvas.addEventListener('mousedown', e=>{NL.dragging=true;handleOppoPointer(e)});
+    window.addEventListener('mousemove', e=>{if(NL.dragging)handleOppoPointer(e)});
+    window.addEventListener('mouseup', ()=>NL.dragging=false);
+    oppoCanvas.addEventListener('touchstart', e=>{NL.dragging=true;handleOppoPointer(e)},{passive:false});
+    oppoCanvas.addEventListener('touchmove', e=>{if(NL.dragging)handleOppoPointer(e)},{passive:false});
+    oppoCanvas.addEventListener('touchend', ()=>NL.dragging=false);
+    randBtn?.addEventListener('click', ()=>{NL.p=+((Math.random()*20-10).toFixed(2)); drawOpposites();});
+    resetBtn?.addEventListener('click', ()=>{NL.p=-3.2; drawOpposites();});
+    snapBtn?.addEventListener('click', ()=>{NL.snap=!NL.snap; snapBtn.classList.toggle('ring-2'); drawOpposites();});
+  }
+
+  /* ---------- LESSON 2: Q1 ---------- */
+  const q1Rows = [
+    {statement:'Winning by 5 goals', keyword:'Winning', value:+5, opps:['Winning','Losing','Draw'], answerOpp:'Losing'},
+    {statement:'A clock is 3 min slow', keyword:'slow', value:-3, opps:['fast','slow','on-time'], answerOpp:'fast'},
+    {statement:'A loss of $1250', keyword:'loss', value:-1250, opps:['loss','gain','refund'], answerOpp:'gain'},
+    {statement:'200 m above sea level', keyword:'above', value:+200, opps:['above','below','at'], answerOpp:'below'},
+    {statement:'A decrease of $100', keyword:'decrease', value:-100, opps:['increase','decrease','equal'], answerOpp:'increase'}
+  ];
+  function renderQ1(){
+    const area = $('q1Area'); area.innerHTML='';
+    q1Rows.forEach((row,idx)=>{
+      const div=document.createElement('div'); div.className='card p-4 text-left';
+      const tokens=row.statement.split(' ').map(w=>`<span class="chip" data-key="${w.toLowerCase()}">${w}</span>`).join(' ');
+      div.innerHTML=`
+        <div class="font-semibold text-maroon">Q1.${'ABCDE'[idx]}</div>
+        <div class="mt-1">${tokens}</div>
+        <div class="mt-2 grid sm:grid-cols-4 gap-2 items-center">
+          <div><label class="text-sm">Number</label><input class="q1num px-2 py-1 rounded border w-full" data-i="${idx}" placeholder="e.g., -1250"></div>
+          <div><label class="text-sm">Opposite word</label>
+            <select class="q1opp border rounded px-2 py-1 w-full" data-i="${idx}">
+              ${row.opps.map(o=>`<option value="${o}">${o}</option>`).join('')}
+            </select>
+          </div>
+          <div><label class="text-sm">Opposite number</label><input class="q1oppnum px-2 py-1 rounded border w-full" data-i="${idx}" placeholder="e.g., +1250"></div>
+        </div>`;
+      area.appendChild(div);
+    });
+  }
+  renderQ1();
+  function parseNum(s){ if(!s) return NaN; s=s.replace('−','-'); return Number(s); }
+  $('checkQ1').addEventListener('click', ()=>{
+    let total=0, correct=0;
+    $('q1Area').querySelectorAll('.card').forEach((card,idx)=>{
+      const row=q1Rows[idx];
+      const selectedText=card.querySelectorAll('.chip'); // any click on the key itself is informative via glossary
+      // number
+      const n=card.querySelector('.q1num'); total++; if(parseNum(n.value)===row.value){n.style.borderColor='#22c55e'; correct++; } else {n.style.borderColor='#ef4444';}
+      // opposite word
+      const opp=card.querySelector('.q1opp').value; total++; if(opp===row.answerOpp) correct++;
+      // opposite number
+      const n2=card.querySelector('.q1oppnum'); total++; if(parseNum(n2.value)===-row.value){n2.style.borderColor='#22c55e'; correct++; } else {n2.style.borderColor='#ef4444';}
+    });
+    $('q1Fb').textContent = (correct===total)?'✅ All correct!':`Score: ${correct}/${total} — corrections highlighted`;
+    if(correct===total) confetti();
+  });
+  $('resetQ1').addEventListener('click', renderQ1);
+
+  /* ---------- LESSON 2: Q2 ---------- */
+  const q2Rows = [
+    {statement:'A debit of $40', value:-40},
+    {statement:'A deposit of $225', value:+225},
+    {statement:'14,000 feet above sea level', value:+14000},
+    {statement:'A temperature increase of 40°F', value:+40},
+    {statement:'A withdrawal of $225', value:-225},
+    {statement:'14,000 feet below sea level', value:-14000},
+  ];
+  function renderQ2(){
+    const area=$('q2Area'); area.innerHTML='';
+    q2Rows.forEach((row,idx)=>{
+      const div=document.createElement('div'); div.className='card p-4 text-left';
+      div.innerHTML=`
+        <div class="font-semibold text-maroon">Q2.${'abcdef'[idx]}</div>
+        <div class="mt-1">${row.statement}</div>
+        <div class="mt-2"><label class="text-sm">Integer:</label>
+          <input class="q2num px-2 py-1 rounded border w-32" data-i="${idx}" placeholder="e.g., -40">
+        </div>`;
+      area.appendChild(div);
+    });
+  }
+  renderQ2();
+  $('checkQ2').addEventListener('click', ()=>{
+    let total=0, correct=0;
+    $('q2Area').querySelectorAll('.q2num').forEach((inp)=>{
+      total++; const want=q2Rows[+inp.dataset.i].value;
+      const got=parseNum(inp.value);
+      if(got===want){ inp.style.borderColor='#22c55e'; correct++; } else { inp.style.borderColor='#ef4444'; }
+    });
+    $('q2Fb').textContent = (correct===total)?'✅ All correct!':`Score: ${correct}/${total} — check highlights`;
+    if(correct===total) confetti();
+  });
+  $('resetQ2').addEventListener('click', renderQ2);
+
+  /* ---------- L2 Order & Compare ---------- */
+  const ascNums=[-5,3,-7,1,-3], ascAns=[-7,-5,-3,1,3];
+  const descNums=[4,-7,-3,9,-8], descAns=[9,4,-3,-7,-8];
+  const ascList=$('ascList'), descList=$('descList');
+  function makeLi(v){ const li=document.createElement('li'); li.draggable=true; li.className='bg-white border rounded-xl px-4 py-2 text-lg flex justify-between items-center'; li.innerHTML=`<span class="val">${v}</span><span class="cursor-move">⋮⋮</span>`; return li; }
+  function renderOrder(){
+    ascList.innerHTML=''; descList.innerHTML='';
+    ascNums.forEach(v=>ascList.appendChild(makeLi(v)));
+    descNums.forEach(v=>descList.appendChild(makeLi(v)));
+    makeSortable(ascList); makeSortable(descList);
+  }
+  function makeSortable(ul){
+    let dragEl=null;
+    ul.querySelectorAll('li').forEach(li=>{
+      li.addEventListener('dragstart',()=>{dragEl=li; li.classList.add('dragging');});
+      li.addEventListener('dragend',()=>{dragEl=null; li.classList.remove('dragging');});
+    });
+    ul.addEventListener('dragover',e=>{
+      e.preventDefault();
+      const els=[...ul.querySelectorAll('li:not(.dragging)')];
+      let after=null, closest=-1e9;
+      els.forEach(child=>{
+        const box=child.getBoundingClientRect(), offset=e.clientY-box.top-box.height/2;
+        if(offset<0 && offset>closest){closest=offset; after=child;}
+      });
+      after? ul.insertBefore(dragEl,after) : ul.appendChild(dragEl);
+    });
+  }
+  renderOrder();
+  $('checkOrder').addEventListener('click', ()=>{
+    const getVals=ul=>[...ul.querySelectorAll('.val')].map(s=>Number(s.textContent));
+    const okAsc=JSON.stringify(getVals(ascList))===JSON.stringify(ascAns);
+    const okDesc=JSON.stringify(getVals(descList))===JSON.stringify(descAns);
+    $('orderFb').textContent = (okAsc && okDesc)? '✅ Both orders correct' : (!okAsc && !okDesc ? '❌ Both need fixes' : (okAsc? 'Ascending ✅, Descending ❌':'Ascending ❌, Descending ✅'));
+    if(okAsc && okDesc) confetti();
+  });
+  $('resetOrder').addEventListener('click', renderOrder);
+
+  const cmpRight = {a:'<', b:'>', c:'<'};
+  [...document.querySelectorAll('.cmp')].forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const p=btn.dataset.pair, op=btn.dataset.op; const ok=(cmpRight[p]===op);
+      $('cmpFb').textContent = ok? '✅ Correct' : '❌ Try again';
+      $('cmpFb').className = 'mt-3 h-6 font-semibold ' + (ok? 'text-green-700':'text-red-700');
+      if(ok) confetti();
+    });
+  });
+
+  /* ---------- L2 Mini‑Challenge ---------- */
+  const poolSituations = [
+    {t:'Winning by 2 points', v:+2},
+    {t:'A loss of $75', v:-75},
+    {t:'Temperature drops 6°C', v:-6},
+    {t:'Temperature rises 4°C', v:+4},
+    {t:'15 m below sea level', v:-15},
+    {t:'20 m above sea level', v:+20},
+    {t:'A withdrawal of $40', v:-40},
+    {t:'A deposit of $90', v:+90},
+    {t:'Clock is 5 min fast', v:+5},
+    {t:'Clock is 2 min slow', v:-2},
+  ];
+  const mini=$('miniSituations');
+  function newMiniSet(){
+    mini.innerHTML='';
+    const pick=poolSituations.slice().sort(()=>Math.random()-0.5).slice(0,5);
+    pick.forEach((item, idx)=>{
+      const row=document.createElement('div'); row.className='card p-3';
+      row.innerHTML=`<div>${item.t}</div>
+        <div class="mt-2 flex items-center gap-2">
+          <select class="signSel border rounded px-2 py-1" data-ans="${item.v>0?'+':'-'}">
+            <option value="+">positive (+)</option><option value="-">negative (−)</option>
+          </select>
+          <input class="magInput px-2 py-1 rounded border w-28" placeholder="magnitude" data-mag="${Math.abs(item.v)}">
+        </div>`;
+      mini.appendChild(row);
+    });
+  }
+  newMiniSet();
+  $('checkMini').addEventListener('click', ()=>{
+    let ok=true;
+    mini.querySelectorAll('.signSel').forEach(sel=>{
+      if(sel.value!==sel.dataset.ans){sel.style.borderColor='#ef4444'; ok=false;} else sel.style.borderColor='#22c55e';
+    });
+    mini.querySelectorAll('.magInput').forEach(inp=>{
+      if(Number(inp.value)!==Number(inp.dataset.mag)){inp.style.borderColor='#ef4444'; ok=false;} else inp.style.borderColor='#22c55e';
+    });
+    $('miniFb').textContent = ok? '✅ Great job!' : '❌ Recheck some entries';
+    $('miniFb').className='mt-2 h-6 font-semibold ' + (ok?'text-green-700':'text-red-700');
+    if(ok) confetti();
+  });
+  $('newMini').addEventListener('click', newMiniSet);
+
+  /* ---------- Recurring: renderers & algebra ---------- */
+  function renderRecurringHTML(I, a, b, mode){
+    const safeA = a||'';
+    const core = (mode==='dot')
+      ? `<span class="repdot">${b}</span>`
+      : `<span class="overbar">${b}</span>`;
+    return `${I}.${safeA}${core}`;
+  }
+  function toFraction(I, a, b){
+    const k = (a||'').length, n = b.length;
+    const N = concatNum(I,a,b) - concatNum(I,a,'');
+    const D = 10**(k+n) - 10**k;
+    return simp(N, D);
+  }
+  function stepsFor(I,a,b){
+    const k=(a||'').length, n=b.length;
+    const mode = document.querySelector('input[name="repr"]:checked')?.value || 'bar';
+    let lines=[];
+    if (k===0 && I===0){
+      lines.push(`Let x = 0.${mode==='dot' ? '<span class="repdot">'+b+'</span>' : '<span class="overbar">'+b+'</span>'}`);
+      lines.push(`${toSup(n)}x = ${b}.${mode==='dot' ? '<span class="repdot">'+b+'</span>' : '<span class="overbar">'+b+'</span>'}`);
+      lines.push(`Subtract: (${toSup(n)}−1)x = ${b}`);
+      const [N,D]=toFraction(I,a,b);
+      lines.push(`x = ${N}/${D}`);
+      return {lines,N,D};
+    }else{
+      const Ia = concatNum(I,a,'');
+      const Iab= concatNum(I,a,b);
+      lines.push(`Let x = ${renderRecurringHTML(I,a,b,mode)}`);
+      lines.push(`${toSup(k)}x = ${Ia} + 0.${mode==='dot' ? '<span class="repdot">'+b+'</span>' : '<span class="overbar">'+b+'</span>'}`);
+      lines.push(`${toSup(k+n)}x = ${Iab} + 0.${mode==='dot' ? '<span class="repdot">'+b+'</span>' : '<span class="overbar">'+b+'</span>'}`);
+      lines.push(`Subtract: (${toSup(k+n)}−${toSup(k)})x = ${Iab} − ${Ia}`);
+      const [N,D]=toFraction(I,a,b);
+      lines.push(`x = ${N}/${D}`);
+      return {lines,N,D};
+    }
+  }
+
+  /* ---------- L3 Identify Type & Block ---------- */
+  const idSamples = [
+    {I:0,a:'',b:'4'}, {I:0,a:'',b:'34'}, {I:0,a:'1',b:'6'},
+    {I:1,a:'2',b:'3'}, {I:2,a:'',b:'7'}, {I:0,a:'23',b:'45'}
+  ];
+  function randomPick(arr,n){ return arr.slice().sort(()=>Math.random()-0.5).slice(0,n); }
+  function renderID(){
+    const mode = 'bar';
+    const list = $('idList'); list.innerHTML='';
+    $('idList')._items = randomPick(idSamples,5);
+    $('idList')._items.forEach((q, idx)=>{
+      const pure = (q.a==='' && q.I===0);
+      const row=document.createElement('div'); row.className='card p-3 flex items-center justify-between gap-3';
+      row.innerHTML = `<div class="font-semibold text-xl">${renderRecurringHTML(q.I,q.a,q.b,mode)}</div>
+        <div class="flex items-center gap-2">
+          <select class="idType border rounded px-2 py-1" data-i="${idx}">
+            <option>Pure</option><option>Mixed</option>
+          </select>
+          <input class="idBlk px-2 py-1 rounded border w-24" data-i="${idx}" placeholder="block">
+        </div>`;
+      list.appendChild(row);
+      row.dataset.pure = pure? 'Pure':'Mixed';
+      row.dataset.block = q.b;
+    });
+  }
+  renderID();
+  $('idCheck').addEventListener('click', ()=>{
+    let ok=true;
+    $('idList').querySelectorAll('.card').forEach(row=>{
+      const type=row.querySelector('.idType'), blk=row.querySelector('.idBlk');
+      const rightT=row.dataset.pure, rightB=row.dataset.block;
+      if(type.value!==rightT){type.style.borderColor='#ef4444'; ok=false;} else type.style.borderColor='#22c55e';
+      if((blk.value||'').replace(/\s+/g,'')!==rightB){blk.style.borderColor='#ef4444'; ok=false;} else blk.style.borderColor='#22c55e';
+    });
+    $('idFb').textContent = ok? '✅ Nice identification!' : '❌ Recheck type/block';
+    $('idFb').className='mt-2 h-6 font-semibold ' + (ok?'text-green-700':'text-red-700');
+    if(ok) confetti();
+  });
+  $('idNew').addEventListener('click', renderID);
+
+  /* ---------- L3 Equation Builder ---------- */
+  const ebInt=$('ebInt'), ebNon=$('ebNon'), ebRep=$('ebRep');
+  const buildEq=$('buildEq'), clearEq=$('clearEq'), eqSteps=$('eqSteps'), eqResult=$('eqResult'), eqError=$('eqError'), decPreview=$('decPreview');
+  function previewEB(){
+    const I = Number(ebInt.value||0);
+    const a = (ebNon.value||'').replace(/\D/g,'');
+    const b = (ebRep.value||'').replace(/\D/g,'');
+    const mode = document.querySelector('input[name="repr"]:checked').value;
+    decPreview.innerHTML = (b? renderRecurringHTML(I,a,b,mode) : '');
+  }
+  ebInt.addEventListener('input', previewEB); ebNon.addEventListener('input', previewEB); ebRep.addEventListener('input', previewEB);
+  [...document.querySelectorAll('input[name="repr"]')].forEach(r=>r.addEventListener('change', previewEB));
+  buildEq.addEventListener('click', ()=>{
+    eqError.textContent=''; eqSteps.innerHTML=''; eqResult.textContent='';
+    const I = Number(ebInt.value||0);
+    const a = (ebNon.value||'').replace(/\D/g,'');
+    const b = (ebRep.value||'').replace(/\D/g,'');
+    if(!b){ eqError.textContent='Please type the repeating block (at least one digit).'; return; }
+    const {lines,N,D}=stepsFor(I,a,b);
+    eqSteps.innerHTML = lines.map(l=>`<div>• ${l}</div>`).join('');
+    eqResult.textContent = `Answer: ${N}/${D}`;
+    confetti();
+  });
+  clearEq.addEventListener('click', ()=>{eqError.textContent=''; eqSteps.innerHTML=''; eqResult.textContent=''; ebInt.value=''; ebNon.value=''; ebRep.value=''; decPreview.textContent='';});
+
+  /* ---------- L3 Trainer ---------- */
+  const trainerItems = [
+    {I:0, a:'', b:'4', N:4, D:9},
+    {I:0, a:'', b:'3', N:1, D:3},
+    {I:0, a:'', b:'12', N:12, D:99},
+    {I:0, a:'', b:'34', N:34, D:99},
+    {I:0, a:'', b:'46', N:46, D:99},
+  ];
+  let trainerInit=false;
+  function buildTrainer(){
+    trainerInit=true; renderTrainer();
+    [...document.querySelectorAll('input[name="repr2"]')].forEach(r=>r.addEventListener('change', renderTrainer));
+  }
+  function renderTrainer(){
+    const mode = document.querySelector('input[name="repr2"]:checked').value;
+    const list=$('trainList'); list.innerHTML='';
+    trainerItems.forEach((q, i)=>{
+      const row=document.createElement('div'); row.className='card p-3 flex items-center justify-between gap-3';
+      row.innerHTML = `<div class="font-semibold text-xl">${renderRecurringHTML(q.I,q.a,q.b,mode)}</div>
+        <input class="trIn px-2 py-1 rounded border w-40" data-i="${i}" placeholder="fraction e.g., 34/99"/>`;
+      list.appendChild(row);
+    });
+  }
+  function parseFrac(s){
+    if(!s) return null;
+    s=s.replace(/\s+/g,'').replace('−','-');
+    const m=s.match(/^(-?\d+)\/(-?\d+)$/); if(!m) return null;
+    const a=+m[1], b=+m[2]; if(b===0) return null;
+    return simp(a,b);
+  }
+  $('checkTrain').addEventListener('click', ()=>{
+    const ins=[...document.querySelectorAll('.trIn')]; let total=ins.length, correct=0;
+    ins.forEach(inp=>{
+      const i=+inp.dataset.i; const ans=trainerItems[i]; const given=parseFrac(inp.value);
+      if(given && fracEq(given[0],given[1],ans.N,ans.D)){ inp.style.borderColor='#22c55e'; correct++; }
+      else { inp.style.borderColor='#ef4444'; }
+    });
+    $('trainFb').textContent = correct===total ? '✅ All correct!' : `Score: ${correct}/${total}`;
+    if(correct===total) confetti();
+  });
+  $('resetTrain').addEventListener('click', ()=>[...document.querySelectorAll('.trIn')].forEach(i=>{i.value=''; i.style.borderColor='#e5e7eb'}));
+
+  /* ---------- L3 Step Sorter ---------- */
+  const sorterRight = [
+    'Let x = 0.<span class="overbar">12</span>',
+    '100x = 12.<span class="overbar">12</span>',
+    '100x − x = 12',
+    '99x = 12',
+    'x = 12/99 = 4/33'
+  ];
+  const sortList=$('sortSteps');
+  function renderSort(){
+    sortList.innerHTML='';
+    const mixed=sorterRight.slice().sort(()=>Math.random()-0.5);
+    mixed.forEach(s=>{
+      const li=document.createElement('li'); li.draggable=true;
+      li.className='bg-white border rounded-xl px-4 py-2 text-lg flex justify-between items-center';
+      li.innerHTML=`<span class="sv">${s}</span><span class="cursor-move">⋮⋮</span>`;
+      sortList.appendChild(li);
+    });
+    makeSortable(sortList);
+  }
+  renderSort();
+  $('sortCheck').addEventListener('click', ()=>{
+    const got=[...sortList.querySelectorAll('.sv')].map(e=>e.innerHTML);
+    const ok = JSON.stringify(got)===JSON.stringify(sorterRight);
+    $('sortFb').textContent = ok? '✅ Perfect order!' : '❌ Some steps are out of order';
+    $('sortFb').className='mt-2 h-6 font-semibold ' + (ok?'text-green-700':'text-red-700');
+    if(ok) confetti();
+  });
+  $('sortReset').addEventListener('click', renderSort);
+
+  /* ---------- L3 Match Game ---------- */
+  function makeMG(){
+    const set = randomPick(trainerItems,4);
+    const decBox=$('mgDecs'), fracBox=$('mgFracs');
+    decBox.innerHTML=''; fracBox.innerHTML='';
+    set.forEach((q, idx)=>{
+      const d=document.createElement('div'); d.className='card p-3 flex items-center justify-between gap-3 drop'; d.dataset.key=String(idx);
+      d.innerHTML=`<div class="font-semibold text-xl">${renderRecurringHTML(q.I,q.a,q.b,'bar')}</div><div class="text-sm text-gray-500">drop here</div>`;
+      d.addEventListener('dragover', e=>{e.preventDefault(); d.style.borderColor='#C7A34F';});
+      d.addEventListener('dragleave', ()=>{d.style.borderColor='#d1d5db';});
+      d.addEventListener('drop', e=>{
+        e.preventDefault(); d.style.borderColor='#22c55e';
+        const k = e.dataTransfer.getData('text/plain');
+        const card = document.querySelector(`.drag[data-key="${k}"]`);
+        if(card){ d.appendChild(card); }
+      });
+      decBox.appendChild(d);
+    });
+    set.forEach((q, idx)=>{
+      const f=document.createElement('div'); f.className='card p-2 text-lg font-semibold drag'; f.textContent=`${q.N}/${q.D}`; f.draggable=true; f.dataset.key=String(idx);
+      f.addEventListener('dragstart', e=>{e.dataTransfer.setData('text/plain', f.dataset.key);});
+      fracBox.appendChild(f);
+    });
+    $('mgDecs')._set = set;
+  }
+  makeMG();
+  $('mgNew').addEventListener('click', makeMG);
+  $('mgCheck').addEventListener('click', ()=>{
+    const set = $('mgDecs')._set;
+    const decs=[...$('mgDecs').children];
+    let ok=true;
+    decs.forEach((box, idx)=>{
+      const card = box.querySelector('.drag');
+      if(!card){ ok=false; return; }
+      ok = ok && (card.dataset.key===box.dataset.key);
+    });
+    $('mgFb').textContent = ok? '✅ All matches correct!' : '❌ Some matches are wrong or missing';
+    $('mgFb').className='mt-2 h-6 font-semibold ' + (ok?'text-green-700':'text-red-700');
+    if(ok) confetti();
+  });
+
+  /* ---------- L3 1‑Minute Sprint ---------- */
+  let spTimer=null, spTime=60, spScore=0, spCurrent=null;
+  function randMixed(){
+    const I=Math.floor(Math.random()*2);
+    const nonLen = Math.random()<0.5 ? 0 : 1;
+    const repLen = Math.random()<0.5 ? 1 : 2;
+    const a = nonLen? String(Math.floor(Math.random()*9)) : '';
+    let b=''; for(let k=0;k<repLen;k++) b += String( Math.floor(Math.random()*9)+1 );
+    return {I,a,b};
+  }
+  function showSprintQ(){
+    spCurrent = randMixed();
+    $('spQ').innerHTML = renderRecurringHTML(spCurrent.I, spCurrent.a, spCurrent.b, 'bar');
+    $('spAns').value='';
+  }
+  function startSprint(){
+    if(spTimer) return;
+    spTime=60; spScore=0;
+    $('spTime').textContent=spTime; $('spScore').textContent=spScore; $('spFb').textContent='';
+    showSprintQ();
+    spTimer=setInterval(()=>{
+      spTime--; $('spTime').textContent=spTime;
+      if(spTime<=0){ stopSprint(); $('spFb').textContent='⏰ Time! Final score: '+spScore; }
+    },1000);
+  }
+  function stopSprint(){ clearInterval(spTimer); spTimer=null; }
+  $('spStart').addEventListener('click', startSprint);
+  $('spStop').addEventListener('click', stopSprint);
+  $('spAns').addEventListener('keydown', e=>{
+    if(e.key==='Enter'){
+      const g=parseFrac($('spAns').value);
+      const [N,D]=toFraction(spCurrent.I, spCurrent.a, spCurrent.b);
+      if(g && fracEq(g[0],g[1],N,D)){ spScore++; $('spScore').textContent=spScore; confetti(); }
+      showSprintQ();
+    }
+  });
+
+  /* ---------- INIT ---------- */
+  show(0);
+})();
+</script>
+</body>
+</html>
