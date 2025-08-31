@@ -3,40 +3,218 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>QLA Mathematics Lessons</title>
+  <title>QLA Mathematics — Lessons Portal</title>
+
+  <!-- Tailwind (CDN, no build needed) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Inter font -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+
   <style>
-    :root{ --maroon:#6C1D45; --gold:#C7A34F; }
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;margin:0;background:#fafafa;color:#222}
-    header{background:var(--maroon);color:#fff;padding:24px 16px;text-align:center}
-    header img{height:56px;vertical-align:middle;margin-right:10px}
-    main{max-width:880px;margin:28px auto;padding:0 16px}
-    .card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px 18px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
-    .card a{color:var(--maroon);text-decoration:none;font-weight:800}
-    .card small{color:#6b7280}
-    footer{color:#6b7280;text-align:center;margin:24px 0}
-    .muted{color:#6b7280}
-    .btn{background:var(--gold);color:#111;padding:8px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+    :root{ --maroon:#6C1D45; --gold:#C7A34F; --ink:#1f2937; --muted:#6b7280; --bg:#fafafa; }
+    body{ font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif; background:var(--bg); color:var(--ink); }
+    .brand-grad{ background:
+      radial-gradient(900px 500px at 85% 25%, rgba(199,163,79,.12) 0%, transparent 55%),
+      radial-gradient(1200px 600px at 10% 70%, rgba(255,255,255,.06) 0%, transparent 60%),
+      var(--maroon); }
+    .tab-btn[aria-selected="true"]{ background:#fff; color:var(--maroon); border-color:var(--gold); }
+    .tab-btn[aria-selected="false"]{ background:transparent; color:#fff; border-color:rgba(255,255,255,.35); }
+    .card:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,.07); }
+    .kbd{ font-variant-numeric:tabular-nums; font-weight:700; padding:.1rem .35rem; border-radius:.4rem; border:1px solid #d1d5db; background:#fff; }
   </style>
 </head>
 <body>
-  <header>
-    <img src="qla_logo.png" alt="QLA Logo"/>
-    <span style="font-size:28px;font-weight:800">QLA Mathematics Lessons</span>
-  </header>
-  <main>
-    <p class="muted">Choose a lesson to start. Each lesson opens as a full interactive page.</p>
-    <div class="card">
-      <div>
-        <div><a href="lesson-1.html">Lesson 1 — Orientation & Week 1</a></div>
-        <small>Interactive HTML presentation (keyboard: → ← O F T ?)</small>
+
+  <!-- TOP HERO / BANNER -->
+  <header class="brand-grad text-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <div class="flex items-center justify-between py-4">
+        <div class="flex items-center gap-3">
+          <img src="assets/qla_logo.png" alt="QLA Logo" class="h-12 w-12"/>
+          <div class="leading-tight">
+            <div class="text-2xl sm:text-3xl font-extrabold">QLA Mathematics Lessons</div>
+            <div class="text-sm opacity-90">Qatar Leadership Academy — Member of Qatar Foundation</div>
+          </div>
+        </div>
+        <img src="assets/qla_banner.png" alt="Partners Banner" class="hidden sm:block h-12 object-contain"/>
       </div>
-      <a class="btn" href="lesson-1.html">Open</a>
+
+      <!-- Tabs -->
+      <div class="mt-2 flex items-center gap-2 pb-4">
+        <button id="tab7" class="tab-btn inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-extrabold transition"
+                aria-selected="true" data-target="#panel7">
+          Grade 7
+        </button>
+        <button id="tab8" class="tab-btn inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-extrabold transition"
+                aria-selected="false" data-target="#panel8">
+          Grade 8
+        </button>
+        <div class="ml-auto flex items-center gap-2 bg-white/10 rounded-xl px-3 py-2">
+          <span class="text-xs">Shortcuts</span>
+          <span class="kbd">/</span><span class="text-xs">Search</span>
+          <span class="kbd">G</span><span class="text-xs">Toggle Grade</span>
+        </div>
+      </div>
     </div>
-    <!-- Add more lessons below by copying the card and changing the link and title -->
+  </header>
+
+  <!-- MAIN -->
+  <main class="mx-auto max-w-7xl px-4 sm:px-6 -mt-6">
+    <!-- SEARCH -->
+    <div class="rounded-2xl bg-white border border-gray-200 shadow-sm p-4">
+      <label class="block text-sm font-semibold text-gray-700 mb-1" for="search">Search lessons (title, keywords)…</label>
+      <input id="search" type="search" placeholder="e.g., Opposites, BIDMAS, Recurring decimals, Pythagoras"
+             class="w-full rounded-lg border-gray-300 focus:ring-[var(--gold)] focus:border-[var(--gold)] px-3 py-2"/>
+      <div class="mt-1 text-xs text-gray-500">Tip: press <span class="kbd">/</span> to focus search. Use the tabs to switch grades.</div>
+    </div>
+
+    <!-- PANELS -->
+    <section id="panel7" class="mt-6">
+      <h2 class="text-xl font-extrabold text-[var(--maroon)]">Grade 7 — Lessons</h2>
+      <p class="text-sm text-gray-600 mt-1">Select a lesson to launch the full interactive page.</p>
+
+      <div id="grid7" class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- EXAMPLE CARDS (edit or add more; links must exist in /grade7/) -->
+        <article class="card group rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">7️⃣</div>
+            <div class="flex-1">
+              <a href="grade7/lesson-1.html" class="text-[var(--maroon)] font-extrabold group-hover:underline">Lesson 1 — Opposites (Positive & Negative)</a>
+              <p class="text-sm text-gray-600 mt-0.5">Number line lab • Opposites • |x| as distance from 0</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">number line</span>
+                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">absolute value</span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 flex justify-end">
+            <a href="grade7/lesson-1.html" class="inline-flex items-center rounded-lg bg-[var(--gold)] px-3 py-1.5 text-sm font-bold">Open</a>
+          </div>
+        </article>
+
+        <article class="card group rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">7️⃣</div>
+            <div class="flex-1">
+              <a href="grade7/lesson-2.html" class="text-[var(--maroon)] font-extrabold group-hover:underline">Lesson 2 — Recurring Decimals → Fractions</a>
+              <p class="text-sm text-gray-600 mt-0.5">Explanation → guided examples → interactive practice</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">decimals</span>
+                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">fractions</span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 flex justify-end">
+            <a href="grade7/lesson-2.html" class="inline-flex items-center rounded-lg bg-[var(--gold)] px-3 py-1.5 text-sm font-bold">Open</a>
+          </div>
+        </article>
+
+        <!-- Add additional Grade 7 lessons by copying a card -->
+      </div>
+    </section>
+
+    <section id="panel8" class="mt-10 hidden">
+      <h2 class="text-xl font-extrabold text-[var(--maroon)]">Grade 8 — Lessons</h2>
+      <p class="text-sm text-gray-600 mt-1">Orientation deck and core Unit 1 materials.</p>
+
+      <div id="grid8" class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="card group rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">8️⃣</div>
+            <div class="flex-1">
+              <a href="grade8/lesson-1.html" class="text-[var(--maroon)] font-extrabold group-hover:underline">Lesson 1 — Orientation & Week 1</a>
+              <p class="text-sm text-gray-600 mt-0.5">Interactive slideshow (keyboard: <span class="kbd">→</span> <span class="kbd">←</span> <span class="kbd">O</span> <span class="kbd">F</span> <span class="kbd">T</span> <span class="kbd">?</span>)</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">orientation</span>
+                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">unit overview</span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 flex justify-end">
+            <a href="grade8/lesson-1.html" class="inline-flex items-center rounded-lg bg-[var(--gold)] px-3 py-1.5 text-sm font-bold">Open</a>
+          </div>
+        </article>
+
+        <article class="card group rounded-2xl border border-gray-200 bg-white p-4 transition">
+          <div class="flex items-start gap-3">
+            <div class="rounded-lg bg-[var(--gold)]/20 p-2">8️⃣</div>
+            <div class="flex-1">
+              <a href="grade8/lesson-2.html" class="text-[var(--maroon)] font-extrabold group-hover:underline">Lesson 2 — BIDMAS Review</a>
+              <p class="text-sm text-gray-600 mt-0.5">Order of operations with live step-tracing</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">BIDMAS</span>
+                <span class="text-xs bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">practice</span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 flex justify-end">
+            <a href="grade8/lesson-2.html" class="inline-flex items-center rounded-lg bg-[var(--gold)] px-3 py-1.5 text-sm font-bold">Open</a>
+          </div>
+        </article>
+
+        <!-- Add additional Grade 8 lessons by copying a card -->
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="mt-12 mb-10 text-center text-sm text-gray-500">
+      © <span id="year"></span> Qatar Leadership Academy — Member of Qatar Foundation
+    </div>
   </main>
-  <footer>Qatar Leadership Academy — Member of Qatar Foundation</footer>
+
+  <!-- ACCESSIBILITY & INTERACTIONS -->
+  <script>
+    const tab7 = document.querySelector('#tab7');
+    const tab8 = document.querySelector('#tab8');
+    const panel7 = document.querySelector('#panel7');
+    const panel8 = document.querySelector('#panel8');
+    const search = document.querySelector('#search');
+
+    function showGrade(which){
+      const g7 = which === 7;
+      tab7.setAttribute('aria-selected', g7 ? 'true' : 'false');
+      tab8.setAttribute('aria-selected', g7 ? 'false' : 'true');
+      panel7.classList.toggle('hidden', !g7);
+      panel8.classList.toggle('hidden', g7);
+      // Clear search when switching to avoid confusion
+      search.value = '';
+      filterCards('');
+      // Persist
+      localStorage.setItem('qla_portal_grade', g7 ? '7' : '8');
+    }
+    tab7.addEventListener('click', () => showGrade(7));
+    tab8.addEventListener('click', () => showGrade(8));
+
+    // Search filter over visible panel only
+    function filterCards(q){
+      const panel = panel7.classList.contains('hidden') ? panel8 : panel7;
+      const cards = panel.querySelectorAll('.card');
+      const query = (q || '').toLowerCase();
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(query) ? '' : 'none';
+      });
+    }
+    search.addEventListener('input', e => filterCards(e.target.value));
+
+    // Keyboard: "/" focuses search, "g" toggles grade
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/') { e.preventDefault(); search.focus(); }
+      if (e.key.toLowerCase() === 'g') {
+        const next = tab7.getAttribute('aria-selected') === 'true' ? 8 : 7;
+        showGrade(next);
+      }
+    });
+
+    // Persist last chosen grade between visits
+    (function init(){
+      const saved = localStorage.getItem('qla_portal_grade');
+      showGrade(saved === '8' ? 8 : 7);
+      document.querySelector('#year').textContent = new Date().getFullYear();
+    })();
+  </script>
 </body>
 </html>
