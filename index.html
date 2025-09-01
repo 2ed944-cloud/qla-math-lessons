@@ -1,392 +1,443 @@
-<!doctype html>
-<html lang="en" dir="ltr">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>QLA Mathematics — Grades 7 & 8</title>
-
-  <!-- Fonts (optional) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:wght@700&display=swap" rel="stylesheet" />
-
+  <title>QLA Mathematics — Grade 7 & Grade 8</title>
+  <meta name="description" content="Qatar Leadership Academy Mathematics — Grade 7 & 8 lessons, schedules, and resources." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --maroon:#7a1632;     /* QLA-inspired accent (not official code) */
-      --maroon-900:#5e0f25;
-      --gold:#c8a86a;
-      --ink:#121212;
-      --ink-2:#2a2a2a;
-      --muted:#6b7280;
-      --bg:#f7f7f8;
+      --brand-dk:#0b6b72;     /* deep teal */
+      --brand:#117c84;        /* main teal */
+      --mint:#1fd6c2;         /* mint accent */
+      --ink:#0f1720;          /* near-black text */
+      --slate:#51606d;        /* muted text */
+      --line:#e6eef0;
       --card:#ffffff;
-      --ring: rgba(122,22,50,.25);
-      --radius:14px;
-      --shadow:0 10px 25px rgba(0,0,0,.08);
-      --shadow-sm: 0 6px 16px rgba(0,0,0,.06);
-      --shadow-lg: 0 16px 40px rgba(0,0,0,.12);
+      --bg:#f7fbfc;
+      --gold:#c4a04c;
+      --ok:#136f3a;
+      --warn:#8a3d00;
     }
-    /* Reset-ish */
-    *,*::before,*::after{ box-sizing:border-box }
-    html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; line-height:1.55 }
-    img{ max-width:100%; height:auto; display:block }
-    a{ color:var(--maroon); text-decoration:none }
-    a:hover{ text-decoration:underline }
-
-    /* Header / Nav */
-    .site-header{
-      position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.2) blur(6px);
-      background:rgba(255,255,255,.75); border-bottom:1px solid rgba(0,0,0,.06);
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.45}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    /* --- Header --- */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      background:#fff; border-bottom:1px solid var(--line);
+      backdrop-filter:saturate(180%) blur(6px);
     }
-    .wrap{ width:min(1200px, 92vw); margin-inline:auto }
-    .nav{
-      display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 0
-    }
-    .brand{ display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px }
-    .brand img{ width:44px; height:44px; border-radius:6px }
-    .brand .t1{ font-size:18px; color:var(--ink) }
-    .brand .t2{ font-size:12px; color:var(--muted); margin-top:-2px }
-    .nav-links{ display:flex; align-items:center; gap:18px }
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,.08);
-      background:var(--card); box-shadow:var(--shadow-sm); color:var(--ink); font-weight:600
-    }
-    .btn:hover{ transform:translateY(-1px); box-shadow:var(--shadow) }
-    .btn.primary{
-      background:linear-gradient(180deg, var(--maroon), var(--maroon-900));
-      color:white; border-color:transparent; box-shadow:0 10px 20px rgba(122,22,50,.25)
-    }
-    .btn.ghost{ background:transparent; border-color:rgba(0,0,0,.12) }
-
-    /* Hero */
+    .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .brand img{height:40px;width:auto}
+    .brand .tt{display:flex;flex-direction:column}
+    .brand .tt .t1{font-weight:700;font-family:Outfit,Inter,sans-serif;letter-spacing:.1px}
+    .brand .tt .t2{font-size:12px;color:var(--slate)}
+    .nav .meta{font-size:12px;color:var(--slate)}
+    /* --- Hero --- */
     .hero{
-      position:relative; min-height:52vh; display:grid; place-items:center; isolation:isolate;
-      background: #000;
+      position:relative;
+      background:
+        linear-gradient(180deg, rgba(11,107,114,.72) 0%, rgba(17,124,132,.65) 55%, rgba(11,107,114,.5) 100%),
+        url('assets/qla_banner.png') center/cover no-repeat;
+      color:#fff;
     }
-    .hero::before{
-      content:""; position:absolute; inset:0; z-index:-2;
-      background-image:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.50)), url("qla_banner.png");
-      background-size:cover; background-position:center;
-    }
-    .hero::after{
-      content:""; position:absolute; inset:0; z-index:-1;
-      background:radial-gradient(1000px 400px at 20% 10%, rgba(200,168,106,.28), transparent 55%),
-                 radial-gradient(1000px 500px at 90% 10%, rgba(122,22,50,.32), transparent 60%);
-      mix-blend-mode:soft-light;
-    }
-    .hero-inner{ padding:84px 0; text-align:center; color:white }
+    .hero .inner{padding:56px 16px 64px}
     .hero h1{
-      font-family:Merriweather, Georgia, serif;
-      font-size: clamp(28px, 5vw, 48px); line-height:1.12; margin:0 0 10px
+      font-family:Outfit,Inter,sans-serif; font-size:clamp(28px,4.2vw,48px);
+      margin:0 0 6px 0; letter-spacing:.2px
     }
-    .hero p{ margin:0 auto 20px; max-width:760px; opacity:.95 }
-    .badge{
-      display:inline-block; font-size:12px; letter-spacing:.3px; text-transform:uppercase;
-      padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.3)
+    .hero p{margin:6px 0 18px 0; color:#eaf7f7; max-width:64ch}
+    .hero .buttons{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 14px;border-radius:10px;border:1px solid transparent;
+      background:var(--mint);color:#073b40;font-weight:700
     }
-
-    /* Grade Cards */
-    .section{ padding:48px 0 }
-    .section h2{ font-size: clamp(22px, 3.2vw, 32px); margin:0 0 10px }
-    .sub{ color:var(--muted); margin-bottom:28px }
-    .grid{ display:grid; grid-template-columns:1fr; gap:20px }
-    @media (min-width:860px){ .grid{ grid-template-columns:1fr 1fr } }
-
-    .card{
-      background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
-      padding:22px; border:1px solid rgba(0,0,0,.06)
+    .btn.secondary{background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}
+    .btn:hover{opacity:.92;text-decoration:none}
+    /* --- Teacher card --- */
+    .teacher{
+      display:grid;grid-template-columns:84px 1fr;gap:14px;
+      background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:14px;
+      padding:12px;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,.04)
     }
-    .card h3{ margin:0 0 6px; font-size:22px }
-    .card .meta{ color:var(--muted); font-size:13px; margin-bottom:16px }
-
-    .outline{ display:grid; gap:10px; margin-top:14px }
-    .outline details{
-      background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:12px; padding:12px 14px
+    .teacher img{width:84px;height:84px;border-radius:12px;object-fit:cover;border:1px solid var(--line)}
+    .teacher .nm{font-weight:700}
+    .teacher .row{font-size:13px;color:var(--slate)}
+    /* --- Tabs --- */
+    .tabs{margin:28px 0 0}
+    .tabbar{
+      display:flex;gap:6px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;
+      width:100%;max-width:520px
     }
-    .outline summary{ cursor:pointer; font-weight:700; color:var(--ink-2) }
-    .outline ul{ margin:10px 0 0 18px; padding:0; color:#333 }
-    .outline li{ margin:4px 0 }
-
-    /* Lessons list */
-    .lessons{ margin-top:14px; display:grid; gap:10px }
+    .tabbar button{
+      flex:1;padding:10px 14px;border-radius:10px;border:1px solid transparent;background:transparent;
+      font-weight:700;letter-spacing:.2px;color:var(--slate);cursor:pointer
+    }
+    .tabbar button[aria-selected="true"]{background:var(--brand);color:#fff}
+    .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:14px 0}
+    .search{
+      display:flex; align-items:center; gap:8px;
+      background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:260px
+    }
+    .search input{border:none;outline:none;width:240px;background:transparent}
+    .legend{font-size:12px;color:var(--slate)}
+    .legend .chip{display:inline-flex;gap:6px;align-items:center;margin-right:12px}
+    .dot{width:10px;height:10px;border-radius:50%}
+    .dot.ok{background:var(--ok)}
+    .dot.todo{background:#b85c08}
+    /* --- Units & lessons --- */
+    .panel{display:none}
+    .panel[aria-hidden="false"]{display:block}
+    .unit{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+    .unit h3{font-family:Outfit,Inter,sans-serif;margin:0 0 10px 0;font-size:18px}
+    .list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
     .lesson{
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
-      background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:12px; padding:12px 14px
+      background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;
+      display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:50px
     }
-    .lesson-title{ font-weight:700 }
+    .lesson .tt{font-weight:600}
     .status{
-      font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid;
-      display:inline-flex; align-items:center; gap:8px; white-space:nowrap
+      font-size:12px;border-radius:10px;padding:6px 10px;white-space:nowrap;border:1px solid transparent
     }
-    .ok{ color:#115e26; border-color:#bfe1c9; background:#e9f7ee }
-    .soon{ color:#7a1632; border-color:#f0c0cf; background:#fef2f6 }
-    .spinner{
-      width:14px; height:14px; border-radius:999px; border:2px solid rgba(0,0,0,.15);
-      border-top-color:rgba(0,0,0,.55); animation:spin .9s linear infinite
-    }
-    @keyframes spin{ to{ transform:rotate(360deg) } }
-
-    /* Footer */
+    .status.open{background:rgba(19,111,58,.1);color:var(--ok);border-color:rgba(19,111,58,.3)}
+    .status.soon{background:rgba(186,91,8,.08);color:var(--warn);border-color:rgba(186,91,8,.25)}
+    .lesson a{font-weight:700}
+    .lesson.disabled{opacity:.6}
+    .lesson.disabled a{pointer-events:none}
+    /* --- Footer --- */
     footer{
-      margin-top:28px; padding:20px 0 48px; text-align:center; color:var(--muted);
+      margin:32px 0 24px; color:var(--slate); font-size:13px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap
     }
-    footer strong{ color:var(--ink-2) }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion:reduce){
-      .btn:hover{ transform:none }
-      .spinner{ animation:none; border-top-color:rgba(0,0,0,.15) }
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
+      padding:8px 12px;border-radius:12px
+    }
+    .foot-brand{display:flex;align-items:center;gap:10px}
+    .foot-brand img{height:26px;width:auto}
+    @media (max-width:640px){
+      .teacher{grid-template-columns:1fr; text-align:left}
+      .list{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
-
   <!-- Header -->
-  <header class="site-header">
-    <div class="wrap">
-      <nav class="nav" aria-label="Primary">
-        <a class="brand" href="#top" aria-label="QLA Mathematics">
-          <img src="..\assets\logo.svg" alt="QLA crest logo" />
-          <div>
-            <div class="t1">Qatar Leadership Academy</div>
-            <div class="t2">Mathematics — Grades 7 & 8</div>
-          </div>
-        </a>
-        <div class="nav-links">
-          <a class="btn ghost" href="#grades">Grades</a>
-          <a class="btn" href="#outline">Course Outlines</a>
-          <a class="btn primary" href="#start">Start Learning</a>
+  <header class="topbar">
+    <div class="wrap nav" role="navigation" aria-label="Top">
+      <div class="brand">
+        <img src="assets/qla_logo.png" alt="QLA logo"/>
+        <div class="tt">
+          <div class="t1">Qatar Leadership Academy — Mathematics</div>
+          <div class="t2">Aligned to AERO standards • 2024–2025</div>
         </div>
-      </nav>
+      </div>
+      <div class="meta">Created by <strong>Mohammad Abu Ghuwaleh</strong></div>
     </div>
   </header>
 
   <!-- Hero -->
-  <section class="hero" id="top" role="banner">
-    <div class="wrap hero-inner">
-      <span class="badge">Academic Year 2024–2025</span>
-      <h1>Shaping Mathematical Thinkers</h1>
-      <p>
-        Choose your grade level below to access lessons. Each lesson shows <em>Open</em> as soon as the file
-        is uploaded; until then you’ll see <em>Coming Soon</em>. Welcome &amp; Orientation is already available for both grades.
-      </p>
-      <div style="display:flex; gap:12px; justify-content:center; margin-top:8px">
-        <a class="btn primary" href="#grades">Browse by Grade</a>
-        <a class="btn" href="#outline">View Course Outlines</a>
+  <section class="hero">
+    <div class="wrap inner">
+      <h1>Grade 7 &amp; Grade 8 Mathematics Lessons</h1>
+      <p>Start with <strong>Welcome &amp; Orientation</strong>, then follow the course outline. Lessons marked “Open” link directly to your uploaded pages; those marked “Coming soon” will unlock automatically as you add files to the <code>grade7/</code> or <code>grade8/</code> folders in this site.</p>
+
+      <div class="teacher" style="margin:16px 0 18px;">
+        <img src="assets/teacher_photo.jpg" alt="Teacher photo">
+        <div>
+          <div class="nm">Mr. Mohammad Abu Ghuwaleh</div>
+          <div class="row">Room 02 • QLA Mathematics (Grades 7–8)</div>
+          <div class="row">Email: <a href="mailto:2ed944@qla.qfschools.qa">2ed944@qla.qfschools.qa</a></div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <a class="btn" href="#grades" aria-label="Jump to grade tabs">Browse lessons</a>
+        <a class="btn secondary" href="grade7/welcome.html">Grade 7 — Welcome</a>
+        <a class="btn secondary" href="grade8/welcome.html">Grade 8 — Welcome</a>
       </div>
     </div>
   </section>
 
-  <main id="start">
-    <!-- Grades -->
-    <section class="section" id="grades">
-      <div class="wrap">
-        <h2>Pick Your Grade</h2>
-        <div class="sub">Welcome &amp; Orientation first — then units roll out as they’re published.</div>
+  <!-- Grade tabs + controls -->
+  <main id="grades" class="wrap">
+    <div class="tabs" role="tablist" aria-label="Grade tabs">
+      <div class="tabbar" role="tablist">
+        <button id="tab7" role="tab" aria-selected="true" aria-controls="panel7">Grade 7</button>
+        <button id="tab8" role="tab" aria-selected="false" aria-controls="panel8">Grade 8</button>
+      </div>
 
-        <div class="grid">
-          <!-- Grade 7 -->
-          <article class="card" aria-labelledby="g7-title">
-            <h3 id="g7-title">Grade 7</h3>
-            <div class="meta">Unit sequence aligned to the Grade 7 course outline (2024–25).</div>
-
-            <div class="lessons" id="g7-lessons" aria-live="polite" aria-busy="true">
-              <!-- Populated by JS -->
-            </div>
-
-            <div class="outline" style="margin-top:18px">
-              <details>
-                <summary>Course Outline — Units at a Glance</summary>
-                <ul>
-                  <li>Unit 1 — Numbers (Rational Numbers: opposites; ±, ×, ÷; combined operations).</li>
-                  <li>Unit 2 — Properties of Numbers &amp; Fractions (factors, HCF/LCM; equivalent/proper/improper; operations).</li>
-                  <li>Unit 3 — Expressions (linear expressions: writing rules; like terms; products; evaluate; expand; factorize).</li>
-                  <li>Unit 4 — Equations (solving linear equations: one/two/multi‑step).</li>
-                  <li>Unit 5 — Ratios &amp; Proportional Relationships (express, simplify, divide quantities, problem solving).</li>
-                  <li>Unit 7 — Coordinates (plotting; straight lines; intercepts; horizontal/vertical lines).</li>
-                  <li>Unit 8 — Statistics (tables, bar charts, stem &amp; leaf, mean/median/mode/range, grouped mean).</li>
-                  <li>Unit 9 — Probability (simple &amp; compound; tree diagrams; theoretical &amp; complementary events).</li>
-                </ul>
-                <div style="margin-top:10px">
-                  <a class="btn" href="Course Outline-Grade7-2024-2025.docx" download>Download Grade 7 Course Outline (DOCX)</a>
-                </div>
-              </details>
-            </div>
-          </article>
-
-          <!-- Grade 8 -->
-          <article class="card" aria-labelledby="g8-title">
-            <h3 id="g8-title">Grade 8</h3>
-            <div class="meta">Unit sequence aligned to the Grade 8 course outline (2024–25).</div>
-
-            <div class="lessons" id="g8-lessons" aria-live="polite" aria-busy="true">
-              <!-- Populated by JS -->
-            </div>
-
-            <div class="outline" style="margin-top:18px">
-              <details>
-                <summary>Course Outline — Units at a Glance</summary>
-                <ul>
-                  <li>Unit 1 — The Number System (BEDMAS &amp; absolute value; recurring decimals; rounding; squares &amp; roots; fraction ops).</li>
-                  <li>Unit 2 — Geometry of Polygons (angles; triangles; quadrilaterals; parallel lines; polygon angle sums).</li>
-                  <li>Unit 3 — Geometry: Transformations &amp; Congruence (translations, rotations, reflections, dilations).</li>
-                  <li>Unit 4 — Statistics (pie charts; histograms; optional: association &amp; line of best fit).</li>
-                  <li>Unit 5 — Pythagorean Theorem (theorem &amp; converse; problem solving).</li>
-                  <li>Unit 6 — Expressions &amp; Equations (systems by elimination, substitution, equating).</li>
-                  <li>Unit 7 — Measurement (circle parts; perimeter/area; composite shapes; volumes of solids).</li>
-                  <li>Unit 8 — Statistics &amp; Probability (compound probability).</li>
-                  <li>Unit 9 — Congruence &amp; Similarity (triangle constructions: ASA, SAS, SSS).</li>
-                  <li>Unit 10 — Percentages (forms; conversions; % of; increase/decrease; % change).</li>
-                </ul>
-                <div style="margin-top:10px">
-                  <a class="btn" href="Course Outline-Grade8-2024-25.docx" download>Download Grade 8 Course Outline (DOCX)</a>
-                </div>
-              </details>
-            </div>
-          </article>
+      <div class="controls" aria-live="polite">
+        <div class="search" role="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m21 20.3-4.4-4.4a8.3 8.3 0 1 0-1.7 1.7L20.3 21zM5 11a6 6 0 1 1 12 0A6 6 0 0 1 5 11z"/></svg>
+          <input id="q" type="search" placeholder="Search lessons (e.g., fractions, Pythagoras, systems)…" aria-label="Search lessons">
+        </div>
+        <div class="legend">
+          <span class="chip"><span class="dot ok" aria-hidden="true"></span> Open</span>
+          <span class="chip"><span class="dot todo" aria-hidden="true"></span> Coming soon</span>
         </div>
       </div>
-    </section>
 
-    <!-- Teacher + Contact -->
-    <section class="section" id="outline">
-      <div class="wrap">
-        <div class="card" style="display:flex; gap:18px; align-items:center; flex-wrap:wrap">
-          <img src="..\assets\logo.svg" alt="QLA crest" width="56" height="56" style="border-radius:10px" />
-          <div>
-            <div style="font-weight:800">Created by <strong>Mohammad Abu Ghuwaleh</strong></div>
-            <div class="sub" style="margin:4px 0 0">Course materials curated to align with the Qatar Leadership Academy program.</div>
-          </div>
-        </div>
+      <!-- Panels -->
+      <section id="panel7" class="panel" role="tabpanel" aria-labelledby="tab7" aria-hidden="false"></section>
+      <section id="panel8" class="panel" role="tabpanel" aria-labelledby="tab8" aria-hidden="true"></section>
+    </div>
+
+    <footer>
+      <div class="foot-brand">
+        <img src="assets/qla_logo.png" alt="QLA logo small">
+        <span>© <span id="year"></span> QLA Mathematics • Built for clarity and pace</span>
       </div>
-    </section>
+      <div class="badge">Created by <strong>Mohammad Abu Ghuwaleh</strong></div>
+    </footer>
   </main>
 
-  <footer>
-    <div class="wrap">
-      <div>© <span id="yr"></span> Qatar Leadership Academy — Mathematics</div>
-      <div style="margin-top:6px">Built and maintained by <strong>Mohammad Abu Ghuwaleh</strong>.</div>
-    </div>
-  </footer>
-
   <script>
-    // --- Year
-    document.getElementById('yr').textContent = new Date().getFullYear();
+    // ---------- Data (sourced from your Course Outlines / Scope–Sequence) ----------
+    // Each grade: first lesson is 'welcome.html' (must be uploaded by you).
+    // All other lessons are auto-numbered as lesson-2.html, lesson-3.html, … in the grade folder.
+    const grade7Units = [
+      { unit:"Unit 1 — Numbers (Rational Numbers)", lessons:[
+        "Opposites (positive & negative)",
+        "Addition & subtraction of rational numbers",
+        "Multiplication & division of rational numbers",
+        "Combined operations (BEDMAS)"
+      ]},
+      { unit:"Unit 2 — Properties of Numbers & Fractions", lessons:[
+        "Factors & multiples",
+        "HCF & LCM",
+        "Prime & composite numbers",
+        "Repeated division & factor tree",
+        "Equivalent fractions",
+        "Proper & improper fractions",
+        "Simplifying fractions",
+        "Comparing fractions",
+        "Adding & subtracting fractions",
+        "Multiplying fractions",
+        "Dividing fractions",
+        "Word problems on fractions"
+      ]},
+      { unit:"Unit 3 — Expressions (Linear)", lessons:[
+        "Rules for writing algebraic expressions",
+        "Collecting like terms",
+        "Algebraic products",
+        "Evaluating algebraic expressions",
+        "Expanding brackets (worksheet)",
+        "Factorising expressions (worksheet)"
+      ]},
+      { unit:"Unit 4 — Equations (Linear)", lessons:[
+        "Solving one‑step equations",
+        "Solving two‑step equations",
+        "Solving multi‑step equations"
+      ]},
+      { unit:"Unit 5 — Ratios & Proportional Relationships", lessons:[
+        "Expressing ratios & writing ratios as fractions",
+        "Simplifying & equivalent ratios",
+        "Problem solving with ratios",
+        "Using ratios to divide quantities"
+      ]},
+      { unit:"Unit 7 — Coordinates", lessons:[
+        "Plotting positive & negative coordinates",
+        "Plotting from a table of values",
+        "Graphing straight lines (examples 12D.1 Q1; 12D.2 Q1–Q2)",
+        "Drawing linear graphs (worksheet)",
+        "Horizontal & vertical lines",
+        "Using x- & y‑intercepts to draw lines (worksheet)"
+      ]},
+      { unit:"Unit 8 — Statistics", lessons:[
+        "Tally & frequency tables",
+        "Grouping data (worksheet)",
+        "Reading bar charts",
+        "Drawing bar charts",
+        "Stem‑and‑leaf plots",
+        "Mode, median, mean & range",
+        "Mean from a frequency table (worksheet)"
+      ]},
+      { unit:"Unit 9 — Probability (Simple)", lessons:[
+        "Describing probability",
+        "Assigning numbers to probability",
+        "Sample space",
+        "Compound events",
+        "Probability trees (worksheet)",
+        "Theoretical probability",
+        "Complementary events"
+      ]}
+    ];
 
-    // --- Lesson registry
-    // Each lesson can specify 'file' (exact path) or we will try a few candidate names.
-    const DATA = {
-      g7: [
-        { title: "Welcome & Orientation", file: "Grade 7 lesson 1.html" },               // exists (you uploaded it)
-        { title: "Unit 1 — Numbers (Rational Numbers)" },
-        { title: "Unit 2 — Properties of Numbers & Fractions" },
-        { title: "Unit 3 — Expressions (Linear Expressions)" },
-        { title: "Unit 4 — Equations (Solving Linear Equations)" },
-        { title: "Unit 5 — Ratios & Proportional Relationships" },
-        { title: "Unit 7 — Coordinates" },
-        { title: "Unit 8 — Statistics" },
-        { title: "Unit 9 — Probability" }
-      ],
-      g8: [
-        { title: "Welcome & Orientation", file: "Lesson 1.html" },                       // exists (you uploaded it)
-        { title: "Unit 1 — The Number System" },
-        { title: "Unit 2 — Geometry of Polygons" },
-        { title: "Unit 3 — Transformations & Congruence" },
-        { title: "Unit 4 — Statistics" },
-        { title: "Unit 5 — Pythagorean Theorem" },
-        { title: "Unit 6 — Expressions & Equations (Systems)" },
-        { title: "Unit 7 — Measurement (Area • Volume • Surface Area)" },
-        { title: "Unit 8 — Statistics & Probability (Compound)" },
-        { title: "Unit 9 — Congruence & Similarity (Constructions)" },
-        { title: "Unit 10 — Percentages" }
-      ]
-    };
+    const grade8Units = [
+      { unit:"Unit 1 — The Number System", lessons:[
+        "Review of BEDMAS & absolute value",
+        "Converting recurring decimals",
+        "Rounding numbers",
+        "Squares & roots",
+        "Operations on fractions"
+      ]},
+      { unit:"Unit 2 — Geometry of Polygons", lessons:[
+        "Supplementary, complementary, vertical & adjacent angles",
+        "Angles in triangles",
+        "Isosceles triangle",
+        "Angles of quadrilaterals (no algebraic questions)",
+        "Algebraic equations in geometry (worksheet)",
+        "Parallel lines (worksheet)",
+        "Angles in polygons (sum, interior & exterior)"
+      ]},
+      { unit:"Unit 3 — Transformations & Congruence", lessons:[
+        "Translations (worksheet)",
+        "Rotations (worksheet)",
+        "Reflections (worksheet)",
+        "Enlargements (worksheet)"
+      ]},
+      { unit:"Unit 4 — Statistics", lessons:[
+        "Pie charts (worksheet)",
+        "Histograms (worksheet)"
+      ]},
+      { unit:"Unit 5 — Pythagorean Theorem", lessons:[
+        "Find the hypotenuse using Pythagoras",
+        "Find missing sides using Pythagoras",
+        "Converse of Pythagoras",
+        "Problem solving with Pythagoras"
+      ]},
+      { unit:"Unit 6 — Expressions & Equations (Systems)", lessons:[
+        "Two‑ and three‑step equations",
+        "Solution by elimination",
+        "Solution by equating",
+        "Solution by substitution"
+      ]},
+      { unit:"Unit 7 — Geometry Measurement", lessons:[
+        "Converting metric units",
+        "Parts of a circle (worksheet)",
+        "Circumference & area of a circle",
+        "Perimeter of polygons",
+        "Area of polygons (rectangle, triangle, parallelogram, trapezium)",
+        "Composite shapes (area)",
+        "Volume of cuboids",
+        "Volume of prisms",
+        "Volume of a cylinder"
+      ]},
+      { unit:"Unit 8 — Statistics & Probability (Compound)", lessons:[
+        "Simple events with & without replacement"
+      ]},
+      { unit:"Unit 9 — Constructions (Congruence & Similarity)", lessons:[
+        "Constructing ASA triangle (worksheet)",
+        "Constructing SAS triangle (worksheet)",
+        "Constructing SSS triangle (worksheet)"
+      ]},
+      { unit:"Unit 10 — Percentages", lessons:[
+        "Interchanging number forms",
+        "Decimals to percentages",
+        "One quantity as a percentage of another",
+        "Percentage increase & decrease",
+        "Percentage change"
+      ]}
+    ];
 
-    // Candidate filename guesses to let new uploads “just work”:
-    function toSlug(s){
-      return s.toLowerCase()
-        .replace(/&/g,'and')
-        .replace(/[^a-z0-9]+/g,'-')
-        .replace(/-+/g,'-').replace(/(^-|-$)/g,'');
+    // ---------- Rendering & behavior ----------
+    const $ = (q, el=document) => el.querySelector(q);
+    const panel7 = $('#panel7'); const panel8 = $('#panel8');
+    const tab7 = $('#tab7'); const tab8 = $('#tab8'); const q = $('#q');
+
+    // Build lesson grid for a grade from its units
+    function renderGrade(panelEl, gradeFolder, units){
+      panelEl.innerHTML = '';
+      // Always pin "Welcome & Orientation" first
+      const welcomeBlock = document.createElement('div');
+      welcomeBlock.className = 'unit';
+      welcomeBlock.innerHTML = `
+        <h3>Orientation</h3>
+        <div class="list" id="${gradeFolder}-welcome"></div>
+      `;
+      panelEl.appendChild(welcomeBlock);
+
+      const wList = $(`#${gradeFolder}-welcome`);
+      wList.appendChild(makeLessonRow('Welcome & orientation', `${gradeFolder}/welcome.html`));
+
+      // Numbered lessons start at 2 (since welcome.html is lesson 1)
+      let idx = 2;
+
+      units.forEach((u, ui)=>{
+        const unitDiv = document.createElement('div');
+        unitDiv.className = 'unit';
+        unitDiv.innerHTML = `<h3>${u.unit}</h3><div class="list" id="${gradeFolder}-u${ui}"></div>`;
+        panelEl.appendChild(unitDiv);
+        const list = $(`#${gradeFolder}-u${ui}`);
+
+        u.lessons.forEach((title)=>{
+          const file = `${gradeFolder}/lesson-${idx}.html`;
+          list.appendChild(makeLessonRow(title, file));
+          idx++;
+        });
+      });
     }
-    function candidates(gradeKey, title){
-      const slug = toSlug(title);
-      // Try a few reasonable places/names so you don't have to edit JS each time:
-      return [
-        `${gradeKey}/${slug}.html`,
-        `${gradeKey}/${slug}/index.html`,
-        `${gradeKey}/unit-${slug}.html`,
-        `${gradeKey}/lesson-${slug}.html`,
-        `${gradeKey}-${slug}.html`,
-        `${gradeKey}_` + slug + `.html`,
-        `${slug}.html` // root fallback
-      ];
-    }
 
-    async function exists(url){
-      try{
-        const res = await fetch(url, { method:"HEAD", cache:"no-cache" });
-        if(res.ok) return true;
-        // Some hosts block HEAD; fallback to GET
-        const res2 = await fetch(url, { method:"GET", cache:"no-cache" });
-        return res2.ok;
-      }catch(e){ return false; }
-    }
-
-    function lessonRow(title, href, ok){
-      const a = document.createElement('a');
-      a.className = 'btn' + (ok ? '' : ' disabled');
-      a.href = ok ? href : '#';
-      a.setAttribute('aria-disabled', ok ? 'false' : 'true');
-      a.textContent = ok ? 'Open' : '—';
-      if(!ok){ a.style.pointerEvents='none'; a.style.opacity='.5'; }
-
+    // Create a lesson row that checks if target file exists (Open vs Coming soon)
+    function makeLessonRow(title, href){
       const row = document.createElement('div');
       row.className = 'lesson';
-      const left = document.createElement('div');
-      left.innerHTML = `<div class="lesson-title">${title}</div>`;
-      const right = document.createElement('div');
-      const badge = document.createElement('span');
-      badge.className = 'status soon';
-      badge.innerHTML = `<span class="spinner" aria-hidden="true"></span> Checking…`;
-      right.append(a, badge);
-      row.append(left, right);
-      return { row, a, badge };
-    }
+      const left = document.createElement('div'); left.className = 'tt'; left.textContent = title;
+      const right = document.createElement('div'); right.innerHTML = `<a href="${href}" aria-label="Open ${title}">Open</a>`;
+      const badge = document.createElement('span'); badge.className = 'status'; badge.textContent = 'Checking…';
+      right.appendChild(badge);
+      row.appendChild(left); row.appendChild(right);
 
-    async function renderGrade(containerId, gradeKey){
-      const wrap = document.getElementById(containerId);
-      wrap.innerHTML = '';
-      wrap.setAttribute('aria-busy','true');
-
-      for(const item of DATA[gradeKey]){
-        const { row, a, badge } = lessonRow(item.title, '#', false);
-        wrap.appendChild(row);
-
-        // Evaluate availability
-        let url = item.file || null;
-        let ok = false;
-        if(url){ ok = await exists(url); }
-        else{
-          for(const guess of candidates(gradeKey, item.title)){
-            if(await exists(guess)){ url = guess; ok = true; break; }
-          }
-        }
-        if(ok){
-          a.href = url; a.classList.remove('disabled'); a.style.pointerEvents='auto'; a.style.opacity='1';
-          badge.className = 'status ok'; badge.textContent = 'Open';
+      // HEAD request to test existence (same-origin on GitHub Pages is OK)
+      fetch(href, { method: 'HEAD' }).then(res=>{
+        if(res.ok){
+          badge.className = 'status open'; badge.textContent = 'Open';
         }else{
-          badge.className = 'status soon'; badge.textContent = 'Coming Soon';
+          badge.className = 'status soon'; badge.textContent = 'Coming soon';
+          row.classList.add('disabled');
         }
-      }
-      wrap.removeAttribute('aria-busy');
+      }).catch(()=>{
+        badge.className = 'status soon'; badge.textContent = 'Coming soon';
+        row.classList.add('disabled');
+      });
+
+      return row;
     }
 
-    // Render both grades on load
-    renderGrade('g7-lessons', 'g7');
-    renderGrade('g8-lessons', 'g8');
+    // Initial render
+    renderGrade(panel7, 'grade7', grade7Units);
+    renderGrade(panel8, 'grade8', grade8Units);
+
+    // Tabs
+    function activate(which){
+      const is7 = which === '7';
+      tab7.setAttribute('aria-selected', is7 ? 'true':'false');
+      tab8.setAttribute('aria-selected', !is7 ? 'true':'false');
+      panel7.setAttribute('aria-hidden', is7 ? 'false':'true');
+      panel8.setAttribute('aria-hidden', !is7 ? 'false':'true');
+      // Clear search on tab switch
+      q.value=''; filter('');
+    }
+    tab7.addEventListener('click', ()=>activate('7'));
+    tab8.addEventListener('click', ()=>activate('8'));
+
+    // Search filter (client-side text match across visible panel)
+    function filter(text){
+      const panel = panel7.getAttribute('aria-hidden')==='false' ? panel7 : panel8;
+      const items = panel.querySelectorAll('.lesson');
+      const t = text.trim().toLowerCase();
+      items.forEach(el=>{
+        const hit = el.querySelector('.tt').textContent.toLowerCase().includes(t);
+        el.style.display = hit ? '' : 'none';
+      });
+      // Hide empty unit shells
+      panel.querySelectorAll('.unit').forEach(unit=>{
+        const any = [...unit.querySelectorAll('.lesson')].some(x=>x.style.display!=='none');
+        unit.style.display = any ? '' : 'none';
+      });
+    }
+    q.addEventListener('input', (e)=>filter(e.target.value));
+
+    // Year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
