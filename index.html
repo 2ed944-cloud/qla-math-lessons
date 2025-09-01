@@ -11,104 +11,87 @@
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@600;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
   <style>
-    img.logo-crisp {
-  height: 56px;       /* Retina-ready size; adjust if you prefer 64px */
-  width: auto;        /* preserve aspect ratio */
-  image-rendering: auto;           /* avoid pixelation */
-  -ms-interpolation-mode: nearest-neighbor; /* old IE fallback; harmless elsewhere */
-}
-@media (min-width: 1024px){
-  img.logo-crisp { height: 64px; } /* larger on desktop */
-}
     :root{
-      --maroon:#6C1D45; --gold:#C7A34F; --gold2:#E4D4A8;
-      --ink:#0F172A; --slate:#5b6572; --line:#e9eef2;
-      --glass:rgba(255,255,255,.08);
+      --maroon:#6C1D45; --maroon2:#8B2450; --gold:#C7A34F; --gold2:#E4D4A8;
+      --ink:#0F172A; --slate:#5b6572; --line:#e9eef2; --bg:#F7FAFC;
+      --ok:#136f3a; --soon:#8a3d00;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:#F7FAFC;color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}
 
-    /* HERO */
+    /* HERO (keeps ONLY the background banner) */
     .hero{
       position:relative; color:#fff;
       background:
         linear-gradient(135deg, rgba(108,29,69,.88) 0%, rgba(139,36,80,.84) 45%, rgba(108,29,69,.88) 100%),
         url('assets/qla_banner.png') center/cover no-repeat;
+      overflow:hidden;
     }
     .hero::before{
       content:""; position:absolute; inset:-40% -40% auto auto;
       width:200%; height:200%;
-      background:radial-gradient(circle, rgba(199,163,79,.25) 0%, transparent 70%);
-      animation:float 22s ease-in-out infinite;
-      pointer-events:none;
+      background:radial-gradient(circle, rgba(199,163,79,.22) 0%, transparent 70%);
+      animation:float 22s ease-in-out infinite; pointer-events:none;
     }
     @keyframes float{0%,100%{transform:translate(0,0) rotate(0)} 33%{transform:translate(30px,-30px) rotate(120deg)} 66%{transform:translate(-20px,20px) rotate(240deg)}}
     @media (prefers-reduced-motion: reduce){ .hero::before{animation:none} }
 
-    /* CARDS */
-    .glass{
-      background:rgba(255,255,255,.9); backdrop-filter:blur(16px);
-      border:1px solid rgba(255,255,255,.5); border-radius:20px;
-      box-shadow:0 18px 44px rgba(0,0,0,.08);
+    /* White logo tile for clarity */
+    .logo-tile{
+      background:#fff; border:1px solid var(--line); border-radius:16px;
+      padding:8px 10px; display:inline-flex; align-items:center; justify-content:center;
+      box-shadow:0 10px 24px rgba(0,0,0,.08)
     }
-    .unit-card{border:1px solid var(--line); border-radius:18px; background:#fff}
-    .unit-badge{
-      background:linear-gradient(135deg, var(--maroon), #8B2450);
-      color:#fff; width:46px; height:46px; border-radius:14px;
-      display:grid; place-items:center; font-weight:800; box-shadow:0 8px 16px rgba(108,29,69,.18)
-    }
-    .lesson-row{
-      border:1px solid var(--line); border-radius:12px; padding:10px 12px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px; background:#fff;
-      transition:transform .2s ease, box-shadow .2s ease
-    }
-    .lesson-row:hover{ transform:translateX(4px); box-shadow:0 12px 28px rgba(0,0,0,.06) }
-    .status{font-size:11px; padding:6px 12px; border-radius:999px; border:1px solid transparent; text-transform:uppercase; letter-spacing:.3px}
-    .open{ background:rgba(19,111,58,.1); color:#136f3a; border-color:rgba(19,111,58,.25) }
-    .soon{ background:rgba(186,91,8,.08); color:#8a3d00; border-color:rgba(186,91,8,.25) }
+    .logo-crisp{height:60px;width:auto;image-rendering:auto}
+    @media (min-width:1024px){ .logo-crisp{height:68px} }
 
-    /* TABS */
-    .tabs{ display:flex; gap:8px; background:var(--glass); border:1px solid rgba(255,255,255,.35); border-radius:14px; padding:6px }
-    .tab{ flex:1; padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,.4); color:#fff; background:transparent; cursor:pointer; font-weight:700 }
+    /* Tabs */
+    .tabs{ display:flex; gap:10px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.35); border-radius:14px; padding:6px }
+    .tab{ flex:1; padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,.35); color:#fff; background:transparent; cursor:pointer; font-weight:800 }
     .tab[aria-selected="true"]{ background:linear-gradient(135deg,var(--gold),var(--gold2)); color:var(--maroon) }
 
-    .kbd{ font-variant-numeric:tabular-nums; font-weight:700; padding:.1rem .35rem; border-radius:.4rem; border:1px solid #d1d5db; background:#fff }
+    /* Cards & rows */
+    .card{ background:#fff; border:1px solid var(--line); border-radius:18px; }
+    .row{ border:1px solid var(--line); border-radius:12px; padding:10px 12px;
+          display:flex; align-items:center; justify-content:space-between; gap:12px; background:#fff;
+          transition:transform .2s ease, box-shadow .2s ease }
+    .row:hover{ transform:translateX(4px); box-shadow:0 12px 28px rgba(0,0,0,.06) }
+    .status{font-size:11px; padding:6px 12px; border-radius:999px; border:1px solid transparent; text-transform:uppercase; letter-spacing:.3px}
+    .open{ background:rgba(19,111,58,.1); color:var(--ok); border-color:rgba(19,111,58,.25) }
+    .soon{ background:rgba(186,91,8,.08); color:var(--soon); border-color:rgba(186,91,8,.25) }
 
-    /* ACCESSIBILITY */
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .kbd{ font-variant-numeric:tabular-nums; font-weight:700; padding:.1rem .35rem; border-radius:.4rem; border:1px solid #d1d5db; background:#fff }
   </style>
 </head>
 <body>
 
-  <!-- HEADER / HERO -->
+  <!-- HERO (banner only; no right-side block) -->
   <header class="hero shadow-2xl">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="flex items-center justify-between py-6">
         <div class="flex items-center gap-4">
-          <img src="assets/qla_logo.svg"
-     onerror="this.onerror=null;this.src='assets/qla_logo.png'"
-     alt="QLA Logo"
-     class="logo-crisp" />
+          <!-- White background tile for clarity -->
+          <span class="logo-tile">
+            <!-- Use SVG if you placed one at assets/qla_logo.svg; fallback to PNG -->
+            <img src="assets/qla_logo.svg" onerror="this.onerror=null;this.src='assets/qla_logo.png'" alt="QLA Logo" class="logo-crisp"/>
+          </span>
           <div>
-            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Mathematics Portal</h1>
+            <h1 class="text-4xl lg:text-5xl font-extrabold tracking-tight" style="font-family:Poppins,Inter,sans-serif">Mathematics Portal</h1>
             <p class="text-sm opacity-90 mt-1">Qatar Leadership Academy • Qatar Foundation</p>
           </div>
         </div>
-        <img src="assets/qla_banner.png" alt="QLA Partners" class="hidden lg:block h-12 object-contain opacity-90"/>
+        <!-- nothing on the right per your request -->
+        <div class="hidden lg:block"></div>
       </div>
 
       <div class="pb-6 flex items-center gap-4">
         <div class="tabs" role="tablist" aria-label="Grade tabs">
-          <button id="tab7" role="tab" class="tab" aria-selected="true" aria-controls="panel7">
-            <i class="fas fa-graduation-cap"></i> Grade 7
-          </button>
-          <button id="tab8" role="tab" class="tab" aria-selected="false" aria-controls="panel8">
-            <i class="fas fa-graduation-cap"></i> Grade 8
-          </button>
+          <button id="tab7" role="tab" class="tab" aria-selected="true" aria-controls="panel7"><i class="fas fa-graduation-cap"></i> Grade 7</button>
+          <button id="tab8" role="tab" class="tab" aria-selected="false" aria-controls="panel8"><i class="fas fa-graduation-cap"></i> Grade 8</button>
         </div>
         <div class="ml-auto hidden sm:flex items-center gap-4 bg-white/10 backdrop-blur rounded-2xl px-4 py-2">
           <div class="flex items-center gap-2"><span class="kbd">/</span><span class="text-xs">Search</span></div>
@@ -120,42 +103,42 @@
 
   <!-- MAIN -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Teacher & Search -->
+
+    <!-- Teacher + search -->
     <section class="grid gap-6 md:grid-cols-[360px_1fr]">
-      <div class="glass p-5">
+      <div class="card p-5">
         <div class="flex items-start gap-4">
-          <img src="assets/teacher_photo.jpg" alt="Teacher" class="w-16 h-16 rounded-lg object-cover border border-white/60"/>
+          <img src="assets/teacher_photo.jpg" alt="Teacher" class="w-16 h-16 rounded-lg object-cover border border-[--line]"/>
           <div>
             <div class="font-extrabold">Mr. Mohammad Abu Ghuwaleh</div>
-            <div class="text-sm text-white/80 bg-[--maroon] inline-block px-2 py-0.5 rounded mt-1">Room 02</div>
-            <div class="text-sm mt-2">
-              <a class="underline decoration-dotted" href="mailto:2ed944@qla.qfschools.qa">2ed944@qla.qfschools.qa</a>
-            </div>
+            <div class="text-sm text-white bg-[--maroon] inline-block px-2 py-0.5 rounded mt-1">Room 02</div>
+            <div class="text-sm mt-2"><a class="underline decoration-dotted" href="mailto:2ed944@qla.qfschools.qa">2ed944@qla.qfschools.qa</a></div>
             <div class="text-xs text-slate-600 mt-2">Created by <strong>Mohammad Abu Ghuwaleh</strong></div>
           </div>
         </div>
+
         <div class="mt-4 grid gap-2">
-          <a class="lesson-row" href="grade7/welcome.html"><span>Grade 7 — Welcome & Orientation</span><span class="status open">Open</span></a>
-          <a class="lesson-row" href="grade8/welcome.html"><span>Grade 8 — Welcome & Orientation</span><span class="status open">Open</span></a>
+          <a class="row" href="grade7/welcome.html"><span>Grade 7 — Welcome & Orientation</span><span class="status open">Open</span></a>
+          <a class="row" href="grade8/welcome.html"><span>Grade 8 — Welcome & Orientation</span><span class="status open">Open</span></a>
         </div>
       </div>
 
-      <div class="glass p-5">
+      <div class="card p-5">
         <label class="block text-sm font-semibold text-slate-700 mb-1" for="q">Search lessons (title, keywords)…</label>
         <div class="relative">
           <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
           <input id="q" type="search" placeholder="e.g., Fractions, BIDMAS, Pythagoras, Geometry"
                  class="w-full rounded-xl border border-[--line] pl-10 pr-3 py-2 focus:outline-none focus:border-[--gold]"/>
         </div>
-        <p class="text-xs text-slate-500 mt-1">Tip: press <span class="kbd">/</span> to focus search; <span class="kbd">G</span> to switch grade.</p>
+        <p class="text-xs text-slate-500 mt-1">Tip: press <span class="kbd">/</span> to focus; <span class="kbd">G</span> to switch grade.</p>
       </div>
     </section>
 
     <!-- Panels -->
     <section id="panel7" role="tabpanel" aria-labelledby="tab7" aria-hidden="false" class="mt-8">
-      <div class="unit-card p-4 mb-4">
+      <div class="card p-4 mb-4">
         <div class="flex items-center gap-3">
-          <div class="unit-badge"><i class="fas fa-flag"></i></div>
+          <div class="rounded-xl bg-[--maroon] text-white w-11 h-11 grid place-items-center shadow"><i class="fas fa-flag"></i></div>
           <div>
             <div class="font-extrabold text-lg">Lesson 1 — Welcome & Orientation</div>
             <div class="text-sm text-slate-600">Course overview • Expectations • Digital tools</div>
@@ -167,9 +150,9 @@
     </section>
 
     <section id="panel8" role="tabpanel" aria-labelledby="tab8" aria-hidden="true" class="mt-8 hidden">
-      <div class="unit-card p-4 mb-4">
+      <div class="card p-4 mb-4">
         <div class="flex items-center gap-3">
-          <div class="unit-badge"><i class="fas fa-flag"></i></div>
+          <div class="rounded-xl bg-[--maroon] text-white w-11 h-11 grid place-items-center shadow"><i class="fas fa-flag"></i></div>
           <div>
             <div class="font-extrabold text-lg">Lesson 1 — Welcome & Orientation</div>
             <div class="text-sm text-slate-600">Course overview • Expectations • Digital tools</div>
@@ -186,97 +169,91 @@
   </main>
 
   <script>
-    // ---------- Course Outline data (Grade 7 & 8) ----------
-    // Grade 7 (Units 1–5, 7–9)
+    // --------- Course Outline data ----------
     const grade7Units = [
       { name:"Unit 1 — Numbers (Rational Numbers)", lessons:[
-        "Opposites (positive & negative)",
-        "Addition & subtraction of rational numbers",
-        "Multiplication & division of rational numbers",
-        "Combined operations (BEDMAS)"
+        "Opposites (positive & negative)","Addition & subtraction of rational numbers",
+        "Multiplication & division of rational numbers","Combined operations (BEDMAS)"
       ]},
       { name:"Unit 2 — Properties of Numbers & Fractions", lessons:[
-        "Factors & multiples", "HCF & LCM", "Prime & composite numbers", "Repeated division & factor tree",
-        "Equivalent fractions", "Proper & improper fractions", "Simplifying fractions", "Comparing fractions",
-        "Adding & subtracting fractions", "Multiplying fractions", "Dividing fractions", "Word problems on fractions"
+        "Factors & multiples","HCF & LCM","Prime & composite numbers","Repeated division & factor tree",
+        "Equivalent fractions","Proper & improper fractions","Simplifying fractions","Comparing fractions",
+        "Adding & subtracting fractions","Multiplying fractions","Dividing fractions","Word problems on fractions"
       ]},
       { name:"Unit 3 — Expressions (Linear)", lessons:[
-        "Rules for writing algebraic expressions", "Collecting like terms", "Algebraic products",
-        "Evaluating algebraic expressions", "Expanding brackets (worksheet)", "Factorising expressions (worksheet)"
+        "Rules for writing algebraic expressions","Collecting like terms","Algebraic products",
+        "Evaluating algebraic expressions","Expanding brackets (worksheet)","Factorising expressions (worksheet)"
       ]},
       { name:"Unit 4 — Equations (Linear)", lessons:[
-        "Solving one-step equations", "Solving two-step equations", "Solving multi-step equations"
+        "Solving one-step equations","Solving two-step equations","Solving multi-step equations"
       ]},
       { name:"Unit 5 — Ratios & Proportional Relationships", lessons:[
-        "Expressing ratios & writing ratios as fractions", "Simplifying & equivalent ratios",
-        "Problem solving with ratios", "Using ratios to divide quantities"
+        "Expressing ratios & writing ratios as fractions","Simplifying & equivalent ratios",
+        "Problem solving with ratios","Using ratios to divide quantities"
       ]},
       { name:"Unit 7 — Coordinates", lessons:[
-        "Plotting positive & negative coordinates", "Plotting from a table of values",
-        "Graphing straight lines (12D.1 Q1; 12D.2 Q1–Q2)", "Drawing linear graphs (worksheet)",
-        "Horizontal & vertical lines", "Using intercepts to draw lines (worksheet)"
+        "Plotting positive & negative coordinates","Plotting from a table of values",
+        "Graphing straight lines (12D.1 Q1; 12D.2 Q1–Q2)","Drawing linear graphs (worksheet)",
+        "Horizontal & vertical lines","Using intercepts to draw lines (worksheet)"
       ]},
       { name:"Unit 8 — Statistics", lessons:[
-        "Tally & frequency tables", "Grouping data (worksheet)", "Reading bar charts", "Drawing bar charts",
-        "Stem-and-leaf plots", "Mode, median, mean & range", "Mean from a frequency table (worksheet)"
+        "Tally & frequency tables","Grouping data (worksheet)","Reading bar charts","Drawing bar charts",
+        "Stem-and-leaf plots","Mode, median, mean & range","Mean from a frequency table (worksheet)"
       ]},
       { name:"Unit 9 — Probability (Simple)", lessons:[
-        "Describing probability", "Assigning numbers to probability", "Sample space", "Compound events",
-        "Probability trees (worksheet)", "Theoretical probability", "Complementary events"
+        "Describing probability","Assigning numbers to probability","Sample space","Compound events",
+        "Probability trees (worksheet)","Theoretical probability","Complementary events"
       ]}
     ];
 
-    // Grade 8 (Units 1–10)
     const grade8Units = [
       { name:"Unit 1 — The Number System", lessons:[
-        "Review of BEDMAS & absolute value", "Converting recurring decimals",
-        "Rounding numbers", "Squares & roots", "Operations on fractions"
+        "Review of BEDMAS & absolute value","Converting recurring decimals",
+        "Rounding numbers","Squares & roots","Operations on fractions"
       ]},
       { name:"Unit 2 — Geometry of Polygons", lessons:[
-        "Angle facts (supplementary, complementary, vertical, adjacent)",
-        "Angles in triangles", "Isosceles triangle",
-        "Angles of quadrilaterals", "Algebraic equations in geometry (worksheet)",
-        "Parallel lines (worksheet)", "Angles in polygons (sum, interior & exterior)"
+        "Angle facts (supplementary, complementary, vertical, adjacent)","Angles in triangles","Isosceles triangle",
+        "Angles of quadrilaterals","Algebraic equations in geometry (worksheet)","Parallel lines (worksheet)",
+        "Angles in polygons (sum, interior & exterior)"
       ]},
       { name:"Unit 3 — Transformations & Congruence", lessons:[
-        "Translations (worksheet)", "Rotations (worksheet)", "Reflections (worksheet)", "Enlargements (worksheet)"
+        "Translations (worksheet)","Rotations (worksheet)","Reflections (worksheet)","Enlargements (worksheet)"
       ]},
-      { name:"Unit 4 — Statistics", lessons:["Pie charts (worksheet)", "Histograms (worksheet)"]},
+      { name:"Unit 4 — Statistics", lessons:["Pie charts (worksheet)","Histograms (worksheet)"]},
       { name:"Unit 5 — Pythagorean Theorem", lessons:[
-        "Find hypotenuse", "Find missing sides", "Converse of Pythagoras", "Problem solving"
+        "Find hypotenuse","Find missing sides","Converse of Pythagoras","Problem solving"
       ]},
       { name:"Unit 6 — Expressions & Equations (Systems)", lessons:[
-        "Two- & three-step equations", "Solution by elimination", "Solution by equating", "Solution by substitution"
+        "Two- & three-step equations","Solution by elimination","Solution by equating","Solution by substitution"
       ]},
       { name:"Unit 7 — Geometry Measurement", lessons:[
-        "Converting metric units", "Parts of a circle (worksheet)", "Circumference & area of a circle",
-        "Perimeter of polygons", "Area of polygons", "Composite shapes (area)",
-        "Volume of cuboids", "Volume of prisms", "Volume of a cylinder"
+        "Converting metric units","Parts of a circle (worksheet)","Circumference & area of a circle",
+        "Perimeter of polygons","Area of polygons","Composite shapes (area)",
+        "Volume of cuboids","Volume of prisms","Volume of a cylinder"
       ]},
       { name:"Unit 8 — Statistics & Probability (Compound)", lessons:["Simple events with & without replacement"]},
       { name:"Unit 9 — Constructions (Congruence & Similarity)", lessons:[
-        "Construct ASA triangle (worksheet)", "Construct SAS triangle (worksheet)", "Construct SSS triangle (worksheet)"
+        "Construct ASA triangle (worksheet)","Construct SAS triangle (worksheet)","Construct SSS triangle (worksheet)"
       ]},
       { name:"Unit 10 — Percentages", lessons:[
-        "Interchanging number forms", "Decimals ⇄ percentages", "One quantity as % of another", "% increase & decrease", "% change"
+        "Interchanging number forms","Decimals ⇄ percentages","One quantity as % of another","% increase & decrease","% change"
       ]}
     ];
 
-    // ---------- Helpers ----------
-    const $ = (s,el=document)=>el.querySelector(s);
-    const panel7 = $("#panel7"), panel8 = $("#panel8");
-    const tab7 = $("#tab7"), tab8 = $("#tab8");
-    const q = $("#q");
+    // --------- Helpers ----------
+    const $=(s,el=document)=>el.querySelector(s);
+    const panel7=$("#panel7"), panel8=$("#panel8");
+    const tab7=$("#tab7"), tab8=$("#tab8"); const q=$("#q");
 
     function buildUnits(container, gradeFolder, units){
-      container.innerHTML = "";
-      let idx = 2; // lesson numbering starts after welcome.html
-      units.forEach((u, ui)=>{
-        const block = document.createElement("div");
-        block.className = "unit-card p-5 mb-5";
-        block.innerHTML = `
+      container.innerHTML="";
+      let idx=2; // after welcome
+      units.forEach((u,ui)=>{
+        const block=document.createElement("div");
+        block.className="card p-5 mb-5";
+        block.innerHTML=`
           <div class="flex items-center gap-3 mb-3">
-            <div class="unit-badge">${ui+1}</div>
+            <div class="rounded-xl bg-[--maroon] text-white w-11 h-11 grid place-items-center shadow">${ui+1}</div>
             <div>
               <h3 class="font-bold text-lg">${u.name}</h3>
               <div class="text-xs text-slate-600">${u.lessons.length} lesson(s)</div>
@@ -285,30 +262,25 @@
           <div class="grid gap-2 md:grid-cols-2 lg:grid-cols-3" id="${gradeFolder}-u${ui}"></div>
         `;
         container.appendChild(block);
-        const list = $(`#${gradeFolder}-u${ui}`);
+        const list=$(`#${gradeFolder}-u${ui}`);
         u.lessons.forEach(title=>{
-          const href = `${gradeFolder}/lesson-${idx}.html`;
-          const row = document.createElement("div");
-          row.className = "lesson-row";
-          row.innerHTML = `
-              <span class="font-semibold">${title}</span>
-              <span class="status">Checking…</span>
-          `;
+          const href=`${gradeFolder}/lesson-${idx}.html`;
+          const row=document.createElement("div");
+          row.className="row";
+          row.innerHTML=`<span class="font-semibold">${title}</span><span class="status">Checking…</span>`;
           // Existence check
-          fetch(href, {method:"HEAD"}).then(r=>{
+          fetch(href,{method:"HEAD"}).then(r=>{
+            const badge=row.querySelector(".status");
             if(r.ok){
-              row.querySelector(".status").className = "status open";
-              row.querySelector(".status").textContent = "Open";
-              row.addEventListener("click", ()=>location.href = href);
-              row.style.cursor = "pointer";
+              badge.className="status open"; badge.textContent="Open";
+              row.style.cursor="pointer"; row.addEventListener("click",()=>location.href=href);
             }else{
-              row.querySelector(".status").className = "status soon";
-              row.querySelector(".status").textContent = "Coming soon";
+              badge.className="status soon"; badge.textContent="Coming soon";
               row.classList.add("opacity-80");
             }
           }).catch(()=>{
-            row.querySelector(".status").className = "status soon";
-            row.querySelector(".status").textContent = "Coming soon";
+            const badge=row.querySelector(".status");
+            badge.className="status soon"; badge.textContent="Coming soon";
             row.classList.add("opacity-80");
           });
           list.appendChild(row);
@@ -318,7 +290,7 @@
     }
 
     function activate(which){
-      const is7 = which === "7";
+      const is7 = which==="7";
       tab7.setAttribute("aria-selected", is7?"true":"false");
       tab8.setAttribute("aria-selected", is7?"false":"true");
       panel7.classList.toggle("hidden", !is7);
@@ -331,33 +303,27 @@
 
     function filter(text){
       const panel = panel7.getAttribute("aria-hidden")==="false" ? panel7 : panel8;
-      const rows = panel.querySelectorAll(".lesson-row");
-      const t = (text||"").toLowerCase();
-      rows.forEach(r=>{
-        const hit = r.textContent.toLowerCase().includes(t);
-        r.style.display = hit ? "" : "none";
-      });
-      // hide empty unit shells
-      panel.querySelectorAll(".unit-card").forEach(u=>{
-        const any = [...u.querySelectorAll(".lesson-row")].some(x=>x.style.display!=="none");
-        u.style.display = any ? "" : "none";
+      const rows = panel.querySelectorAll(".row");
+      const t=(text||"").toLowerCase();
+      rows.forEach(r=>{ r.style.display = r.textContent.toLowerCase().includes(t) ? "" : "none"; });
+      panel.querySelectorAll(".card").forEach(c=>{
+        const any=[...c.querySelectorAll(".row")].some(x=>x.style.display!=="none"); c.style.display=any?"":"none";
       });
     }
 
-    // Wire UI
-    tab7.addEventListener("click", ()=>activate("7"));
-    tab8.addEventListener("click", ()=>activate("8"));
-    document.addEventListener("keydown", (e)=>{
+    tab7.addEventListener("click",()=>activate("7"));
+    tab8.addEventListener("click",()=>activate("8"));
+    document.addEventListener("keydown",(e)=>{
       if(e.key==="/"){ e.preventDefault(); q.focus(); }
       if(e.key.toLowerCase()==="g"){ activate(tab7.getAttribute("aria-selected")==="true" ? "8" : "7"); }
     });
-    q.addEventListener("input", e=>filter(e.target.value));
+    q.addEventListener("input",e=>filter(e.target.value));
 
     // Render
-    buildUnits($("#g7-units"), "grade7", grade7Units);
-    buildUnits($("#g8-units"), "grade8", grade8Units);
-    activate(localStorage.getItem("qla_grade") || "7");
-    document.getElementById("year").textContent = new Date().getFullYear();
+    buildUnits($("#g7-units"),"grade7",grade7Units);
+    buildUnits($("#g8-units"),"grade8",grade8Units);
+    activate(localStorage.getItem("qla_grade")||"7");
+    document.getElementById("year").textContent=new Date().getFullYear();
   </script>
 </body>
 </html>
