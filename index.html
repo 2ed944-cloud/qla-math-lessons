@@ -15,6 +15,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
   <style>
+    img.logo-crisp {
+  height: 56px;       /* Retina-ready size; adjust if you prefer 64px */
+  width: auto;        /* preserve aspect ratio */
+  image-rendering: auto;           /* avoid pixelation */
+  -ms-interpolation-mode: nearest-neighbor; /* old IE fallback; harmless elsewhere */
+}
+@media (min-width: 1024px){
+  img.logo-crisp { height: 64px; } /* larger on desktop */
+}
     :root{
       --maroon:#6C1D45; --gold:#C7A34F; --gold2:#E4D4A8;
       --ink:#0F172A; --slate:#5b6572; --line:#e9eef2;
@@ -80,7 +89,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="flex items-center justify-between py-6">
         <div class="flex items-center gap-4">
-          <img src="assets/qla_logo.png" alt="QLA Logo" class="h-14 w-14 drop-shadow-md"/>
+          <img src="assets/qla_logo.svg"
+     onerror="this.onerror=null;this.src='assets/qla_logo.png'"
+     alt="QLA Logo"
+     class="logo-crisp" />
           <div>
             <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Mathematics Portal</h1>
             <p class="text-sm opacity-90 mt-1">Qatar Leadership Academy • Qatar Foundation</p>
