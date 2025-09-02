@@ -105,34 +105,59 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     <!-- Teacher + search -->
-    <section class="grid gap-6 md:grid-cols-[360px_1fr]">
-      <div class="card p-5">
-        <div class="flex items-start gap-4">
-          <img src="assets/teacher_photo.jpg" alt="Teacher" class="w-16 h-16 rounded-lg object-cover border border-[--line]"/>
-          <div>
-            <div class="font-extrabold">Mr. Mohammad Abu Ghuwaleh</div>
-            <div class="text-sm text-white bg-[--maroon] inline-block px-2 py-0.5 rounded mt-1">Room 02</div>
-            <div class="text-sm mt-2"><a class="underline decoration-dotted" href="mailto:2ed944@qla.qfschools.qa">2ed944@qla.qfschools.qa</a></div>
-            <div class="text-xs text-slate-600 mt-2">Created by <strong>Mohammad Abu Ghuwaleh</strong></div>
-          </div>
+    <section class="grid gap-6 md:grid-cols-2">
+  <!-- Teacher 1: Mr. Mohammad Abu Ghuwaleh -->
+  <div class="card p-5">
+    <div class="flex items-start gap-4">
+      <img src="assets/teacher_photo.jpg" alt="Mr. Mohammad Abu Ghuwaleh"
+           class="w-16 h-16 rounded-lg object-cover border border-[--line]"/>
+      <div>
+        <div class="font-extrabold">Mr. Mohammad Abu Ghuwaleh</div>
+        <div class="text-sm text-white bg-[--maroon] inline-block px-2 py-0.5 rounded mt-1">Room 02</div>
+        <div class="text-sm mt-2">
+          <a class="underline decoration-dotted" href="mailto:2ed944@qla.qfschools.qa">2ed944@qla.qfschools.qa</a>
         </div>
-
-        <div class="mt-4 grid gap-2">
-          <a class="row" href="grade7/welcome.html"><span>Grade 7 — Welcome & Orientation</span><span class="status open">Open</span></a>
-          <a class="row" href="grade8/welcome.html"><span>Grade 8 — Welcome & Orientation</span><span class="status open">Open</span></a>
-        </div>
+        <div class="text-xs text-slate-600 mt-2">Created by <strong>Mohammad Abu Ghuwaleh</strong></div>
       </div>
+    </div>
 
-      <div class="card p-5">
-        <label class="block text-sm font-semibold text-slate-700 mb-1" for="q">Search lessons (title, keywords)…</label>
-        <div class="relative">
-          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input id="q" type="search" placeholder="e.g., Fractions, BIDMAS, Pythagoras, Geometry"
-                 class="w-full rounded-xl border border-[--line] pl-10 pr-3 py-2 focus:outline-none focus:border-[--gold]"/>
+    <div class="mt-4 grid gap-2">
+      <a class="row" href="grade7/welcome.html">
+        <span>Grade 7 — Welcome & Orientation</span><span class="status open">Open</span>
+      </a>
+      <a class="row" href="grade8/welcome.html">
+        <span>Grade 8 — Welcome & Orientation</span><span class="status open">Open</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Teacher 2: Parallel teacher (edit the [] fields) -->
+  <div class="card p-5">
+    <div class="flex items-start gap-4">
+      <img src="assets/teacher_parallel.jpg" alt="Mr. [Parallel Teacher Name]"
+           class="w-16 h-16 rounded-lg object-cover border border-[--line]"/>
+      <div>
+        <div class="font-extrabold">Mr. [Parallel Teacher Name]</div>
+        <div class="text-sm text-white bg-[--maroon] inline-block px-2 py-0.5 rounded mt-1">Room [##]</div>
+        <div class="text-sm mt-2">
+          <a class="underline decoration-dotted" href="mailto:[parallel.email]">[parallel.email]</a>
         </div>
-        <p class="text-xs text-slate-500 mt-1">Tip: press <span class="kbd">/</span> to focus; <span class="kbd">G</span> to switch grade.</p>
+        <div class="text-xs text-slate-600 mt-2">Parallel section teacher</div>
       </div>
-    </section>
+    </div>
+
+    <div class="mt-4 grid gap-2">
+      <!-- If the parallel teacher uses different welcome pages, change these links;
+           if both sections share the same page, keep as-is. -->
+      <a class="row" href="grade7/welcome.html">
+        <span>Grade 7 — Welcome & Orientation (Parallel)</span><span class="status open">Open</span>
+      </a>
+      <a class="row" href="grade8/welcome.html">
+        <span>Grade 8 — Welcome & Orientation (Parallel)</span><span class="status open">Open</span>
+      </a>
+    </div>
+  </div>
+</section>
 
     <!-- Panels -->
     <section id="panel7" role="tabpanel" aria-labelledby="tab7" aria-hidden="false" class="mt-8">
