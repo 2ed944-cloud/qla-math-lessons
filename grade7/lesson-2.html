@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G7 • Unit 1 • Number System Overview (Rational & Irrational) — QLA</title>
+<title>G8 • Unit 1 • Number System Overview (Rational & Irrational) — QLA</title>
 
 <!-- Fonts & Tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,14 +11,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- KaTeX: CSS + JS (robust auto-render bootstrap) -->
+<!-- KaTeX (robust auto-render bootstrap) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 <script>
-  // Boot KaTeX once DOM is parsed; expose global helper for re-typeset after dynamic updates
+  // Boot KaTeX; expose global rerender helper for dynamic content
   window.addEventListener('DOMContentLoaded', () => {
-    const run = (root = document.body) => {
+    const run = (root=document.body) => {
       if (!window.renderMathInElement) return;
       window.renderMathInElement(root, {
         delimiters: [
@@ -31,8 +31,8 @@
     };
     if (window.renderMathInElement) run();
     else {
-      const t=setInterval(()=>{ if(window.renderMathInElement){clearInterval(t); run();}},25);
-      setTimeout(()=>clearInterval(t),6000);
+      const t=setInterval(() => { if(window.renderMathInElement){clearInterval(t); run();}}, 25);
+      setTimeout(()=>clearInterval(t), 6000);
     }
     window._rerenderMath = run;
   });
@@ -41,12 +41,10 @@
 <style>
   :root{--maroon:#6C1D45;--gold:#C7A34F;--dark:#2C2C2E;--light:#F5F5F5;--accent:#E8D5B7}
   html,body{height:100%;background:#2d3748;color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
-  /* Stage */
   #deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
   #slides{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
   .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
   .slide.active{opacity:1;transform:none;pointer-events:auto}
-
   .bg-maroon{background-color:var(--maroon)} .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
   .banner{width:100%;height:110px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
   .card{border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
@@ -55,7 +53,6 @@
   .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
   .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
   .btn:hover{filter:brightness(0.98)}
-
   #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
   #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700}
   #controls button:hover{transform:scale(1.06)}
@@ -63,24 +60,19 @@
   #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:30;transition:width .35s ease}
   #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
 
-  /* Popover (glossary) */
   #pop{position:fixed;inset:auto auto 20px 20px;max-width:min(560px,90vw);background:#fff;border:2px solid var(--gold);border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.25);padding:14px 16px;z-index:40;display:none;text-align:left}
   #pop strong{color:var(--maroon)} #pop .close{float:right;color:#666;cursor:pointer;font-weight:800}
 
-  /* Number line */
-  .nl-wrap{width:100%;max-width:920px}
-  canvas.nline{width:100%;height:170px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
+  .nl-wrap{width:100%;max-width:980px}
+  canvas.nline{width:100%;height:180px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
 
   .confetti{position:fixed;pointer-events:none;z-index:50}
   .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
 
-  /* Drag & drop venn */
-  .venn{display:grid;grid-template-columns:1fr;gap:10px;width:100%;max-width:980px}
-  .setBox{position:relative;border:2px dashed #cbd5e1;border-radius:14px;background:#fff;padding:14px;min-height:140px}
-  .setBox .title{position:absolute;top:-12px;left:12px;background:#fff;padding:0 .4rem;color:#6C1D45;font-weight:700}
-  .bank{display:flex;flex-wrap:wrap;gap:.5rem}
-  .chip.num{background:#f1f5f9;border:1px solid #e2e8f0;cursor:grab}
-  .chip.num.dragging{opacity:.55}
+  /* Static Venn */
+  .vennCanvas{width:100%;max-width:980px;aspect-ratio:16/9;border:2px solid #ececec;border-radius:12px;background:#fff}
+  .tag{position:absolute;padding:.2rem .45rem;border-radius:999px;background:#fff;border:1px solid #e5e7eb}
+  .highlight{outline:4px solid rgba(199,163,79,.8)}
 </style>
 </head>
 <body>
@@ -90,17 +82,17 @@
     <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
 
     <!-- 0 • Title -->
-    <section class="slide active bg-maroon text-white">
-      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('../assets/qla_banner.png')" aria-label="QLA Partner Banner"></div>
+    <section class="slide active bg-maroon text-white" id="titleSlide">
+      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="QLA Partner Banner"></div>
       <div class="flex items-center gap-8">
-        <img src="../assets/qla_logo.png" alt="QLA Logo" class="h-20 w-auto" onerror="this.style.display='none'"/>
+        <img src="qla_logo.png" alt="QLA Logo" class="h-20 w-auto" onerror="this.style.display='none'"/>
         <div class="text-left">
           <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Number System Overview</h1>
-          <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Rational &amp; Irrational • Sets \( \mathbb N,\mathbb W,\mathbb Z,\mathbb Q \) • Repeating Decimals • Opposites</p>
+          <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Rational &amp; Irrational • Sets N/W/Z/Q • Repeating &amp; Terminating Decimals • Opposites</p>
           <p class="mt-2 text-lg">Qatar Leadership Academy — Grade 8</p>
         </div>
       </div>
-      <div class="absolute bottom-6 text-sm text-gray-100">Aligned to AERO 8.NS and 8.EE readiness.</div>
+      <div class="absolute bottom-6 text-sm text-gray-100">Aligned to AERO 8.NS &amp; 8.EE readiness.</div>
     </section>
 
     <!-- 1 • LOs + Keywords -->
@@ -110,41 +102,41 @@
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-1">Learning Objectives</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Identify and classify numbers into \( \mathbb N, \mathbb W, \mathbb Z, \mathbb Q \), and Irrational \( (\mathbb R\setminus\mathbb Q) \).</li>
-            <li>Explain why **terminating** and **repeating** decimals are rational; non‑repeating, non‑terminating decimals are **irrational**.</li>
-            <li>Use a number line to reason about **positives, negatives, and opposite numbers** for rational and irrational values.</li>
-            <li>Solve real‑world problems requiring correct classification and approximations.</li>
+            <li>Identify numbers in \( \mathbb N \) (N), \( \mathbb W \) (W), \( \mathbb Z \) (Z), \( \mathbb Q \) (Q), and Irrational \( (\mathbb R\setminus\mathbb Q) \).</li>
+            <li>Explain why **terminating** and **repeating** decimals are rational; non‑terminating &amp; non‑repeating are irrational.</li>
+            <li>Use a number line to reason about **positives, negatives, and opposites** for rational and irrational values.</li>
+            <li>Apply classification in **real‑world contexts** and get practice with **mixed challenges**.</li>
           </ul>
         </div>
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap)</h3>
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for quick defs)</h3>
           <div class="flex flex-wrap gap-2 text-lg">
-            <span class="chip" data-key="N">\( \mathbb N \)</span>
-            <span class="chip" data-key="W">\( \mathbb W \)</span>
-            <span class="chip" data-key="Z">\( \mathbb Z \)</span>
-            <span class="chip" data-key="Q">\( \mathbb Q \)</span>
-            <span class="chip" data-key="irr">irrational</span>
-            <span class="chip" data-key="term">terminating</span>
-            <span class="chip" data-key="rep">repeating</span>
-            <span class="chip" data-key="opp">opposite numbers</span>
+            <span class="chip" data-key="Nkey">Natural numbers (N)</span>
+            <span class="chip" data-key="Wkey">Whole numbers (W)</span>
+            <span class="chip" data-key="Zkey">Integers (Z)</span>
+            <span class="chip" data-key="Qkey">Rational numbers (Q)</span>
+            <span class="chip" data-key="Ikey">Irrational numbers</span>
+            <span class="chip" data-key="term">Terminating decimals</span>
+            <span class="chip" data-key="rep">Repeating decimals</span>
+            <span class="chip" data-key="opp">Opposite numbers</span>
           </div>
-          <p class="text-xs text-gray-500 mt-3">Convention here: \( \mathbb N=\{1,2,3,\dots\} \). \( \mathbb W \) includes 0.</p>
+          <p class="text-xs text-gray-500 mt-3">Convention here: \( \mathbb N=\{1,2,3,\dots\} \) and \( \mathbb W=\{0,1,2,3,\dots\} \).</p>
         </div>
       </div>
     </section>
 
-    <!-- 2 • Tap-to-reveal mini notes -->
+    <!-- 2 • Tap-to-reveal -->
     <section class="slide" id="revealSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Tap to Reveal</h2>
       <div class="grid md:grid-cols-2 gap-6 w-full max-w-5xl text-left">
         <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon mb-2">Sets within Sets</h3>
+          <h3 class="text-xl font-bold text-maroon mb-2">Sets within Sets (definitions)</h3>
           <div class="space-y-2 text-lg">
-            <button class="chip rev" data-t="N">Show \( \mathbb N \)</button>
-            <button class="chip rev" data-t="W">Show \( \mathbb W \)</button>
-            <button class="chip rev" data-t="Z">Show \( \mathbb Z \)</button>
-            <button class="chip rev" data-t="Q">Show \( \mathbb Q \)</button>
-            <button class="chip rev" data-t="I">Show Irrational</button>
+            <button class="chip rev" data-t="N">Natural numbers (N)</button>
+            <button class="chip rev" data-t="W">Whole numbers (W)</button>
+            <button class="chip rev" data-t="Z">Integers (Z)</button>
+            <button class="chip rev" data-t="Q">Rational numbers (Q)</button>
+            <button class="chip rev" data-t="I">Irrational numbers</button>
             <div id="revBox1" class="mt-3"></div>
           </div>
         </div>
@@ -160,33 +152,50 @@
       </div>
     </section>
 
-    <!-- 3 • Hierarchy Map -->
+    <!-- 3 • NEW: Visual Venn (Sets inside Sets) -->
+    <section class="slide" id="staticVennSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Sets Inside Sets — Visual Venn</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div class="relative vennCanvas" id="vennVis" aria-label="Nested sets visual"></div>
+        <div class="mt-3 flex flex-wrap gap-2 text-sm">
+          <button class="btn" data-hl="R">Highlight ℝ</button>
+          <button class="btn" data-hl="Q">Highlight ℚ</button>
+          <button class="btn" data-hl="Z">Highlight ℤ</button>
+          <button class="btn" data-hl="W">Highlight 𝕎</button>
+          <button class="btn" data-hl="N">Highlight ℕ</button>
+          <button class="btn" data-hl="none">Clear</button>
+        </div>
+        <div class="hint mt-3 text-sm">Click a button to spotlight a set and sample elements inside it.</div>
+      </div>
+    </section>
+
+    <!-- 4 • Hierarchy Map -->
     <section class="slide" id="mapSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Hierarchy Map of the Real Numbers</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div class="text-lg">
           <p>\( \mathbb N \subset \mathbb W \subset \mathbb Z \subset \mathbb Q \subset \mathbb R \). Irrational \(=\mathbb R\setminus\mathbb Q\).</p>
           <div class="grid md:grid-cols-3 gap-3 mt-3">
-            <div class="p-3 border rounded bg-white"><b>\( \mathbb N \)</b>: \(1,2,3,\dots\)</div>
-            <div class="p-3 border rounded bg-white"><b>\( \mathbb W \)</b>: \(0,1,2,3,\dots\)</div>
-            <div class="p-3 border rounded bg-white"><b>\( \mathbb Z \)</b>: \(\dots,-2,-1,0,1,2,\dots\)</div>
-            <div class="p-3 border rounded bg-white"><b>\( \mathbb Q \)</b>: \(\frac ab\) with \(a,b\in\mathbb Z, b\neq0\)</div>
-            <div class="p-3 border rounded bg-white"><b>Irrational</b>: \( \pi,\ \sqrt2,\ e,\ \sqrt{3},\ \dots \)</div>
-            <div class="p-3 border rounded bg-white">Decimals: <i>terminating / repeating</i> ⇒ rational; <i>neither</i> ⇒ irrational.</div>
+            <div class="p-3 border rounded bg-white"><b>\( \mathbb N \)</b> (N): \(1,2,3,\dots\)</div>
+            <div class="p-3 border rounded bg-white"><b>\( \mathbb W \)</b> (W): \(0,1,2,3,\dots\)</div>
+            <div class="p-3 border rounded bg-white"><b>\( \mathbb Z \)</b> (Z): \(\dots,-2,-1,0,1,2,\dots\)</div>
+            <div class="p-3 border rounded bg-white"><b>\( \mathbb Q \)</b> (Q): \(\frac ab\) with \(a,b\in\mathbb Z, b\neq0\)</div>
+            <div class="p-3 border rounded bg-white"><b>Irrational</b>: \( \pi,\ \sqrt2,\ e,\ \sqrt{3},\dots \)</div>
+            <div class="p-3 border rounded bg-white">Decimals: terminating / repeating ⇒ rational; otherwise irrational.</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 4 • Number line explorer: positives, negatives, opposites -->
+    <!-- 5 • Improved Number‑Line Explorer -->
     <section class="slide" id="lineSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Number Line Explorer (Opposites)</h2>
-      <p class="text-gray-600 mb-2">Choose or enter a value (rational or irrational). We place \(a\) and its opposite \( -a \).</p>
+      <p class="text-gray-600 mb-2">Plot \(a\) and its opposite \( -a \). Drag the maroon point or choose a value. Use zoom/snap for precision.</p>
       <div class="nl-wrap"><canvas id="numLine" class="nline" aria-label="Number line"></canvas></div>
       <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
         <label class="chip">Pick:
           <select id="pickVal" class="border rounded px-2 py-1">
-            <option value="3/7">\( \frac{3}{7} \)</option>
+            <option value="3/7">\( \tfrac{3}{7} \)</option>
             <option value="-5">\( -5 \)</option>
             <option value="sqrt(2)">\( \sqrt{2} \)</option>
             <option value="-sqrt(3)">\( -\sqrt{3} \)</option>
@@ -196,16 +205,27 @@
           </select>
         </label>
         <label class="chip">or x = <input id="freeVal" class="border rounded px-2 py-1 w-40" placeholder="e.g., -2/3 or sqrt(5)"/></label>
-        <span class="chip">a = <b id="aOut">0.43</b></span>
-        <span class="chip">−a = <b id="negAOut">-0.43</b></span>
+        <label class="chip">zoom ±<input id="zoom" type="range" min="4" max="40" value="10"/></label>
+        <label class="chip">snap
+          <select id="snapSel" class="border rounded px-2 py-1">
+            <option value="none">none</option>
+            <option value="1/2">halves</option>
+            <option value="1/3">thirds</option>
+            <option value="1/4">quarters</option>
+            <option value="1/10">tenths</option>
+          </select>
+        </label>
+        <label class="chip">digits <input id="digits" type="range" min="2" max="8" value="3"/></label>
+        <span class="chip">a ≈ <b id="aOut">0.429</b></span>
+        <span class="chip">−a ≈ <b id="negAOut">-0.429</b></span>
+        <span class="chip">distance |a| = <b id="absOut">0.429</b></span>
         <button id="lineGo" class="btn">Plot</button>
         <button id="lineExportCSV" class="btn">Export CSV</button>
         <button id="lineExportJSON" class="btn">Export JSON</button>
       </div>
-      <div class="hint mt-3 text-left text-sm">Opposites are symmetric about 0. Distance from 0 is the same for \(a\) and \(-a\).</div>
     </section>
 
-    <!-- 5 • Classification (levels) -->
+    <!-- 6 • Classify (levels) -->
     <section class="slide" id="classSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Classify Each Number (smallest set)</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
@@ -228,31 +248,24 @@
       </div>
     </section>
 
-    <!-- 6 • Nested-Set Venn (drag & drop) -->
-    <section class="slide" id="vennSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Nested Sets — Drag into the Smallest Correct Set</h2>
-      <div class="venn">
-        <div class="bank card p-3" id="vennBank"></div>
-        <div class="setBox" data-set="N"><span class="title">\( \mathbb N \)</span></div>
-        <div class="setBox" data-set="W"><span class="title">\( \mathbb W \)</span></div>
-        <div class="setBox" data-set="Z"><span class="title">\( \mathbb Z \)</span></div>
-        <div class="setBox" data-set="Q"><span class="title">\( \mathbb Q \)</span></div>
-        <div class="setBox" data-set="I"><span class="title">Irrational</span></div>
+    <!-- 7 • EXPLAIN: Terminating vs Repeating (without PF) -->
+    <section class="slide" id="tvrexpSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Terminating vs Repeating — Intuition (no prime factors yet)</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div class="text-lg space-y-2">
+          <p><b>Idea:</b> A fraction \( \tfrac{a}{b} \) has a <b>terminating</b> decimal if we can write it as a fraction with denominator \(10, 100, 1000, \ldots\). If we can’t make a denominator like \(10^k\), its decimal will <b>repeat</b>.</p>
+          <p>Examples: \( \tfrac{1}{4} = \tfrac{25}{100} = 0.25 \) (terminates).  
+             \( \tfrac{2}{5} = \tfrac{40}{100} = 0.40 \) (terminates).  
+             \( \tfrac{1}{6} \) cannot be rewritten with denominator \(10^k\) exactly → \(0.1666\ldots\) (repeats).</p>
+          <div class="hint">Practical test we’ll use today: **Reduce** \( \tfrac{a}{b} \) first; if there exists some \(k\) so that \( b \) divides \(10^k\), the decimal terminates; otherwise it repeats. (Next lesson you’ll see how this links to prime factors of \(b\).)</div>
+        </div>
       </div>
-      <div class="mt-3 flex gap-2">
-        <button id="vennNew" class="btn">New chips</button>
-        <button id="vennCheck" class="btn maroon">Check</button>
-        <button id="vennExportCSV" class="btn">Export CSV</button>
-        <button id="vennExportJSON" class="btn">Export JSON</button>
-      </div>
-      <div id="vennFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 7 • Fraction → (terminating or repeating?) -->
+    <!-- 8 • Terminating or Repeating? (activity) -->
     <section class="slide" id="termRepSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Terminating or Repeating? (Fractions)</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
-        <p>In lowest terms \( \frac ab \): decimal **terminates** iff prime factors of \(b\) are only \(2\) and/or \(5\); otherwise it **repeats**.</p>
         <div id="trList" class="grid md:grid-cols-2 gap-3 mt-2"></div>
         <div class="mt-3 flex gap-2">
           <button id="trNew" class="btn">New set</button>
@@ -264,11 +277,36 @@
       </div>
     </section>
 
-    <!-- 8 • Repeating Decimal → Fraction (pure repeats) -->
+    <!-- 9 • EXPLAIN: Repeating Decimal → Fraction -->
+    <section class="slide" id="repExplSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">How to Convert a Repeating Decimal to a Fraction</h2>
+      <div class="card p-5 w-full max-w-4xl text-left">
+        <div class="text-lg space-y-2">
+          <p><b>Pure repeat (no non‑repeating part):</b> Let \(x=0.\overline{ab}\). Multiply by \(100\): \(100x=ab.\overline{ab}\). Subtract: \(100x-x=ab\Rightarrow x=\dfrac{ab}{99}\).  
+             For one repeating digit \(x=\dfrac{d}{9}\); for two digits \(x=\dfrac{ab}{99}\); for three digits \(x=\dfrac{abc}{999}\).</p>
+          <p><b>With an integer part:</b> \(I.\overline{R}=I+\dfrac{R}{99\ldots9}\) (same number of 9s as the length of the repeating block). Then simplify.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4 mt-2">
+          <div class="card p-4">
+            <div>Enter a repeating decimal (pure), e.g., <code>0.\overline{27}</code> or <code>0.\overline{6}</code></div>
+            <input id="repIn" class="border rounded px-2 py-1 w-64 mt-1" placeholder="0.\overline{27}">
+            <button id="repSolve" class="btn maroon mt-2">Show fraction</button>
+            <div id="repOut" class="mt-2"></div>
+          </div>
+          <div class="card p-4">
+            <div>Integer + repeat, e.g., <code>3.\overline{45}</code></div>
+            <input id="repIn2" class="border rounded px-2 py-1 w-64 mt-1" placeholder="3.\overline{45}">
+            <button id="repSolve2" class="btn maroon mt-2">Show fraction</button>
+            <div id="repOut2" class="mt-2"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 • Repeating Decimal → Fraction (activity) -->
     <section class="slide" id="repFracSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Convert Repeating Decimal → Fraction</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
-        <p>For a <em>pure repeating</em> decimal with block of \(r\) digits, \( I.\overline{R} = \dfrac{I(10^r-1)+R}{10^r-1} \), then simplify.</p>
         <div id="rfList" class="grid md:grid-cols-2 gap-3"></div>
         <div class="mt-3 flex gap-2">
           <button id="rfNew" class="btn">New set</button>
@@ -280,7 +318,7 @@
       </div>
     </section>
 
-    <!-- 9 • Real-world practice -->
+    <!-- 11 • Real‑World practice (fixed rendering) -->
     <section class="slide" id="realSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Real‑World Practice</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
@@ -295,7 +333,7 @@
       </div>
     </section>
 
-    <!-- 10 • Challenge Mode -->
+    <!-- 12 • Challenge -->
     <section class="slide" id="challengeSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Challenge Mode</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
@@ -322,24 +360,24 @@
       </div>
     </section>
 
-    <!-- 11 • Exit + Next -->
+    <!-- 13 • Exit + Next -->
     <section class="slide" id="exitSlide">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket &amp; Next Steps</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon">3–2–1 Reflect</h3>
           <ul class="list-disc list-inside">
-            <li>3 ways to decide if a number is rational vs irrational</li>
-            <li>2 examples you can place correctly in \( \mathbb N, \mathbb W, \mathbb Z, \mathbb Q \)</li>
+            <li>3 ways to decide **rational vs irrational**</li>
+            <li>2 examples you can place correctly in N/W/Z/Q</li>
             <li>1 question you still have</li>
           </ul>
         </div>
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon">Up Next</h3>
-          <p><b>Prime Factorization Toolkit</b> — Factors/Multiples, Prime/Composite, Factor Trees, HCF/LCM — which prepares us for operations with rational numbers.</p>
+          <p><b>Prime Factorization Toolkit</b> — Factors/Multiples • Prime/Composite • Factor Trees • HCF/LCM — prep for operations with rationals.</p>
         </div>
       </div>
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[100px] banner rounded-md" style="background-image:url('../assets/qla_banner.png')"></div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[100px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
     </section>
 
   </div>
@@ -349,7 +387,7 @@
 <div id="controls" role="group" aria-label="Slideshow controls">
   <button id="prev" title="Previous (←)">&laquo;</button>
   <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
-  <div id="counter">1 / 12</div>
+  <div id="counter">1 / 14</div>
   <button id="next" title="Next (→)">&raquo;</button>
 </div>
 <div id="progress"></div>
@@ -361,16 +399,16 @@
 </div>
 
 <script>
-/* ================= CORE HELPERS, NAV, MATH ================= */
+/* ============ Core helpers, nav, math, export ============ */
 (function(){
   const slides=[...document.querySelectorAll('.slide')];
   const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
-  const deckTitle='G7_Unit1_Number_System_Overview';
+  const deckTitle='G8_Unit1_Number_System_Overview_v2';
   let i=0;
 
   function id(x){return document.getElementById(x)}
   function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
-  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
   function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
     for(let k=0;k<20;k++){
       const d=document.createElement('div'); d.className='confetti';
@@ -382,7 +420,6 @@
                 {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
     }
   }
-  // exporting
   function downloadJSON(filename, data){
     const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob); const a=document.createElement('a');
@@ -394,7 +431,6 @@
     a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   }
 
-  // Navigation
   function show(k){
     i=(k+slides.length)%slides.length;
     slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
@@ -402,6 +438,7 @@
     progress.style.width=((i+1)/slides.length*100)+'%';
     const sid=slides[i].id||'';
     if(sid==='lineSlide') drawLine();
+    if(sid==='staticVennSlide') drawStaticVenn();
     renderMath(slides[i]);
   }
   prev.addEventListener('click',()=>show(i-1));
@@ -418,24 +455,30 @@
   }
   fsBtn.addEventListener('click',toggleFS);
 
-  /* ================= GLOSSARY POP ================= */
+  /* ---------- Keywords popover ---------- */
   const POP=id('pop'), POP_BODY=id('popBody');
   const GLOS={
-    N:'<strong>\\(\\mathbb N\\)</strong> natural numbers: 1,2,3, …',
-    W:'<strong>\\(\\mathbb W\\)</strong> whole numbers: 0,1,2,3, …',
-    Z:'<strong>\\(\\mathbb Z\\)</strong> integers: …, −2, −1, 0, 1, 2, …',
-    Q:'<strong>\\(\\mathbb Q\\)</strong> rational: numbers expressible as a fraction of integers; terminating or repeating decimals.',
-    irr:'<strong>Irrational</strong>: non‑terminating, non‑repeating decimals (e.g., \\(\\pi,\\sqrt2,e\\)).',
-    term:'<strong>Terminating decimal</strong>: finite digits after decimal point.',
-    rep:'<strong>Repeating decimal</strong>: infinite digits with repeating block (e.g., \\(0.\\overline{3}\\)).',
-    opp:'<strong>Opposite numbers</strong>: \\(x\\) and \\(-x\\), symmetric about 0.'
+    Nkey:'<strong>Natural numbers (N, \\(\\mathbb N\\))</strong>: 1,2,3, … (counting numbers).',
+    Wkey:'<strong>Whole numbers (W, \\(\\mathbb W\\))</strong>: 0,1,2,3, …',
+    Zkey:'<strong>Integers (Z, \\(\\mathbb Z\\))</strong>: …, −2, −1, 0, 1, 2, …',
+    Qkey:'<strong>Rational numbers (Q, \\(\\mathbb Q\\))</strong>: numbers that can be written as \\(\\tfrac ab\\) with integers a,b and b≠0 (includes terminating/repeating decimals).',
+    Ikey:'<strong>Irrational numbers</strong>: decimals that are non‑terminating and non‑repeating (e.g., \\(\\pi,\\sqrt2,e\\)).',
+    term:'<strong>Terminating decimal</strong>: finite digits (e.g., 0.25).',
+    rep:'<strong>Repeating decimal</strong>: infinite digits with repeating block (e.g., 0.\\overline{3}).',
+    opp:'<strong>Opposite numbers</strong>: \\(x\\) and \\(-x\\), symmetric about 0; same distance from 0.'
   };
   POP.querySelector('.close').addEventListener('click',()=>POP.style.display='none');
   document.addEventListener('click',e=>{
-    const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]){POP_BODY.innerHTML=GLOS[key]; POP.style.display='block'; const r=el.getBoundingClientRect(); POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px'; POP.style.bottom=(window.innerHeight-r.top+10)+'px'; renderMath(POP_BODY);}}
+    const el=e.target.closest('.chip[data-key]'); if(!el) return;
+    const key=el.dataset.key; if(!GLOS[key]) return;
+    POP_BODY.innerHTML=GLOS[key]; POP.style.display='block';
+    const r=el.getBoundingClientRect();
+    POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px';
+    POP.style.bottom=(window.innerHeight-r.top+10)+'px';
+    renderMath(POP_BODY);
   });
 
-  /* ================= Reveal panels ================= */
+  /* ---------- Tap-to-reveal content ---------- */
   const REV1={
     N:'\\(\\mathbb N=\\{1,2,3,\\dots\\}\\). Counting numbers.',
     W:'\\(\\mathbb W=\\{0,1,2,3,\\dots\\}\\). Includes 0.',
@@ -444,8 +487,8 @@
     I:'Irrational: not rational. Examples: \\(\\pi,\\ \\sqrt2,\\ e\\).'
   };
   const REV2={
-    term:'Terminating: e.g., \\(2.75,\\ 0.5,\\ 14.0\\).',
-    rep:'Repeating: e.g., \\(0.\\overline{3}=\\tfrac13\\), \\(2.\\overline{7}=\\tfrac{25}{9}\\).',
+    term:'Terminating: \\(2.75,\\ 0.5,\\ 14.0\\).',
+    rep:'Repeating: \\(0.\\overline{3}=\\tfrac13\\), \\(2.\\overline{7}=\\tfrac{25}{9}\\).',
     irr:'Non‑repeating, non‑terminating: \\(\\pi=3.14159\\dots,\\ \\sqrt2=1.4142\\dots\\)'
   };
   document.addEventListener('click',e=>{
@@ -453,13 +496,53 @@
     const d=e.target.closest('.revd'); if(d){id('revBox2').innerHTML='<div class="hint">'+REV2[d.dataset.t]+'</div>'; renderMath(id('revealSlide'));}
   });
 
-  /* ================= Number line explorer ================= */
-  const cL=id('numLine'); const pick=id('pickVal'), free=id('freeVal'), aOut=id('aOut'), negOut=id('negAOut');
-  const lineState={a:3/7};
+  /* ---------- NEW: Static Visual Venn ---------- */
+  function drawStaticVenn(){
+    const box=id('vennVis'); if(box.dataset.ready) return;
+    box.dataset.ready='1';
+    // Build nested divs (works on all browsers, easy to highlight)
+    const sets=[{k:'R', label:'ℝ (Real)', ex:'all real numbers'},
+                {k:'Q', label:'ℚ (Rational)', ex:'… , -1, 0, 1/2, 2.75, 0.\\overline{3}, …'},
+                {k:'Z', label:'ℤ (Integers)', ex:'…, -2, -1, 0, 1, 2, …'},
+                {k:'W', label:'𝕎 (Whole)', ex:'0, 1, 2, 3, …'},
+                {k:'N', label:'ℕ (Natural)', ex:'1, 2, 3, …'}];
+    const colors=['#f8fafc','#eef2ff','#e0f2fe','#dcfce7','#fff1f2'];
+    box.style.position='relative';
+    sets.forEach((s,idx)=>{
+      const ring=document.createElement('div');
+      ring.style.position='absolute';
+      ring.style.inset=`${8+idx*14}px ${8+idx*28}px ${8+idx*14}px ${8+idx*28}px`;
+      ring.style.borderRadius='50%';
+      ring.style.border='3px solid #C7A34F';
+      ring.style.background=colors[idx];
+      ring.dataset.set=s.k;
+      const tag=document.createElement('div');
+      tag.className='tag';
+      tag.style.left=(14+idx*16)+'px'; tag.style.top=(12+idx*10)+'px';
+      tag.innerHTML=`<b>${s.label}</b>`;
+      const ex=document.createElement('div');
+      ex.className='tag'; ex.style.right=(14+idx*18)+'px'; ex.style.bottom=(12+idx*10)+'px';
+      ex.innerHTML=`<span class="text-sm">e.g., ${s.ex}</span>`;
+      ring.appendChild(tag); ring.appendChild(ex);
+      box.appendChild(ring);
+    });
+    // highlight controls
+    box.parentElement.querySelectorAll('button[data-hl]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const t=btn.dataset.hl; box.querySelectorAll('div[data-set]').forEach(d=>d.classList.remove('highlight'));
+        if(t!=='none'){ const el=[...box.querySelectorAll('div[data-set]')].find(d=>d.dataset.set===t); if(el) el.classList.add('highlight'); }
+      });
+    });
+  }
+
+  /* ---------- Number line (improved) ---------- */
+  const cL=id('numLine'); const pick=id('pickVal'), free=id('freeVal');
+  const digits=id('digits'), zoom=id('zoom'), snapSel=id('snapSel');
+  const aOut=id('aOut'), negOut=id('negAOut'), absOut=id('absOut');
+  const lineState={a:3/7, digits:3, span:10, snap:'none', dragging:false};
 
   function parseNum(s){
-    s=(s||'').trim();
-    s=s.replace(/−/g,'-');
+    s=(s||'').trim().replace(/−/g,'-');
     if(s==='pi'||s==='π') return Math.PI;
     if(s==='e') return Math.E;
     const sq=s.match(/^(-?)sqrt\((\d+)\)$/i); if(sq){const sign=sq[1]==='-'?-1:1; return sign*Math.sqrt(Number(sq[2]));}
@@ -467,38 +550,57 @@
     if(!isNaN(Number(s))) return Number(s);
     return null;
   }
+  function applySnap(x){
+    const s=lineState.snap;
+    if(s==='none') return x;
+    const [n,d]=s.split('/').map(Number); const step=n/d;
+    return Math.round(x/step)*step;
+  }
   function drawLine(){
     const ctx=cL.getContext('2d'); cL.width=cL.clientWidth*devicePixelRatio; cL.height=cL.clientHeight*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio);
-    const y=cL.clientHeight/2, m=28; ctx.clearRect(0,0,cL.clientWidth,cL.clientHeight);
-    // choose a span around a
-    const a=lineState.a; const span= (Math.abs(a)<5?6: Math.ceil(Math.abs(a))+3);
-    const min=-span, max=span;
+    const y=cL.clientHeight/2, m=32; ctx.clearRect(0,0,cL.clientWidth,cL.clientHeight);
+    const span=Number(zoom.value); const min=-span, max=span;
     const map=x=> m+(x-min)*(cL.clientWidth-2*m)/(max-min);
-    // axis and ticks
+    // axis
     ctx.lineWidth=2; ctx.strokeStyle='#6C1D45'; ctx.beginPath(); ctx.moveTo(m,y); ctx.lineTo(cL.clientWidth-m,y); ctx.stroke();
-    ctx.font='12px Inter'; ctx.fillStyle='#555';
-    for(let t=Math.ceil(min); t<=Math.floor(max); t++){
-      const x=map(t); ctx.beginPath(); ctx.moveTo(x,y-8); ctx.lineTo(x,y+8); ctx.stroke();
-      ctx.fillText(String(t), x-4, y+24);
-    }
-    const ax=map(a), bx=map(-a);
+    // minor ticks every 0.5
+    ctx.strokeStyle='#bbb'; for(let t=Math.ceil(min*2)/2; t<=max; t+=0.5){ const x=map(t); ctx.beginPath(); ctx.moveTo(x,y-6); ctx.lineTo(x,y+6); ctx.stroke(); }
+    // integer ticks
+    ctx.strokeStyle='#6C1D45'; ctx.font='12px Inter'; ctx.fillStyle='#555';
+    for(let t=Math.ceil(min); t<=Math.floor(max); t++){ const x=map(t); ctx.beginPath(); ctx.moveTo(x,y-10); ctx.lineTo(x,y+10); ctx.stroke(); ctx.fillText(String(t),x-4,y+24);}
+    // point a and -a, with reflection shading
+    const a=lineState.a, b=-a;
+    const ax=map(a), bx=map(b);
+    // spotlight symmetric interval
+    ctx.fillStyle='rgba(199,163,79,.18)'; ctx.fillRect(Math.min(ax,bx), y-22, Math.abs(ax-bx), 44);
+    // zero marker
+    ctx.fillStyle='#6C1D45'; ctx.fillRect(map(0)-1, y-22, 2, 44);
     // points
     ctx.fillStyle='#6C1D45'; ctx.beginPath(); ctx.arc(ax,y,9,0,Math.PI*2); ctx.fill();
     ctx.fillStyle='#C7A34F'; ctx.beginPath(); ctx.arc(bx,y,9,0,Math.PI*2); ctx.fill();
-    aOut.textContent = a.toFixed(3).replace(/\.000$/,'');
-    negOut.textContent = (-a).toFixed(3).replace(/\.000$/,'');
+    // numeric readouts
+    const d=Number(digits.value);
+    aOut.textContent = a.toFixed(d); negOut.textContent = (-a).toFixed(d); absOut.textContent = Math.abs(a).toFixed(d);
   }
-  id('lineGo').addEventListener('click',()=>{
-    const s=free.value.trim()||pick.value; const v=parseNum(s);
-    if(v==null){alert('Enter a valid value, e.g., 3/7, -2/3, sqrt(5), pi, e'); return;}
-    lineState.a=v; drawLine();
-  });
-  id('lineExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_numberline.csv`, [['a','-a'], [lineState.a, -lineState.a]]));
-  id('lineExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_numberline.json`, {a:lineState.a, neg:-lineState.a}));
+  cL.addEventListener('mousedown',e=>{ lineState.dragging=true; movePoint(e);});
+  window.addEventListener('mouseup',()=>lineState.dragging=false);
+  window.addEventListener('mousemove',e=>{ if(lineState.dragging) movePoint(e);});
+  function movePoint(e){
+    const r=cL.getBoundingClientRect();
+    const span=Number(zoom.value); const min=-span, max=span;
+    const x= e.clientX - r.left; const val = min + (x-32)*(max-min)/(cL.clientWidth-64);
+    lineState.a = applySnap(val);
+    free.value = String(lineState.a);
+    drawLine();
+  }
+  id('lineGo').addEventListener('click',()=>{ const s=free.value.trim()||pick.value; const v=parseNum(s); if(v==null){alert('Enter a valid value, e.g., 3/7, -2/3, sqrt(5), pi, e'); return;} lineState.a=v; drawLine();});
+  digits.addEventListener('input',drawLine); zoom.addEventListener('input',drawLine); snapSel.addEventListener('change',()=>{ lineState.snap=snapSel.value; drawLine();});
+  id('lineExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_numberline.csv`, [['a','-a','|a|','digits','zoom','snap'], [lineState.a, -lineState.a, Math.abs(lineState.a), digits.value, zoom.value, snapSel.value]]));
+  id('lineExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_numberline.json`, {a:lineState.a, neg:-lineState.a, abs:Math.abs(lineState.a), digits:Number(digits.value), zoom:Number(zoom.value), snap:snapSel.value}));
   drawLine();
   window.addEventListener('resize',()=>{ if(slides[i].id==='lineSlide') drawLine(); });
 
-  /* ================= Classification (levels) ================= */
+  /* ---------- Classification (levels) ---------- */
   const clState={items:[]};
   const bankEasy=[
     {disp:'\\(5\\)', set:'N'}, {disp:'\\(0\\)', set:'W'}, {disp:'\\(-3\\)', set:'Z'},
@@ -515,7 +617,6 @@
   function clNew(){
     const lv=id('clLevel').value;
     const pool = lv==='easy'?bankEasy : lv==='med'? bankMed : bankHard;
-    // random 6
     clState.items = pool.sort(()=>Math.random()-0.5).slice(0,6);
     const box=id('clList'); box.innerHTML='';
     clState.items.forEach((o,idx)=>{
@@ -524,11 +625,11 @@
         <div class="text-xl mt-1">${o.disp} is in 
           <select class="clSel border rounded px-2 py-1">
             <option value="">— choose smallest set —</option>
-            <option value="N">\\(\\mathbb N\\)</option>
-            <option value="W">\\(\\mathbb W\\)</option>
-            <option value="Z">\\(\\mathbb Z\\)</option>
-            <option value="Q">\\(\\mathbb Q\\)</option>
-            <option value="I">Irrational</option>
+            <option value="N">Natural numbers N (ℕ)</option>
+            <option value="W">Whole numbers W (𝕎)</option>
+            <option value="Z">Integers Z (ℤ)</option>
+            <option value="Q">Rational numbers Q (ℚ)</option>
+            <option value="I">Irrational numbers</option>
           </select>
         </div>`;
       box.appendChild(row);
@@ -554,56 +655,17 @@
     downloadJSON(`${deckTitle}_classify.json`, data);
   });
 
-  /* ================= Venn drag & drop ================= */
-  const vennBank=id('vennBank'); const sets=[ 'N','W','Z','Q','I' ];
-  function vennChips(){
-    const chips=[
-      {text:'\\(5\\)', set:'N'},{text:'\\(0\\)', set:'W'},{text:'\\(-4\\)', set:'Z'},
-      {text:'\\(\\tfrac{7}{8}\\)', set:'Q'},{text:'\\(2.\\overline{7}\\)', set:'Q'},
-      {text:'\\(\\pi\\)', set:'I'},{text:'\\(\\sqrt2\\)', set:'I'},{text:'\\(-\\sqrt3\\)', set:'I'}
-    ].sort(()=>Math.random()-0.5);
-    vennBank.innerHTML='';
-    chips.forEach((c,idx)=>{
-      const el=document.createElement('span'); el.className='chip num'; el.innerHTML=c.text; el.draggable=true;
-      el.dataset.correct=c.set; el.dataset.home='bank'; vennBank.appendChild(el);
-      el.addEventListener('dragstart',()=>{ el.classList.add('dragging'); });
-      el.addEventListener('dragend',()=>{ el.classList.remove('dragging'); });
-    });
-    renderMath(id('vennSlide'));
-  }
-  function enableDrop(){
-    document.querySelectorAll('.setBox, #vennBank').forEach(box=>{
-      box.addEventListener('dragover',e=>{e.preventDefault()});
-      box.addEventListener('drop',e=>{
-        const el=document.querySelector('.chip.num.dragging'); if(el){ box.appendChild(el); el.dataset.home=box.classList.contains('setBox')? box.dataset.set : 'bank'; }
-      });
-    });
-  }
-  vennChips(); enableDrop();
-  id('vennNew').addEventListener('click',()=>{vennChips();});
-  id('vennCheck').addEventListener('click',()=>{
-    let ok=0, total=0; document.querySelectorAll('.chip.num').forEach(el=>{ total++; const good=(el.dataset.home===el.dataset.correct); el.style.outline = good? '2px solid #22c55e' : '2px solid #ef4444'; if(good) ok++; });
-    id('vennFb').textContent = ok===total? '✅ Perfect!' : `Score: ${ok}/${total}`; if(ok===total) confetti();
-  });
-  id('vennExportCSV').addEventListener('click',()=>{
-    const rows=[['chip','correct','home']];
-    document.querySelectorAll('.chip.num').forEach(el=>rows.push([el.textContent.trim(), el.dataset.correct, el.dataset.home]));
-    downloadCSV(`${deckTitle}_venn.csv`, rows);
-  });
-  id('vennExportJSON').addEventListener('click',()=>{
-    const data=[...document.querySelectorAll('.chip.num')].map(el=>({chip:el.textContent.trim(), correct:el.dataset.correct, home:el.dataset.home}));
-    downloadJSON(`${deckTitle}_venn.json`, data);
-  });
-
-  /* ================= Terminating vs Repeating (fractions) ================= */
+  /* ---------- Terminating vs Repeating (activity) ---------- */
   const trState={items:[]};
   const gcd=(a,b)=>{a=Math.abs(Math.trunc(a));b=Math.abs(Math.trunc(b));while(b){[a,b]=[b,a%b]}return a||1};
+  function dividesPowerOf10(b){ // search small k (no PF language for students)
+    b=Math.abs(b); for(let k=1;k<=12;k++){ if( (10**k) % b === 0) return true; } return false;
+  }
   function trNew(){
     const list=[];
     for(let k=0;k<6;k++){
       let a=Math.floor(Math.random()*30)-15; let b=[2,3,4,5,6,8,9,10,12,15,20][Math.floor(Math.random()*11)];
       if(b===0) b=1; if(a===0) a=1;
-      // reduce
       const g=gcd(a,b); a/=g; b/=g;
       list.push({a,b});
     }
@@ -623,13 +685,10 @@
     });
     renderMath(id('termRepSlide'));
   }
-  function only2and5(n){
-    n=Math.abs(n); while(n%2===0) n/=2; while(n%5===0) n/=5; return n===1;
-  }
   id('trNew').addEventListener('click',trNew); trNew();
   id('trCheck').addEventListener('click',()=>{
     let ok=0; [...document.querySelectorAll('#trList .card')].forEach((row,idx)=>{
-      const {a,b}=trState.items[idx]; const want=only2and5(b)?'T':'R'; const sel=row.querySelector('.trSel'); const val=sel.value;
+      const {a,b}=trState.items[idx]; const want=dividesPowerOf10(b)?'T':'R'; const sel=row.querySelector('.trSel'); const val=sel.value;
       sel.style.borderColor = (val===want)? '#22c55e':'#ef4444'; if(val===want) ok++;
     });
     id('trFb').textContent = ok===trState.items.length? '✅ Excellent!' : `Score: ${ok}/${trState.items.length}`;
@@ -637,38 +696,63 @@
   });
   id('trExportCSV').addEventListener('click',()=>{
     const rows=[['frac','correct','user']]; document.querySelectorAll('#trList .card').forEach((row,idx)=>{
-      const {a,b}=trState.items[idx]; const sel=row.querySelector('.trSel').value||''; rows.push([`${a}/${b}`, only2and5(b)?'T':'R', sel]);
+      const {a,b}=trState.items[idx]; const sel=row.querySelector('.trSel').value||''; rows.push([`${a}/${b}`, dividesPowerOf10(b)?'T':'R', sel]);
     }); downloadCSV(`${deckTitle}_term_vs_repeat.csv`, rows);
   });
   id('trExportJSON').addEventListener('click',()=>{
-    const data=[...document.querySelectorAll('#trList .card')].map((row,idx)=>({frac:`${trState.items[idx].a}/${trState.items[idx].b}`, correct:only2and5(trState.items[idx].b)?'T':'R', user:row.querySelector('.trSel').value||''}));
+    const data=[...document.querySelectorAll('#trList .card')].map((row,idx)=>({frac:`${trState.items[idx].a}/${trState.items[idx].b}`, correct:dividesPowerOf10(trState.items[idx].b)?'T':'R', user:row.querySelector('.trSel').value||''}));
     downloadJSON(`${deckTitle}_term_vs_repeat.json`, data);
   });
 
-  /* ================= Repeating decimal → fraction (pure repeats) ================= */
+  /* ---------- Repeating → Fraction (explainer mini-solvers) ---------- */
+  const rfGcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1};
+  function simplify(n,d){ const g=rfGcd(n,d); if(d<0) return [-n/g,-d/g]; return [n/g,d/g]; }
+
+  function parsePureRepeat(str){ // "0.\overline{27}" or "0.\overline{6}"
+    const m=str.match(/^0\.\s*\\overline\{(\d+)\}\s*$/);
+    return m? m[1]: null;
+  }
+  function parseIntRepeat(str){ // "3.\overline{45}"
+    const m=str.match(/^(\d+)\.\s*\\overline\{(\d+)\}\s*$/);
+    return m? [Number(m[1]), m[2]]: null;
+  }
+  id('repSolve').addEventListener('click',()=>{
+    const s=id('repIn').value.trim(); const block=parsePureRepeat(s);
+    if(!block){ id('repOut').innerHTML='<span class="text-red-700">Enter like 0.\\overline{27}</span>'; return; }
+    const r=block.length; const N=Number(block); const D=Number('9'.repeat(r));
+    const [n,d]=simplify(N,D);
+    id('repOut').innerHTML=`\\( ${s} = \\dfrac{${n}}{${d}} \\)`;
+    renderMath(id('repExplSlide'));
+  });
+  id('repSolve2').addEventListener('click',()=>{
+    const s=id('repIn2').value.trim(); const m=parseIntRepeat(s);
+    if(!m){ id('repOut2').innerHTML='<span class="text-red-700">Enter like 3.\\overline{45}</span>'; return; }
+    const I=m[0], block=m[1]; const r=block.length; const N=Number(block); const D=Number('9'.repeat(r));
+    const [n,d]=simplify(I*D+N, D);
+    id('repOut2').innerHTML=`\\( ${s} = \\dfrac{${n}}{${d}} \\)`;
+    renderMath(id('repExplSlide'));
+  });
+
+  /* ---------- Repeating → Fraction (activity) ---------- */
   const rfState={items:[]};
-  function simplify(n,d){ const g=gcd(n,d); d<0? (n=-n,d=-d):0; return [n/g,d/g]; }
   function genRepeat(){
     const items=[];
     for(let k=0;k<4;k++){
       const rlen=[1,2,3][Math.floor(Math.random()*3)];
-      const block = String(Math.floor(Math.random()*(10**rlen))).padStart(rlen,'7').slice(0,rlen); // avoid trivial 0s
-      const I = Math.floor(Math.random()*3); // integer part 0..2
-      const num = Number(block);
-      const den = 10**rlen - 1;
-      const n = I*den + num; const d = den;
-      const [N,D]=simplify(n,d);
-      items.push({I,block,rlen,ans:[N,D]});
+      let block=String(Math.floor(Math.random()*(10**rlen))).padStart(rlen,'7').slice(0,rlen);
+      const I=Math.floor(Math.random()*3); // 0..2
+      const num = I*('9'.repeat(rlen)) + Number(block);
+      const den = Number('9'.repeat(rlen));
+      const [N,D]=simplify(num,den);
+      items.push({I,block,len:rlen,ans:[N,D]});
     }
     rfState.items=items;
     const box=id('rfList'); box.innerHTML='';
     items.forEach((o,idx)=>{
       const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`
-        <div class="text-xl">\\( ${o.I}.\\overline{${o.block}} \\) = 
-          <input class="rfn border rounded px-2 py-1 w-20" placeholder="num"> / 
-          <input class="rfd border rounded px-2 py-1 w-20" placeholder="den">
-        </div>`;
+      row.innerHTML=`<div class="text-xl">\\( ${o.I}.\\overline{${o.block}} \\) = 
+        <input class="rfn border rounded px-2 py-1 w-20" placeholder="num"> / 
+        <input class="rfd border rounded px-2 py-1 w-20" placeholder="den"></div>`;
       box.appendChild(row);
     });
     renderMath(id('repFracSlide'));
@@ -690,14 +774,14 @@
   });
   id('rfExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_repeat_to_fraction.json`, rfState.items));
 
-  /* ================= Real-world ================= */
+  /* ---------- Real‑world practice (fixed render) ---------- */
   const realState={items:[]};
   function realNew(){
     const items=[];
-    items.push({q:'The ratio of a circle\'s circumference to its diameter is \(\\pi\\). Rational or irrational?', type:'choice', options:['rational','irrational'], ans:'irrational'});
-    items.push({q:'A bank balance of QAR −175.50 (in currency to two decimals). Which set best describes it?', type:'choice', options:['\\(\\mathbb Z\\)','\\(\\mathbb Q\\)','Irrational'], ans:'\\(\\mathbb Q\\)'});
-    items.push({q:'The diagonal of a square of side 7 cm has length \(7\\sqrt{2}\\). Rational or irrational?', type:'choice', options:['rational','irrational'], ans:'irrational'});
-    items.push({q:'A probability of exactly \\(\\tfrac{3}{8}\\). Which set?', type:'choice', options:['\\(\\mathbb Z\\)','\\(\\mathbb Q\\)','Irrational'], ans:'\\(\\mathbb Q\\)'});
+    items.push({q:'The ratio of a circle\\\'s circumference to its diameter is \\(\\pi\\). Rational or irrational?', type:'choice', options:['rational','irrational'], ans:'irrational'});
+    items.push({q:'A bank balance of QAR \\(-175.50\\) (currency shows two decimals). Which set best describes it?', type:'choice', options:['Integers ℤ','Rational numbers ℚ','Irrational'], ans:'Rational numbers ℚ'});
+    items.push({q:'The diagonal of a square of side 7 cm has length \\(7\\sqrt{2}\\). Rational or irrational?', type:'choice', options:['rational','irrational'], ans:'irrational'});
+    items.push({q:'A probability of exactly \\(\\tfrac{3}{8}\\). Which set?', type:'choice', options:['Integers ℤ','Rational numbers ℚ','Irrational'], ans:'Rational numbers ℚ'});
     realState.items=items;
     const box=id('realList'); box.innerHTML='';
     items.forEach((o,idx)=>{
@@ -727,34 +811,31 @@
     downloadJSON(`${deckTitle}_realworld.json`, data);
   });
 
-  /* ================= Challenge Mode ================= */
+  /* ---------- Challenge ---------- */
   const chState={cur:null, streak:0, history:[]};
   function chNew(){
     const lv=id('chLevel').value; let prompt='', ans=null;
-    const r=Math.random();
     if(lv==='easy'){
-      const choices=[
-        {disp:'\\(6\\)', set:'N'}, {disp:'\\(0\\)', set:'W'}, {disp:'\\(-9\\)', set:'Z'}, {disp:'\\(\\tfrac12\\)', set:'Q'}, {disp:'\\(\\sqrt3\\)', set:'I'}
-      ];
-      const it=choices[Math.floor(Math.random()*choices.length)];
-      prompt = `Smallest set for ${it.disp}`; ans=it.set;
+      const it=[{d:'\\(6\\)',a:'N'},{d:'\\(0\\)',a:'W'},{d:'\\(-9\\)',a:'Z'},{d:'\\(\\tfrac12\\)',a:'Q'},{d:'\\(\\sqrt3\\)',a:'I'}][Math.floor(Math.random()*5)];
+      prompt=`Smallest set for ${it.d} (type N/W/Z/Q/I)`; ans=it.a;
     } else if(lv==='med'){
-      const it=[ '\\(0.\\overline{6}\\)','\\(2.75\\)','\\(\\pi\\)','\\(\\sqrt{50}\\)'][Math.floor(Math.random()*4)];
-      const corr = (it.includes('\\overline')||it.includes('2.75'))?'Q':'I';
-      prompt=`Classify ${it}: \\(\\mathbb Q\\) or Irrational? (type Q or I)`; ans=corr;
+      const it=['\\(0.\\overline{6}\\)','\\(2.75\\)','\\(\\pi\\)','\\(\\sqrt{50}\\)'][Math.floor(Math.random()*4)];
+      const corr=(it.includes('\\overline')||it.includes('2.75'))?'Q':'I';
+      prompt=`Classify ${it}: Q (rational) or I (irrational)`; ans=corr;
     } else {
-      const it=[ '\\(\\tfrac{7}{80}\\)','\\(\\tfrac{5}{12}\\)','\\(\\tfrac{9}{40}\\)'][Math.floor(Math.random()*3)];
-      const [a,b]= it.match(/\d+/g).map(Number);
-      const term = only2and5(b)?'T':'R';
-      prompt=`For ${it}: decimal is T (terminating) or R (repeating)?`; ans=term;
+      const fracs=['\\(\\tfrac{7}{80}\\)','\\(\\tfrac{5}{12}\\)','\\(\\tfrac{9}{40}\\)'];
+      const pick=fracs[Math.floor(Math.random()*fracs.length)];
+      const b=Number(pick.match(/\d+\/(\d+)/)[1]);
+      const term = dividesPowerOf10(b)?'T':'R';
+      prompt=`For ${pick}: decimal is T (terminating) or R (repeating)`; ans=term;
     }
     chState.cur={prompt,ans}; id('chText').innerHTML=prompt; id('chAns').value=''; id('chFb').textContent=''; id('chHintBox').textContent=''; renderMath(id('challengeSlide'));
   }
   id('chNew').addEventListener('click',chNew); chNew();
-  id('chHint').addEventListener('click',()=>{ id('chHintBox').innerHTML=`<div class="hint">Recall: \\(\\mathbb N\\subset\\mathbb W\\subset\\mathbb Z\\subset\\mathbb Q\\subset\\mathbb R\\). For \\(\\tfrac ab\\): only 2s/5s in \\(b\\Rightarrow\\) terminating; otherwise repeating.</div>`; renderMath(id('challengeSlide'));});
+  id('chHint').addEventListener('click',()=>{ id('chHintBox').innerHTML=`<div class="hint">Remember: \\(\\mathbb N\\subset\\mathbb W\\subset\\mathbb Z\\subset\\mathbb Q\\subset\\mathbb R\\). Terminating/Repeating ⇒ rational.</div>`; renderMath(id('challengeSlide')); });
   id('chCheck').addEventListener('click',()=>{
-    const got=id('chAns').value.trim(); const want=chState.cur.ans;
-    const ok = (got.toUpperCase()===String(want).toUpperCase());
+    const got=id('chAns').value.trim().toUpperCase(); const want=String(chState.cur.ans).toUpperCase();
+    const ok = got===want;
     if(ok){ chState.streak++; id('chFb').textContent='✅ Correct!'; id('chFb').className='mt-2 h-6 font-semibold text-green-700'; confetti(); chState.history.push({prompt:chState.cur.prompt, ans:want, correct:true}); chNew();}
     else { chState.streak=0; id('chFb').textContent='❌ Not quite.'; id('chFb').className='mt-2 h-6 font-semibold text-red-700'; chState.history.push({prompt:chState.cur.prompt, ans:want, correct:false}); }
     id('streakOut').textContent=chState.streak;
@@ -764,14 +845,10 @@
   });
   id('chExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_challenge.json`, chState.history));
 
-  /* ================= Warm-up page extras: none ================= */
-
-  /* ================= Slide init ================= */
+  /* ---------- Init ---------- */
   window.addEventListener('resize',()=>{ if(slides[i].id==='lineSlide') drawLine(); });
   show(0);
 })();
 </script>
 </body>
 </html>
-
-
