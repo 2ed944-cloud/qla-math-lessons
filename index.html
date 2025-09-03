@@ -208,41 +208,99 @@
 
   <script>
     // --------- Course Outline data ----------
-    const grade7Units = [
-      { name:"Unit 1 — Numbers (Rational Numbers)", lessons:[
-        "Opposites (positive & negative)","Addition & subtraction of rational numbers",
-        "Multiplication & division of rational numbers","Combined operations (BEDMAS)"
-      ]},
-      { name:"Unit 2 — Properties of Numbers & Fractions", lessons:[
-        "Factors & multiples","HCF & LCM","Prime & composite numbers","Repeated division & factor tree",
-        "Equivalent fractions","Proper & improper fractions","Simplifying fractions","Comparing fractions",
-        "Adding & subtracting fractions","Multiplying fractions","Dividing fractions","Word problems on fractions"
-      ]},
-      { name:"Unit 3 — Expressions (Linear)", lessons:[
-        "Rules for writing algebraic expressions","Collecting like terms","Algebraic products",
-        "Evaluating algebraic expressions","Expanding brackets (worksheet)","Factorising expressions (worksheet)"
-      ]},
-      { name:"Unit 4 — Equations (Linear)", lessons:[
-        "Solving one-step equations","Solving two-step equations","Solving multi-step equations"
-      ]},
-      { name:"Unit 5 — Ratios & Proportional Relationships", lessons:[
-        "Expressing ratios & writing ratios as fractions","Simplifying & equivalent ratios",
-        "Problem solving with ratios","Using ratios to divide quantities"
-      ]},
-      { name:"Unit 7 — Coordinates", lessons:[
-        "Plotting positive & negative coordinates","Plotting from a table of values",
-        "Graphing straight lines (12D.1 Q1; 12D.2 Q1–Q2)","Drawing linear graphs (worksheet)",
-        "Horizontal & vertical lines","Using intercepts to draw lines (worksheet)"
-      ]},
-      { name:"Unit 8 — Statistics", lessons:[
-        "Tally & frequency tables","Grouping data (worksheet)","Reading bar charts","Drawing bar charts",
-        "Stem-and-leaf plots","Mode, median, mean & range","Mean from a frequency table (worksheet)"
-      ]},
-      { name:"Unit 9 — Probability (Simple)", lessons:[
-        "Describing probability","Assigning numbers to probability","Sample space","Compound events",
-        "Probability trees (worksheet)","Theoretical probability","Complementary events"
-      ]}
-    ];
+   const grade7Units = [
+  {
+    num: 1,
+    when: "Sep–Nov 2025 (9 wks)",
+    name: "Unit 1 — Numbers; Properties of Numbers & Fractions",
+    lessons: [
+      "Number System Overview (Rational & Irrational Numbers)",
+      "Prime Factorization Toolkit (Factors/Multiples • Prime/Composite • Factor Trees • HCF/LCM)",
+      "Comparing & Simplifying Rational Numbers",
+      "Add/Sub across Rationals",
+      "Multiply/Divide across Rationals",
+      "Absolute Value of Numbers",
+      "Applications & Word Problems",
+      "BEDMAS with Rationals"
+    ]
+  },
+  {
+    num: 3,
+    when: "Nov–Dec 2025 (3 wks)",
+    name: "Unit 3 — Expressions (Linear Expressions)",
+    lessons: [
+      "Rules for Writing Algebraic Expressions (p. 142–143)",
+      "Simplify by Collecting Like Terms (p. 151)",
+      "Algebraic Products (p. 152)",
+      "Evaluating Algebraic Expressions (p. 153)",
+      "Expanding Brackets (Worksheet)",
+      "Factorizing Expressions (Worksheet)"
+    ]
+  },
+  {
+    num: 4,
+    when: "Dec 2025 (2 wks)",
+    name: "Unit 4 — Equations (Solving Linear Equations)",
+    lessons: [
+      "Solving One‑step Equations (p. 191)",
+      "Solving Two‑step Equations (p. 196–197)",
+      "Multi‑step Equations (p. 197–198)"
+    ]
+  },
+  {
+    num: 5,
+    when: "Jan–Feb 2026 (2 wks)",
+    name: "Unit 5 — Ratios & Proportional Relationships",
+    lessons: [
+      "Expressing Ratios (p. 291) & Writing Ratios as Fractions (p. 292)",
+      "Simplifying & Equivalent Ratios (p. 294–295)",
+      "Problem Solving Using Ratios (p. 296)",
+      "Using Ratios to Divide Quantities (p. 297)"
+    ]
+  },
+  {
+    num: 7,
+    when: "Feb–Mar 2026 (3 wks)",
+    name: "Unit 7 — Coordinates (Coordinate Plane)",
+    lessons: [
+      "Plotting Positive & Negative Coordinates (p. 256)",
+      "Plotting Points from a Table of Values (p. 258)",
+      "Graphing Straight Lines (p. 259) — Ex. 12D.1 Q1; 12D.2 Q1–Q2",
+      "Drawing Linear Graphs (Worksheet)",
+      "Horizontal & Vertical Lines (p. 261)",
+      "Drawing Using X, Y Intercepts (Worksheet)"
+    ]
+  },
+  {
+    num: 8,
+    when: "Apr 2026 (3 wks)",
+    name: "Unit 8 — Statistics & Probability — Statistics",
+    lessons: [
+      "Tally & Frequency Tables (p. 358)",
+      "Grouping Data (Worksheet)",
+      "Reading Bar Charts (p. 360)",
+      "Drawing Bar Charts (p. 366) — Q1, Q2, Q4",
+      "Stem & Leaf Plots (p. 365)",
+      "Mode, Median, Mean & Range (p. 370–372)",
+      "Mean from a Frequency Table (Worksheet)"
+    ]
+  },
+  {
+    num: 9,
+    when: "May–Jun 2026 (4 wks)",
+    name: "Unit 9 — Statistics & Probability — Simple Probability",
+    lessons: [
+      "Describing Probability (p. 308)",
+      "Assigning Numbers to Probability (p. 311)",
+      "Sample Space (p. 312)",
+      "Compound Events (p. 323)",
+      "Probability Trees (Worksheet)",
+      "Theoretical Probability (p. 314)",
+      "Complementary Events (p. 318)"
+    ]
+  }
+];
+
 
     const grade8Units = [
       { name:"Unit 1 — The Number System", lessons:[
