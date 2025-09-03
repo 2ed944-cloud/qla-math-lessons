@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>G7 • Unit 1 • Lesson 3 — Prime Factorization Toolkit (QLA)</title>
+
+<!-- Fonts & Tailwind -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- KaTeX: CSS + JS (robust auto-render bootstrap) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script>
+  /* Boot KaTeX once DOM is parsed; expose global helper for re-typeset after dynamic updates. */
+  window.addEventListener('DOMContentLoaded', () => {
+    const run = (root = document.body) => {
+      if (!window.renderMathInElement) return;
+      window.renderMathInElement(root, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '\\[', right: '\\]', display: true },
+          { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+      });
+    };
+    if (window.renderMathInElement) run();
+    else {
+      const t = setInterval(() => {
+        if (window.renderMathInElement) { clearInterval(t); run(); }
+      }, 25);
+      setTimeout(() => clearInterval(t), 6000);
+    }
+    window._rerenderMath = run;
+  });
+</script>
+
+<style>
+  :root{--maroon:#6C1D45;--gold:#C7A34F;--dark:#2C2C2E;--light:#F5F5F5;--accent:#E8D5B7}
+  html,body{height:100%;background:#2d3748;color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+  /* Stage */
+  #deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
+  #slides{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
+  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
+  .slide.active{opacity:1;transform:none;pointer-events:auto}
+  .bg-maroon{background-color:var(--maroon)} .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
+  .banner{width:100%;height:120px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
+  .card{border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
+  .chip{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.05);border-radius:9999px;padding:.35rem .75rem;cursor:pointer}
+  .chip:hover{outline:2px solid var(--gold)}
+  .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
+  .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+  .btn:hover{filter:brightness(0.98)}
+  #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
+  #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700}
+  #controls button:hover{transform:scale(1.06)}
+  #counter{color:#fff;font-weight:700;min-width:84px;text-align:center}
+  #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:30;transition:width .35s ease}
+  #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
+
+  /* Popover (glossary) */
+  #pop{position:fixed;inset:auto auto 20px 20px;max-width:min(560px,90vw);background:#fff;border:2px solid var(--gold);border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.25);padding:14px 16px;z-index:40;display:none;text-align:left}
+  #pop strong{color:var(--maroon)} #pop .close{float:right;color:#666;cursor:pointer;font-weight:800}
+
+  /* Canvases */
+  .wide-wrap{width:100%;max-width:980px}
+  canvas.tree{width:100%;height:300px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
+
+  .sortable li{user-select:none}.sortable .dragging{opacity:.5}
+  .confetti{position:fixed;pointer-events:none;z-index:50}
+  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
+
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+  .workline{padding:.25rem .5rem;border-left:4px solid var(--gold);margin:.25rem 0;background:#fff}
+</style>
+</head>
+<body>
+
+<div id="deck" aria-live="polite">
+  <div id="slides" class="relative">
+    <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
+
+    <!-- 0 • Title -->
+    <section class="slide active bg-maroon text-white">
+      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('../assets/qla_banner.png')" aria-label="QLA Partner Banner"></div>
+      <div class="flex items-center gap-8">
+        <img src="../assets/qla_logo.png" alt="QLA Logo" class="h-24 w-auto" onerror="this.style.display='none'"/>
+        <div class="text-left">
+          <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Unit 1 — The Number System</h1>
+          <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Lesson 3: Prime Factorization Toolkit</p>
+          <p class="mt-2 text-lg">Qatar Leadership Academy — Grade 7</p>
+        </div>
+      </div>
+      <div class="absolute bottom-6 text-sm text-gray-100">Aligned to AERO 7.NS.1–2 foundations. Member of Qatar Foundation.</div>
+    </section>
+
+    <!-- 1 • LOs + Keywords -->
+    <section class="slide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Learning Objectives &amp; Keywords</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Objectives</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Classify numbers as <strong>prime</strong> or <strong>composite</strong>; list <strong>factors</strong> and <strong>multiples</strong>.</li>
+            <li>Build and justify <strong>factor trees</strong>; write prime factorization in <strong>exponent form</strong>.</li>
+            <li>Find the <strong>HCF/GCF</strong> (Greatest Common Factor) and <strong>LCM</strong> of two or three integers using prime exponents and the Euclidean algorithm.</li>
+            <li>Apply HCF/LCM to <strong>simplify fractions</strong> and to solve <strong>real‑world scheduling/tiling/packaging</strong> problems.</li>
+            <li>Diagnose errors; solve <strong>challenge puzzles</strong> under constraints (divisibility, number of factors).</li>
+          </ul>
+          <p class="text-xs text-gray-500 mt-2">Standards: AERO 7.NS (structure of the number system) and 7.EE.3 (multi‑step applications).</p>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <div class="flex flex-wrap gap-2 text-lg">
+            <span class="chip" data-key="prime">prime</span>
+            <span class="chip" data-key="composite">composite</span>
+            <span class="chip" data-key="factor">factor</span>
+            <span class="chip" data-key="multiple">multiple</span>
+            <span class="chip" data-key="factorTree">factor tree</span>
+            <span class="chip" data-key="pfe">prime factorization (exponents)</span>
+            <span class="chip" data-key="hcf">HCF / GCF</span>
+            <span class="chip" data-key="lcm">LCM</span>
+            <span class="chip" data-key="euclid">Euclidean algorithm</span>
+            <span class="chip" data-key="divrule">divisibility</span>
+          </div>
+          <p class="text-xs text-gray-500 mt-3">We connect factorization to HCF/LCM and everyday contexts.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 • Warm‑Up -->
+    <section class="slide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm‑Up: Factors vs. Multiples</h2>
+      <div class="grid md:grid-cols-3 gap-4 w-full max-w-5xl">
+        <div class="card p-4">
+          <div class="font-bold text-maroon mb-1">Divisibility</div>
+          <div class="text-2xl">\( 84 \div 3 = 28 \Rightarrow 3 \) is a factor of \(84\).</div>
+        </div>
+        <div class="card p-4">
+          <div class="font-bold text-maroon mb-1">Prime vs. Composite</div>
+          <div class="text-2xl">\( 29 \) is prime; \( 30=2\cdot3\cdot5 \) is composite.</div>
+        </div>
+        <div class="card p-4">
+          <div class="font-bold text-maroon mb-1">Multiples</div>
+          <div class="text-2xl">Multiples of \(6\): \(6,12,18,24,\dots\)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 • Classify: Prime or Composite -->
+    <section class="slide" id="pcSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Classify Numbers: Prime or Composite</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div id="pcList" class="grid md:grid-cols-4 gap-2"></div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button id="pcNew" class="btn">New set</button>
+          <button id="pcCheck" class="btn maroon">Check</button>
+          <button id="pcExportCSV" class="btn">Export CSV</button>
+          <button id="pcExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="pcFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+      <div class="hint mt-3 text-left text-sm">1 is neither prime nor composite. A prime has exactly two positive factors: 1 and itself.</div>
+    </section>
+
+    <!-- 4 • Pick all Factors / Multiples -->
+    <section class="slide" id="fmSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Pick the Factors &amp; Multiples</h2>
+      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-1">All factors of target</h3>
+          <div id="fTarget" class="text-lg mb-2"></div>
+          <div id="fChoices" class="grid grid-cols-3 gap-2"></div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-1">All multiples of target</h3>
+          <div id="mTarget" class="text-lg mb-2"></div>
+          <div id="mChoices" class="grid grid-cols-3 gap-2"></div>
+        </div>
+      </div>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <button id="fmNew" class="btn">New set</button>
+        <button id="fmCheck" class="btn maroon">Check</button>
+        <button id="fmExportCSV" class="btn">Export CSV</button>
+        <button id="fmExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="fmFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- 5 • Factor Tree Playground -->
+    <section class="slide" id="treeSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Factor Tree Playground</h2>
+      <p class="text-gray-600 mb-2">Split composites into two factors until all leaves are prime. The exponent form auto‑updates.</p>
+      <div class="wide-wrap"><canvas id="treeCanvas" class="tree" aria-label="Factor tree canvas"></canvas></div>
+      <div class="mt-3 flex flex-wrap items-center gap-2 text-sm">
+        <label class="chip">Number: <input id="treeN" class="border rounded px-2 py-1 w-28" value="360"/></label>
+        <label class="chip">Split leaf: <input id="splitLeaf" class="border rounded px-2 py-1 w-24" placeholder="leaf"/></label>
+        <label class="chip">as <input id="splitA" class="border rounded px-2 py-1 w-16" placeholder="a"> × <input id="splitB" class="border rounded px-2 py-1 w-16" placeholder="b"></label>
+        <button id="treeSplit" class="btn">Split</button>
+        <button id="treeAuto" class="btn">Auto‑split</button>
+        <button id="treeReset" class="btn">Reset</button>
+        <button id="treeExportCSV" class="btn">Export CSV</button>
+        <button id="treeExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div class="mt-2 text-lg">Prime factorization: <b id="treeOut"></b></div>
+      <div id="treeFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- 6 • Prime Factorization (Exponent Form) -->
+    <section class="slide" id="pfSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Prime Factorization (Exponent Form)</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <p class="mb-2">Write each number as a product of primes using exponents, e.g., \( 360=2^{3}\cdot 3^{2}\cdot 5^{1} \).</p>
+        <div id="pfList" class="grid md:grid-cols-2 gap-3"></div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button id="pfNew" class="btn">New set</button>
+          <button id="pfCheck" class="btn maroon">Check</button>
+          <button id="pfExportCSV" class="btn">Export CSV</button>
+          <button id="pfExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="pfFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- 7 • HCF/GCF & LCM Explorer -->
+    <section class="slide" id="gclSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Explorer: HCF/GCF and LCM</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div class="flex flex-wrap items-center gap-2 text-sm">
+          <label class="chip">a = <input id="gA" class="border rounded px-2 py-1 w-24" value="84"></label>
+          <label class="chip">b = <input id="gB" class="border rounded px-2 py-1 w-24" value="120"></label>
+          <label class="chip">c = <input id="gC" class="border rounded px-2 py-1 w-24" value=""></label>
+          <button id="gRun" class="btn maroon">Compute</button>
+          <button id="gRand" class="btn">Randomize</button>
+          <button id="gExportCSV" class="btn">Export CSV</button>
+          <button id="gExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4 mt-3">
+          <div class="card p-4">
+            <div class="font-semibold text-maroon mb-1">Prime Exponent Method</div>
+            <div id="gPrimeOut" class="text-lg"></div>
+          </div>
+          <div class="card p-4">
+            <div class="font-semibold text-maroon mb-1">Euclidean Algorithm (GCF trace)</div>
+            <div id="gEuclidOut" class="text-lg"></div>
+          </div>
+        </div>
+        <div class="mt-2 text-lg">Results: HCF/GCF = <b id="gGCF"></b>, LCM = <b id="gLCM"></b></div>
+      </div>
+      <div class="hint mt-3 text-left text-sm">For two numbers \(a,b\): \(ab=\mathrm{GCF}(a,b)\cdot \mathrm{LCM}(a,b)\). For three, take exponent‑wise mins/maxes across all prime factors.</div>
+    </section>
+
+    <!-- 8 • Practice: Compute HCF & LCM -->
+    <section class="slide" id="glPractice">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice: HCF &amp; LCM</h2>
+      <div id="glList" class="w-full max-w-5xl grid md:grid-cols-2 gap-3"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="glCheck" class="btn maroon">Check</button>
+        <button id="glNew" class="btn">New set</button>
+        <button id="glExportCSV" class="btn">Export CSV</button>
+        <button id="glExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="glFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- 9 • Applications: Simplify Fractions & Common Denominators -->
+    <section class="slide" id="appSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Applications: Simplify &amp; Common Denominators</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div id="appList" class="grid md:grid-cols-2 gap-3"></div>
+        <div class="mt-3 flex gap-2">
+          <button id="appCheck" class="btn maroon">Check</button>
+          <button id="appNew" class="btn">New set</button>
+          <button id="appExportCSV" class="btn">Export CSV</button>
+          <button id="appExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="appFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- 10 • Real‑World Problems -->
+    <section class="slide" id="realSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Real‑World Practice</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div id="realList" class="grid md:grid-cols-2 gap-3"></div>
+        <div class="mt-3 flex gap-2">
+          <button id="realNew" class="btn">New set</button>
+          <button id="realCheck" class="btn maroon">Check</button>
+          <button id="realExportCSV" class="btn">Export CSV</button>
+          <button id="realExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="realFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- 11 • Challenge Problems -->
+    <section class="slide" id="challengeSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Challenge: Constraints &amp; Puzzles</h2>
+      <div class="grid md:grid-cols-2 gap-6 w-full max-w-5xl text-left">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-1">Mystery Number</h3>
+          <div id="mystPrompt" class="text-lg mb-2"></div>
+          <div>Answer: <input id="mystAns" class="border rounded px-2 py-1 w-40" placeholder="enter number"></div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-1">Given GCF &amp; LCM</h3>
+          <div id="gcPairPrompt" class="text-lg mb-2"></div>
+          <div class="text-sm">Enter one valid pair \( (a,b) \) with those values:</div>
+          <div class="mt-1">a = <input id="gcA" class="border rounded px-2 py-1 w-24">, b = <input id="gcB" class="border rounded px-2 py-1 w-24"></div>
+        </div>
+      </div>
+      <div class="mt-3 flex gap-2">
+        <button id="chCheck" class="btn maroon">Check</button>
+        <button id="chNew" class="btn">New set</button>
+        <button id="chExportCSV" class="btn">Export CSV</button>
+        <button id="chExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="chFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- 12 • Error Analysis -->
+    <section class="slide" id="errSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Error Analysis</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div id="errBox" class="text-lg"></div>
+        <div class="mt-2">
+          <label class="mr-2"><input type="radio" name="errChoice" value="A"> Misclassified prime/composite</label><br/>
+          <label class="mr-2"><input type="radio" name="errChoice" value="B"> Wrong prime factorization / tree split</label><br/>
+          <label class="mr-2"><input type="radio" name="errChoice" value="C"> Incorrect GCF/LCM rule</label><br/>
+          <label class="mr-2"><input type="radio" name="errChoice" value="D"> Application mistake (fraction simplification / LCM)</label>
+        </div>
+        <div class="mt-2 flex gap-2">
+          <button id="errCheck" class="btn maroon">Check</button>
+          <button id="errReveal" class="btn">Reveal correct work</button>
+          <button id="errNew" class="btn">New example</button>
+          <button id="errExportCSV" class="btn">Export CSV</button>
+          <button id="errExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="errFb" class="mt-2 h-6 font-semibold"></div>
+        <div id="errRevealBox" class="mt-2 text-sm"></div>
+      </div>
+    </section>
+
+    <!-- 13 • Mixed Practice Generator -->
+    <section class="slide" id="mixSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice Generator (levels)</h2>
+      <div class="card p-5 w-full max-w-3xl text-left">
+        <div class="flex items-center gap-3">
+          <span>Difficulty:</span>
+          <select id="mixLevel" class="border rounded px-2 py-1">
+            <option value="easy">easy (prime/composite; small factors)</option>
+            <option value="med" selected>medium (factorization; GCF/LCM two numbers)</option>
+            <option value="hard">hard (three numbers; constraints/puzzles)</option>
+          </select>
+          <button id="mixNew" class="btn">New question</button>
+        </div>
+        <div class="mt-3 text-2xl">Task: <span id="mixQ" class="font-extrabold"></span></div>
+        <div class="mt-2">
+          <input id="mixAns" class="border rounded px-3 py-2 w-72" placeholder="e.g., prime; 2^3·3^2·5; GCF=6, LCM=90; number=84" />
+          <button id="mixCheck" class="btn maroon">Check</button>
+          <button id="mixHint" class="btn">Hint</button>
+          <button id="mixExportCSV" class="btn">Export CSV</button>
+          <button id="mixExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="mixHintBox" class="mt-3 text-sm"></div>
+        <div id="mixFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- 14 • Exit Ticket -->
+    <section class="slide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">3–2–1 Reflect</h3>
+          <ul class="list-disc list-inside">
+            <li>3 takeaways about factors, primes, and exponents</li>
+            <li>2 ways to find HCF/LCM (and when to use each)</li>
+            <li>1 question you still have</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">Up Next</h3>
+          <p>We will combine factorization with **rational operations** and multi‑step expressions (AERO 7.EE).</p>
+        </div>
+      </div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[110px] banner rounded-md" style="background-image:url('../assets/qla_banner.png')"></div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Controls -->
+<div id="controls" role="group" aria-label="Slideshow controls">
+  <button id="prev" title="Previous (←)">&laquo;</button>
+  <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
+  <div id="counter">1 / 15</div>
+  <button id="next" title="Next (→)">&raquo;</button>
+</div>
+<div id="progress"></div>
+
+<!-- Glossary popover -->
+<div id="pop" role="dialog" aria-modal="true" aria-live="polite">
+  <span class="close" title="Close">✕</span>
+  <div id="popBody"></div>
+</div>
+
+<script>
+/* ---------- Deck Navigation, Export Helpers, Number Theory Engine, Activities ---------- */
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
+  const deckTitle='G7_Unit1_L3_PrimeToolkit_QLA';
+  let i=0;
+
+  function show(k){
+    i=(k+slides.length)%slides.length;
+    slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
+    counter.textContent=(i+1)+' / '+slides.length;
+    progress.style.width=((i+1)/slides.length*100)+'%';
+    if(slides[i].id==='treeSlide') drawTree();
+    renderMath(slides[i]);
+  }
+  prev.addEventListener('click',()=>show(i-1));
+  next.addEventListener('click',()=>show(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight') show(i+1);
+    if(e.key==='ArrowLeft') show(i-1);
+    if(e.key.toLowerCase()==='f') toggleFS();
+  });
+  function toggleFS(){
+    const el=id('slides');
+    if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);}
+    else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(document);}
+  }
+  fsBtn.addEventListener('click',toggleFS);
+
+  function id(x){return document.getElementById(x)}
+  function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
+  function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
+    for(let k=0;k<18;k++){
+      const d=document.createElement('div'); d.className='confetti';
+      d.style.left=x+'px'; d.style.top=y+'px'; d.style.width='8px'; d.style.height='8px';
+      d.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8a3d64'][k%4];
+      document.body.appendChild(d);
+      const dx=(Math.random()*2-1)*240, dy=(Math.random()*-1-0.3)*300, rot=Math.random()*720;
+      d.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],
+                {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
+    }
+  }
+  function downloadJSON(filename, data){
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob); const a=document.createElement('a');
+    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+  function downloadCSV(filename, rows){
+    const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
+    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+
+  /* ---------- Glossary ---------- */
+  const POP=id('pop'), POP_BODY=id('popBody');
+  const GLOS={
+    prime:'<strong>Prime</strong>: integer ≥2 with exactly two positive factors (1 and itself).',
+    composite:'<strong>Composite</strong>: integer ≥2 with more than two positive factors.',
+    factor:'<strong>Factor</strong>: a whole number that divides another exactly.',
+    multiple:'<strong>Multiple</strong>: product of a number with an integer (e.g., multiples of 6 are 6,12,18, ...).',
+    factorTree:'<strong>Factor tree</strong>: splitting a composite into factors until all leaves are primes.',
+    pfe:'<strong>Prime factorization (exponents)</strong>: writing a number as \\( \\prod p_i^{e_i}\\).',
+    hcf:'<strong>HCF/GCF</strong>: greatest common factor; max shared factor among numbers.',
+    lcm:'<strong>LCM</strong>: least common multiple; smallest positive number that is a multiple of each.',
+    euclid:'<strong>Euclidean algorithm</strong>: repeated remainders to find GCF efficiently.',
+    divrule:'<strong>Divisibility rule</strong>: quick checks (sum of digits, last digit, etc.).'
+  };
+  function showPop(html,anchor){
+    POP_BODY.innerHTML=html; POP.style.display='block';
+    const r=anchor?anchor.getBoundingClientRect():{left:20,top:window.innerHeight-120};
+    POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px';
+    POP.style.bottom=(window.innerHeight - r.top + 10)+'px';
+  }
+  POP.querySelector('.close').addEventListener('click',()=>POP.style.display='none');
+  document.addEventListener('click',e=>{
+    const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]) showPop(GLOS[key], el);}
+  });
+
+  /* ---------- Number theory helpers ---------- */
+  function isPrime(n){
+    n=Math.floor(n);
+    if(n<2) return false;
+    if(n%2===0) return n===2;
+    for(let p=3;p*p<=n;p+=2) if(n%p===0) return false;
+    return true;
+  }
+  function factors(n){
+    n=Math.abs(Math.floor(n));
+    const list=[];
+    for(let d=1; d*d<=n; d++){
+      if(n%d===0){ list.push(d); if(d*d!==n) list.push(n/d); }
+    }
+    return list.sort((a,b)=>a-b);
+  }
+  function multiples(n,k=12){ return Array.from({length:k},(_,i)=>n*(i+1)); }
+  function primeFactorMap(n){
+    n=Math.abs(Math.floor(n));
+    const m=new Map(); let x=n; let p=2;
+    while(p*p<=x){
+      while(x%p===0){ m.set(p,(m.get(p)||0)+1); x/=p; }
+      p=(p===2)?3:p+2;
+    }
+    if(x>1) m.set(x,(m.get(x)||0)+1);
+    return m;
+  }
+  function mapToObj(m){ const o={}; m.forEach((v,k)=>o[k]=v); return o; }
+  const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1};
+  const lcm2=(a,b)=> Math.abs(a*b)/gcd(a,b);
+  function gcdArr(arr){ return arr.reduce((g,x)=>gcd(g,x)); }
+  function lcmArr(arr){ return arr.reduce((L,x)=>lcm2(L,x)); }
+  function gcfByPrimes(arr){
+    const maps=arr.map(primeFactorMap);
+    const primes=[...new Set(maps.flatMap(m=>[...m.keys()]))].sort((x,y)=>x-y);
+    const g={}, l={};
+    primes.forEach(p=>{
+      const exps=maps.map(m=>m.get(p)||0);
+      g[p]=Math.min(...exps);
+      l[p]=Math.max(...exps);
+    });
+    const pow=(obj)=>Object.keys(obj).reduce((acc,p)=>acc*Math.pow(+p,obj[p]),1);
+    return {gExp:g,lExp:l,gVal:pow(g),lVal:pow(l)};
+  }
+  function fmtExp(obj){ const keys=Object.keys(obj).filter(k=>obj[k]>0).map(k=>+k).sort((a,b)=>a-b);
+    if(keys.length===0) return '1';
+    return keys.map(p=>` ${p}^{${obj[p]}}`).join('\\cdot');
+  }
+
+  /* ---------- Slide 3: Prime / Composite classify ---------- */
+  const pcState={set:[]};
+  function pcNew(){
+    const nums=new Set();
+    while(nums.size<8){
+      const x=Math.floor(Math.random()*98)+2; // 2..99
+      nums.add(x);
+    }
+    pcState.set=[...nums].sort((a,b)=>a-b).map(n=>({n,prime:isPrime(n)}));
+    const box=id('pcList'); box.innerHTML='';
+    pcState.set.forEach((o,idx)=>{
+      const row=document.createElement('div'); row.className='card p-3 flex items-center justify-between';
+      row.innerHTML=`<div class="text-xl">\\( ${o.n} \\)</div>
+        <div class="flex gap-2">
+          <label class="pill"><input type="radio" name="pc_${idx}" value="P" class="mr-1">Prime</label>
+          <label class="pill"><input type="radio" name="pc_${idx}" value="C" class="mr-1">Composite</label>
+        </div>`;
+      box.appendChild(row);
+    });
+    renderMath(id('pcSlide'));
+  }
+  function pcCheck(){
+    let ok=0; pcState.set.forEach((o,idx)=>{
+      const sel=[...document.getElementsByName('pc_'+idx)].find(x=>x.checked)?.value||'';
+      const want=o.prime?'P':'C';
+      const row=id('pcList').children[idx];
+      if(sel===want){ row.style.borderColor='#22c55e'; ok++; } else row.style.borderColor='#ef4444';
+    });
+    id('pcFb').textContent= ok===pcState.set.length? '✅ All correct!' : 'Score: '+ok+'/'+pcState.set.length;
+    if(ok===pcState.set.length) confetti();
+  }
+  id('pcNew').addEventListener('click',pcNew);
+  id('pcCheck').addEventListener('click',pcCheck);
+  id('pcExportCSV').addEventListener('click',()=>{
+    const rows=[['number','isPrime','userChoice']];
+    pcState.set.forEach((o,idx)=>{
+      const sel=[...document.getElementsByName('pc_'+idx)].find(x=>x.checked)?.value||'';
+      rows.push([o.n,o.prime?'Prime':'Composite', sel==='P'?'Prime':sel==='C'?'Composite':'']);
+    });
+    downloadCSV(`${deckTitle}_prime_composite.csv`, rows);
+  });
+  id('pcExportJSON').addEventListener('click',()=>{
+    const data=pcState.set.map((o,idx)=>({number:o.n, isPrime:o.prime, user:[...document.getElementsByName('pc_'+idx)].find(x=>x.checked)?.value||''}));
+    downloadJSON(`${deckTitle}_prime_composite.json`, data);
+  });
+  pcNew();
+
+  /* ---------- Slide 4: Pick Factors & Multiples ---------- */
+  const fmState={FT:0,MT:0,Fset:[],Mset:[],Fok:new Set(),Mok:new Set()};
+  function sample(arr,k){ const a=[...arr]; a.sort(()=>Math.random()-0.5); return a.slice(0,k) }
+  function fmNew(){
+    const FT = Math.floor(Math.random()*72)+18; // 18..89
+    const base=[1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,18,20,21,24,25,27,28,30];
+    const Fchoices = sample(base.concat(sample(multiples(FT,4),6)),9).map(x=>Math.floor(Math.random()*2)? x : Math.floor(Math.random()*90)+2);
+    // ensure mix
+    const Fset=new Set(Fchoices); factors(FT).forEach(d=>Fset.add(d));
+    const Fpool=[...Fset].filter(x=>x>0).slice(0,12).sort((a,b)=>a-b);
+
+    const Mbase = multiples(Math.floor(Math.random()*10)+3,12);
+    const MT = Math.floor(Math.random()*12)+4;
+    const Mchoices = sample(Mbase,9).map(x=>Math.floor(Math.random()*2)? x : x+1);
+    const Mset=new Set(Mchoices); multiples(MT,6).forEach(v=>Mset.add(v));
+    const Mpool=[...Mset].slice(0,12).sort((a,b)=>a-b);
+
+    fmState.FT=FT; fmState.MT=MT; fmState.Fset=Fpool; fmState.Mset=Mpool;
+    id('fTarget').innerHTML=`Pick all factors of \\( ${FT} \\).`;
+    id('mTarget').innerHTML=`Pick all multiples of \\( ${MT} \\) below 100.`;
+    const Fbox=id('fChoices'); Fbox.innerHTML='';
+    Fpool.forEach(v=>{
+      const lab=document.createElement('label'); lab.className='pill';
+      lab.innerHTML=`<input type="checkbox" value="${v}" class="mr-1">${v}`;
+      Fbox.appendChild(lab);
+    });
+    const Mbox=id('mChoices'); Mbox.innerHTML='';
+    Mpool.forEach(v=>{
+      const lab=document.createElement('label'); lab.className='pill';
+      lab.innerHTML=`<input type="checkbox" value="${v}" class="mr-1">${v}`;
+      Mbox.appendChild(lab);
+    });
+    renderMath(id('fmSlide'));
+  }
+  function fmCheck(){
+    const Fsel=[...id('fChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
+    const Msel=[...id('mChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
+    const Fwant=new Set(factors(fmState.FT));
+    const Mwant=new Set(multiples(fmState.MT,12).filter(x=>x<100));
+    let goodF=true, goodM=true;
+    [...id('fChoices').children].forEach(l=>{
+      const v=+l.querySelector('input').value;
+      const ok=Fwant.has(v); l.style.borderColor = ( (Fsel.includes(v)&&ok) || (!Fsel.includes(v)&&!ok) )? '#22c55e':'#ef4444';
+      if(l.style.borderColor==='#ef4444') goodF=false;
+    });
+    [...id('mChoices').children].forEach(l=>{
+      const v=+l.querySelector('input').value;
+      const ok=Mwant.has(v); l.style.borderColor = ( (Msel.includes(v)&&ok) || (!Msel.includes(v)&&!ok) )? '#22c55e':'#ef4444';
+      if(l.style.borderColor==='#ef4444') goodM=false;
+    });
+    id('fmFb').textContent = (goodF&&goodM)? '✅ Excellent selections!' : 'Some selections need revision (red).';
+    if(goodF&&goodM) confetti();
+  }
+  id('fmNew').addEventListener('click',fmNew); fmNew();
+  id('fmCheck').addEventListener('click',fmCheck);
+  id('fmExportCSV').addEventListener('click',()=>{
+    const Fsel=[...id('fChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
+    const Msel=[...id('mChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
+    const rows=[['task','target','choices','correct','user'],
+      ['factors', fmState.FT, fmState.Fset.join(' '), factors(fmState.FT).join(' '), Fsel.join(' ')],
+      ['multiples', fmState.MT, fmState.Mset.join(' '), multiples(fmState.MT,12).filter(x=>x<100).join(' '), Msel.join(' ')]];
+    downloadCSV(`${deckTitle}_factors_multiples.csv`, rows);
+  });
+  id('fmExportJSON').addEventListener('click',()=>{
+    const Fsel=[...id('fChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
+    const Msel=[...id('mChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
+    downloadJSON(`${deckTitle}_factors_multiples.json`, {
+      factors:{target:fmState.FT, choices:fmState.Fset, correct:factors(fmState.FT), user:Fsel},
+      multiples:{target:fmState.MT, choices:fmState.Mset, correct:multiples(fmState.MT,12).filter(x=>x<100), user:Msel}
+    });
+  });
+
+  /* ---------- Slide 5: Factor Tree Playground ---------- */
+  const treeCanvas=id('treeCanvas'), treeN=id('treeN'), splitLeaf=id('splitLeaf'), splitA=id('splitA'), splitB=id('splitB');
+  const treeState={root:360, nodes:{}, edges:[], leaves:new Set(), steps:[]};
+  function treeBuild(n){ // reset with single root
+    treeState.root=Math.max(2,Math.floor(n));
+    treeState.nodes={};
+    treeState.edges=[];
+    treeState.leaves=new Set([treeState.root]);
+    treeState.steps=[];
+    drawTree(); updateTreeOut();
+  }
+  function nodeIsLeaf(v){ return treeState.leaves.has(v); }
+  function splitNode(v,a,b){
+    v=+v; a=+a; b=+b;
+    if(!nodeIsLeaf(v)){ treeFb('Choose a current leaf to split.'); return false; }
+    if(a*b!==v || a<2 || b<2){ treeFb('Invalid split. Enter two integers ≥2 whose product is the leaf.'); return false; }
+    // update leaves
+    treeState.leaves.delete(v);
+    treeState.leaves.add(a); treeState.leaves.add(b);
+    treeState.edges.push([v,a],[v,b]);
+    treeState.steps.push(`${v} → ${a}×${b}`);
+    drawTree(); updateTreeOut(); treeFb('');
+    return true;
+  }
+  function treeFb(msg){ id('treeFb').textContent=msg; }
+
+  function autoSplit(){
+    // repeatedly split any composite leaf by a small prime
+    let changed=true, guard=0;
+    while(changed && guard<200){
+      changed=false; guard++;
+      const leaves=[...treeState.leaves];
+      for(const v of leaves){
+        if(isPrime(v)) continue;
+        // find a small factor
+        let f=2; while(f<=Math.sqrt(v) && v%f!==0) f++;
+        const a=(v%f===0)? f : 1;
+        if(a>1){ splitNode(v,a, v/a); changed=true; break; }
+      }
+    }
+  }
+  function drawTree(){
+    const ctx=treeCanvas.getContext('2d');
+    treeCanvas.width=treeCanvas.clientWidth*devicePixelRatio;
+    treeCanvas.height=treeCanvas.clientHeight*devicePixelRatio;
+    ctx.scale(devicePixelRatio,devicePixelRatio);
+    const W=treeCanvas.clientWidth, H=treeCanvas.clientHeight;
+    ctx.clearRect(0,0,W,H);
+    // compute a simple layout: BFS levels by value height (depth = number of splits from root)
+    const children=new Map();
+    treeState.edges.forEach(([p,c])=>{
+      if(!children.has(p)) children.set(p,[]);
+      children.get(p).push(c);
+    });
+    const levels=[]; const pos=new Map();
+    function dfs(v,depth){
+      if(!levels[depth]) levels[depth]=[];
+      levels[depth].push(v);
+      if(children.has(v)){ children.get(v).forEach(c=>dfs(c,depth+1)); }
+    }
+    dfs(treeState.root,0);
+    // set positions
+    levels.forEach((arr,depth)=>{
+      const y=60+depth*((H-120)/Math.max(1,levels.length-1));
+      arr.forEach((v,idx)=>{
+        const x=(W/(arr.length+1))*(idx+1);
+        pos.set(v,{x,y});
+      });
+    });
+    // edges
+    ctx.strokeStyle='#6C1D45'; ctx.lineWidth=2;
+    treeState.edges.forEach(([p,c])=>{
+      const a=pos.get(p), b=pos.get(c);
+      ctx.beginPath(); ctx.moveTo(a.x,a.y+12); ctx.lineTo(b.x,b.y-12); ctx.stroke();
+    });
+    // nodes
+    function drawNode(v){
+      const {x,y}=pos.get(v);
+      const isLeaf=treeState.leaves.has(v);
+      ctx.fillStyle=isLeaf? (isPrime(v)?'#C7A34F':'#E8D5B7'):'#fff';
+      ctx.strokeStyle=isLeaf? (isPrime(v)?'#C7A34F':'#999'):'#6C1D45';
+      ctx.lineWidth=2;
+      const w=38,h=24; ctx.beginPath(); ctx.roundRect(x-w/2,y-h/2,w,h,6); ctx.fill(); ctx.stroke();
+      ctx.fillStyle='#2C2C2E'; ctx.font='14px Inter'; const text=String(v); const tw=ctx.measureText(text).width;
+      ctx.fillText(text, x-tw/2, y+5);
+    }
+    const allNodes=new Set([treeState.root, ...treeState.edges.flat()]);
+    [...allNodes].forEach(drawNode);
+  }
+  function updateTreeOut(){
+    // multiply primes of leaves equals root; report prime factorization exponents from all leaves
+    const primes=[...treeState.leaves].filter(isPrime);
+    // if there are composite leaves, don't finalize
+    const hasComposite=[...treeState.leaves].some(v=>!isPrime(v));
+    const mult = primes.reduce((a,b)=>a*b,1);
+    const exp=mapToObj(primeFactorMap(mult));
+    id('treeOut').innerHTML = hasComposite? '(in progress)' : `\\( ${fmtExp(exp)} \\)`;
+    renderMath(id('treeSlide'));
+  }
+  id('treeSplit').addEventListener('click',()=>{
+    splitNode(splitLeaf.value, splitA.value, splitB.value);
+  });
+  id('treeAuto').addEventListener('click',()=>{ autoSplit(); if([...treeState.leaves].every(isPrime)) confetti(); });
+  id('treeReset').addEventListener('click',()=>{ treeBuild(Number(treeN.value||360)); });
+  treeN.addEventListener('change',()=>{ treeBuild(Number(treeN.value||360)); });
+  id('treeExportCSV').addEventListener('click',()=>{
+    const rows=[['root','steps','leaves','final_exp']];
+    const exp=mapToObj(primeFactorMap([...[treeState.leaves]].reduce((a,b)=>a*b,1)));
+    rows.push([treeState.root, treeState.steps.join(' | '), [...treeState.leaves].join(' '), fmtExp(exp)]);
+    downloadCSV(`${deckTitle}_factor_tree.csv`, rows);
+  });
+  id('treeExportJSON').addEventListener('click',()=>{
+    const exp=mapToObj(primeFactorMap([...[treeState.leaves]].reduce((a,b)=>a*b,1)));
+    downloadJSON(`${deckTitle}_factor_tree.json`, {root:treeState.root, steps:treeState.steps, leaves:[...treeState.leaves], finalExp:exp});
+  });
+  treeBuild(360);
+
+  /* ---------- Slide 6: Prime Factorization (Exponent Form) ---------- */
+  const pfState={set:[], primes:[2,3,5,7,11,13,17,19]};
+  function buildN(exps){ return pfState.primes.reduce((acc,p)=>acc*Math.pow(p,exps[p]||0),1) }
+  function pfNew(){
+    const list=[];
+    while(list.length<4){
+      const exps={};
+      pfState.primes.forEach(p=>{
+        let e=0;
+        if(p<=5) e=Math.floor(Math.random()*3);      // 0..2
+        else if(p<=11) e=Math.random()<0.7?0:1;      // sparse
+        else e=Math.random()<0.85?0:1;
+        exps[p]=e;
+      });
+      if(Object.values(exps).every(e=>e===0)) exps[2]=1;
+      const n=buildN(exps);
+      if(n>=40 && n<=5000){ list.push({n,exps}); }
+    }
+    pfState.set=list;
+    const box=id('pfList'); box.innerHTML='';
+    pfState.set.forEach((o,idx)=>{
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-xl mb-1">\\( ${o.n} = 2^{\\square}\\cdot 3^{\\square}\\cdot 5^{\\square}\\cdot 7^{\\square}\\cdot 11^{\\square}\\cdot 13^{\\square}\\cdot 17^{\\square}\\cdot 19^{\\square} \\)</div>
+        <div class="flex flex-wrap gap-2 text-sm">
+        ${pfState.primes.map(p=>`<label class="chip">${p}: <input class="pfexp border rounded px-2 py-1 w-16" id="pf_${idx}_${p}" placeholder="exp"></label>`).join('')}
+        </div>`;
+      box.appendChild(row);
+    });
+    renderMath(id('pfSlide'));
+  }
+  function pfCheck(){
+    let total=0,ok=0;
+    pfState.set.forEach((o,idx)=>{
+      total++; let good=true;
+      pfState.primes.forEach(p=>{
+        const inp=id(`pf_${idx}_${p}`); const g=Number(inp.value||0); const want=o.exps[p]||0;
+        if(g===want){ inp.style.borderColor='#22c55e'; } else { inp.style.borderColor='#ef4444'; good=false; }
+      });
+      if(good) ok++;
+    });
+    id('pfFb').textContent= ok===total ? '✅ All correct!' : 'Score: '+ok+'/'+total; if(ok===total) confetti();
+  }
+  id('pfNew').addEventListener('click',pfNew); pfNew();
+  id('pfCheck').addEventListener('click',pfCheck);
+  id('pfExportCSV').addEventListener('click',()=>{
+    const rows=[['n',...pfState.primes.map(p=>`exp_${p}`), ...pfState.primes.map(p=>`user_${p}`)]];
+    pfState.set.forEach((o,idx)=>{
+      const want=pfState.primes.map(p=>o.exps[p]||0);
+      const got=pfState.primes.map(p=>Number((id(`pf_${idx}_${p}`).value||0)));
+      rows.push([o.n, ...want, ...got]);
+    });
+    downloadCSV(`${deckTitle}_prime_factorization.csv`, rows);
+  });
+  id('pfExportJSON').addEventListener('click',()=>{
+    const data=pfState.set.map((o,idx)=>({n:o.n, want:o.exps, got:Object.fromEntries(pfState.primes.map(p=>[p,Number((id(`pf_${idx}_${p}`).value||0))]))}));
+    downloadJSON(`${deckTitle}_prime_factorization.json`, data);
+  });
+
+  /* ---------- Slide 7: HCF/GCF & LCM Explorer ---------- */
+  function euclidTrace(a,b){
+    a=Math.abs(a); b=Math.abs(b); const steps=[];
+    while(b){ steps.push(`${a} = ${b}\\cdot ${Math.floor(a/b)} + ${a%b}`); [a,b]=[b,a%b]; }
+    return {g:a, trace:steps};
+  }
+  function gRun(){
+    const A=Number(id('gA').value||0), B=Number(id('gB').value||0), C=Number(id('gC').value||0);
+    const nums=[A,B].filter(x=>x>0); if(C>0) nums.push(C);
+    if(nums.length<2){ id('gGCF').textContent='—'; id('gLCM').textContent='—'; id('gPrimeOut').innerHTML='Enter at least two integers.'; id('gEuclidOut').innerHTML=''; return; }
+    const {gExp,lExp,gVal,lVal}=gcfByPrimes(nums);
+    id('gPrimeOut').innerHTML = `
+      \\( \\text{HCF}= ${fmtExp(gExp)} = ${gVal} \\) <br/>
+      \\( \\text{LCM}= ${fmtExp(lExp)} = ${lVal} \\)`;
+    const e1=euclidTrace(A,B); id('gEuclidOut').innerHTML = e1.trace.map((t,i)=>`<div class="workline">${i+1}) \\( ${t} \\)</div>`).join('');
+    id('gGCF').textContent=gVal; id('gLCM').textContent=lVal;
+    renderMath(id('gclSlide'));
+  }
+  id('gRun').addEventListener('click',gRun);
+  id('gRand').addEventListener('click',()=>{
+    id('gA').value=Math.floor(Math.random()*140)+30;
+    id('gB').value=Math.floor(Math.random()*140)+30;
+    id('gC').value=Math.random()<0.4? (Math.floor(Math.random()*60)+12): '';
+    gRun();
+  });
+  id('gExportCSV').addEventListener('click',()=>{
+    const rows=[['a','b','c','GCF','LCM'], [id('gA').value,id('gB').value,id('gC').value||'', id('gGCF').textContent, id('gLCM').textContent]];
+    downloadCSV(`${deckTitle}_gcf_lcm_explorer.csv`, rows);
+  });
+  id('gExportJSON').addEventListener('click',()=>{
+    downloadJSON(`${deckTitle}_gcf_lcm_explorer.json`, {a:id('gA').value,b:id('gB').value,c:id('gC').value||null,gcf:id('gGCF').textContent,lcm:id('gLCM').textContent});
+  });
+  gRun();
+
+  /* ---------- Slide 8: Practice HCF & LCM ---------- */
+  const glState={items:[]};
+  function glNew(){
+    glState.items=[];
+    const box=id('glList'); box.innerHTML='';
+    for(let k=0;k<4;k++){
+      const a=Math.floor(Math.random()*120)+24;
+      const b=Math.floor(Math.random()*120)+24;
+      const t=Math.random();
+      const c = t<0.35? Math.floor(Math.random()*60)+12 : null;
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${k+1}</div>
+        <div class="text-xl mt-1">\\( a=${a},\\; b=${b} ${c? ',\\; c='+c:''} \\)</div>
+        <div class="mt-2">HCF/GCF = <input class="gcin border rounded px-2 py-1 w-28"> &nbsp; LCM = <input class="lcmin border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row);
+      glState.items.push({a,b,c});
+    }
+    renderMath(id('glPractice'));
+  }
+  glNew(); id('glNew').addEventListener('click',glNew);
+  id('glCheck').addEventListener('click',()=>{
+    let total=0,ok=0;
+    [...id('glList').children].forEach((row,idx)=>{
+      total++;
+      const {a,b,c}=glState.items[idx];
+      const arr=[a,b, ...(c?[c]:[])];
+      const {gVal,lVal}=gcfByPrimes(arr);
+      const gIn=row.querySelector('.gcin'), lIn=row.querySelector('.lcmin');
+      let good=true;
+      if(Number(gIn.value)==gVal){ gIn.style.borderColor='#22c55e'; } else { gIn.style.borderColor='#ef4444'; good=false; }
+      if(Number(lIn.value)==lVal){ lIn.style.borderColor='#22c55e'; } else { lIn.style.borderColor='#ef4444'; good=false; }
+      if(good) ok++;
+    });
+    id('glFb').textContent= ok===total? '✅ All correct!' : 'Score: '+ok+'/'+total; if(ok===total) confetti();
+  });
+  id('glExportCSV').addEventListener('click',()=>{
+    const rows=[['a','b','c','HCF','LCM','user_HCF','user_LCM']];
+    [...id('glList').children].forEach((row,idx)=>{
+      const {a,b,c}=glState.items[idx];
+      const arr=[a,b, ...(c?[c]:[])]; const {gVal,lVal}=gcfByPrimes(arr);
+      rows.push([a,b,c||'', gVal,lVal, row.querySelector('.gcin').value||'', row.querySelector('.lcmin').value||'']);
+    });
+    downloadCSV(`${deckTitle}_gcf_lcm_practice.csv`, rows);
+  });
+  id('glExportJSON').addEventListener('click',()=>{
+    const data=[...id('glList').children].map((row,idx)=>{
+      const {a,b,c}=glState.items[idx];
+      const arr=[a,b, ...(c?[c]:[])]; const {gVal,lVal}=gcfByPrimes(arr);
+      return {a,b,c, correct:{gcf:gVal,lcm:lVal}, user:{gcf:row.querySelector('.gcin').value||'', lcm:row.querySelector('.lcmin').value||''}}
+    });
+    downloadJSON(`${deckTitle}_gcf_lcm_practice.json`, data);
+  });
+
+  /* ---------- Slide 9: Applications ---------- */
+  const appState={items:[]};
+  function appNew(){
+    appState.items=[];
+    const box=id('appList'); box.innerHTML='';
+    // Simplify fractions (GCF)
+    for(let k=0;k<2;k++){
+      const d=[6,8,9,10,12,14,15,18,20][Math.floor(Math.random()*9)];
+      const n=Math.floor(Math.random()*(3*d-1))+1;
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Simplify the fraction</div>
+        <div class="text-xl mt-1">\\( \\frac{${n}}{${d}} = \\)</div>
+        <div class="mt-2">Answer: <input class="sfNum border rounded px-2 py-1 w-24" placeholder="num"> / <input class="sfDen border rounded px-2 py-1 w-24" placeholder="den"></div>`;
+      box.appendChild(row);
+      appState.items.push({type:'simplify', n,d});
+    }
+    // Common denominator (LCM)
+    for(let k=0;k<2;k++){
+      const d1=[3,4,5,6,8,9,10,12][Math.floor(Math.random()*8)];
+      const d2=[4,5,6,7,8,10,12][Math.floor(Math.random()*7)];
+      const a=Math.floor(Math.random()*d1), b=Math.floor(Math.random()*d2);
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Find a common denominator via LCM</div>
+        <div class="text-xl mt-1">\\( \\frac{${a}}{${d1}} \\text{ and } \\frac{${b}}{${d2}} \\)</div>
+        <div class="mt-2">LCM = <input class="lcd border rounded px-2 py-1 w-24" placeholder="LCM"> &nbsp; 
+          Equivalent: \\( \\frac{${a}}{${d1}}= \\) <input class="eqA border rounded px-2 py-1 w-24"> / <input class="edA border rounded px-2 py-1 w-24">,
+          \\( \\frac{${b}}{${d2}}= \\) <input class="eqB border rounded px-2 py-1 w-24"> / <input class="edB border rounded px-2 py-1 w-24">
+        </div>`;
+      box.appendChild(row);
+      appState.items.push({type:'lcd', a,d1,b,d2});
+    }
+    renderMath(id('appSlide'));
+  }
+  appNew(); id('appNew').addEventListener('click',appNew);
+  id('appCheck').addEventListener('click',()=>{
+    let total=0,ok=0; const cards=[...id('appList').children];
+    cards.forEach((row,idx)=>{
+      total++;
+      const it=appState.items[idx];
+      let good=true;
+      if(it.type==='simplify'){
+        const g=gcd(it.n,it.d); const N=it.n/g, D=it.d/g;
+        const n=Number(row.querySelector('.sfNum').value), d=Number(row.querySelector('.sfDen').value);
+        if(n===N && d===D){ row.querySelector('.sfNum').style.borderColor='#22c55e'; row.querySelector('.sfDen').style.borderColor='#22c55e'; }
+        else { row.querySelector('.sfNum').style.borderColor='#ef4444'; row.querySelector('.sfDen').style.borderColor='#ef4444'; good=false; }
+      } else {
+        const L=lcm2(it.d1,it.d2);
+        const lIn=row.querySelector('.lcd'); if(Number(lIn.value)==L){ lIn.style.borderColor='#22c55e'; } else { lIn.style.borderColor='#ef4444'; good=false; }
+        const eqA=row.querySelector('.eqA'), edA=row.querySelector('.edA'), eqB=row.querySelector('.eqB'), edB=row.querySelector('.edB');
+        const A=it.a*(L/it.d1), B=it.b*(L/it.d2);
+        if(Number(eqA.value)==A && Number(edA.value)==L){ eqA.style.borderColor=edA.style.borderColor='#22c55e'; } else { eqA.style.borderColor=edA.style.borderColor='#ef4444'; good=false; }
+        if(Number(eqB.value)==B && Number(edB.value)==L){ eqB.style.borderColor=edB.style.borderColor='#22c55e'; } else { eqB.style.borderColor=edB.style.borderColor='#ef4444'; good=false; }
+      }
+      if(good) ok++;
+    });
+    id('appFb').textContent= ok===total?'✅ Nice work!':'Score: '+ok+'/'+total; if(ok===total) confetti();
+  });
+  id('appExportCSV').addEventListener('click',()=>{
+    const rows=[['type','prompt','correct','user']];
+    [...id('appList').children].forEach((row,idx)=>{
+      const it=appState.items[idx];
+      if(it.type==='simplify'){
+        const g=gcd(it.n,it.d); const N=it.n/g, D=it.d/g;
+        rows.push(['simplify', `${it.n}/${it.d}`, `${N}/${D}`, `${row.querySelector('.sfNum').value||''}/${row.querySelector('.sfDen').value||''}`]);
+      } else {
+        const L=lcm2(it.d1,it.d2);
+        const A=it.a*(L/it.d1), B=it.b*(L/it.d2);
+        rows.push(['lcd', `${it.a}/${it.d1} & ${it.b}/${it.d2}`, `LCM=${L}; ${A}/${L}; ${B}/${L}`,
+          `LCM=${row.querySelector('.lcd').value||''}; ${row.querySelector('.eqA').value||''}/${row.querySelector('.edA').value||''}; ${row.querySelector('.eqB').value||''}/${row.querySelector('.edB').value||''}`]);
+      }
+    });
+    downloadCSV(`${deckTitle}_applications.csv`, rows);
+  });
+  id('appExportJSON').addEventListener('click',()=>{
+    const data=[...id('appList').children].map((row,idx)=>{
+      const it=appState.items[idx];
+      if(it.type==='simplify'){
+        const g=gcd(it.n,it.d); const N=it.n/g, D=it.d/g;
+        return {type:'simplify', prompt:`${it.n}/${it.d}`, correct:{n:N,d:D}, user:{n:row.querySelector('.sfNum').value||'', d:row.querySelector('.sfDen').value||''}};
+      } else {
+        const L=lcm2(it.d1,it.d2);
+        const A=it.a*(L/it.d1), B=it.b*(L/it.d2);
+        return {type:'lcd', prompt:{a:it.a,d1:it.d1,b:it.b,d2:it.d2}, correct:{LCM:L,Aeq:[A,L],Beq:[B,L]},
+                user:{LCM:row.querySelector('.lcd').value||'', Aeq:[row.querySelector('.eqA').value||'', row.querySelector('.edA').value||''], Beq:[row.querySelector('.eqB').value||'', row.querySelector('.edB').value||'']}};
+      }
+    });
+    downloadJSON(`${deckTitle}_applications.json`, data);
+  });
+
+  /* ---------- Slide 10: Real‑World Problems ---------- */
+  const realState={items:[]};
+  function realTemplates(){
+    const items=[];
+    // Tiling a floor (GCF for tile size)
+    const L=rand(180,360), W=rand(120,300); // cm
+    items.push({text:`Floor: ${L} cm by ${W} cm. What is the largest square tile that fits perfectly? (HCF)`, ans:gcd(L,W), suffix:'cm'});
+    // Schedules meeting (LCM for sync)
+    const a=rand(6,12), b=rand(8,15);
+    items.push({text:`Buses: Bus A every ${a} min, Bus B every ${b} min. Both depart now. Next time together? (LCM)`, ans:lcm2(a,b), suffix:'min'});
+    // Packaging (GCF for equal packs)
+    const ch=rand(60,120), st=rand(48,90);
+    items.push({text:`Packaging: ${ch} chocolate bars and ${st} sweets. Same packs with no leftovers and same count of each type per pack. Max packs? (HCF)`, ans:gcd(ch,st), suffix:'packs'});
+    // Beacon flashes (LCM)
+    const f1=[3,4,5,6][rand(0,3)], f2=[7,8,9,10][rand(0,3)];
+    items.push({text:`Beacons: one flashes every ${f1}s, another every ${f2}s. Starting together, after how many seconds do they flash together again?`, ans:lcm2(f1,f2), suffix:'s'});
+    return items;
+  }
+  function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+  function realNew(){
+    realState.items=realTemplates();
+    const box=id('realList'); box.innerHTML='';
+    realState.items.forEach((o,idx)=>{
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-xl">${o.text}</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28" id="r_${idx}" placeholder="value"> ${o.suffix}</div>`;
+      box.appendChild(row);
+    });
+  }
+  id('realNew').addEventListener('click',realNew); realNew();
+  id('realCheck').addEventListener('click',()=>{
+    let ok=0; realState.items.forEach((o,idx)=>{
+      const el=id('r_'+idx); const got=Number(el.value);
+      if(Math.abs(got-o.ans)<1e-10){ok++; el.style.borderColor='#22c55e'} else el.style.borderColor='#ef4444';
+    });
+    id('realFb').textContent = ok===realState.items.length? '✅ Excellent!' : 'Score: '+ok+'/'+realState.items.length;
+    if(ok===realState.items.length) confetti();
+  });
+  id('realExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','answer','user']];
+    realState.items.forEach((o,idx)=>rows.push([o.text,o.ans, id('r_'+idx).value || '' ]));
+    downloadCSV(`${deckTitle}_real_world.csv`, rows);
+  });
+  id('realExportJSON').addEventListener('click',()=>{
+    const data=realState.items.map((o,idx)=>({prompt:o.text, answer:o.ans, user:id('r_'+idx).value || ''}));
+    downloadJSON(`${deckTitle}_real_world.json`, data);
+  });
+
+  /* ---------- Slide 11: Challenge Problems ---------- */
+  const chState={myst:null,gWant:null,lWant:null};
+  function chNew(){
+    // Mystery number constraints
+    const base=rand(40,140);
+    const g=rand(2,10);
+    const mult=[2,3,4,5][rand(0,3)];
+    const conds=[
+      `Divisible by \\(${g}\\)`,
+      `Multiple of \\(${mult}\\)`,
+      `Has exactly ${rand(4,8)} factors`,
+      `Between ${base} and ${base+80}`
+    ];
+    // We'll pick three constraints including range
+    const k=rand(0,1);
+    const fcount=rand(4,8);
+    chState.myst={range:[base,base+80], g, mult, fcount};
+    id('mystPrompt').innerHTML = `Find a number \\(N\\) such that:<br/>
+      • \\( ${base} < N < ${base+80} \\), &nbsp;
+      • divisible by \\( ${g} \\), &nbsp;
+      • multiple of \\( ${mult} \\).`;
+    // Given GCF & LCM
+    const a=rand(12,40), b=rand(18,60);
+    const G=gcd(a,b), L=lcm2(a,b);
+    chState.gWant=G; chState.lWant=L;
+    id('gcPairPrompt').innerHTML = `Find integers \\(a,b\\) with \\(\\mathrm{GCF}(a,b)=${G}\\) and \\(\\mathrm{LCM}(a,b)=${L}\\). (Any valid pair)`;
+    renderMath(id('challengeSlide'));
+    id('mystAns').value=''; id('gcA').value=''; id('gcB').value='';
+    id('chFb').textContent='';
+  }
+  chNew(); id('chNew').addEventListener('click',chNew);
+  id('chCheck').addEventListener('click',()=>{
+    let ok=true; // mystery
+    const N=Number(id('mystAns').value||0);
+    const {range,g,mult}=chState.myst;
+    const cond = (N>range[0] && N<range[1] && N%g===0 && N%mult===0);
+    if(cond){ id('mystAns').style.borderColor='#22c55e'; } else { id('mystAns').style.borderColor='#ef4444'; ok=false; }
+    // pair given gcf & lcm (property: a*b = G*L and gcd(a,b)=G)
+    const a=Number(id('gcA').value), b=Number(id('gcB').value);
+    if(a>0 && b>0 && gcd(a,b)===chState.gWant && lcm2(a,b)===chState.lWant){ id('gcA').style.borderColor=id('gcB').style.borderColor='#22c55e'; }
+    else { id('gcA').style.borderColor=id('gcB').style.borderColor='#ef4444'; ok=false; }
+    id('chFb').textContent = ok? '✅ Great solutions!' : 'Some answers need refinement (red).';
+    if(ok) confetti();
+  });
+  id('chExportCSV').addEventListener('click',()=>{
+    downloadCSV(`${deckTitle}_challenge.csv`, [['task','prompt','correct_condition','user'],
+      ['mystery', id('mystPrompt').textContent, 'check divisibility and range', id('mystAns').value||''],
+      ['pair_gcf_lcm', id('gcPairPrompt').textContent, `gcf=${chState.gWant}, lcm=${chState.lWant}`, `a=${id('gcA').value||''}, b=${id('gcB').value||''}`]
+    ]);
+  });
+  id('chExportJSON').addEventListener('click',()=>{
+    downloadJSON(`${deckTitle}_challenge.json`, {
+      mystery:{prompt:id('mystPrompt').textContent, user:id('mystAns').value||''},
+      pair:{prompt:id('gcPairPrompt').textContent, gcf:chState.gWant, lcm:chState.lWant, user:{a:id('gcA').value||'', b:id('gcB').value||''}}
+    });
+  });
+
+  /* ---------- Slide 12: Error Analysis ---------- */
+  function errBank(){
+    return [
+      {
+        work:'\\( 91 \\) is prime.',
+        correct:'\\( 91=7\\cdot 13 \\) so it is composite.',
+        key:'A'
+      },
+      {
+        work:'\\( 60=2\\cdot 30=2\\cdot 3\\cdot 10=2\\cdot 3\\cdot 10 \\) (stopped)',
+        correct:'Continue: \\(10=2\\cdot 5\\). Final: \\(60=2^2\\cdot 3\\cdot 5\\).',
+        key:'B'
+      },
+      {
+        work:'\\( \\mathrm{GCF}(18,24)= 18\\cdot 24 \\)',
+        correct:'GCF is greatest common factor: \\( \\mathrm{GCF}(18,24)=6 \\).',
+        key:'C'
+      },
+      {
+        work:'Simplify \\( \\tfrac{21}{28} = \\tfrac{21}{7} = 3 \\)',
+        correct:'Divide top & bottom by the same factor: \\( \\tfrac{21}{28}=\\tfrac{3}{4} \\) (divide both by 7).',
+        key:'D'
+      }
+    ];
+  }
+  const errState={item:null};
+  function errNew(){
+    const bank=errBank(); errState.item=bank[Math.floor(Math.random()*bank.length)];
+    id('errBox').innerHTML=`Incorrect work:<br/> <div class="mt-1 text-maroon"> ${errState.item.work} </div>`;
+    id('errFb').textContent=''; id('errRevealBox').textContent='';
+    renderMath(id('errSlide'));
+  }
+  id('errNew').addEventListener('click',errNew); errNew();
+  id('errCheck').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    if(!sel){ id('errFb').textContent='Choose an option.'; return; }
+    if(sel.value===errState.item.key){ id('errFb').textContent='✅ Correct diagnosis.'; confetti(); }
+    else id('errFb').textContent='❌ Try again.';
+  });
+  id('errReveal').addEventListener('click',()=>{ id('errRevealBox').innerHTML=`<div class="hint">${errState.item.correct}</div>`; renderMath(id('errSlide')); });
+  id('errExportCSV').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    downloadCSV(`${deckTitle}_error_analysis.csv`, [['incorrect_work','explanation','key','user'], [id('errBox').innerText.trim(), errState.item.correct, errState.item.key, sel?sel.value:'']]);
+  });
+  id('errExportJSON').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    downloadJSON(`${deckTitle}_error_analysis.json`, {incorrect:id('errBox').innerText.trim(), correct:errState.item.correct, key:errState.item.key, user: sel?sel.value:''});
+  });
+
+  /* ---------- Slide 13: Mixed Generator ---------- */
+  const mixLevel=id('mixLevel'), mixQ=id('mixQ'), mixAns=id('mixAns'), mixHintBox=id('mixHintBox'), mixFb=id('mixFb');
+  let mixCur=null;
+  function rInt(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+  function mixNew(){
+    mixHintBox.textContent=''; mixFb.textContent=''; mixAns.value='';
+    const lv=mixLevel.value; let task='';
+    if(lv==='easy'){
+      const n=rInt(20,120);
+      task = Math.random()<0.5? `Classify ${n} as prime or composite.` : `List all factors of ${n}.`;
+      mixCur={type: task.includes('Classify')?'pc':'factors', n};
+    } else if(lv==='med'){
+      const a=rInt(30,140), b=rInt(30,140);
+      if(Math.random()<0.5){
+        task=`Write \\( ${a} \\) in prime‑exponent form.`;
+        mixCur={type:'pfe', n:a};
+      } else {
+        task=`Find \\(\\mathrm{GCF}(${a},${b})\\) and \\(\\mathrm{LCM}(${a},${b})\\).`;
+        mixCur={type:'gcflcm', a,b};
+      }
+    } else {
+      const a=rInt(24,160), b=rInt(24,160), c=rInt(24,100);
+      if(Math.random()<0.5){
+        task=`Find \\(\\mathrm{GCF}(${a},${b},${c})\\) and \\(\\mathrm{LCM}(${a},${b},${c})\\).`;
+        mixCur={type:'gcflcm3', a,b,c};
+      } else {
+        const g=rInt(2,12), l=rInt(60,240); const A=g*rInt(2,6), B=lcm2(g, rInt(3,10))*rInt(1,2);
+        task=`Give any pair \\(a,b\\) with \\(\\mathrm{GCF}(a,b)=${g}\\) and \\(\\mathrm{LCM}(a,b)=${l}\\).`;
+        mixCur={type:'pair', g,l};
+      }
+    }
+    mixQ.innerHTML=task; renderMath(id('mixSlide'));
+  }
+  id('mixNew').addEventListener('click',mixNew); mixNew();
+  id('mixHint').addEventListener('click',()=>{
+    if(!mixCur) return;
+    let msg='';
+    if(mixCur.type==='pc') msg='Try divisibility by 2,3,5,7,11 up to √n.';
+    else if(mixCur.type==='factors') msg='Find factor pairs around √n; include both small and large factors.';
+    else if(mixCur.type==='pfe') msg='Divide by the smallest prime repeatedly (2,3,5,7,...) and collect exponents.';
+    else if(mixCur.type==='gcflcm' || mixCur.type==='gcflcm3') msg='Use prime exponents: mins → GCF, maxes → LCM.';
+    else if(mixCur.type==='pair') msg='Remember: For two numbers, \\(ab=\\mathrm{GCF}\\times\\mathrm{LCM}\\). Build numbers from prime exponents that satisfy the min/max conditions.';
+    mixHintBox.innerHTML=`<div class="hint">${msg}</div>`; renderMath(id('mixSlide'));
+  });
+  id('mixCheck').addEventListener('click',()=>{
+    if(!mixCur) return;
+    const ans=mixAns.value.trim();
+    let ok=false, expect='';
+    if(mixCur.type==='pc'){
+      const want = isPrime(mixCur.n)? 'prime' : 'composite';
+      ok = ans.toLowerCase().includes(want); expect=want;
+    } else if(mixCur.type==='factors'){
+      const want=factors(mixCur.n).join(',');
+      ok = ans.split(/[\s,]+/).map(x=>+x).filter(Boolean).sort((a,b)=>a-b).join(',')===want;
+      expect=want;
+    } else if(mixCur.type==='pfe'){
+      const exp=mapToObj(primeFactorMap(mixCur.n)); expect=fmtExp(exp);
+      ok = ans.replace(/\s/g,'').replace(/\^/g,'^').includes(String(Object.keys(exp).filter(k=>exp[k]>0)[0]));
+      // lenient: we still show expected
+    } else if(mixCur.type==='gcflcm'){
+      const {gVal,lVal}=gcfByPrimes([mixCur.a,mixCur.b]);
+      expect=`GCF=${gVal}, LCM=${lVal}`;
+      const g=ans.match(/gcf\s*=?\s*(\d+)/i)?.[1] || ans.match(/hcf\s*=?\s*(\d+)/i)?.[1];
+      const l=ans.match(/lcm\s*=?\s*(\d+)/i)?.[1];
+      ok = (Number(g)===gVal && Number(l)===lVal);
+    } else if(mixCur.type==='gcflcm3'){
+      const {gVal,lVal}=gcfByPrimes([mixCur.a,mixCur.b,mixCur.c]); expect=`GCF=${gVal}, LCM=${lVal}`;
+      const g=ans.match(/gcf\s*=?\s*(\d+)/i)?.[1] || ans.match(/hcf\s*=?\s*(\d+)/i)?.[1];
+      const l=ans.match(/lcm\s*=?\s*(\d+)/i)?.[1];
+      ok = (Number(g)===gVal && Number(l)===lVal);
+    } else if(mixCur.type==='pair'){
+      const m=ans.match(/a\s*=?\s*(\d+).*\b b\s*=?\s*(\d+)/i) || ans.match(/(\d+)\D+(\d+)/);
+      if(m){ const a=Number(m[1]), b=Number(m[2]); ok=(gcd(a,b)===mixCur.g && lcm2(a,b)===mixCur.l); }
+      expect='(any pair with given GCF/LCM)';
+    }
+    if(ok){ mixFb.textContent='✅ Correct! '+expect; mixFb.className='mt-2 h-6 font-semibold text-green-700'; confetti(); }
+    else { mixFb.textContent='❌ Not quite. Expected '+expect; mixFb.className='mt-2 h-6 font-semibold text-red-700'; }
+  });
+  id('mixExportCSV').addEventListener('click',()=>{
+    downloadCSV(`${deckTitle}_mixed_current.csv`, [['task','prompt','user'], [mixCur.type, id('mixQ').textContent, mixAns.value||'']]);
+  });
+  id('mixExportJSON').addEventListener('click',()=>{
+    downloadJSON(`${deckTitle}_mixed_current.json`, {type:mixCur.type, prompt:id('mixQ').textContent, user:mixAns.value||''});
+  });
+
+  /* ---------- Init ---------- */
+  window.addEventListener('resize',()=>{ if(slides[i].id==='treeSlide') drawTree(); });
+  show(0);
+
+})();
+</script>
+</body>
+</html>
