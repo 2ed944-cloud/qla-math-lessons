@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G8 • Unit 1 • Operations on Fractions — QLA</title>
+<title>G8 • Unit 1 • Operations on Fractions — QLA (with Teacher Dashboard)</title>
 
 <!-- Fonts & Tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,9 +65,96 @@
 
   .grid-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
   @media (max-width:900px){.grid-two{grid-template-columns:1fr}}
+
+  /* ===== Teacher Dashboard (overlay) ===== */
+  #dashToggle{position:fixed;top:12px;left:12px;z-index:80}
+  #dashToggle button{background:var(--gold);color:#111;border:none;border-radius:999px;padding:.5rem .85rem;font-weight:800;box-shadow:0 6px 16px rgba(0,0,0,.25);cursor:pointer}
+  #dashToggle button:hover{filter:brightness(.98)}
+
+  #dashPanel{position:fixed;top:0;left:0;height:100vh;width:min(920px,92vw);transform:translateX(-102%);transition:transform .35s ease;background:#fff;border-right:3px solid var(--gold);box-shadow:0 14px 36px rgba(0,0,0,.35);z-index:90;overflow-y:auto}
+  #dashPanel.open{transform:translateX(0)}
+  #dashPanel header{position:sticky;top:0;background:#fff;border-bottom:1px solid #eee;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+  #dashPanel section{padding:12px 16px}
+  .small{font-size:.85rem;color:#555}
+  .dstat{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem}
+  .progress{height:8px;background:#eee;border-radius:999px;overflow:hidden}
+  .progress .bar{height:100%;background:var(--maroon);width:0%;transition:width .4s ease}
+  .table{width:100%;border-collapse:collapse}
+  .table th,.table td{padding:8px 10px;border-bottom:1px solid #eee;text-align:left}
+  .badge{display:inline-block;padding:.15rem .5rem;border-radius:999px;background:#f3f4f6}
 </style>
 </head>
 <body>
+
+<!-- ===== Dashboard Toggle & Panel (top of file; no server needed) ===== -->
+<div id="dashToggle"><button id="openDash">📊 Dashboard</button></div>
+
+<aside id="dashPanel" aria-label="Teacher Dashboard">
+  <header>
+    <div>
+      <div class="text-maroon font-extrabold text-xl">Teacher Dashboard</div>
+      <div class="small">Session: <span id="dSession">…</span> • Started: <span id="dStart">…</span></div>
+    </div>
+    <div class="flex gap-2">
+      <button id="closeDash" class="btn">Close</button>
+    </div>
+  </header>
+
+  <section>
+    <div class="grid-two">
+      <div class="card p-4">
+        <div class="font-bold text-maroon mb-1">Student Info</div>
+        <div class="flex flex-wrap gap-2 items-center">
+          <label>Name: <input id="dStudent" class="border rounded px-2 py-1"/></label>
+          <label>Section: <input id="dSection" class="border rounded px-2 py-1"/></label>
+          <button id="dSaveInfo" class="btn">Save</button>
+          <span class="small">Saved locally only.</span>
+        </div>
+      </div>
+      <div class="card p-4">
+        <div class="font-bold text-maroon mb-1">Master Controls</div>
+        <div class="flex flex-wrap gap-2">
+          <button id="dExportCSV" class="btn">Export All CSV</button>
+          <button id="dExportJSON" class="btn">Export All JSON</button>
+          <button id="dPersist" class="btn">Save to Browser</button>
+          <button id="dLoad" class="btn">Load from Browser</button>
+          <button id="dReset" class="btn maroon">Reset Session</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="card p-4">
+      <div class="font-bold text-maroon mb-2">Overall Summary</div>
+      <div class="dstat">
+        <div>Attempts<br><b id="sumAttempts">0</b></div>
+        <div>Correct<br><b id="sumCorrect">0</b></div>
+        <div>Accuracy<br><b id="sumAcc">0%</b></div>
+        <div>Best Streak<br><b id="sumStreak">0</b></div>
+      </div>
+      <div class="mt-2 progress"><div id="sumBar" class="bar"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="card p-4">
+      <div class="font-bold text-maroon mb-2">By Activity</div>
+      <table class="table small">
+        <thead><tr><th>Activity</th><th>Attempts</th><th>Correct</th><th>Accuracy</th><th>Last</th></tr></thead>
+        <tbody id="byActivity"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="card p-4">
+      <div class="font-bold text-maroon mb-2">Recent Events</div>
+      <div id="recentEvents" class="small"></div>
+    </div>
+  </section>
+</aside>
+<!-- ===== End Dashboard ===== -->
 
 <div id="deck" aria-live="polite">
   <div id="slides" class="relative">
@@ -504,11 +591,146 @@
     return `${sign*w} ${r}/${d}`;
   }
 
+  /* ====================== TEACHER DASHBOARD CORE ====================== */
+  // central logger + tallies; lives entirely client-side
+  const Dash={
+    deck: deckTitle,
+    sessionId: `${Date.now()}-${Math.floor(Math.random()*1e6)}`,
+    startedAt: new Date().toISOString(),
+    student: '',
+    section: '',
+    logs: [],
+    tallies: {
+      explore_add:   {attempts:0, correct:0, last:''},
+      explore_mul:   {attempts:0, correct:0, last:''},
+      practice_add:  {attempts:0, correct:0, sets:0, last:''},
+      practice_mul:  {attempts:0, correct:0, sets:0, last:''},
+      mixed_complex: {attempts:0, correct:0, sets:0, last:''},
+      error_analysis:{attempts:0, correct:0, last:''},
+      real_world:    {attempts:0, correct:0, last:''},
+      challenge:     {attempts:0, correct:0, bestStreak:0, last:''}
+    }
+  };
+  const ACT_LABEL={
+    explore_add:'Explorer: Add/Sub',
+    explore_mul:'Explorer: Mult/Div',
+    practice_add:'Practice: Add/Sub',
+    practice_mul:'Practice: Mult/Div',
+    mixed_complex:'Mixed & Complex',
+    error_analysis:'Error Analysis',
+    real_world:'Real‑World',
+    challenge:'Challenge Mode'
+  };
+  function dashRecord(activity, payload, counts={attempts:1, correct:0, total:1}){
+    const ts=new Date().toISOString();
+    Dash.logs.push({ts, activity, ...counts, payload});
+    const T=Dash.tallies[activity]; if(!T) return;
+    T.attempts += counts.attempts||0;
+    T.correct  += counts.correct||0;
+    if('sets' in T && counts.sets) T.sets += counts.sets;
+    if(activity==='challenge' && typeof payload?.streak==='number'){
+      T.bestStreak = Math.max(T.bestStreak||0, payload.streak);
+    }
+    T.last = ts;
+    dashRender();
+  }
+  function sumAttempts(){ return Object.values(Dash.tallies).reduce((s,t)=>s+(t.attempts||0),0); }
+  function sumCorrect(){ return Object.values(Dash.tallies).reduce((s,t)=>s+(t.correct||0),0); }
+  function toPct(n,d){ return (d>0)? Math.round(100*n/d):0; }
+
+  // persistence
+  const STORE_KEY=`${deckTitle}__TEACHER_DASH`;
+  function dashPersist(){ localStorage.setItem(STORE_KEY, JSON.stringify(Dash)); }
+  function dashLoad(){
+    const raw=localStorage.getItem(STORE_KEY);
+    if(!raw) return false;
+    try{
+      const obj=JSON.parse(raw);
+      // only import known keys
+      Dash.student=obj.student||'';
+      Dash.section=obj.section||'';
+      Dash.logs=obj.logs||[];
+      Dash.tallies=obj.tallies||Dash.tallies;
+      Dash.sessionId=obj.sessionId||Dash.sessionId;
+      Dash.startedAt=obj.startedAt||Dash.startedAt;
+      dashRender();
+      return true;
+    }catch(e){ return false; }
+  }
+  function dashReset(){
+    Dash.logs.length=0;
+    for(const k in Dash.tallies){
+      Dash.tallies[k]={attempts:0,correct:0,last:''};
+      if(k==='challenge') Dash.tallies[k].bestStreak=0;
+      if(['practice_add','practice_mul','mixed_complex'].includes(k)) Dash.tallies[k].sets=0;
+    }
+    Dash.sessionId=`${Date.now()}-${Math.floor(Math.random()*1e6)}`;
+    Dash.startedAt=new Date().toISOString();
+    dashRender();
+  }
+
+  // UI wiring for panel
+  const openBtn=id('openDash'), closeBtn=id('closeDash'), panel=id('dashPanel');
+  openBtn.addEventListener('click',()=>{ panel.classList.add('open'); dashRender(); });
+  closeBtn.addEventListener('click',()=>panel.classList.remove('open'));
+  id('dSaveInfo').addEventListener('click',()=>{
+    Dash.student=id('dStudent').value.trim();
+    Dash.section=id('dSection').value.trim();
+    dashRender();
+  });
+  id('dPersist').addEventListener('click',dashPersist);
+  id('dLoad').addEventListener('click',()=>dashLoad()||alert('No saved dashboard found in this browser.'));
+  id('dReset').addEventListener('click',()=>{ if(confirm('Reset session tallies & logs?')) dashReset(); });
+  id('dExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_dashboard.json`, Dash));
+  id('dExportCSV').addEventListener('click',()=>{
+    const rows=[['session','startedAt','student','section','ts','activity','attempts','correct','total','payload']];
+    Dash.logs.forEach(L=>rows.push([Dash.sessionId,Dash.startedAt,Dash.student,Dash.section,L.ts,L.activity,L.attempts||1,L.correct||0,L.total||1, JSON.stringify(L.payload)]));
+    downloadCSV(`${deckTitle}_dashboard_events.csv`, rows);
+  });
+
+  function dashRender(){
+    id('dSession').textContent=Dash.sessionId;
+    id('dStart').textContent=(new Date(Dash.startedAt)).toLocaleString();
+    id('dStudent').value=Dash.student||'';
+    id('dSection').value=Dash.section||'';
+    const att=sumAttempts(), cor=sumCorrect(), pct=toPct(cor,att);
+    id('sumAttempts').textContent=att;
+    id('sumCorrect').textContent=cor;
+    id('sumAcc').textContent=`${pct}%`;
+    id('sumStreak').textContent=Dash.tallies.challenge.bestStreak||0;
+    id('sumBar').style.width=`${pct}%`;
+    // table
+    const tbody=id('byActivity'); tbody.innerHTML='';
+    for(const key of ['explore_add','explore_mul','practice_add','practice_mul','mixed_complex','error_analysis','real_world','challenge']){
+      const t=Dash.tallies[key], acc=toPct(t.correct||0, t.attempts||0);
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${ACT_LABEL[key]}</td>
+                    <td>${t.attempts||0}${t.sets?` <span class="badge">sets ${t.sets}</span>`:''}</td>
+                    <td>${t.correct||0}</td>
+                    <td>${acc}%</td>
+                    <td class="small">${t.last?new Date(t.last).toLocaleTimeString():'—'}</td>`;
+      tbody.appendChild(tr);
+    }
+    // recent
+    const rev=id('recentEvents'); rev.innerHTML='';
+    Dash.logs.slice(-12).reverse().forEach(L=>{
+      const div=document.createElement('div');
+      const acc=toPct(L.correct||0, L.attempts||1);
+      div.innerHTML=`<span class="badge">${new Date(L.ts).toLocaleTimeString()}</span>
+                     <b>${ACT_LABEL[L.activity]||L.activity}</b>
+                     — attempts ${L.attempts||1}, correct ${L.correct||0} (${acc}%)
+                     <span class="small">| ${JSON.stringify(L.payload).slice(0,120)}${JSON.stringify(L.payload).length>120?'…':''}</span>`;
+      rev.appendChild(div);
+    });
+  }
+  // initialize panel header
+  dashRender();
+
   /* =================== Explorer: Add/Sub (LCD) ==================== */
   const AA=id('AA'), AB=id('AB'), AC=id('AC'), AD=id('AD'), AOp=id('AOp'), AAns=id('AAns');
   function AShowSteps(){
     const a=Number(AA.value), b=Number(AB.value), c=Number(AC.value), d=Number(AD.value);
-    if(!Number.isFinite(a*b*c*d) || b===0 || d===0){ id('ASteps').innerHTML='<span class="text-red-700">Enter integers; denominators ≠ 0.</span>'; return;}
+    if(!Number.isFinite(a*b*c*d) || b===0 || d===0){ id('ASteps').innerHTML='<span class="text-red-700">Enter integers; denominators ≠ 0.</span>'; return null;}
     const L=lcm(b,d), k1=L/b, k2=L/d;
     const A=[a*k1,L], B=[c*k2,L], op=AOp.value;
     const res = op==='+'? addFrac(A,B) : subFrac(A,B);
@@ -526,8 +748,10 @@
   id('ACheck').addEventListener('click',()=>{
     const want=AShowSteps(); if(!want) return;
     const got=parseRational(AAns.value); if(!got){ id('AFb').textContent='Enter a valid fraction/mixed number.'; id('AFb').className='mt-2 h-6 font-semibold text-red-700'; return;}
-    if(eqFrac(got,want)){ id('AFb').textContent=`✅ Correct! ${sFrac(want)} (${toMixed(want)})`; id('AFb').className='mt-2 h-6 font-semibold text-green-700'; confetti(); }
+    const correct = eqFrac(got,want);
+    if(correct){ id('AFb').textContent=`✅ Correct! ${sFrac(want)} (${toMixed(want)})`; id('AFb').className='mt-2 h-6 font-semibold text-green-700'; confetti(); }
     else { id('AFb').textContent=`❌ Expected ${sFrac(want)} (${toMixed(want)})`; id('AFb').className='mt-2 h-6 font-semibold text-red-700'; }
+    dashRecord('explore_add', {a:+AA.value,b:+AB.value,c:+AC.value,d:+AD.value,op:AOp.value,user:AAns.value,expected:sFrac(want),correct}, {attempts:1,correct:correct?1:0,total:1});
   });
   id('AExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_explore_add.csv`, [['a','b','op','c','d','user'], [AA.value,AB.value,AOp.value,AC.value,AD.value,AAns.value]]));
   id('AExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_explore_add.json`, {a:+AA.value,b:+AB.value,op:AOp.value,c:+AC.value,d:+AD.value,user:AAns.value}));
@@ -536,7 +760,6 @@
   let MCancelState={a:6,b:14,c:7,d:9,op:'×'};
   function MRender(){
     const {a,b,c,d,op}=MCancelState;
-    const showOp = op==='×' ? '×' : '÷';
     const display = op==='×'
       ? `\\( \\dfrac{${a}}{${b}} \\times \\dfrac{${c}}{${d}} \\)`
       : `\\( \\dfrac{${a}}{${b}} \\div \\dfrac{${c}}{${d}} = \\dfrac{${a}}{${b}} \\times \\dfrac{${d}}{${c}} \\)`;
@@ -556,7 +779,6 @@
   id('MRand').addEventListener('click',()=>{ id('MA').value=rng(-9,9)||6; id('MB').value=rng(2,14); id('MC').value=rng(-9,9)||7; id('MD').value=rng(2,14); id('MOp').value=choice(['×','÷']); MSet(); });
   id('MReset').addEventListener('click',()=>{ id('MA').value=6; id('MB').value=14; id('MC').value=7; id('MD').value=9; id('MOp').value='×'; MSet(); });
 
-  // cancel buttons divide a against opposite denominator or c against b, symmetrically for op
   function tryCancel(k){
     const {a,b,c,d,op}=MCancelState;
     if(op==='×'){
@@ -565,7 +787,7 @@
       else if(cc%k===0 && bb%k===0){ cc/=k; bb/=k; }
       MCancelState={a:aa,b:bb,c:cc,d:dd,op}; MRender();
     } else {
-      // a/b ÷ c/d = a/b × d/c ; so cross-cancel across (a with c) or (d with b)
+      // a/b ÷ c/d = a/b × d/c
       let aa=a, bb=b, cc=c, dd=d;
       if(aa%k===0 && cc%k===0){ aa/=k; cc/=k; }
       else if(dd%k===0 && bb%k===0){ dd/=k; bb/=k; }
@@ -578,8 +800,10 @@
   id('MCheck').addEventListener('click',()=>{
     const want=MRender(); const got=parseRational(id('MAns').value);
     if(!got){ id('MFb').textContent='Enter a valid fraction/mixed number.'; id('MFb').className='mt-2 h-6 font-semibold text-red-700'; return;}
-    if(eqFrac(got,want)){ id('MFb').textContent=`✅ Correct! ${sFrac(want)} (${toMixed(want)})`; id('MFb').className='mt-2 h-6 font-semibold text-green-700'; confetti();}
+    const correct=eqFrac(got,want);
+    if(correct){ id('MFb').textContent=`✅ Correct! ${sFrac(want)} (${toMixed(want)})`; id('MFb').className='mt-2 h-6 font-semibold text-green-700'; confetti();}
     else { id('MFb').textContent=`❌ Expected ${sFrac(want)} (${toMixed(want)})`; id('MFb').className='mt-2 h-6 font-semibold text-red-700';}
+    dashRecord('explore_mul', {a:+id('MA').value,b:+id('MB').value,c:+id('MC').value,d:+id('MD').value,op:id('MOp').value,user:id('MAns').value,expected:sFrac(want),correct}, {attempts:1,correct:correct?1:0,total:1});
   });
   id('MExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_explore_mul.csv`, [['a','b','op','c','d','user'], [id('MA').value,id('MB').value,id('MOp').value,id('MC').value,id('MD').value,id('MAns').value]]));
   id('MExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_explore_mul.json`, {a:+id('MA').value,b:+id('MB').value,op:id('MOp').value,c:+id('MC').value,d:+id('MD').value,user:id('MAns').value}));
@@ -592,10 +816,7 @@
       let b=choice([4,5,6,8,9,10,12]); let d= lv==='easy'? b : choice([4,5,6,7,8,9,10,12]);
       let a=rng(-2*b+1,2*b-1), c=rng(-2*d+1,2*d-1);
       let op=choice(['+','-']);
-      if(lv==='hard'){ // inject some mixed numbers
-        const w1=rng(-2,2), w2=rng(-2,2);
-        a=w1*b + rng(1,b-1); c=w2*d + rng(1,d-1);
-      }
+      if(lv==='hard'){ const w1=rng(-2,2), w2=rng(-2,2); a=w1*b + rng(1,b-1); c=w2*d + rng(1,d-1); }
       items.push({a,b,op,c,d});
       const row=document.createElement('div'); row.className='card p-4';
       row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${k+1}</div>
@@ -620,6 +841,7 @@
     });
     id('APFb').textContent = ok===cards.length? '✅ Great work!' : `Score: ${ok}/${cards.length}`;
     if(ok===cards.length) confetti();
+    dashRecord('practice_add', {level:id('APLevel').value, set:APState.items}, {attempts:cards.length, correct:ok, total:cards.length, sets:1});
   });
   id('APExportCSV').addEventListener('click',()=>{
     const rows=[['item','answer']]; APState.items.forEach(it=>rows.push([`${it.a}/${it.b} ${it.op} ${it.c}/${it.d}`, sFrac((it.op==='+')?addFrac([it.a,it.b],[it.c,it.d]):subFrac([it.a,it.b],[it.c,it.d]))])); downloadCSV(`${deckTitle}_practice_add.csv`, rows);
@@ -634,12 +856,8 @@
       let b=choice([4,5,6,7,8,9,10,12]), d=choice([4,5,6,7,8,9,10,12]);
       let a=rng(-2*b+1,2*b-1), c=rng(-2*d+1,2*d-1);
       let op= choice(lv==='hard' ? ['×','÷','÷'] : ['×','×','÷']);
-      if(lv!=='easy'){ // encourage cancellations
-        const t=choice([2,3,5]); a*=t; d*=t;
-      }
-      if(lv==='hard'){ // negatives and division more often
-        if(Math.random()<0.5) a*=-1; if(Math.random()<0.5) c*=-1;
-      }
+      if(lv!=='easy'){ const t=choice([2,3,5]); a*=t; d*=t; }
+      if(lv==='hard'){ if(Math.random()<0.5) a*=-1; if(Math.random()<0.5) c*=-1; }
       items.push({a,b,op,c,d});
       const row=document.createElement('div'); row.className='card p-4';
       row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${k+1}</div>
@@ -664,6 +882,7 @@
     });
     id('MPFb').textContent = ok===cards.length? '✅ Excellent!' : `Score: ${ok}/${cards.length}`;
     if(ok===cards.length) confetti();
+    dashRecord('practice_mul', {level:id('MPLevel').value, set:MPState.items}, {attempts:cards.length, correct:ok, total:cards.length, sets:1});
   });
   id('MPExportCSV').addEventListener('click',()=>{
     const rows=[['item','answer']]; MPState.items.forEach(it=>rows.push([`${it.a}/${it.b} ${it.op} ${it.c}/${it.d}`, sFrac((it.op==='×')?mulFrac([it.a,it.b],[it.c,it.d]):divFrac([it.a,it.b],[it.c,it.d]))])); downloadCSV(`${deckTitle}_practice_mul.csv`, rows);
@@ -694,7 +913,6 @@
             <input class="micans border rounded px-2 py-1 w-40" placeholder="e.g., 1 3/8 or 11/8"></div>`;
         box.appendChild(row);
       } else {
-        // Complex fraction like (a/b) / (c/d) or expression with multiple ops
         const a=rng(-9,9)||6, b=choice([4,5,6,8,10]), c=rng(-9,9)||3, d=choice([4,5,6,8,10]);
         const plus=[rng(-6,6), choice([3,4,5,6])];
         items.push({type:'complex', a,b,c,d,plus});
@@ -717,7 +935,7 @@
       else if(it.type==='mixop'){
         const A=toImproper(it.w1,it.p1,it.q1), B=toImproper(it.w2,it.p2,it.q2);
         want = (it.op==='+')? addFrac(A,B) : subFrac(A,B);
-      } else { // complex
+      } else {
         const A=[it.a,it.b], B=[it.c,it.d]; const term=divFrac(A,B); const extra=[it.plus[0],it.plus[1]];
         want = addFrac(term, extra);
       }
@@ -726,6 +944,7 @@
     });
     id('MCFb').textContent = ok===cards.length? '✅ Nicely done!' : `Score: ${ok}/${cards.length}`;
     if(ok===cards.length) confetti();
+    dashRecord('mixed_complex', {level:id('MCLevel').value, set:MCState.items}, {attempts:cards.length, correct:ok, total:cards.length, sets:1});
   });
   id('MCExportCSV').addEventListener('click',()=>{
     const rows=[['item','answer']]; MCState.items.forEach(it=>{
@@ -759,6 +978,7 @@
     id('ErrFb').textContent = good? `✅ Yes. Reason: ${ErrState.cur.why}` : '❌ Not yet. Name the rule that was broken.';
     id('ErrFb').className='mt-2 h-6 font-semibold ' + (good?'text-green-700':'text-red-700'); if(good) confetti();
     ErrState.hist.push({work:ErrState.cur.work, why:ErrState.cur.why, user:id('ErrAns').value});
+    dashRecord('error_analysis', {work:ErrState.cur.work, user:id('ErrAns').value, accepted:good}, {attempts:1, correct:good?1:0, total:1});
   });
   id('ErrExportCSV').addEventListener('click',()=>{
     const rows=[['work','why','user']]; ErrState.hist.forEach(h=>rows.push([h.work,h.why,h.user])); downloadCSV(`${deckTitle}_error_analysis.csv`, rows);
@@ -769,10 +989,10 @@
   const RealState={items:[]};
   function realNew(){
     const items=[];
-    items.push({q:`A recipe uses \\(\\tfrac{3}{4}\\) cup sugar. For \\(\\tfrac{5}{2}\\) batches, sugar needed = ?`, a:addFrac(mulFrac([3,4],[5,2]),[0,1])/*just product*/, type:'num'});
-    items.push({q:`A jogger runs \\(\\tfrac{7}{8}\\) km per minute. In \\(\\tfrac{9}{4}\\) minutes, distance = ? (km)`, a:mulFrac([7,8],[9,4]), type:'num'});
-    items.push({q:`A tank is \\(\\tfrac{5}{6}\\) full. After using \\(\\tfrac{1}{4}\\) of the tank, fraction remaining = ?`, a:subFrac([5,6],[1,4]), type:'num'});
-    items.push({q:`You have \\(\\tfrac{2}{3}\\) of a job left. You complete \\(\\tfrac{5}{9}\\) of what remains. Fraction of the <em>whole job</em> completed now = ?`, a:mulFrac([5,9],[2,3]), type:'num'});
+    items.push({q:`A recipe uses \\(\\tfrac{3}{4}\\) cup sugar. For \\(\\tfrac{5}{2}\\) batches, sugar needed = ?`, a:mulFrac([3,4],[5,2])});
+    items.push({q:`A jogger runs \\(\\tfrac{7}{8}\\) km per minute. In \\(\\tfrac{9}{4}\\) minutes, distance = ? (km)`, a:mulFrac([7,8],[9,4])});
+    items.push({q:`A tank is \\(\\tfrac{5}{6}\\) full. After using \\(\\tfrac{1}{4}\\) of the tank, fraction remaining = ?`, a:subFrac([5,6],[1,4])});
+    items.push({q:`You have \\(\\tfrac{2}{3}\\) of a job left. You complete \\(\\tfrac{5}{9}\\) of what remains. Fraction of the <em>whole job</em> completed now = ?`, a:mulFrac([5,9],[2,3])});
     RealState.items=items;
     const box=id('RealList'); box.innerHTML='';
     items.forEach((o,idx)=>{
@@ -791,6 +1011,7 @@
       row.querySelector('.rwan').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
     });
     id('RealFb').textContent = ok===cards.length? '✅ Real‑world ready!' : `Score: ${ok}/${cards.length}`; if(ok===cards.length) confetti();
+    dashRecord('real_world', {set:RealState.items}, {attempts:cards.length, correct:ok, total:cards.length});
   });
   id('RealExportCSV').addEventListener('click',()=>{
     const rows=[['question','answer']]; RealState.items.forEach(o=>rows.push([o.q, sFrac(o.a)])); downloadCSV(`${deckTitle}_realworld.csv`, rows);
@@ -820,6 +1041,7 @@
     if(ok){ ChState.streak++; id('ChFb').textContent=`✅ Correct! ${sFrac(want)}`; id('ChFb').className='mt-2 h-6 font-semibold text-green-700'; confetti(); ChState.hist.push({prompt:ChState.cur.prompt, ans:sFrac(want), user:id('ChAns').value, correct:true}); chNew();}
     else { ChState.streak=0; id('ChFb').textContent=`❌ Not quite. Expected ${sFrac(want)}`; id('ChFb').className='mt-2 h-6 font-semibold text-red-700'; ChState.hist.push({prompt:ChState.cur.prompt, ans:sFrac(want), user:id('ChAns').value, correct:false}); }
     id('StreakOut').textContent=ChState.streak;
+    dashRecord('challenge', {prompt:ChState.cur.prompt, user:id('ChAns').value, expected:sFrac(want), correct:ok, streak:ChState.streak}, {attempts:1, correct:ok?1:0, total:1});
   });
   id('ChExportCSV').addEventListener('click',()=>{
     const rows=[['prompt','answer','user','correct']]; ChState.hist.forEach(h=>rows.push([h.prompt,h.ans,h.user,h.correct])); downloadCSV(`${deckTitle}_challenge.csv`, rows);
