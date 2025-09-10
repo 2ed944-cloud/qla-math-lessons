@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G7 • Unit 1 • Lesson 3 — Prime Factorization Toolkit (Revised)</title>
+<title>G7 • Unit 1 • Lesson 3 — Prime Factorization Toolkit (4‑Part)</title>
 
 <!-- Fonts & Tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,6 +73,10 @@
   canvas.tree{width:100%;height:340px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
 
   .confetti{position:fixed;pointer-events:none;z-index:50}
+
+  /* Part Navigator */
+  #partNav{position:fixed;top:18px;left:18px;z-index:35;display:flex;gap:.4rem;background:rgba(255,255,255,.8);padding:.35rem;.35rem;border-radius:999px;border:2px solid var(--gold);backdrop-filter:blur(4px)}
+  #partNav button{font-weight:800}
 </style>
 </head>
 <body>
@@ -95,18 +99,17 @@
       <div class="absolute bottom-6 text-sm text-gray-100">Aligned to AERO 7.NS foundations &amp; 7.EE.3 applications. Member of Qatar Foundation.</div>
     </section>
 
-    <!-- 1 • Learning Outcomes & Keywords -->
-    <section class="slide">
-      <h2 class="text-4xl font-extrabold text-maroon mb-2">Learning Outcomes &amp; Keywords</h2>
+    <!-- ──────────────────────────────── PART 1 ──────────────────────────────── -->
+    <!-- 1 • Part 1: LO & Keywords -->
+    <section class="slide" id="p1IntroSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 1 — Primes, Factors &amp; Multiples</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes</h3>
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P1)</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Explain and identify <strong>factors</strong> and <strong>multiples</strong> using small numbers and divisibility rules.</li>
+            <li>Distinguish and find <strong>factors</strong> and <strong>multiples</strong> of a number.</li>
+            <li>Use quick <strong>divisibility rules</strong> (2, 3, 5, 7) and a √n prime test.</li>
             <li>Classify numbers as <strong>prime</strong> or <strong>composite</strong>; recall common primes ≤ 100.</li>
-            <li>Build factor trees or tables to write prime factorization in <strong>exponent form</strong>.</li>
-            <li>Find <strong>HCF/GCF</strong> and <strong>LCM</strong> by listing and by prime exponents; apply to simplification and common denominators.</li>
-            <li>Transfer skills to <strong>real‑world situations</strong>, check for reasonableness, and analyze errors.</li>
           </ul>
         </div>
         <div class="card p-5">
@@ -116,18 +119,15 @@
             <span class="chip" data-key="multiple">multiple</span>
             <span class="chip" data-key="prime">prime</span>
             <span class="chip" data-key="composite">composite</span>
-            <span class="chip" data-key="pfe">prime factorization</span>
-            <span class="chip" data-key="exp">exponent</span>
-            <span class="chip" data-key="hcf">HCF/GCF</span>
-            <span class="chip" data-key="lcm">LCM</span>
             <span class="chip" data-key="divrule">divisibility</span>
+            <span class="chip" data-key="prtest">prime test</span>
           </div>
           <p class="text-xs text-gray-500 mt-3">Click a keyword to view a quick definition.</p>
         </div>
       </div>
     </section>
 
-    <!-- 2 • Warm‑Up (smaller numbers) -->
+    <!-- 2 • Warm‑Up -->
     <section class="slide" id="warmSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm‑Up: Factors vs. Multiples (Small Numbers)</h2>
       <div class="grid md:grid-cols-3 gap-4 w-full max-w-5xl">
@@ -148,7 +148,7 @@
       </div>
     </section>
 
-    <!-- 3 • Explain first: Factors, Multiples & Divisibility -->
+    <!-- 3 • Explain: Factors, Multiples & Divisibility -->
     <section class="slide" id="explainSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Explain: Factors, Multiples &amp; Divisibility</h2>
       <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
@@ -170,7 +170,7 @@
             <li><strong>2:</strong> last digit even (0,2,4,6,8).</li>
             <li><strong>3:</strong> sum of digits divisible by 3.</li>
             <li><strong>5:</strong> last digit 0 or 5.</li>
-            <li><strong>7:</strong> harder; quick check: remove last digit, double it, subtract from the rest; repeat. If result is multiple of 7, original was (e.g., 203 → 20 − 6 = 14 ✓).</li>
+            <li><strong>7:</strong> remove last digit, double it, subtract from the rest; repeat (e.g., 203 → 20 − 6 = 14 ✓).</li>
           </ul>
           <div class="mt-3">
             <div class="text-sm mb-1">Try it:</div>
@@ -182,7 +182,7 @@
       </div>
     </section>
 
-    <!-- 4 • Prime list ≤ 100 + How to spot primes -->
+    <!-- 4 • Prime list ≤ 100 -->
     <section class="slide" id="primeListSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Common Prime Numbers (≤ 100)</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
@@ -191,7 +191,7 @@
       </div>
     </section>
 
-    <!-- 5 • Explain then classify: Prime or Composite (leveled, easy numbers) -->
+    <!-- 5 • Classify: Prime or Composite -->
     <section class="slide" id="pcSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Classify Numbers: Prime or Composite</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
@@ -213,7 +213,7 @@
       </div>
     </section>
 
-    <!-- 6 • Worked example BEFORE the activity: Factors & Multiples -->
+    <!-- 6 • Worked example: Factors & Multiples -->
     <section class="slide" id="fmExplainSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Worked Example: Find All Factors &amp; Multiples</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
@@ -223,7 +223,7 @@
       </div>
     </section>
 
-    <!-- 7 • Activity: Pick Factors & Multiples (leveled + verified check) -->
+    <!-- 7 • Activity: Pick Factors & Multiples -->
     <section class="slide" id="fmSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Pick the Factors &amp; Multiples</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -254,7 +254,53 @@
       <div class="hint mt-3 text-left text-sm">Use the rules: even → divisible by 2; digit sum by 3; ends 0/5 → by 5; 7‑rule for quick checks.</div>
     </section>
 
-    <!-- 8 • Factor Tree / Table (improved layout + toggle + levels) -->
+    <!-- 8 • Part 1: Real‑Life mini‑tasks -->
+    <section class="slide" id="p1RealSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 1 Real‑Life Mini‑Tasks (Factors &amp; Multiples)</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="p1RealLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="p1RealNew" class="btn">New set</button>
+        <button id="p1RealCheck" class="btn maroon">Check</button>
+        <button id="p1RealExportCSV" class="btn">Export CSV</button>
+        <button id="p1RealExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="p1RealList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
+      <div class="hint mt-3 text-sm">Enter <b>1</b> for “yes” and <b>0</b> for “no” when asked a yes/no divisibility or primality question.</div>
+      <div id="p1RealFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- ──────────────────────────────── PART 2 ──────────────────────────────── -->
+    <!-- 9 • Part 2: LO & Keywords -->
+    <section class="slide" id="p2IntroSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 2 — Prime Factorization (Tree/Table)</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P2)</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Construct <strong>factor trees</strong> or <strong>division tables</strong> to prime‑factorize a number.</li>
+            <li>Write the factorization in <strong>exponent form</strong> and verify it multiplies back.</li>
+            <li>Recognize uniqueness of prime factorization (informal <strong>FTA</strong> idea).</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <div class="flex flex-wrap gap-2 text-lg">
+            <span class="chip" data-key="pfe">prime factorization</span>
+            <span class="chip" data-key="exp">exponent</span>
+            <span class="chip" data-key="tree">factor tree</span>
+            <span class="chip" data-key="table">division table</span>
+            <span class="chip" data-key="fta">FTA</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 • Factor Tree / Table -->
     <section class="slide" id="treeSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Prime Factorization: Tree or Table</h2>
       <div class="flex flex-wrap items-center gap-3 mb-2">
@@ -290,7 +336,7 @@
       <div id="treeFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 9 • Prime Factorization (Exponent Form) leveled -->
+    <!-- 11 • Prime Factorization (Exponent Form) -->
     <section class="slide" id="pfSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Write in Exponent Form</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
@@ -311,7 +357,58 @@
       </div>
     </section>
 
-    <!-- 10 • Worked Examples: HCF/GCF & LCM -->
+    <!-- 12 • Part 2: Real‑Life mini‑tasks -->
+    <section class="slide" id="p2RealSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 2 Real‑Life Mini‑Tasks (Prime Powers)</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="p2RealLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="p2RealNew" class="btn">New set</button>
+        <button id="p2RealCheck" class="btn maroon">Check</button>
+        <button id="p2RealExportCSV" class="btn">Export CSV</button>
+        <button id="p2RealExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div class="card p-4 w-full max-w-5xl text-left">
+        <ul class="list-disc list-inside text-sm text-gray-600">
+          <li><b>Factor layouts:</b> number of positive factors equals the number of ways to make equal groups (including 1 and itself).</li>
+          <li><b>Power of 2:</b> how many times you can keep halving before odd.</li>
+          <li><b>Square tiles:</b> largest square factor gives the biggest square side for a given area.</li>
+        </ul>
+      </div>
+      <div id="p2RealList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl mt-2"></div>
+      <div id="p2RealFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- ──────────────────────────────── PART 3 ──────────────────────────────── -->
+    <!-- 13 • Part 3: LO & Keywords -->
+    <section class="slide" id="p3IntroSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 3 — HCF/GCF &amp; LCM</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P3)</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Determine <strong>GCF/HCF</strong> and <strong>LCM</strong> by listing and by prime exponents; optionally use <strong>Euclid</strong>.</li>
+            <li>Select an efficient method based on number size.</li>
+            <li>For two numbers, verify \(ab=\mathrm{GCF}(a,b)\cdot \mathrm{LCM}(a,b)\).</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <div class="flex flex-wrap gap-2 text-lg">
+            <span class="chip" data-key="hcf">HCF/GCF</span>
+            <span class="chip" data-key="lcm">LCM</span>
+            <span class="chip" data-key="euclid">Euclid</span>
+            <span class="chip" data-key="pfe">prime factorization</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14 • Worked Examples: GCF/LCM -->
     <section class="slide" id="gclExplainSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Worked Examples: HCF/GCF &amp; LCM</h2>
       <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
@@ -329,7 +426,7 @@
       <div class="hint mt-3 text-sm">For two numbers \(a,b\): \(ab=\mathrm{GCF}(a,b)\cdot \mathrm{LCM}(a,b)\). Small numbers → listing is fine; bigger numbers → use primes.</div>
     </section>
 
-    <!-- 11 • Explorer: GCF & LCM (leveled, easier UI) -->
+    <!-- 15 • Explorer: GCF & LCM -->
     <section class="slide" id="gclSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Explorer: GCF &amp; LCM</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -368,7 +465,7 @@
       <div class="hint mt-3 text-sm">Tip: For easy level, list a few multiples. For medium/hard, use prime exponents for speed.</div>
     </section>
 
-    <!-- 12 • Practice: GCF & LCM (leveled) -->
+    <!-- 16 • Practice: GCF & LCM -->
     <section class="slide" id="glPractice">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice: GCF &amp; LCM</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -387,7 +484,51 @@
       <div id="glFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 13 • Solved Examples: Applications -->
+    <!-- 17 • Part 3: Real‑Life tasks -->
+    <section class="slide" id="p3RealSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 3 Real‑Life Tasks (HCF &amp; LCM)</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="p3RealLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="p3RealNew" class="btn">New set</button>
+        <button id="p3RealCheck" class="btn maroon">Check</button>
+        <button id="p3RealExportCSV" class="btn">Export CSV</button>
+        <button id="p3RealExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="p3RealList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
+      <div id="p3RealFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- ──────────────────────────────── PART 4 ──────────────────────────────── -->
+    <!-- 18 • Part 4: LO & Keywords -->
+    <section class="slide" id="p4IntroSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 4 — Integrate: Applications, Puzzles &amp; Error Analysis</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P4)</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Apply factorization to simplify fractions and find common denominators.</li>
+            <li>Combine primes, HCF/LCM, and divisibility in multi‑step problems.</li>
+            <li>Diagnose and correct typical errors; justify method choice.</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <div class="flex flex-wrap gap-2 text-lg">
+            <span class="chip" data-key="lcd">LCD</span>
+            <span class="chip" data-key="simp">simplify</span>
+            <span class="chip" data-key="err">error analysis</span>
+            <span class="chip" data-key="strategy">strategy</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 19 • Solved Applications -->
     <section class="slide" id="appExplainSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Solved Examples: Applications</h2>
       <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
@@ -404,7 +545,7 @@
       </div>
     </section>
 
-    <!-- 14 • Applications Practice (leveled) -->
+    <!-- 20 • Applications Practice -->
     <section class="slide" id="appSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Applications: Simplify &amp; Common Denominators</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -423,26 +564,7 @@
       <div id="appFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 15 • Real‑World Practice (leveled) -->
-    <section class="slide" id="realSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Real‑World Practice</h2>
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="realLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="realNew" class="btn">New set</button>
-        <button id="realCheck" class="btn maroon">Check</button>
-        <button id="realExportCSV" class="btn">Export CSV</button>
-        <button id="realExportJSON" class="btn">Export JSON</button>
-      </div>
-      <div id="realList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
-      <div id="realFb" class="mt-2 h-6 font-semibold"></div>
-    </section>
-
-    <!-- 16 • Challenge (leveled) -->
+    <!-- 21 • Challenge -->
     <section class="slide" id="challengeSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Challenge: Constraints &amp; Puzzles</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -473,7 +595,7 @@
       <div id="chFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 17 • Error Analysis (leveled) -->
+    <!-- 22 • Error Analysis -->
     <section class="slide" id="errSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Error Analysis</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -504,7 +626,7 @@
       </div>
     </section>
 
-    <!-- 18 • Mixed Review Generator (leveled) -->
+    <!-- 23 • Mixed Review -->
     <section class="slide" id="mixSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Mixed Review Generator</h2>
       <div class="card p-5 w-full max-w-3xl text-left">
@@ -530,8 +652,27 @@
       </div>
     </section>
 
-    <!-- 19 • Exit Ticket -->
-    <section class="slide">
+    <!-- 24 • Part 4 Capstone Real‑Life -->
+    <section class="slide" id="capSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Capstone: Integrate It All</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="capLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="capNew" class="btn">New set</button>
+        <button id="capCheck" class="btn maroon">Check</button>
+        <button id="capExportCSV" class="btn">Export CSV</button>
+        <button id="capExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="capList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
+      <div id="capFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- 25 • Exit Ticket -->
+    <section class="slide" id="exitSlide">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
@@ -557,10 +698,18 @@
 <div id="controls" role="group" aria-label="Slideshow controls">
   <button id="prev" title="Previous (←)">&laquo;</button>
   <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
-  <div id="counter">1 / 20</div>
+  <div id="counter">1 / 26</div>
   <button id="next" title="Next (→)">&raquo;</button>
 </div>
 <div id="progress"></div>
+
+<!-- Part Navigator -->
+<div id="partNav" aria-label="Part navigator">
+  <button id="navP1" class="btn">Part&nbsp;1</button>
+  <button id="navP2" class="btn">Part&nbsp;2</button>
+  <button id="navP3" class="btn">Part&nbsp;3</button>
+  <button id="navP4" class="btn">Part&nbsp;4</button>
+</div>
 
 <!-- Glossary popover -->
 <div id="pop" role="dialog" aria-modal="true" aria-live="polite">
@@ -573,7 +722,7 @@
 (function(){
   const slides=[...document.querySelectorAll('.slide')];
   const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
-  const deckTitle='G7_U1_L3_Prime_Toolkit_Revised';
+  const deckTitle='G7_U1_L3_Prime_Toolkit_4Part';
   let i=0;
 
   function show(k){
@@ -598,6 +747,17 @@
   }
   fsBtn.addEventListener('click',toggleFS);
 
+  /* Part Navigator */
+  const partStarts=['p1IntroSlide','p2IntroSlide','p3IntroSlide','p4IntroSlide'];
+  function goPart(idx){
+    const targetId=partStarts[idx]; const node=document.getElementById(targetId);
+    if(!node) return; const pos=slides.findIndex(s=>s.id===targetId); if(pos>=0) show(pos);
+  }
+  id('navP1').addEventListener('click',()=>goPart(0));
+  id('navP2').addEventListener('click',()=>goPart(1));
+  id('navP3').addEventListener('click',()=>goPart(2));
+  id('navP4').addEventListener('click',()=>goPart(3));
+
   function id(x){return document.getElementById(x)}
   function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
   function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
@@ -621,6 +781,7 @@
     const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
     a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   }
+  function msg(el,s){ if(el) el.textContent=s }
 
   /* ---------- Glossary ---------- */
   const POP=id('pop'), POP_BODY=id('popBody');
@@ -633,7 +794,16 @@
     exp:'<strong>Exponent</strong>: the power showing repeated multiplication, e.g., \\(2^3=2\\cdot2\\cdot2\\).',
     hcf:'<strong>HCF/GCF</strong>: greatest common factor among given numbers.',
     lcm:'<strong>LCM</strong>: least common multiple common to given numbers.',
-    divrule:'<strong>Divisibility</strong>: shortcuts to test if a number is divisible by 2,3,5,7 without long division.'
+    divrule:'<strong>Divisibility</strong>: shortcuts to test if a number is divisible by 2,3,5,7 without long division.',
+    prtest:'<strong>Prime test</strong>: try dividing by primes up to \\(\\sqrt{n}\\).',
+    tree:'<strong>Factor tree</strong>: split a composite into factors repeatedly until leaves are prime.',
+    table:'<strong>Division table</strong>: keep dividing by small primes in rows until 1 remains.',
+    fta:'<strong>FTA</strong>: every integer \\(\\ge2\\) has a unique prime factorization (up to factor order).',
+    euclid:'<strong>Euclidean algorithm</strong>: repeatedly apply remainders to find the GCF.',
+    lcd:'<strong>LCD</strong>: least common denominator (LCM of denominators).',
+    simp:'<strong>Simplify</strong>: divide numerator & denominator by the fraction’s GCF.',
+    err:'<strong>Error analysis</strong>: identify and correct the type of mistake.',
+    strategy:'<strong>Strategy</strong>: pick a method that fits the size & structure of numbers.'
   };
   function showPop(html,anchor){
     POP_BODY.innerHTML=html; POP.style.display='block';
@@ -690,8 +860,17 @@
     const pow=(obj)=>Object.keys(obj).reduce((acc,p)=>acc*Math.pow(+p,obj[p]),1);
     return {gExp:g, lExp:l, gVal:pow(g), lVal:pow(l)};
   }
+  function divCount(n){
+    const m=primeFactorMap(n); let t=1; m.forEach(e=>t*=(e+1)); return t;
+  }
+  function v_p(n,p){
+    let e=0; while(n%p===0){e++; n/=p} return e;
+  }
+  function largestSquareSide(n){
+    const m=primeFactorMap(n); let side=1; m.forEach((e,p)=>{ side*=Math.pow(p, Math.floor(e/2)); }); return side;
+  }
 
-  /* ---------- Slide 3 (Explain) divisibility Try-it ---------- */
+  /* ---------- Slide 3 divisibility Try-it ---------- */
   id('divCheck').addEventListener('click',()=>{
     const s=id('divTry').value.trim(); const n=Number(s);
     if(!s || !Number.isFinite(n)){ id('divFb').textContent='Enter a whole number.'; return; }
@@ -781,7 +960,7 @@
   }
   id('fmNextEx').addEventListener('click',fmExampleRun); fmExampleRun();
 
-  /* ---------- Slide 7 Pick Factors & Multiples (leveled; verified) ---------- */
+  /* ---------- Slide 7 Pick Factors & Multiples ---------- */
   const fmState={FT:0,MT:0,Fset:[],Mset:[]};
   function fmRanges(level){
     if(level==='easy') return {fMax:30,mBaseMax:10};
@@ -792,7 +971,6 @@
     const level=id('fmLevel').value;
     const {fMax,mBaseMax}=fmRanges(level);
     const FT=rand(10,fMax), MT=rand(2,Math.min(mBaseMax,12));
-    // Build candidate pools (include all correct + distractors)
     const Fcorrect=factors(FT);
     const Fchoices=new Set(Fcorrect);
     while(Fchoices.size<12){ Fchoices.add(rand(2,Math.min(fMax,48))); }
@@ -853,12 +1031,10 @@
     });
   });
 
-  /* ---------- Slide 8 Factor Tree/Table (improved) ---------- */
+  /* ---------- Slide 10 Factor Tree/Table ---------- */
   const treeCanvas=id('treeCanvas');
-  const treeState={
-    nodes:new Map(), root:null, nextId:1, steps:[]
-  };
-  function newNode(val){ const id=treeState.nextId++; const node={id,val,left:null,right:null}; treeState.nodes.set(id,node); return id; }
+  const treeState={ nodes:new Map(), root:null, nextId:1, steps:[] };
+  function newNode(val){ const idv=treeState.nextId++; const node={id:idv,val,left:null,right:null}; treeState.nodes.set(idv,node); return idv; }
   function treeBuild(n){
     treeState.nodes.clear(); treeState.steps=[]; treeState.nextId=1;
     const rootId=newNode(Math.max(2,Math.floor(n))); treeState.root=rootId; drawTree(); updateTreeOut(); renderLeaves(); renderTable();
@@ -894,40 +1070,36 @@
     if(currentLeaves().every(nd=>isPrime(nd.val))) confetti();
   }
   function treeMsg(s){ id('treeFb').textContent=s; }
-
-  // Layout: assign x by in‑order traversal of leaves; set internal at avg of children
   function computePositions(){
     const pos=new Map();
-    const leaves=currentLeaves();
     const W=treeCanvas.clientWidth, H=treeCanvas.clientHeight;
-    // in-order traversal gather leaves in order they appear visually (left child then right child)
     const leafOrder=[];
-    (function inorder(id){
-      const nd=treeState.nodes.get(id);
+    (function inorder(idn){
+      const nd=treeState.nodes.get(idn);
       if(nd.left) inorder(nd.left);
-      if(!nd.left && !nd.right) leafOrder.push(id);
+      if(!nd.left && !nd.right) leafOrder.push(idn);
       if(nd.right) inorder(nd.right);
     })(treeState.root);
     const leafX=new Map();
     const margin=40; const span=W-2*margin; const step=leafOrder.length>1? span/(leafOrder.length-1): 0;
     leafOrder.forEach((lid,idx)=> leafX.set(lid, margin + idx*step));
-    function assign(id,depth){
-      const nd=treeState.nodes.get(id);
+    function assign(idn,depth){
+      const nd=treeState.nodes.get(idn);
       const y = 40 + depth*((H-80)/Math.max(1, getDepth(treeState.root)-1));
       if(!nd.left && !nd.right){
-        pos.set(id,{x:leafX.get(id), y});
+        pos.set(idn,{x:leafX.get(idn), y});
       } else {
         assign(nd.left, depth+1);
         assign(nd.right, depth+1);
         const xl=pos.get(nd.left).x, xr=pos.get(nd.right).x;
-        pos.set(id,{x:(xl+xr)/2, y});
+        pos.set(idn,{x:(xl+xr)/2, y});
       }
     }
     assign(treeState.root,0);
     return pos;
   }
-  function getDepth(id){
-    const nd=treeState.nodes.get(id);
+  function getDepth(idn){
+    const nd=treeState.nodes.get(idn);
     if(!nd.left && !nd.right) return 1;
     return 1+Math.max(getDepth(nd.left), getDepth(nd.right));
   }
@@ -939,13 +1111,11 @@
     const W=treeCanvas.clientWidth, H=treeCanvas.clientHeight;
     ctx.clearRect(0,0,W,H);
     const pos=computePositions();
-    // edges
     ctx.strokeStyle='#6C1D45'; ctx.lineWidth=2;
     treeState.nodes.forEach(nd=>{
       if(nd.left){ const a=pos.get(nd.id), b=pos.get(nd.left); ctx.beginPath(); ctx.moveTo(a.x,a.y+12); ctx.lineTo(b.x,b.y-12); ctx.stroke(); }
       if(nd.right){ const a=pos.get(nd.id), b=pos.get(nd.right); ctx.beginPath(); ctx.moveTo(a.x,a.y+12); ctx.lineTo(b.x,b.y-12); ctx.stroke(); }
     });
-    // nodes
     treeState.nodes.forEach(nd=>{
       const {x,y}=pos.get(nd.id);
       const isLeaf=!nd.left && !nd.right, primeLeaf=isLeaf && isPrime(nd.val);
@@ -996,7 +1166,7 @@
   id('viewTable').addEventListener('click',()=>{ id('viewTable').classList.add('active'); id('viewTree').classList.remove('active'); id('tableView').classList.remove('hidden'); id('treeView').classList.add('hidden'); renderTable(); });
   treeBuild(180);
 
-  /* ---------- Slide 9 Prime Factorization (Exponent Form) ---------- */
+  /* ---------- Slide 11 Prime Factorization (Exponent Form) ---------- */
   const pfState={set:[], primes:[]};
   function pfPrimeList(level){
     if(level==='easy') return [2,3,5,7,11,13];
@@ -1063,7 +1233,7 @@
   });
   pfNew();
 
-  /* ---------- Slide 10 Worked Examples GCF/LCM ---------- */
+  /* ---------- Slide 14 Worked Examples GCF/LCM ---------- */
   function listGCLExample(){
     const a=rand(12,40), b=rand(12,40);
     const La=multiples(a,200), Lb=multiples(b,200);
@@ -1087,7 +1257,7 @@
   id('gclListNext').addEventListener('click',listGCLExample); listGCLExample();
   id('gclPrimeNext').addEventListener('click',primeGCLExample); primeGCLExample();
 
-  /* ---------- Slide 11 Explorer GCF/LCM ---------- */
+  /* ---------- Slide 15 Explorer GCF/LCM ---------- */
   const modePills={list:id('mList'), prime:id('mPrime'), euclid:id('mEuclid')};
   Object.values(modePills).forEach(p=>p.addEventListener('click',()=>{ Object.values(modePills).forEach(x=>x.classList.remove('active')); p.classList.add('active'); updateMethodTitle(); }));
   function updateMethodTitle(){
@@ -1108,7 +1278,6 @@
     if(arr.length<2){ id('gMethodOut').innerHTML='Enter at least two positive integers.'; id('gGCF').textContent='—'; id('gLCM').textContent='—'; return; }
     const mode = modePills.list.classList.contains('active')? 'list' : modePills.prime.classList.contains('active')? 'prime' : 'euclid';
     if(mode==='list'){
-      // For 3 numbers, intersect progressively
       const Ls = arr.map(n=>multiples(n,400));
       let common=Ls[0].filter(x=>Ls.slice(1).every(L=>L.includes(x)))[0];
       if(!common) common = lcmArr(arr);
@@ -1123,7 +1292,6 @@
       id('gMethodOut').innerHTML = factLines + `<div class="workline">\\( \\mathrm{GCF} = ${fmtExp(gExp)} = ${gVal} \\); \\( \\mathrm{LCM} = ${fmtExp(lExp)} = ${lVal} \\)</div>`;
       id('gGCF').textContent=gVal; id('gLCM').textContent=lVal;
     } else {
-      // Euclid pairwise
       let trace='';
       function euclid(a,b){
         a=Math.abs(a); b=Math.abs(b); const steps=[];
@@ -1150,7 +1318,7 @@
     downloadJSON(`${deckTitle}_gcf_lcm_explorer.json`, {a:id('gA').value,b:id('gB').value,c:id('gC').value||null,gcf:id('gGCF').textContent,lcm:id('gLCM').textContent});
   });
 
-  /* ---------- Slide 12 Practice GCF/LCM (leveled) ---------- */
+  /* ---------- Slide 16 Practice GCF/LCM ---------- */
   const glState={items:[]};
   function glNew(){
     const lv=id('glLevel').value;
@@ -1197,7 +1365,7 @@
     downloadJSON(`${deckTitle}_gcf_lcm_practice.json`, data);
   });
 
-  /* ---------- Slide 13 Solved examples Applications ---------- */
+  /* ---------- Part 4 Applications examples ---------- */
   function appSimpEx(){
     const d=[6,8,9,10,12,14][rand(0,5)]; const n=rand(1,3*d-1);
     const g=gcd(n,d), N=n/g, D=d/g;
@@ -1218,7 +1386,7 @@
   id('appSimpNext').addEventListener('click',appSimpEx); appSimpEx();
   id('appLCDNext').addEventListener('click',appLCDEx); appLCDEx();
 
-  /* ---------- Slide 14 Applications Practice (leveled) ---------- */
+  /* ---------- Part 4 Applications Practice ---------- */
   const appState={items:[]};
   function appNew(){
     const lv=id('appLevel').value; appState.items=[]; const box=id('appList'); box.innerHTML='';
@@ -1235,8 +1403,8 @@
     // LCD (2)
     for(let k=0;k<2;k++){
       const maxD = (lv==='easy')? 10 : (lv==='med'? 14 : 18);
-      const d1=[3,4,5,6,7,8,9,10,12,14,15,16,18].filter(x=>x<=maxD)[rand(0, Math.min(12,Math.floor(maxD/2)+5))];
-      const d2=[4,5,6,7,8,9,10,12,14,15,16,18].filter(x=>x<=maxD)[rand(0, Math.min(11,Math.floor(maxD/2)+5))];
+      const pool=[3,4,5,6,7,8,9,10,12,14,15,16,18].filter(x=>x<=maxD);
+      const d1=pool[rand(0,pool.length-1)], d2=pool[rand(0,pool.length-1)];
       const a=rand(1,d1-1), b=rand(1,d2-1); const L=lcm2(d1,d2);
       const row=document.createElement('div'); row.className='card p-4';
       row.innerHTML=`<div class="text-left font-semibold text-maroon">Common Denominator</div>
@@ -1293,95 +1461,273 @@
       } else {
         const L=lcm2(it.d1,it.d2); const A=it.a*(L/it.d1), B=it.b*(L/it.d2);
         return {type:'lcd', prompt:{a:it.a,d1:it.d1,b:it.b,d2:it.d2}, correct:{LCM:L,Aeq:[A,L],Beq:[B,L]},
-                user:{LCM:row.querySelector('.lcd').value||'', Aeq:[row.querySelector('.eqA').value||'', row.querySelector('.edA').value||''], Beq:[row.querySelector('.eqB').value||'', row.querySelector('.edB').value||'']}};
-      }
+                user:{LCM:row.querySelector('.lcd').value||'', Aeq:[row.querySelector('.eqA').value||'', row.querySelector('.edA').value||''], Beq:[row.querySelector('.eqB').value||'', row.querySelector('.edB').value||'']}}; }
     });
     downloadJSON(`${deckTitle}_applications.json`, data);
   });
 
-  /* ---------- Slide 15 Real‑World (leveled) ---------- */
-  const realState={items:[]};
-  function realNew(){
-    const lv=id('realLevel').value; realState.items=[];
-    const box=id('realList'); box.innerHTML='';
-    function scale(a,b){ return (lv==='easy')? rand(Math.floor(a/2), Math.floor(b/2)) : (lv==='med'? rand(a,b) : rand(b, b*2)); }
+  /* ---------- Part 1 Real‑Life Mini‑tasks ---------- */
+  const p1RealState={items:[]};
+  function p1Scale(lv,a,b){ return (lv==='easy')? rand(Math.floor(a/2), Math.floor(b/2)) : (lv==='med'? rand(a,b) : rand(b, b*2)); }
+  function p1RealNew(){
+    const lv=id('p1RealLevel').value; p1RealState.items=[]; const box=id('p1RealList'); box.innerHTML='';
+    // 1) Packaging (factor exact division)
+    (function(){
+      const boxes=rand(3,10), per=rand(4,12), P=boxes*per; // ensures divisibility
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Packaging</div>
+        <div class="mt-1">You have <b>${P}</b> cupcakes and pack exactly <b>${per}</b> per box. How many boxes?</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row);
+      p1RealState.items.push({ans:P/per});
+    })();
+    // 2) Multiples (k-th event)
+    (function(){
+      const M=p1Scale(lv,4,12), k=rand(6,12);
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Timing</div>
+        <div class="mt-1">A buzzer sounds every <b>${M}</b> minutes. After how many minutes will the <b>${k}</b>th buzz occur?</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> min</div>`;
+      box.appendChild(row);
+      p1RealState.items.push({ans:M*k});
+    })();
+    // 3) Divisibility by 3 (enter 1 yes / 0 no)
+    (function(){
+      let N=p1Scale(lv,120,540);
+      if(Math.random()<0.5){ // ensure divisible by 3 half the time
+        const r= N%3; N+= (3-r)%3;
+      } else {
+        const r= N%3; if(r===0) N+=1;
+      }
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Divisibility</div>
+        <div class="mt-1">Is <b>${N}</b> divisible by 3? Enter <b>1</b> for yes, <b>0</b> for no.</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row);
+      p1RealState.items.push({ans: (N%3===0)?1:0});
+    })();
+    // 4) Next prime after A
+    (function(){
+      let A=p1Scale(lv,20,90);
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Security Key</div>
+        <div class="mt-1">Find the <b>next prime</b> after <b>${A}</b>.</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row);
+      let x=A+1; while(!isPrime(x)) x++;
+      p1RealState.items.push({ans:x});
+    })();
+  }
+  id('p1RealNew').addEventListener('click',p1RealNew); p1RealNew();
+  id('p1RealCheck').addEventListener('click',()=>{
+    let ok=0; [...id('p1RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
+      const got=Number(el.value); const want=p1RealState.items[idx].ans;
+      if(Math.abs(got-want)<1e-10){ ok++; el.style.borderColor='#22c55e'} else el.style.borderColor='#ef4444';
+    });
+    msg(id('p1RealFb'), ok===p1RealState.items.length? '✅ Excellent!' : 'Score: '+ok+'/'+p1RealState.items.length);
+    if(ok===p1RealState.items.length) confetti();
+  });
+  id('p1RealExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','answer','user']]; [...id('p1RealList').children].forEach((row,idx)=>{
+      rows.push([row.innerText.replace(/\s+/g,' ').trim(), p1RealState.items[idx].ans, row.querySelector('.rin').value||'']);
+    }); downloadCSV(`${deckTitle}_P1_real_world.csv`, rows);
+  });
+  id('p1RealExportJSON').addEventListener('click',()=>{
+    const data=[...id('p1RealList').children].map((row,idx)=>({prompt:row.innerText.replace(/\s+/g,' ').trim(), answer:p1RealState.items[idx].ans, user:row.querySelector('.rin').value||''}));
+    downloadJSON(`${deckTitle}_P1_real_world.json`, data);
+  });
+
+  /* ---------- Part 2 Real‑Life Mini‑tasks ---------- */
+  const p2RealState={items:[]};
+  function p2PickN(lv){
+    if(lv==='easy') return rand(60,180);
+    if(lv==='med') return rand(150,600);
+    return rand(300,1800);
+  }
+  function p2RealNew(){
+    const lv=id('p2RealLevel').value; p2RealState.items=[]; const box=id('p2RealList'); box.innerHTML='';
+    // 1) Factor layouts (divisor count)
+    (function(){
+      const N=p2PickN(lv);
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Layouts</div>
+        <div class="mt-1">A banner has area <b>${N}</b> units². How many <b>positive factors</b> does ${N} have? (counts all possible equal groupings)</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row); p2RealState.items.push({ans:divCount(N)});
+    })();
+    // 2) Highest power of 2 dividing N
+    (function(){
+      let N=p2PickN(lv);
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Halving Stacks</div>
+        <div class="mt-1">You can split <b>${N}</b> items into two equal stacks repeatedly until odd. How many times can you halve?</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row); p2RealState.items.push({ans:v_p(N,2)});
+    })();
+    // 3) Largest square tile side length for area N
+    (function(){
+      const N=p2PickN(lv);
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Square Tiles</div>
+        <div class="mt-1">A square art panel of side <i>s</i> tiles must cover area <b>${N}</b> tiles² without cutting. What is the <b>largest</b> possible <i>s</i>?</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> tiles</div>`;
+      box.appendChild(row); p2RealState.items.push({ans:largestSquareSide(N)});
+    })();
+  }
+  id('p2RealNew').addEventListener('click',p2RealNew); p2RealNew();
+  id('p2RealCheck').addEventListener('click',()=>{
+    let ok=0; [...id('p2RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
+      const got=Number(el.value); const want=p2RealState.items[idx].ans;
+      if(Math.abs(got-want)<1e-10){ ok++; el.style.borderColor='#22c55e'} else el.style.borderColor='#ef4444';
+    });
+    msg(id('p2RealFb'), ok===p2RealState.items.length? '✅ Good use of exponents!' : 'Score: '+ok+'/'+p2RealState.items.length);
+    if(ok===p2RealState.items.length) confetti();
+  });
+  id('p2RealExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','answer','user']]; [...id('p2RealList').children].forEach((row,idx)=>{
+      rows.push([row.innerText.replace(/\s+/g,' ').trim(), p2RealState.items[idx].ans, row.querySelector('.rin').value||'']);
+    }); downloadCSV(`${deckTitle}_P2_real_world.csv`, rows);
+  });
+  id('p2RealExportJSON').addEventListener('click',()=>{
+    const data=[...id('p2RealList').children].map((row,idx)=>({prompt:row.innerText.replace(/\s+/g,' ').trim(), answer:p2RealState.items[idx].ans, user:row.querySelector('.rin').value||''}));
+    downloadJSON(`${deckTitle}_P2_real_world.json`, data);
+  });
+
+  /* ---------- Part 3 Real‑Life Tasks (HCF & LCM) ---------- */
+  const p3RealState={items:[]};
+  function p3Scale(a,b,lv){ return (lv==='easy')? rand(Math.floor(a/2), Math.floor(b/2)) : (lv==='med'? rand(a,b) : rand(b, b*2)); }
+  function p3RealNew(){
+    const lv=id('p3RealLevel').value; p3RealState.items=[];
+    const box=id('p3RealList'); box.innerHTML='';
     // Tiling (GCF)
-    const L=scale(120,240), W=scale(90,180);
-    realState.items.push({text:`Floor: ${L} cm by ${W} cm. Largest square tile (HCF)?`, ans:gcd(L,W), suffix:'cm'});
+    (function(){
+      const L=p3Scale(120,240,lv), W=p3Scale(90,180,lv);
+      p3RealState.items.push({text:`Floor: ${L} cm by ${W} cm. Largest square tile (HCF)?`, ans:gcd(L,W), suffix:'cm'});
+    })();
     // Schedules (LCM)
-    const a=scale(6,12), b=scale(8,15);
-    realState.items.push({text:`Buses: every ${a} min and ${b} min. Next together? (LCM)`, ans:lcm2(a,b), suffix:'min'});
+    (function(){
+      const a=p3Scale(6,12,lv), b=p3Scale(8,15,lv);
+      p3RealState.items.push({text:`Buses: every ${a} min and ${b} min. Next together? (LCM)`, ans:lcm2(a,b), suffix:'min'});
+    })();
     // Packaging (GCF)
-    const ch=scale(40,100), st=scale(36,90);
-    realState.items.push({text:`Pack ${ch} chocolate bars and ${st} sweets in identical packs (no leftovers). Max packs? (HCF)`, ans:gcd(ch,st), suffix:'packs'});
+    (function(){
+      const ch=p3Scale(40,100,lv), st=p3Scale(36,90,lv);
+      p3RealState.items.push({text:`Pack ${ch} chocolate bars and ${st} sweets in identical packs (no leftovers). Max packs? (HCF)`, ans:gcd(ch,st), suffix:'packs'});
+    })();
     // Beacons (LCM)
-    const f1=scale(3,6), f2=scale(7,10);
-    realState.items.push({text:`Beacons: one every ${f1}s, another every ${f2}s. When together again?`, ans:lcm2(f1,f2), suffix:'s'});
-    realState.items.forEach((o,idx)=>{
+    (function(){
+      const f1=p3Scale(3,6,lv), f2=p3Scale(7,10,lv);
+      p3RealState.items.push({text:`Beacons: one every ${f1}s, another every ${f2}s. When together again?`, ans:lcm2(f1,f2), suffix:'s'});
+    })();
+    p3RealState.items.forEach((o,idx)=>{
       const row=document.createElement('div'); row.className='card p-4';
       row.innerHTML=`<div class="text-xl">${o.text}</div>
-        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28" id="r_${idx}" placeholder="value"> ${o.suffix||''}</div>`;
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28" id="p3r_${idx}" placeholder="value"> ${o.suffix||''}</div>`;
       box.appendChild(row);
     });
   }
-  id('realNew').addEventListener('click',realNew); realNew();
-  id('realCheck').addEventListener('click',()=>{
-    let ok=0; realState.items.forEach((o,idx)=>{
-      const el=id('r_'+idx); const got=Number(el.value);
+  id('p3RealNew').addEventListener('click',p3RealNew); p3RealNew();
+  id('p3RealCheck').addEventListener('click',()=>{
+    let ok=0; p3RealState.items.forEach((o,idx)=>{
+      const el=id('p3r_'+idx); const got=Number(el.value);
       if(Math.abs(got-o.ans)<1e-10){ok++; el.style.borderColor='#22c55e'} else el.style.borderColor='#ef4444';
     });
-    id('realFb').textContent = ok===realState.items.length? '✅ Excellent!' : 'Score: '+ok+'/'+realState.items.length;
-    if(ok===realState.items.length) confetti();
+    id('p3RealFb').textContent = ok===p3RealState.items.length? '✅ Excellent!' : 'Score: '+ok+'/'+p3RealState.items.length;
+    if(ok===p3RealState.items.length) confetti();
   });
-  id('realExportCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer','user']]; realState.items.forEach((o,idx)=>rows.push([o.text,o.ans, id('r_'+idx).value || '' ]));
-    downloadCSV(`${deckTitle}_real_world.csv`, rows);
+  id('p3RealExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','answer','user']]; p3RealState.items.forEach((o,idx)=>rows.push([o.text,o.ans, id('p3r_'+idx).value || '' ]));
+    downloadCSV(`${deckTitle}_P3_real_world.csv`, rows);
   });
-  id('realExportJSON').addEventListener('click',()=>{
-    const data=realState.items.map((o,idx)=>({prompt:o.text, answer:o.ans, user:id('r_'+idx).value || ''}));
-    downloadJSON(`${deckTitle}_real_world.json`, data);
+  id('p3RealExportJSON').addEventListener('click',()=>{
+    const data=p3RealState.items.map((o,idx)=>({prompt:o.text, answer:o.ans, user:id('p3r_'+idx).value || ''}));
+    downloadJSON(`${deckTitle}_P3_real_world.json`, data);
   });
 
-  /* ---------- Slide 16 Challenge (leveled) ---------- */
-  const chState={myst:null,gWant:null,lWant:null};
-  function chNew(){
-    const lv=id('chLevel').value;
-    const base = (lv==='easy')? rand(20,80) : (lv==='med'? rand(60,140) : rand(120,220));
-    const g = (lv==='hard')? rand(3,12) : rand(2,10);
-    const mult = [2,3,4,5,6][rand(0,4)];
-    chState.myst={range:[base,base+ (lv==='easy'? 60: 90)], g, mult};
-    id('mystPrompt').innerHTML = `Find a number \\(N\\) such that: \\( ${chState.myst.range[0]} < N < ${chState.myst.range[1]} \\), divisible by \\( ${g} \\), and a multiple of \\( ${mult} \\).`;
-    const a=rand(12,40), b=rand(18,60);
-    chState.gWant=gcd(a,b); chState.lWant=lcm2(a,b);
-    id('gcPairPrompt').innerHTML = `Give any \\(a,b\\) with \\(\\mathrm{GCF}(a,b)=${chState.gWant}\\), \\(\\mathrm{LCM}(a,b)=${chState.lWant}\\).`;
-    renderMath(id('challengeSlide'));
-    id('mystAns').value=''; id('gcA').value=''; id('gcB').value=''; id('chFb').textContent='';
+  /* ---------- Part 4 Capstone (Integrate) ---------- */
+  const capState={items:[]};
+  function capPick(lv, a,b){ return (lv==='easy')? rand(a,Math.floor((a+b)/2)) : (lv==='med'? rand(a,b) : rand(Math.floor((a+b)/2), b*2)); }
+  function capNew(){
+    const lv=id('capLevel').value; capState.items=[]; const box=id('capList'); box.innerHTML='';
+    // Item 1: GCF/LCM + simplify fraction
+    (function(){
+      const a=capPick(lv,12,60), b=capPick(lv,20,84);
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Pair Planning</div>
+        <div class="text-sm text-gray-600 mb-1">Compute GCF/LCM of \\(a=${a}, b=${b}\\) and then simplify \\(\\frac{a}{b}\\).</div>
+        <div class="mt-1">GCF = <input class="cap1g border rounded px-2 py-1 w-20"> &nbsp; LCM = <input class="cap1l border rounded px-2 py-1 w-24"></div>
+        <div class="mt-2">\\(\\frac{${a}}{${b}}\\) = <input class="cap1n border rounded px-2 py-1 w-16"> / <input class="cap1d border rounded px-2 py-1 w-16"></div>`;
+      box.appendChild(row); capState.items.push({type:'pair',a,b});
+      renderMath(row);
+    })();
+    // Item 2: Prime or not + number of factors
+    (function(){
+      const N=capPick(lv,40,200);
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Venue Layout</div>
+        <div class="text-sm text-gray-600 mb-1">For \\(N=${N}\\), answer both:</div>
+        <div class="mt-1">Is \\(N\\) prime? (1=yes, 0=no): <input class="cap2p border rounded px-2 py-1 w-16"></div>
+        <div class="mt-2">How many positive factors does \\(N\\) have? <input class="cap2t border rounded px-2 py-1 w-20"></div>`;
+      box.appendChild(row); capState.items.push({type:'primeTau',N});
+      renderMath(row);
+    })();
   }
-  id('chNew').addEventListener('click',chNew); chNew();
-  id('chCheck').addEventListener('click',()=>{
-    let ok=true;
-    const N=Number(id('mystAns').value||0); const {range,g,mult}=chState.myst;
-    if(N>range[0] && N<range[1] && N%g===0 && N%mult===0) id('mystAns').style.borderColor='#22c55e'; else { id('mystAns').style.borderColor='#ef4444'; ok=false; }
-    const a=Number(id('gcA').value), b=Number(id('gcB').value);
-    if(a>0 && b>0 && gcd(a,b)===chState.gWant && lcm2(a,b)===chState.lWant){ id('gcA').style.borderColor=id('gcB').style.borderColor='#22c55e'; }
-    else { id('gcA').style.borderColor=id('gcB').style.borderColor='#ef4444'; ok=false; }
-    id('chFb').textContent = ok? '✅ Great solutions!' : 'Some answers need refinement (red).';
-    if(ok) confetti();
-  });
-  id('chExportCSV').addEventListener('click',()=>{
-    downloadCSV(`${deckTitle}_challenge.csv`, [['task','prompt','user'],
-      ['mystery', id('mystPrompt').textContent, id('mystAns').value||''],
-      ['pair_gcf_lcm', id('gcPairPrompt').textContent, `a=${id('gcA').value||''}, b=${id('gcB').value||''}`]
-    ]);
-  });
-  id('chExportJSON').addEventListener('click',()=>{
-    downloadJSON(`${deckTitle}_challenge.json`, {
-      mystery:{prompt:id('mystPrompt').textContent, user:id('mystAns').value||''},
-      pair:{prompt:id('gcPairPrompt').textContent, gcf:chState.gWant, lcm:chState.lWant, user:{a:id('gcA').value||'', b:id('gcB').value||''}}
+  id('capNew').addEventListener('click',capNew); capNew();
+  id('capCheck').addEventListener('click',()=>{
+    let ok=0, total=0;
+    capState.items.forEach((it,idx)=>{
+      if(it.type==='pair'){
+        total+=2;
+        const {a,b}=it; const {gVal,lVal}=gcfLCMByPrimes([a,b]);
+        const gIn=document.querySelectorAll('.cap1g')[0], lIn=document.querySelectorAll('.cap1l')[0];
+        const nIn=document.querySelectorAll('.cap1n')[0], dIn=document.querySelectorAll('.cap1d')[0];
+        if(Number(gIn.value)==gVal){ ok++; gIn.style.borderColor='#22c55e' } else gIn.style.borderColor='#ef4444';
+        if(Number(lIn.value)==lVal){ ok++; lIn.style.borderColor='#22c55e' } else lIn.style.borderColor='#ef4444';
+        const g=gcd(a,b), N=a/g, D=b/g;
+        if(Number(nIn.value)==N && Number(dIn.value)==D){ nIn.style.borderColor=dIn.style.borderColor='#22c55e' } else { nIn.style.borderColor=dIn.style.borderColor='#ef4444' }
+      } else {
+        total+=2;
+        const {N}=it; const pIn=document.querySelectorAll('.cap2p')[0+ (capState.items[0].type==='pair'?1:0)], tIn=document.querySelectorAll('.cap2t')[0+ (capState.items[0].type==='pair'?1:0)];
+        const wantP=isPrime(N)?1:0, wantT=divCount(N);
+        if(Number(pIn.value)==wantP){ ok++; pIn.style.borderColor='#22c55e' } else pIn.style.borderColor='#ef4444';
+        if(Number(tIn.value)==wantT){ ok++; tIn.style.borderColor='#22c55e' } else tIn.style.borderColor='#ef4444';
+      }
     });
+    id('capFb').textContent = (ok===total)? '✅ Capstone: excellent synthesis!' : `Score: ${ok} / ${total}`;
+    if(ok===total) confetti();
+  });
+  id('capExportCSV').addEventListener('click',()=>{
+    const rows=[['task','prompt','correct','user']];
+    const it0=capState.items[0], it1=capState.items[1];
+    if(it0 && it0.type==='pair'){
+      const {a,b}=it0; const {gVal,lVal}=gcfLCMByPrimes([a,b]); const g=gcd(a,b), N=a/g, D=b/g;
+      rows.push(['pair', `a=${a}, b=${b}`, `GCF=${gVal}; LCM=${lVal}; ${N}/${D}`,
+        `GCF=${document.querySelectorAll('.cap1g')[0].value||''}; LCM=${document.querySelectorAll('.cap1l')[0].value||''}; ${document.querySelectorAll('.cap1n')[0].value||''}/${document.querySelectorAll('.cap1d')[0].value||''}`]);
+    }
+    if(it1 && it1.type==='primeTau'){
+      const {N}=it1; rows.push(['primeTau', `N=${N}`, `prime=${isPrime(N)?1:0}; tau=${divCount(N)}`,
+        `prime=${document.querySelectorAll('.cap2p')[0].value||''}; tau=${document.querySelectorAll('.cap2t')[0].value||''}`]);
+    }
+    downloadCSV(`${deckTitle}_P4_capstone.csv`, rows);
+  });
+  id('capExportJSON').addEventListener('click',()=>{
+    const data=[];
+    const it0=capState.items[0], it1=capState.items[1];
+    if(it0 && it0.type==='pair'){
+      const {a,b}=it0; const {gVal,lVal}=gcfLCMByPrimes([a,b]); const g=gcd(a,b), N=a/g, D=b/g;
+      data.push({type:'pair', a,b, correct:{GCF:gVal,LCM:lVal,simplified:[N,D]},
+                 user:{GCF:document.querySelectorAll('.cap1g')[0].value||'', LCM:document.querySelectorAll('.cap1l')[0].value||'',
+                       simplified:[document.querySelectorAll('.cap1n')[0].value||'', document.querySelectorAll('.cap1d')[0].value||'']}});
+    }
+    if(it1 && it1.type==='primeTau'){
+      const {N}=it1;
+      data.push({type:'primeTau', N, correct:{prime:isPrime(N)?1:0, tau:divCount(N)},
+                 user:{prime:document.querySelectorAll('.cap2p')[0].value||'', tau:document.querySelectorAll('.cap2t')[0].value||''}});
+    }
+    downloadJSON(`${deckTitle}_P4_capstone.json`, data);
   });
 
-  /* ---------- Slide 17 Error Analysis (leveled) ---------- */
+  /* ---------- Slide 17 Error Analysis etc. (unchanged logic aside from IDs above) ---------- */
   function errBank(level){
     const easy=[
       {work:'\\( 21 \\) is prime.', correct:'\\( 21=3\\cdot 7 \\), so composite.', key:'A'},
@@ -1426,26 +1772,26 @@
     downloadJSON(`${deckTitle}_error_analysis.json`, {incorrect:id('errBox').innerText.trim(), correct:errState.item.correct, key:errState.item.key, user: sel?sel.value:''});
   });
 
-  /* ---------- Slide 18 Mixed Review (leveled) ---------- */
+  /* ---------- Slide 23 Mixed Review ---------- */
   const mixState={cur:null};
   function mixNew(){
     const lv=id('mixLevel').value; let task='';
     function rInt(a,b){return rand(a,b)}
     const type=rand(0,4);
-    if(type===0){ // classify
+    if(type===0){
       const n=(lv==='easy')? rInt(2,40) : (lv==='med'? rInt(2,100) : rInt(2,200));
       task=`Classify ${n} as prime or composite.`; mixState.cur={type:'pc',n};
-    } else if(type===1){ // factors list
+    } else if(type===1){
       const n=(lv==='easy')? rInt(12,36) : (lv==='med'? rInt(20,60) : rInt(30,84));
       task=`List all factors of ${n}.`; mixState.cur={type:'factors',n};
-    } else if(type===2){ // factorization
+    } else if(type===2){
       const n=(lv==='easy')? rInt(40,200) : (lv==='med'? rInt(80,600) : rInt(120,2000));
       task=`Write ${n} in prime‑exponent form.`; mixState.cur={type:'pfe',n};
-    } else if(type===3){ // gcf lcm
+    } else if(type===3){
       const a=(lv==='easy')? rInt(6,40) : (lv==='med'? rInt(8,120) : rInt(10,200));
       const b=(lv==='easy')? rInt(6,40) : (lv==='med'? rInt(8,120) : rInt(10,200));
       task=`Find GCF and LCM of ${a} and ${b}.`; mixState.cur={type:'gcflcm',a,b};
-    } else { // lcd
+    } else {
       const d1=[3,4,5,6,8,9,10][rand(0,6)], d2=[4,5,6,7,8,10,12][rand(0,6)];
       const a=rand(1,d1-1), b=rand(1,d2-1);
       task=`Find LCD and equivalents for ${a}/${d1} and ${b}/${d2}.`; mixState.cur={type:'lcd',a,b,d1,d2};
