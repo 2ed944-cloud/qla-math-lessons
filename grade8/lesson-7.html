@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G8 • Unit 2 • Angle Facts — Synchronized Diagrams Edition</title>
+<title>G8 • Unit 2 • Angle Facts — Complementary, Supplementary, Vertical & Adjacent</title>
 
 <!-- Fonts & Tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,18 +66,15 @@
 
   .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
   .workline{padding:.25rem .5rem;border-left:4px solid var(--gold);margin:.3rem 0;background:#fff}
+
   .confetti{position:fixed;pointer-events:none;z-index:50}
 
+  /* Part Navigator */
   #partNav{position:fixed;top:18px;left:18px;z-index:35;display:flex;gap:.4rem;background:rgba(255,255,255,.85);padding:.35rem;border-radius:999px;border:2px solid var(--gold);backdrop-filter:blur(4px)}
   #partNav button{font-weight:800}
 
-  /* SVG canvases */
-  .miniWrap{display:grid;grid-template-columns:1fr;gap:.5rem}
-  @media (min-width: 720px){ .miniWrap{grid-template-columns:360px 1fr} }
-  .miniSvg{width:100%;height:230px;border:2px solid #ececec;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa)}
-  .boardSvg{width:100%;max-width:760px;height:360px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
-  .notScale{font-size:.72rem;fill:#6b7280}
-  .tag{display:inline-block;font-size:.65rem;border:1px solid #e5e7eb;border-radius:999px;padding:.08rem .45rem;background:#fff;color:#374151}
+  /* SVG Angle Builder */
+  #angleSvg{width:100%;max-width:760px;height:360px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
 </style>
 </head>
 <body>
@@ -100,7 +97,8 @@
       <div class="absolute bottom-6 text-sm text-gray-100">Aligned to AERO 8.G foundations &amp; 8.EE connections.</div>
     </section>
 
-    <!-- PART 1 -->
+    <!-- ──────────────────────────────── PART 1 ──────────────────────────────── -->
+    <!-- 1 • Part 1: LO & Keywords -->
     <section class="slide" id="p1Intro">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 1 — Angle Vocabulary & Relationships</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
@@ -109,7 +107,7 @@
           <ul class="list-disc list-inside space-y-1 text-lg">
             <li>Define and identify <strong>adjacent</strong>, <strong>vertical</strong>, <strong>complementary</strong>, <strong>supplementary</strong> angles and <strong>linear pairs</strong>.</li>
             <li>Use angle‑sum facts: \(90^\circ\), \(180^\circ\), and angles around a point \(360^\circ\).</li>
-            <li>Classify angle pairs and find missing measures with accurate visual representations.</li>
+            <li>Classify angle pairs and find missing measures.</li>
           </ul>
         </div>
         <div class="card p-5">
@@ -127,25 +125,25 @@
       </div>
     </section>
 
-    <!-- Angle Builder -->
+    <!-- 2 • Angle Builder (interactive SVG) -->
     <section class="slide" id="builderSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Angle Builder (Live & Accurate)</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Angle Builder</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div class="flex flex-wrap items-center gap-3 mb-3 text-sm">
-          <label class="pill">Angle \(A\): <input id="angA" type="range" min="5" max="175" value="40" class="w-56"> <b id="angALabel" class="ml-1">40°</b></label>
-          <span class="pill">Complement: <b id="compOut">50°</b></span>
-          <span class="pill">Supplement: <b id="suppOut">140°</b></span>
+          <label class="chip">Angle \(A\): <input id="angA" type="range" min="5" max="175" value="40" class="w-56"> <span id="angALabel" class="ml-1 font-bold">40°</span></label>
+          <span class="pill">Complement \(=90^\circ-A\): <b id="compOut">50°</b></span>
+          <span class="pill">Supplement \(=180^\circ-A\): <b id="suppOut">140°</b></span>
           <span class="pill">Linear‑pair partner: <b id="lpOut">140°</b></span>
           <span class="pill">Vertical to \(A\): <b id="vertOut">40°</b></span>
         </div>
-        <svg id="angleSvg" viewBox="0 0 760 360" class="boardSvg" aria-label="Interactive angle canvas"></svg>
-        <div class="hint mt-3 text-sm">Slider changes the **actual aperture** of the green arc. All outputs update from that value—no placeholders.</div>
+        <svg id="angleSvg" viewBox="0 0 760 360" aria-label="Interactive angle canvas"></svg>
+        <div class="hint mt-3 text-sm">Drag the slider. Notice how complementary angles sum to \(90^\circ\), supplementary/linear‑pairs to \(180^\circ\), and vertical angles are equal.</div>
       </div>
     </section>
 
-    <!-- Classify -->
+    <!-- 3 • Classify Angle Pairs -->
     <section class="slide" id="classifySlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Classify Angle Pairs (Diagrams match values)</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Classify Angle Pairs</h2>
       <div class="flex items-center gap-3 mb-2">
         <span>Level:</span>
         <select id="clfLevel" class="border rounded px-2 py-1">
@@ -162,9 +160,9 @@
       <div id="clfFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- Missing -->
+    <!-- 4 • Find the Missing Angle (single‑step) -->
     <section class="slide" id="missSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Find the Missing Angle (Diagrams from exact data)</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Find the Missing Angle</h2>
       <div class="flex items-center gap-3 mb-2">
         <span>Level:</span>
         <select id="missLevel" class="border rounded px-2 py-1">
@@ -181,7 +179,7 @@
       <div id="missFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- Real‑Life P1 -->
+    <!-- 5 • Part 1 Real‑Life -->
     <section class="slide" id="p1RealSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 1 Real‑Life Mini‑Tasks</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -200,20 +198,21 @@
       <div id="p1RealFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- PART 2 -->
+    <!-- ──────────────────────────────── PART 2 ──────────────────────────────── -->
+    <!-- 6 • Part 2: LO & Keywords -->
     <section class="slide" id="p2Intro">
-      <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 2 — Angle Equations & Solving (Synced Figures)</h2>
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 2 — Angle Equations & Solving</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P2)</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
             <li>Translate angle facts into equations (e.g., complementary \(\to x+y=90\)).</li>
-            <li>Solve for unknowns in vertical, linear‑pair, complementary, and supplementary settings.</li>
-            <li>Check solutions and ensure diagrams match the algebra.</li>
+            <li>Solve for unknowns in <strong>vertical</strong>, <strong>linear‑pair</strong>, <strong>complementary</strong>, and <strong>supplementary</strong> settings.</li>
+            <li>Show algebraic steps and check solutions against geometric constraints.</li>
           </ul>
         </div>
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords</h3>
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
           <div class="flex flex-wrap gap-2 text-lg">
             <span class="chip" data-key="equiv">equation</span>
             <span class="chip" data-key="subs">substitution</span>
@@ -223,7 +222,7 @@
       </div>
     </section>
 
-    <!-- Solve A -->
+    <!-- 7 • Solve for x — (comp/supp/vertical/linear) -->
     <section class="slide" id="solveSlide1">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Solve for \(x\) — Set A</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -244,7 +243,7 @@
       <div id="solASteps" class="mt-2 text-sm"></div>
     </section>
 
-    <!-- Solve B -->
+    <!-- 8 • Solve for x — Set B -->
     <section class="slide" id="solveSlide2">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Solve for \(x\) — Set B</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -265,9 +264,9 @@
       <div id="solBSteps" class="mt-2 text-sm"></div>
     </section>
 
-    <!-- Real‑Life P2 -->
+    <!-- 9 • Part 2 Real‑Life -->
     <section class="slide" id="p2RealSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 2 Real‑Life Mini‑Tasks</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 2 Real‑Life Mini‑Tasks (Design & Builds)</h2>
       <div class="flex items-center gap-3 mb-2">
         <span>Level:</span>
         <select id="p2RealLevel" class="border rounded px-2 py-1">
@@ -284,20 +283,21 @@
       <div id="p2RealFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- PART 3 -->
+    <!-- ──────────────────────────────── PART 3 ──────────────────────────────── -->
+    <!-- 10 • Part 3: LO & Keywords -->
     <section class="slide" id="p3Intro">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 3 — Polygons: Interior & Exterior Angles</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P3)</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Use \(S=(n-2)\cdot180^\circ\) to find interior angle sums.</li>
+            <li>Use \(S=(n-2)\\cdot 180^\circ\) to find interior angle sums.</li>
             <li>For regular polygons, compute one interior and one exterior angle; use exterior sum \(=360^\circ\).</li>
-            <li>Find a missing interior angle given the rest, with labels that match the given data.</li>
+            <li>Find a missing interior angle given the rest.</li>
           </ul>
         </div>
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords</h3>
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
           <div class="flex flex-wrap gap-2 text-lg">
             <span class="chip" data-key="poly">polygon</span>
             <span class="chip" data-key="reg">regular polygon</span>
@@ -308,22 +308,21 @@
       </div>
     </section>
 
-    <!-- Polygon Explorer -->
+    <!-- 11 • Polygon Explorer -->
     <section class="slide" id="polySlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Polygon Explorer (Regular)</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Polygon Explorer</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div class="flex items-center gap-3 mb-2">
-          <label class="pill">Sides \(n\): <input id="polyN" type="range" min="3" max="12" value="6" class="w-56"> <b id="polyNLabel">6</b></label>
+          <label class="chip">Sides \(n\): <input id="polyN" type="range" min="3" max="12" value="6" class="w-56"> <b id="polyNLabel">6</b></label>
           <span class="pill">Interior Sum: <b id="polySum">720°</b></span>
           <span class="pill">Regular \(\\angle_{\\text{int}}\): <b id="polyInt">120°</b></span>
           <span class="pill">Regular \(\\angle_{\\text{ext}}\): <b id="polyExt">60°</b></span>
         </div>
-        <svg id="polySvg" viewBox="0 0 640 320" class="miniSvg"></svg>
-        <div class="hint text-sm">This polygon is truly regular for the chosen \(n\); the labeled exterior/interior values are exact.</div>
+        <div class="hint text-sm">Slide \(n\). Remember: exterior angles of a convex polygon always sum to \(360^\circ\).</div>
       </div>
     </section>
 
-    <!-- Missing Interior -->
+    <!-- 12 • Missing Interior Angle Practice -->
     <section class="slide" id="polyMissSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Find the Missing Interior Angle</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -342,7 +341,7 @@
       <div id="pmFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- Exterior -->
+    <!-- 13 • Exterior Angles / Find n -->
     <section class="slide" id="extSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Exterior Angles & Number of Sides</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -358,15 +357,54 @@
       <div id="exFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- PART 4 -->
-    <section class="slide" id="p4Intro">
-      <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 4 — Integrate: Angle Chases, Errors & Mixed</h2>
+    <!-- 14 • Part 3 Real‑Life -->
+    <section class="slide" id="p3RealSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 3 Real‑Life Mini‑Tasks (Polygons)</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="p3RealLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="p3RealNew" class="btn">New set</button>
+        <button id="p3RealCheck" class="btn maroon">Check</button>
+        <button id="p3RealExportCSV" class="btn">Export CSV</button>
+        <button id="p3RealExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="p3RealList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
+      <div id="p3RealFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- Angle Chase -->
+    <!-- ──────────────────────────────── PART 4 ──────────────────────────────── -->
+    <!-- 15 • Part 4: LO & Keywords -->
+    <section class="slide" id="p4Intro">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 4 — Integrate: Angle Chases, Errors & Mixed Review</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P4)</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Combine angle facts and basic algebra to complete multi‑step “angle chase” tasks.</li>
+            <li>Diagnose and correct common misconceptions and equation‑setup errors.</li>
+            <li>Justify solutions and check for reasonableness.</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <div class="flex flex-wrap gap-2 text-lg">
+            <span class="chip" data-key="chase">angle chase</span>
+            <span class="chip" data-key="reason">justification</span>
+            <span class="chip" data-key="trap">trap choice</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 16 • Angle Chase (multi-step) -->
     <section class="slide" id="chaseSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Angle Chase Playground (All values synced)</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Angle Chase Playground</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
+        <div class="text-sm mb-2">Scenario prompts encode intersecting lines / linear pairs / complements. Compute the requested angle(s).</div>
         <div class="flex items-center gap-3 mb-2">
           <span>Level:</span>
           <select id="acLevel" class="border rounded px-2 py-1">
@@ -384,9 +422,9 @@
       </div>
     </section>
 
-    <!-- Error Analysis -->
+    <!-- 17 • Error Analysis -->
     <section class="slide" id="errSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Error Analysis (Diagrams reflect the claim)</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Error Analysis</h2>
       <div class="flex items-center gap-3 mb-2">
         <span>Level:</span>
         <select id="errLevel" class="border rounded px-2 py-1">
@@ -398,60 +436,50 @@
         <button id="errReveal" class="btn">Reveal correct work</button>
       </div>
       <div class="card p-5 w-full max-w-5xl text-left">
-        <div class="miniWrap">
-          <svg id="errSvg" class="miniSvg" viewBox="0 0 360 230"></svg>
-          <div>
-            <div id="errBox" class="text-lg"></div>
-            <div class="mt-2">
-              <label class="mr-2"><input type="radio" name="errChoice" value="A"> Wrong definition/relation</label><br/>
-              <label class="mr-2"><input type="radio" name="errChoice" value="B"> Incorrect equation setup</label><br/>
-              <label class="mr-2"><input type="radio" name="errChoice" value="C"> Algebra/Arithmetic slip</label><br/>
-              <label class="mr-2"><input type="radio" name="errChoice" value="D"> Polygon formula misuse</label>
-            </div>
-            <div class="mt-2 flex gap-2">
-              <button id="errCheck" class="btn maroon">Check</button>
-              <button id="errExportCSV" class="btn">Export CSV</button>
-              <button id="errExportJSON" class="btn">Export JSON</button>
-            </div>
-            <div id="errFb" class="mt-2 h-6 font-semibold"></div>
-            <div id="errRevealBox" class="mt-2 text-sm"></div>
-          </div>
+        <div id="errBox" class="text-lg"></div>
+        <div class="mt-2">
+          <label class="mr-2"><input type="radio" name="errChoice" value="A"> Wrong definition/relation</label><br/>
+          <label class="mr-2"><input type="radio" name="errChoice" value="B"> Incorrect equation setup</label><br/>
+          <label class="mr-2"><input type="radio" name="errChoice" value="C"> Algebra/Arithmetic slip</label><br/>
+          <label class="mr-2"><input type="radio" name="errChoice" value="D"> Polygon formula misuse</label>
         </div>
+        <div class="mt-2 flex gap-2">
+          <button id="errCheck" class="btn maroon">Check</button>
+          <button id="errExportCSV" class="btn">Export CSV</button>
+          <button id="errExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="errFb" class="mt-2 h-6 font-semibold"></div>
+        <div id="errRevealBox" class="mt-2 text-sm"></div>
       </div>
     </section>
 
-    <!-- Mixed Review -->
+    <!-- 18 • Mixed Review -->
     <section class="slide" id="mixSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Mixed Review Generator (Synced)</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Mixed Review Generator</h2>
       <div class="card p-5 w-full max-w-3xl text-left">
-        <div class="miniWrap">
-          <svg id="mixSvg" class="miniSvg" viewBox="0 0 360 230"></svg>
-          <div>
-            <div class="flex items-center gap-3">
-              <span>Level:</span>
-              <select id="mixLevel" class="border rounded px-2 py-1">
-                <option value="easy" selected>easy</option>
-                <option value="med">medium</option>
-                <option value="hard">hard</option>
-              </select>
-              <button id="mixNew" class="btn">New question</button>
-            </div>
-            <div class="mt-3 text-2xl">Task: <span id="mixQ" class="font-extrabold"></span></div>
-            <div class="mt-2">
-              <input id="mixAns" class="border rounded px-3 py-2 w-80" placeholder="e.g., supplementary; 54°; x=18; n=8">
-              <button id="mixCheck" class="btn maroon">Check</button>
-              <button id="mixHint" class="btn">Hint</button>
-              <button id="mixExportCSV" class="btn">Export CSV</button>
-              <button id="mixExportJSON" class="btn">Export JSON</button>
-            </div>
-            <div id="mixHintBox" class="mt-3 text-sm"></div>
-            <div id="mixFb" class="mt-2 h-6 font-semibold"></div>
-          </div>
+        <div class="flex items-center gap-3">
+          <span>Level:</span>
+          <select id="mixLevel" class="border rounded px-2 py-1">
+            <option value="easy" selected>easy</option>
+            <option value="med">medium</option>
+            <option value="hard">hard</option>
+          </select>
+          <button id="mixNew" class="btn">New question</button>
         </div>
+        <div class="mt-3 text-2xl">Task: <span id="mixQ" class="font-extrabold"></span></div>
+        <div class="mt-2">
+          <input id="mixAns" class="border rounded px-3 py-2 w-80" placeholder="e.g., supplementary; 54°; x=18; n=8">
+          <button id="mixCheck" class="btn maroon">Check</button>
+          <button id="mixHint" class="btn">Hint</button>
+          <button id="mixExportCSV" class="btn">Export CSV</button>
+          <button id="mixExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="mixHintBox" class="mt-3 text-sm"></div>
+        <div id="mixFb" class="mt-2 h-6 font-semibold"></div>
       </div>
     </section>
 
-    <!-- Exit -->
+    <!-- 19 • Exit Ticket -->
     <section class="slide" id="exitSlide">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
@@ -484,7 +512,7 @@
 <div id="progress"></div>
 
 <!-- Part Navigator -->
-<div id="partNav" aria-label="Part navigator" style="position:fixed;top:18px;left:18px;z-index:35;display:flex;gap:.4rem;background:rgba(255,255,255,.85);padding:.35rem;border-radius:999px;border:2px solid var(--gold);backdrop-filter:blur(4px)">
+<div id="partNav" aria-label="Part navigator">
   <button id="navP1" class="btn">Part&nbsp;1</button>
   <button id="navP2" class="btn">Part&nbsp;2</button>
   <button id="navP3" class="btn">Part&nbsp;3</button>
@@ -498,13 +526,11 @@
 </div>
 
 <script>
-/* ============================================================
-   CORE SHELL + UTILITIES
-   ============================================================ */
+/* ---------- Core shell & helpers ---------- */
 (function(){
   const slides=[...document.querySelectorAll('.slide')];
   const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
-  const deckTitle='G8_U2_Angle_Facts_Synced';
+  const deckTitle='G8_U2_Angle_Facts';
   let i=0;
 
   function show(k){
@@ -513,8 +539,7 @@
     counter.textContent=(i+1)+' / '+slides.length;
     progress.style.width=((i+1)/slides.length*100)+'%';
     renderMath(slides[i]);
-    if(slides[i].id==='builderSlide') DiagramBoard.drawBuilder();
-    if(slides[i].id==='polySlide') PolyExplorer.draw();
+    if(slides[i].id==='builderSlide') drawAngle();
   }
   prev.addEventListener('click',()=>show(i-1));
   next.addEventListener('click',()=>show(i+1));
@@ -530,12 +555,16 @@
   }
   fsBtn.addEventListener('click',toggleFS);
 
+  /* Part Navigator */
   const partStarts=['p1Intro','p2Intro','p3Intro','p4Intro'];
+  function goPart(idx){
+    const targetId=partStarts[idx]; const node=document.getElementById(targetId);
+    if(!node) return; const pos=slides.findIndex(s=>s.id===targetId); if(pos>=0) show(pos);
+  }
   id('navP1').addEventListener('click',()=>goPart(0));
   id('navP2').addEventListener('click',()=>goPart(1));
   id('navP3').addEventListener('click',()=>goPart(2));
   id('navP4').addEventListener('click',()=>goPart(3));
-  function goPart(idx){ const targetId=partStarts[idx]; const pos=slides.findIndex(s=>s.id===targetId); if(pos>=0) show(pos); }
 
   function id(x){return document.getElementById(x)}
   function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
@@ -560,25 +589,26 @@
     const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
     a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   }
-  function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
-  function choice(arr){ return arr[rand(0,arr.length-1)] }
 
   /* ---------- Glossary ---------- */
   const POP=id('pop'), POP_BODY=id('popBody');
   const GLOS={
-    adj:'<strong>Adjacent</strong>: share a vertex and a side; interiors do not overlap.',
+    adj:'<strong>Adjacent</strong>: share a common vertex and side; interiors do not overlap.',
     vert:'<strong>Vertical (opposite) angles</strong>: formed by two intersecting lines; opposite angles are equal.',
-    comp:'<strong>Complementary</strong>: two angles whose measures sum to \\(90^\\circ\\).',
+    comp:'<strong>Complementary</strong>: two angles whose measures sum to \\(90^\\circ\\). They need not be adjacent.',
     supp:'<strong>Supplementary</strong>: two angles whose measures sum to \\(180^\\circ\\).',
-    lp:'<strong>Linear pair</strong>: adjacent angles forming a straight line (sum \\(180^\\circ\\)).',
+    lp:'<strong>Linear pair</strong>: adjacent angles that form a straight line (sum \\(180^\\circ\\)).',
     around:'<strong>Angles around a point</strong>: sum to \\(360^\\circ\\).',
-    equiv:'<strong>Equation</strong>: an equality relating unknowns.',
-    subs:'<strong>Substitution</strong>: replace a variable with an equivalent value/expression.',
-    check:'<strong>Reasonableness check</strong>: verify solution fits geometry.',
+    equiv:'<strong>Equation</strong>: an equality relating unknowns, e.g., \\(x+y=90\\).',
+    subs:'<strong>Substitution</strong>: replace a variable by an equivalent expression or value.',
+    check:'<strong>Reasonableness check</strong>: verify solution fits geometry (e.g., angle \\(>0\\)).',
     poly:'<strong>Polygon</strong>: closed figure with straight sides.',
     reg:'<strong>Regular polygon</strong>: all sides and interior angles equal.',
-    sum:'<strong>Interior sum</strong>: \\(S=(n-2)\\cdot180^\\circ\\).',
-    ext:'<strong>Exterior angle</strong>: for a regular \\(n\\)-gon, each exterior angle is \\(360^\\circ/n\\).'
+    sum:'<strong>Interior sum</strong>: \\(S=(n-2)\\cdot180^\\circ\\) for an \\(n\\)-gon.',
+    ext:'<strong>Exterior angle</strong>: for a regular \\(n\\)-gon, each exterior angle is \\(360^\\circ/n\\).',
+    chase:'<strong>Angle chase</strong>: deducing unknown angles by chaining known relations.',
+    reason:'<strong>Justification</strong>: explaining each step with a valid geometric or algebraic reason.',
+    trap:'<strong>Trap choice</strong>: common but incorrect option designed to test understanding.'
   };
   function showPop(html,anchor){
     POP_BODY.innerHTML=html; POP.style.display='block';
@@ -591,786 +621,696 @@
     const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]) showPop(GLOS[key], el);}
   });
 
-  /* ============================================================
-     DIAGRAM ENGINE — SPEC‑DRIVEN, NO PLACEHOLDERS
-     ============================================================ */
-  const SVG = {
-    el(tag, attrs={}){ const e=document.createElementNS('http://www.w3.org/2000/svg',tag); for(const k in attrs){ e.setAttribute(k, attrs[k]); } return e; },
-    clear(s){ while(s.firstChild) s.removeChild(s.firstChild); },
-    line(s,x1,y1,x2,y2,opt={}){ s.appendChild(SVG.el('line',{x1,y1,x2,y2,stroke:opt.stroke||'#374151','stroke-width':opt.w||2,'stroke-dasharray':opt.d||''})); },
-    path(s,d,opt={}){ s.appendChild(SVG.el('path',{d,fill:opt.fill||'none',stroke:opt.stroke||'#6C1D45','stroke-width':opt.w||2,'stroke-dasharray':opt.d||''})); },
-    text(s,x,y,str,opt={}){ const t=SVG.el('text',{x,y,'text-anchor':opt.anchor||'middle','font-size':opt.size||12,fill:opt.fill||'#111'}); t.textContent=str; s.appendChild(t); return t; },
-    circle(s,cx,cy,r,opt={}){ s.appendChild(SVG.el('circle',{cx,cy,r,fill:opt.fill||'none',stroke:opt.stroke||'#374151','stroke-width':opt.w||2})); }
-  };
+  /* ---------- Math helpers ---------- */
   const deg2rad = d => d*Math.PI/180;
-  const polar = (cx,cy,r,deg) => [cx + r*Math.cos(deg2rad(deg)), cy - r*Math.sin(deg2rad(deg))];
-  function arcPath(cx,cy,r,a0,a1){
+
+  /* ---------- Angle Builder ---------- */
+  const svg = id('angleSvg');
+  const angA = id('angA'), angALabel=id('angALabel'), compOut=id('compOut'), suppOut=id('suppOut'), lpOut=id('lpOut'), vertOut=id('vertOut');
+  function drawAngle(){
+    const A = Number(angA.value);
+    angALabel.textContent = A+'°';
+    compOut.textContent = (90-A>0? (90-A)+'°' : '—');
+    const supp = 180-A; suppOut.textContent = supp+'°'; lpOut.textContent=supp+'°'; vertOut.textContent=A+'°';
+    // draw
+    svg.innerHTML='';
+    const W=760,H=360,cx=380,cy=200,r=120;
+    // axes lines
+    const base1=[cx,cy, cx+180,cy], base2=[cx,cy, cx-180,cy], cross=[cx,cy, cx+180*Math.cos(deg2rad(A)), cy-180*Math.sin(deg2rad(A))];
+    line(base2,'#999',1.5); line(base1,'#6C1D45',2.2);
+    line(cross,'#C7A34F',2.2);
+    // arc for A
+    arc(cx,cy,r,0,A,'#C7A34F',4);
+    label(cx+ (r+24)*Math.cos(deg2rad(A/2)), cy- (r+24)*Math.sin(deg2rad(A/2)), 'A = '+A+'°', '#6C1D45');
+    // linear pair arc
+    arc(cx,cy,r-22,A,180,'#bbb',2,'4 4');
+    label(cx+ (r+8)*Math.cos(deg2rad((A+180)/2)), cy- (r+8)*Math.sin(deg2rad((A+180)/2)), 'linear pair', '#555',10);
+    // vertical indication (dashed opposite ray)
+    line([cx,cy, cx-180*Math.cos(deg2rad(A)), cy+180*Math.sin(deg2rad(A))],'#aaa',1.5,'4 4');
+    // vertex dot
+    circle(cx,cy,3,'#333');
+  }
+  function line([x1,y1,x2,y2],stroke,w, dash){
+    const L=document.createElementNS('http://www.w3.org/2000/svg','line');
+    L.setAttribute('x1',x1); L.setAttribute('y1',y1); L.setAttribute('x2',x2); L.setAttribute('y2',y2);
+    L.setAttribute('stroke',stroke); L.setAttribute('stroke-width',w||2);
+    if(dash) L.setAttribute('stroke-dasharray',dash);
+    svg.appendChild(L);
+  }
+  function circle(x,y,r,fill){ const C=document.createElementNS('http://www.w3.org/2000/svg','circle'); C.setAttribute('cx',x); C.setAttribute('cy',y); C.setAttribute('r',r); C.setAttribute('fill',fill); svg.appendChild(C); }
+  function arc(cx,cy,r,a0,a1,stroke,w,dash){
     const A0=deg2rad(a0), A1=deg2rad(a1);
     const x0=cx+r*Math.cos(A0), y0=cy-r*Math.sin(A0);
     const x1=cx+r*Math.cos(A1), y1=cy-r*Math.sin(A1);
-    const large = (Math.abs(a1-a0)%360)>180 ? 1:0;
-    const sweep = (a1>=a0)? 0:1;
-    return `M${x0},${y0} A${r},${r} 0 ${large} ${sweep} ${x1},${y1}`;
+    const large = (a1-a0)>180 ? 1:0;
+    const P=document.createElementNS('http://www.w3.org/2000/svg','path');
+    P.setAttribute('d',`M${x0},${y0} A${r},${r} 0 ${large} 0 ${x1},${y1}`);
+    P.setAttribute('fill','none'); P.setAttribute('stroke',stroke); P.setAttribute('stroke-width',w||3);
+    if(dash) P.setAttribute('stroke-dasharray',dash);
+    svg.appendChild(P);
   }
-  function angleArc(s, cx,cy, r, a0,a1, col='#C7A34F', w=3, dash){ SVG.path(s, arcPath(cx,cy,r,a0,a1), {stroke:col, w, d:dash}); }
-  function rightMarker(s, cx,cy, size, baseDeg){
-    const a=deg2rad(baseDeg), dx=Math.cos(a), dy=Math.sin(a);
-    const p1=[cx+10*dx, cy-10*dy];
-    const p2=[p1[0]+size*(-dy), p1[1]-size*(-dx)];
-    const p3=[p2[0]+size*(dx), p2[1]-size*(dy)];
-    const p4=[p3[0]+size*(dy), p3[1]+size*(dx)];
-    const d=`M${p1[0]},${p1[1]} L${p2[0]},${p2[1]} L${p3[0]},${p3[1]} L${p4[0]},${p4[1]} Z`;
-    SVG.path(s,d,{fill:'#e5e7eb',stroke:'#9ca3af',w:1.5});
-  }
-  function tagNotToScale(s){ const t=SVG.el('text',{'font-size':10,fill:'#6b7280',x:10,y:16}); t.textContent='not to scale'; s.appendChild(t); }
+  function label(x,y,txt,c,fs){ const T=document.createElementNS('http://www.w3.org/2000/svg','text'); T.setAttribute('x',x); T.setAttribute('y',y); T.setAttribute('fill',c||'#000'); T.setAttribute('font-size',fs||12); T.setAttribute('text-anchor','middle'); T.textContent=txt; svg.appendChild(T); }
+  angA.addEventListener('input',drawAngle);
 
-  const Diagram = {
-    /* Right corner: exact a and (90-a) */
-    rightComplement(svg, {a, showUnknown=false}){
-      SVG.clear(svg);
-      const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-      const cx=W/2-8, cy=H/2+36;
-      SVG.line(svg,cx,cy, cx+160,cy,{w:2.2});
-      SVG.line(svg,cx,cy, cx,cy-160,{w:2.2});
-      rightMarker(svg,cx,cy,14,0);
-      const r=76;
-      angleArc(svg,cx,cy,r,0,a,'#C7A34F',3);
-      SVG.text(svg,cx+88*Math.cos(deg2rad(a/2)), cy-88*Math.sin(deg2rad(a/2)), `${a}°`,{fill:'#6C1D45'});
-      const b=90-a, mid=a+(90-a)/2;
-      angleArc(svg,cx,cy,r,a,90,'#f59e0b',3);
-      SVG.text(svg,cx+86*Math.cos(deg2rad(mid)), cy-86*Math.sin(deg2rad(mid)), showUnknown?'?':`${b}°`,{});
-    },
-    /* Linear pair: exact a and (180-a) */
-    linearPairExact(svg, {a, showUnknown=false}){
-      SVG.clear(svg);
-      const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-      const cx=W/2, cy=H/2+14;
-      SVG.line(svg,cx-160,cy, cx+160,cy,{w:2.2});
-      const [rx,ry]=polar(cx,cy,150,a);
-      SVG.line(svg,cx,cy, rx,ry,{w:2.2});
-      const r=72;
-      angleArc(svg,cx,cy,r,0,a,'#C7A34F',3);
-      SVG.text(svg,cx+84*Math.cos(deg2rad(a/2)), cy-84*Math.sin(deg2rad(a/2)), `${a}°`,{fill:'#6C1D45'});
-      angleArc(svg,cx,cy,r,a,180,'#f59e0b',3);
-      const b=180-a, mid=a+(180-a)/2;
-      SVG.text(svg,cx+86*Math.cos(deg2rad(mid)), cy-86*Math.sin(deg2rad(mid)), showUnknown?'?':`${b}°`,{});
-    },
-    /* Vertical: exact equal apertures a and a opposite */
-    verticalExact(svg, {a, showUnknown=false}){
-      SVG.clear(svg);
-      const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-      const cx=W/2, cy=H/2;
-      SVG.line(svg,cx-160,cy, cx+160,cy,{w:2.2});
-      const tilt=a; // ensure the marked angle has aperture a
-      const [x1,y1]=polar(cx,cy,160,tilt), [x2,y2]=polar(cx,cy,160,tilt+180);
-      SVG.line(svg,x1,y1,x2,y2,{w:2.2});
-      const r=70;
-      angleArc(svg,cx,cy,r,0,a,'#C7A34F',3);
-      SVG.text(svg,cx+86*Math.cos(deg2rad(a/2)), cy-86*Math.sin(deg2rad(a/2)), `${a}°`,{fill:'#6C1D45'});
-      angleArc(svg,cx,cy,r,180,180+a,'#f59e0b',3);
-      SVG.text(svg,cx+84*Math.cos(deg2rad(180+a/2)), cy-84*Math.sin(deg2rad(180+a/2)), showUnknown?'?':`${a}°`,{});
-    },
-    /* Adjacent: two angles a and b sharing a side */
-    adjacentExact(svg, {a,b}){
-      SVG.clear(svg);
-      const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-      const cx=W/2, cy=H/2+14;
-      SVG.line(svg,cx-160,cy, cx+160,cy,{w:2.2});
-      const r=70;
-      angleArc(svg,cx,cy,r,0,a,'#C7A34F',3);
-      SVG.text(svg,cx+84*Math.cos(deg2rad(a/2)), cy-84*Math.sin(deg2rad(a/2)), `${a}°`,{fill:'#6C1D45'});
-      angleArc(svg,cx,cy,r,a,a+b,'#f59e0b',3);
-      SVG.text(svg,cx+84*Math.cos(deg2rad(a+b/2)), cy-84*Math.sin(deg2rad(a+b/2)), `${b}°`,{});
-      const [rx,ry]=polar(cx,cy,150,a);
-      const [sx,sy]=polar(cx,cy,150,a+b);
-      SVG.line(svg,cx,cy, rx,ry,{w:2.2}); SVG.line(svg,cx,cy, sx,sy,{w:2.2});
-    },
-    /* Around point: list of angles (some may be '?') shown consecutively */
-    aroundPointExact(svg, {values, unknownIndex}){
-      SVG.clear(svg);
-      const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-      const cx=W/2, cy=H/2;
-      const r=70; let start=-20;
-      SVG.circle(svg,cx,cy,2,{fill:'#374151',stroke:'#374151'});
-      values.forEach((v,idx)=>{
-        const d = typeof v==='number'? v : v.value;
-        angleArc(svg,cx,cy,r,start,start+d, idx===unknownIndex?'#ef4444':(idx%2?'#f59e0b':'#C7A34F'),3);
-        const mid=start + d/2;
-        const label = idx===unknownIndex? '?' : `${d}°`;
-        SVG.text(svg,cx+(r+16)*Math.cos(deg2rad(mid)), cy-(r+16)*Math.sin(deg2rad(mid)), label,{});
-        start+=d;
-      });
-    },
-    /* Symbolic pairs (not to scale) */
-    linearPairSymbolic(svg, {label1,label2}){
-      SVG.clear(svg); tagNotToScale(svg);
-      const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-      const cx=W/2, cy=H/2+14; const a=120; // arbitrary aperture for display only
-      SVG.line(svg,cx-160,cy, cx+160,cy,{w:2.2});
-      const [rx,ry]=polar(cx,cy,150,a); SVG.line(svg,cx,cy, rx,ry,{w:2.2});
-      const r=70;
-      angleArc(svg,cx,cy,r,0,a,'#C7A34F',3);
-      SVG.text(svg,cx+84*Math.cos(deg2rad(a/2)), cy-84*Math.sin(deg2rad(a/2)), label1,{});
-      angleArc(svg,cx,cy,r,a,180,'#f59e0b',3);
-      SVG.text(svg,cx+86*Math.cos(deg2rad((a+180)/2)), cy-86*Math.sin(deg2rad((a+180)/2)), label2,{});
-    },
-    complementSymbolic(svg, {label1,label2}){
-      SVG.clear(svg); tagNotToScale(svg);
-      const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-      const cx=W/2-8, cy=H/2+36;
-      SVG.line(svg,cx,cy, cx+160,cy,{w:2.2});
-      SVG.line(svg,cx,cy, cx,cy-160,{w:2.2});
-      rightMarker(svg,cx,cy,14,0);
-      const r=76; const a=40;
-      angleArc(svg,cx,cy,r,0,a,'#C7A34F',3);
-      SVG.text(svg,cx+88*Math.cos(deg2rad(a/2)), cy-88*Math.sin(deg2rad(a/2)), label1,{});
-      angleArc(svg,cx,cy,r,a,90,'#f59e0b',3);
-      SVG.text(svg,cx+86*Math.cos(deg2rad(a+25)), cy-86*Math.sin(deg2rad(a+25)), label2,{});
-    },
-    verticalSymbolic(svg, {label1,label2}){
-      SVG.clear(svg); tagNotToScale(svg);
-      const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-      const cx=W/2, cy=H/2; SVG.line(svg,cx-160,cy,cx+160,cy,{w:2.2});
-      SVG.line(svg,cx-120,cy-100,cx+120,cy+100,{w:2.2});
-      const r=66;
-      angleArc(svg,cx,cy,r,20,80,'#C7A34F',3);
-      SVG.text(svg,cx+82*Math.cos(deg2rad(50)), cy-82*Math.sin(deg2rad(50)), label1,{});
-      angleArc(svg,cx,cy,r,200,260,'#f59e0b',3);
-      SVG.text(svg,cx+82*Math.cos(deg2rad(230)), cy-82*Math.sin(deg2rad(230)), label2,{});
-    },
-    /* Polygons */
-    regularPolygon(svg, {n, labels=null, highlightIndex=-1}){
-      SVG.clear(svg);
-      const W=svg.viewBox.baseVal.width||640, H=svg.viewBox.baseVal.height||320;
-      const cx=W/2, cy=H/2+4, R=Math.min(W,H)/3, rot=-90;
-      const pts=[]; for(let k=0;k<n;k++){ pts.push(polar(cx,cy,R, rot+360*k/n)); }
-      const d='M'+pts.map(p=>p[0]+','+p[1]).join(' L ')+' Z'; SVG.path(svg,d,{stroke:'#374151',w:2});
-      for(let k=0;k<n;k++){
-        const P=pts[k]; const a0=rot+360*(k-0.24)/n, a1=rot+360*(k+0.24)/n;
-        angleArc(svg,P[0],P[1],22,a0,a1,'#C7A34F',2);
-        let lab = labels? labels[k] : null;
-        if(lab==null){ const intr=((n-2)*180/n).toFixed(0)+'°'; lab = (k===highlightIndex? '?' : intr); }
-        SVG.text(svg, P[0]+28*Math.cos(deg2rad((a0+a1)/2)), P[1]-28*Math.sin(deg2rad((a0+a1)/2)), lab,{size:12});
-      }
-    },
-    exteriorRegular(svg,{n, showValue=true, value=null}){
-      SVG.clear(svg);
-      const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-      const cx=W/2, cy=H/2+8, R=Math.min(W,H)/3, rot=-90;
-      const pts=[]; for(let k=0;k<n;k++){ pts.push(polar(cx,cy,R, rot+360*k/n)); }
-      SVG.path(svg,'M'+pts.map(p=>p[0]+','+p[1]).join(' L ')+' Z',{stroke:'#374151',w:2});
-      const P0=pts[0], P1=pts[1], Pn=pts[n-1];
-      const a0=Math.atan2(P0[1]-Pn[1],P0[0]-Pn[0])*180/Math.PI;
-      const a1=Math.atan2(P1[1]-P0[1],P1[0]-P0[0])*180/Math.PI;
-      const r=24; angleArc(svg,P0[0],P0[1],r,a0,a1,'#C7A34F',3);
-      const mid=(a0+a1)/2; const ext=(360/n).toFixed(0)+'°';
-      SVG.text(svg, P0[0]+36*Math.cos(deg2rad(mid)), P0[1]-36*Math.sin(deg2rad(mid)), showValue?(value??ext):'ext',{size:12});
-    }
-  };
-
-  /* ============================================================
-     BUILDER & EXPLORER
-     ============================================================ */
-  const DiagramBoard = (()=>{
-    const angA=id('angA'), angALabel=id('angALabel'), compOut=id('compOut'), suppOut=id('suppOut'), lpOut=id('lpOut'), vertOut=id('vertOut'), svg=id('angleSvg');
-    function drawBuilder(){
-      const A=Number(angA.value);
-      angALabel.textContent=A+'°';
-      compOut.textContent=(90-A>0?(90-A)+'°':'—');
-      const supp=180-A; suppOut.textContent=supp+'°'; lpOut.textContent=supp+'°'; vertOut.textContent=A+'°';
-      Diagram.linearPairExact(svg,{a:A,showUnknown:false}); // base view shows A and its linear partner
-    }
-    angA.addEventListener('input',drawBuilder);
-    return {drawBuilder};
-  })();
-
-  const PolyExplorer = (()=>{
-    const polySvg=id('polySvg'), polyN=id('polyN'), polyNLabel=id('polyNLabel'), polySum=id('polySum'), polyInt=id('polyInt'), polyExt=id('polyExt');
-    function draw(){
-      const n=Number(polyN.value); polyNLabel.textContent=n;
-      const S=(n-2)*180, ext=360/n, Int=S/n;
-      polySum.textContent=S+'°'; polyInt.textContent=Int.toFixed(2).replace(/\.00$/,'')+'°'; polyExt.textContent=ext.toFixed(2).replace(/\.00$/,'')+'°';
-      Diagram.regularPolygon(polySvg,{n});
-    }
-    polyN.addEventListener('input',draw);
-    return {draw};
-  })();
-
-  /* ============================================================
-     PART 1 — CLASSIFY & MISSING (SYNCED)
-     ============================================================ */
+  /* ---------- Part 1: Classify & Missing ---------- */
   const TYPES=['complementary','supplementary','vertical','adjacent','linear pair','neither'];
+  function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+  function choice(arr){ return arr[rand(0,arr.length-1)] }
 
-  const Classify = (()=>{
-    const state={items:[]};
-    function buildPrompt(t, lv){
-      if(t==='complementary'){ const a=rand(10,80), b=90-a; return {t,a,b, text:`Right corner split into <b>${a}°</b> and <b>${b}°</b>. Relationship?`,
-        draw:(s)=>Diagram.rightComplement(s,{a,showUnknown:false})}; }
-      if(t==='supplementary' || t==='linear pair'){ const a=rand(20,160), b=180-a; return {t:'linear pair',a,b,text:`Adjacent angles on a straight line: <b>${a}°</b> and <b>${b}°</b>. Relationship?`,
-        draw:(s)=>Diagram.linearPairExact(s,{a,showUnknown:false})}; }
-      if(t==='vertical'){ const a=rand(20,140); return {t,a,text:`Two lines intersect. Angle A is <b>${a}°</b>. Relationship between A and the opposite angle?`,
-        draw:(s)=>Diagram.verticalExact(s,{a,showUnknown:false})}; }
-      if(t==='adjacent'){ const a=rand(15,80), b=rand(10,80); return {t,a,b,text:`Two angles share a side at a point: <b>${a}°</b> and <b>${b}°</b>. Relationship?`,
-        draw:(s)=>Diagram.adjacentExact(s,{a,b})}; }
-      // neither — draw two disjoint angles with labels that are not 90/180/complements/supplements or vertical/adjacent
-      const u=40, v=60;
-      return {t:'neither',text:`Two separate angles of <b>${u}°</b> and <b>${v}°</b> (no shared sides, not opposite). Relationship?`,
-        draw:(s)=>{ SVG.clear(s); const cx=180, cy=115; angleArc(s,cx-60,cy,48,0,u,'#C7A34F',3); SVG.text(s,cx-60+62*Math.cos(deg2rad(u/2)), cy-62*Math.sin(deg2rad(u/2)), `${u}°`,{}); angleArc(s,cx+60,cy,48,0,v,'#f59e0b',3); SVG.text(s,cx+60+62*Math.cos(deg2rad(v/2)), cy-62*Math.sin(deg2rad(v/2)), `${v}°`,{});} };
-    }
-    function newSet(){
-      const lv=id('clfLevel').value; state.items=[]; const box=id('clfList'); box.innerHTML='';
-      const k=(lv==='easy'?6:(lv==='med'?8:10));
-      for(let i=0;i<k;i++){
-        const t=choice(TYPES); const P=buildPrompt(t,lv); state.items.push(P);
-        const row=document.createElement('div'); row.className='card p-4 text-left';
-        row.innerHTML=`<div class="miniWrap">
-          <svg id="clfSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
-          <div>
-            <div class="text-maroon font-semibold mb-1">Item ${i+1}</div>
-            <div class="mb-2">${P.text}</div>
-            <div class="flex flex-wrap gap-2 text-sm">
-              ${TYPES.map(s=>`<label class="pill"><input type="radio" name="clf_${i}" value="${s}" class="mr-1">${s}</label>`).join('')}
-            </div>
-          </div></div>`;
-        box.appendChild(row);
-        P.draw(row.querySelector(`#clfSVG_${i}`));
-      }
-    }
-    function check(){
-      let ok=0;
-      [...id('clfList').children].forEach((row,idx)=>{
-        const sel=[...row.querySelectorAll('input[type="radio"]')].find(x=>x.checked)?.value||'';
-        const want=state.items[idx].t;
-        row.style.borderColor=(sel===want)?'#22c55e':'#ef4444'; if(sel===want) ok++;
-      });
-      id('clfFb').textContent= ok===state.items.length? '✅ All correct!' : `Score: ${ok}/${state.items.length}`;
-      if(ok===state.items.length) confetti();
-    }
-    id('clfNew').addEventListener('click',newSet); newSet();
-    id('clfCheck').addEventListener('click',check);
-    id('clfExportCSV').addEventListener('click',()=>{
-      const rows=[['prompt','correct','user']];
-      [...id('clfList').children].forEach((row,idx)=>{
-        const user=[...row.querySelectorAll('input[type="radio"]')].find(x=>x.checked)?.value||'';
-        rows.push([row.querySelector('.text-maroon ~ div').innerText.trim(), state.items[idx].t, user]);
-      });
-      downloadCSV(`${deckTitle}_P1_classify.csv`, rows);
-    });
-    id('clfExportJSON').addEventListener('click',()=>{
-      const data=[...id('clfList').children].map((row,idx)=>({prompt:row.querySelector('.text-maroon ~ div').innerText.trim(), correct:state.items[idx].t, user:[...row.querySelectorAll('input[type="radio"]')].find(x=>x.checked)?.value||''}));
-      downloadJSON(`${deckTitle}_P1_classify.json`, data);
-    });
-  })();
-
-  const Missing = (()=>{
-    const state={items:[]};
-    function make(kind){
-      if(kind==='comp'){ const a=rand(10,80); return {kind, ans:90-a, draw:(s)=>Diagram.rightComplement(s,{a,showUnknown:true}), prompt:`Find the complement of <b>${a}°</b>.`}; }
-      if(kind==='supp'){ const a=rand(25,170); return {kind, ans:180-a, draw:(s)=>Diagram.linearPairExact(s,{a,showUnknown:true}), prompt:`∠1 and ∠2 are a linear pair. If \(m∠1=${a}°\), find \(m∠2\).`}; }
-      if(kind==='vert'){ const a=rand(15,165); return {kind, ans:a, draw:(s)=>Diagram.verticalExact(s,{a,showUnknown:true}), prompt:`Lines intersect. If \(m∠A=${a}°\), find the vertical angle \(m∠A'\).`}; }
-      if(kind==='lp'){ const a=rand(25,155); return {kind, ans:180-a, draw:(s)=>Diagram.linearPairExact(s,{a,showUnknown:true}), prompt:`Adjacent ∠X and ∠Y form a straight line. If \(m∠X=${a}°\), find \(m∠Y\).`}; }
-      // around
-      const A=rand(40,140), B=rand(30,120), C=rand(30,110), D=360-(A+B+C);
-      return {kind:'around', ans:D, draw:(s)=>Diagram.aroundPointExact(s,{values:[A,B,C,D], unknownIndex:3}), prompt:`Angles around a point: ${A}°, ${B}°, ${C}°, and ∠?. Find ∠?.`};
-    }
-    function newSet(){
-      const lv=id('missLevel').value; state.items=[]; const box=id('missList'); box.innerHTML='';
-      const k=(lv==='easy'?6:(lv==='med'?8:10));
-      const kinds=['comp','supp','vert','lp','around'];
-      for(let i=0;i<k;i++){
-        const K=choice(kinds); const P=make(K); state.items.push(P);
-        const row=document.createElement('div'); row.className='card p-4 text-left';
-        row.innerHTML=`<div class="miniWrap">
-          <svg id="missSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
-          <div>
-            <div class="font-semibold text-maroon mb-1">Item ${i+1}</div>
-            <div class="mb-2">${P.prompt}</div>
-            <div>Answer: <input class="minp border rounded px-2 py-1 w-24"> °</div>
-          </div></div>`;
-        box.appendChild(row);
-        P.draw(row.querySelector(`#missSVG_${i}`));
-      }
-    }
-    function check(){
-      let ok=0; [...id('missList').children].forEach((row,idx)=>{
-        const v=Number(row.querySelector('.minp').value); const want=state.items[idx].ans;
-        row.style.borderColor=(Math.abs(v-want)<1e-10)?'#22c55e':'#ef4444'; if(Math.abs(v-want)<1e-10) ok++;
-      });
-      id('missFb').textContent= ok===state.items.length? '✅ Great!' : `Score: ${ok}/${state.items.length}`;
-      if(ok===state.items.length) confetti();
-    }
-    id('missNew').addEventListener('click',newSet); newSet();
-    id('missCheck').addEventListener('click',check);
-    id('missExportCSV').addEventListener('click',()=>{
-      const rows=[['prompt','answer','user']]; [...id('missList').children].forEach((row,idx)=>rows.push([row.querySelector('.font-semibold ~ div').innerText.trim(), state.items[idx].ans, row.querySelector('.minp').value||'']));
-      downloadCSV(`${deckTitle}_P1_missing.csv`, rows);
-    });
-    id('missExportJSON').addEventListener('click',()=>{
-      const data=[...id('missList').children].map((row,idx)=>({prompt:row.querySelector('.font-semibold ~ div').innerText.trim(), answer:state.items[idx].ans, user:row.querySelector('.minp').value||''}));
-      downloadJSON(`${deckTitle}_P1_missing.json`, data);
-    });
-  })();
-
-  /* Real‑Life P1 (synced) */
-  const RealP1 = (()=>{
-    const state={items:[]};
-    function addRow(box,prompt,unit,drawFn,ans){
-      const idx=box.children.length;
-      const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="miniWrap">
-        <svg id="p1RSVG_${idx}" class="miniSvg" viewBox="0 0 360 230"></svg>
-        <div><div class="text-left">${prompt}</div>
-        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> ${unit||''}</div></div></div>`;
-      box.appendChild(row); drawFn(row.querySelector(`#p1RSVG_${idx}`)); state.items.push({ans});
-    }
-    function newSet(){
-      state.items=[]; const box=id('p1RealList'); box.innerHTML='';
-      const a=rand(20,70); addRow(box,`Frame corner is right angle. One miter is <b>${a}°</b> from the edge. Other cut?`,'°',(s)=>Diagram.rightComplement(s,{a,showUnknown:true}), 90-a);
-      const d=rand(35,85); addRow(box,`Door opened to <b>${d}°</b>. How many more degrees to reach 90°?`,'°',(s)=>Diagram.rightComplement(s,{a:d,showUnknown:true}), 90-d);
-      const b=rand(30,150); addRow(box,`Support makes <b>${b}°</b> with the wall; bracket forms a straight line with it. Bracket’s angle?`,'°',(s)=>Diagram.linearPairExact(s,{a:b,showUnknown:true}), 180-b);
-      const A=rand(60,150), B=rand(40,120), C=rand(30,110); const rem=360-(A+B+C);
-      addRow(box,`Spotlights around a center: ${A}°, ${B}°, ${C}°, and ◻︎. Find ◻︎.`,'°',(s)=>Diagram.aroundPointExact(s,{values:[A,B,C,rem],unknownIndex:3}), rem);
-    }
-    function check(){
-      let ok=0; [...id('p1RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
-        const got=Number(el.value); const want=state.items[idx].ans; el.style.borderColor=(Math.abs(got-want)<1e-10)?'#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++;
-      });
-      id('p1RealFb').textContent= ok===state.items.length? '✅ Excellent!' : `Score: ${ok}/${state.items.length}`;
-      if(ok===state.items.length) confetti();
-    }
-    id('p1RealNew').addEventListener('click',newSet); newSet();
-    id('p1RealCheck').addEventListener('click',check);
-    id('p1RealExportCSV').addEventListener('click',()=>{
-      const rows=[['prompt','answer','user']]; [...id('p1RealList').children].forEach((row,idx)=>rows.push([row.querySelector('.text-left').innerText.trim(), state.items[idx].ans, row.querySelector('.rin').value||'']));
-      downloadCSV(`${deckTitle}_P1_real.csv`, rows);
-    });
-    id('p1RealExportJSON').addEventListener('click',()=>{
-      const data=[...id('p1RealList').children].map((row,idx)=>({prompt:row.querySelector('.text-left').innerText.trim(), answer:state.items[idx].ans, user:row.querySelector('.rin').value||''}));
-      downloadJSON(`${deckTitle}_P1_real.json`, data);
-    });
-  })();
-
-  /* ============================================================
-     PART 2 — SOLVERS (SYNCED)
-     ============================================================ */
-  function solveCompSupp(type, lv){
-    const target=(type==='comp'?90:180);
-    for(let g=0; g<400; g++){
-      const a1=rand(1,4), b1=rand(0,30), a2=rand(1,4), b2=rand(0,30);
-      const A=a1+a2, B=b1+b2, rhs=target-B;
-      if(A!==0 && rhs%A===0){ const x=rhs/A; if(x>0 && x<= (lv==='hard'?60:50)) return {type, a1,b1,a2,b2,x,target}; }
-    }
-    return solveCompSupp(type, lv);
-  }
-  function solveVertical(lv){
-    for(let g=0; g<400; g++){
-      const a1=rand(1,4), b1=rand(0,40), a2=rand(1,4), b2=rand(0,40);
-      const num=b2-b1, den=a1-a2;
-      if(den!==0 && num%den===0){ const x=num/den; if(x>0 && x<= (lv==='hard'?60:50)) return {type:'vert',a1,b1,a2,b2,x}; }
-    }
-    return solveVertical(lv);
-  }
-  function exprVal(a,b,x){ return a*x+b; }
-
-  function buildSolveSet(containerId, levelSelId, state){
-    const lv=id(levelSelId).value; const box=id(containerId); box.innerHTML=''; state.items=[];
-    const kinds=['comp','supp','vert','lp']; // lp treated like supp to 180
-    for(let i=0;i<4;i++){
-      let P = (kinds[i]==='vert') ? solveVertical(lv) :
-              (kinds[i]==='lp')   ? solveCompSupp('supp',lv) :
-                                    solveCompSupp(kinds[i],lv);
-      state.items.push(P);
-      const title = (P.type==='comp'?'Complementary (sum 90°)': (P.type==='supp'?'Supplementary / Linear Pair (sum 180°)': 'Vertical (equal)'));
-      const rel = (P.type==='vert'? `\\( ${P.a1}x+${P.b1} = ${P.a2}x+${P.b2} \\)` : `\\( (${P.a1}x+${P.b1}) + (${P.a2}x+${P.b2}) = ${P.target} \\)`);
+  const clfState={items:[]};
+  function clfNew(){
+    const lv=id('clfLevel').value; const k= (lv==='easy'?6:(lv==='med'?8:10));
+    clfState.items=[];
+    const box=id('clfList'); box.innerHTML='';
+    for(let i=0;i<k;i++){
+      const t=choice(TYPES);
+      const prompt=buildClassifyPrompt(t, lv);
+      clfState.items.push({t, prompt});
       const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML=`<div class="miniWrap">
-        <svg id="${containerId}_svg_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
-        <div>
-          <div class="text-maroon font-semibold mb-1">${title} <span class="tag">diagram</span></div>
-          <div class="mb-2">Equation: ${rel}</div>
-          <div>Solution: \(x=\) <input class="xin border rounded px-2 py-1 w-20">
-               &nbsp; ∠1 = <input class="a1in border rounded px-2 py-1 w-20">° &nbsp; ∠2 = <input class="a2in border rounded px-2 py-1 w-20">°</div>
-        </div></div>`;
-      box.appendChild(row); renderMath(row);
-      const s=row.querySelector(`#${containerId}_svg_${i}`);
-      if(P.type==='vert'){
-        Diagram.verticalSymbolic(s,{label1:`${P.a1}x+${P.b1}°`, label2:`${P.a2}x+${P.b2}°`});
-      } else if(P.type==='comp'){
-        Diagram.complementSymbolic(s,{label1:`${P.a1}x+${P.b1}°`, label2:`${P.a2}x+${P.b2}°`});
-      } else { // supp/lp
-        Diagram.linearPairSymbolic(s,{label1:`${P.a1}x+${P.b1}°`, label2:`${P.a2}x+${P.b2}°`});
+      row.innerHTML=`<div class="text-maroon font-semibold mb-1">Item ${i+1}</div>
+        <div class="mb-2">${prompt}</div>
+        <div class="flex flex-wrap gap-2 text-sm">
+          ${TYPES.map(s=>`<label class="pill"><input type="radio" name="clf_${i}" value="${s}" class="mr-1">${s}</label>`).join('')}
+        </div>`;
+      box.appendChild(row);
+    }
+  }
+  function buildClassifyPrompt(type, lv){
+    let a,b,msg='';
+    if(type==='complementary'){ a=rand(10,70); b=90-a; msg=`Angles measure <b>${a}°</b> and <b>${b}°</b>. Relationship?`; }
+    else if(type==='supplementary'){ a=rand(30,150); b=180-a; msg=`Two angles total <b>180°</b> but are not a straight line in the diagram. Relationship?`; }
+    else if(type==='vertical'){ a=rand(20,140); msg=`Two lines intersect. Angle A is <b>${a}°</b>. What is the relationship between angle A and its opposite angle B?`; }
+    else if(type==='adjacent'){ a=rand(20,70); b=rand(20,70); msg=`∠1 and ∠2 share a common side at point P; \(m∠1=${a}°\), \(m∠2=${b}°\). They do not form a line. Relationship?`; }
+    else if(type==='linear pair'){ a=rand(20,160); b=180-a; msg=`∠X and ∠Y are adjacent and their non‑common sides form a line: \(m∠X=${a}°\), \(m∠Y=?\). Relationship?`; }
+    else { msg=`Two angles are given in a figure; they neither total \(90°\) nor \(180°\), are not opposite at an intersection, and do not share a side. Relationship?`; }
+    if(lv==='hard' && Math.random()<0.3) msg+=` <span class="hint ml-1">Trap: complementary angles need not be adjacent.</span>`;
+    return msg;
+  }
+  function clfCheck(){
+    let ok=0;
+    [...id('clfList').children].forEach((row,idx)=>{
+      const sel=[...row.querySelectorAll('input[type="radio"]')].find(x=>x.checked)?.value||'';
+      const want=clfState.items[idx].t;
+      row.style.borderColor = (sel===want)? '#22c55e':'#ef4444';
+      if(sel===want) ok++;
+    });
+    id('clfFb').textContent = ok===clfState.items.length ? '✅ All correct!' : `Score: ${ok}/${clfState.items.length}`;
+    if(ok===clfState.items.length) confetti();
+  }
+  id('clfNew').addEventListener('click',clfNew); clfNew();
+  id('clfCheck').addEventListener('click',clfCheck);
+  id('clfExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','correct','user']];
+    [...id('clfList').children].forEach((row,idx)=>{
+      const user=[...row.querySelectorAll('input[type="radio"]')].find(x=>x.checked)?.value||'';
+      rows.push([row.children[1].innerText.trim(), clfState.items[idx].t, user]);
+    });
+    downloadCSV(`${deckTitle}_P1_classify.csv`, rows);
+  });
+  id('clfExportJSON').addEventListener('click',()=>{
+    const data=[...id('clfList').children].map((row,idx)=>({
+      prompt:row.children[1].innerText.trim(),
+      correct:clfState.items[idx].t,
+      user:[...row.querySelectorAll('input[type="radio"]')].find(x=>x.checked)?.value||''
+    }));
+    downloadJSON(`${deckTitle}_P1_classify.json`, data);
+  });
+
+  const missState={items:[]};
+  function missNew(){
+    const lv=id('missLevel').value; const k = (lv==='easy'?6:(lv==='med'?8:10));
+    missState.items=[]; const box=id('missList'); box.innerHTML='';
+    for(let i=0;i<k;i++){
+      const kind = choice(['comp','supp','vert','lp','around']);
+      const o=buildMissing(kind, lv);
+      missState.items.push(o);
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML=`<div class="font-semibold text-maroon mb-1">Item ${i+1}</div>
+        <div class="mb-2">${o.prompt}</div>
+        <div>Answer: <input class="minp border rounded px-2 py-1 w-24"> °</div>`;
+      box.appendChild(row);
+    }
+  }
+  function buildMissing(kind, lv){
+    if(kind==='comp'){
+      const a=rand(10,80); return {prompt:`Find the complement of <b>${a}°</b>.`, ans:90-a};
+    } else if(kind==='supp'){
+      const a=rand(30,170); return {prompt:`∠1 forms a linear pair with ∠2. If \(m∠1=${a}°\), find \(m∠2\).`, ans:180-a};
+    } else if(kind==='vert'){
+      const a=rand(15,165); return {prompt:`Two lines intersect. If \(m∠A=${a}°\), find \(m∠A'\) (vertical angle).`, ans:a};
+    } else if(kind==='lp'){
+      const a=rand(25,155); return {prompt:`Adjacent ∠X and ∠Y form a straight line. If \(m∠X=${a}°\), find \(m∠Y\).`, ans:180-a};
+    } else {
+      // around a point: give three angles
+      const a=rand(40,140), b=rand(40,140), c=rand(40,140); const sum=a+b+c;
+      const d=360-sum; return {prompt:`Angles around a point: ${a}°, ${b}°, ${c}°, and ∠? . Find ∠?.`, ans:d};
+    }
+  }
+  function missCheck(){
+    let ok=0;
+    [...id('missList').children].forEach((row,idx)=>{
+      const got=Number(row.querySelector('.minp').value); const want=missState.items[idx].ans;
+      row.style.borderColor = (Math.abs(got-want)<1e-10)? '#22c55e':'#ef4444';
+      if(Math.abs(got-want)<1e-10) ok++;
+    });
+    id('missFb').textContent = ok===missState.items.length ? '✅ Great!' : `Score: ${ok}/${missState.items.length}`;
+    if(ok===missState.items.length) confetti();
+  }
+  id('missNew').addEventListener('click',missNew); missNew();
+  id('missCheck').addEventListener('click',missCheck);
+  id('missExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','answer','user']];
+    [...id('missList').children].forEach((row,idx)=>{
+      rows.push([row.children[1].innerText.trim(), missState.items[idx].ans, row.querySelector('.minp').value||'']);
+    });
+    downloadCSV(`${deckTitle}_P1_missing.csv`, rows);
+  });
+  id('missExportJSON').addEventListener('click',()=>{
+    const data=[...id('missList').children].map((row,idx)=>({prompt:row.children[1].innerText.trim(), answer:missState.items[idx].ans, user:row.querySelector('.minp').value||''}));
+    downloadJSON(`${deckTitle}_P1_missing.json`, data);
+  });
+
+  /* ---------- Part 1 Real‑Life ---------- */
+  const p1RealState={items:[]};
+  function p1RealNew(){
+    const lv=id('p1RealLevel').value; p1RealState.items=[]; const box=id('p1RealList'); box.innerHTML='';
+    // Framing (complement)
+    (function(){
+      const a=rand(20,70); const prompt=`A picture frame corner must make a right angle. If one miter cut is <b>${a}°</b> from the edge, what angle must the other cut be?`;
+      p1RealState.items.push({ans:90-a});
+      addRealRow(box,prompt,'°');
+    })();
+    // Door swing (to 90)
+    (function(){
+      const a=rand(35,85); const prompt=`A door opened to <b>${a}°</b>. How many more degrees to reach a right angle?`;
+      p1RealState.items.push({ans:90-a});
+      addRealRow(box,prompt,'°');
+    })();
+    // Linear pair bracket
+    (function(){
+      const a=rand(30,150); const prompt=`A wall bracket forms a straight line with a support. If the support angle is <b>${a}°</b>, find the bracket’s angle with the wall.`;
+      p1RealState.items.push({ans:180-a});
+      addRealRow(box,prompt,'°');
+    })();
+    // Spotlight split around a point
+    (function(){
+      const a=rand(60,150), b=rand(40,120), c=rand(30,110); const prompt=`Three stage spotlights make angles of ${a}°, ${b}°, ${c}° around the DJ. What angle remains to complete 360°?`;
+      p1RealState.items.push({ans:360-(a+b+c)});
+      addRealRow(box,prompt,'°');
+    })();
+  }
+  function addRealRow(box, prompt, suf){
+    const row=document.createElement('div'); row.className='card p-4';
+    row.innerHTML=`<div class="text-left">${prompt}</div>
+      <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> ${suf||''}</div>`;
+    box.appendChild(row);
+  }
+  id('p1RealNew').addEventListener('click',p1RealNew); p1RealNew();
+  id('p1RealCheck').addEventListener('click',()=>{
+    let ok=0; [...id('p1RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
+      const got=Number(el.value); const want=p1RealState.items[idx].ans;
+      el.style.borderColor=(Math.abs(got-want)<1e-10)? '#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++;
+    });
+    id('p1RealFb').textContent = ok===p1RealState.items.length? '✅ Excellent!' : `Score: ${ok}/${p1RealState.items.length}`;
+    if(ok===p1RealState.items.length) confetti();
+  });
+  id('p1RealExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','answer','user']];
+    [...id('p1RealList').children].forEach((row,idx)=>rows.push([row.children[0].innerText.trim(), p1RealState.items[idx].ans, row.querySelector('.rin').value||'']));
+    downloadCSV(`${deckTitle}_P1_real.csv`, rows);
+  });
+  id('p1RealExportJSON').addEventListener('click',()=>{
+    const data=[...id('p1RealList').children].map((row,idx)=>({prompt:row.children[0].innerText.trim(), answer:p1RealState.items[idx].ans, user:row.querySelector('.rin').value||''}));
+    downloadJSON(`${deckTitle}_P1_real.json`, data);
+  });
+
+  /* ---------- Part 2: Equation Solvers ---------- */
+  function makeLinearProblem(type, lv){
+    // create expressions like (ax+b) & (cx+d) with relation
+    function makeExpr(aRange,bRange){ return {a:rand(...aRange), b:rand(...bRange)}; }
+    if(type==='comp' || type==='supp' || type==='lp'){
+      const target = (type==='comp'?90:180);
+      while(true){
+        const e1=makeExpr([1,4],[0,30]);
+        const e2=makeExpr([1,4],[0,30]);
+        const sumA=e1.a+e2.a, sumB=e1.b+e2.b;
+        const xNum=target - sumB; if(xNum%sumA===0){ const x=xNum/sumA; if(x>0 && x<= (lv==='hard'?60:40)){
+          return {type, e1,e2, target, x, a1:e1.a, b1:e1.b, a2:e2.a, b2:e2.b};
+        }}
+      }
+    } else if(type==='vert'){
+      while(true){
+        const e1={a:rand(1,4), b:rand(0,40)}, e2={a:rand(1,4), b:rand(0,40)};
+        // e1 = e2
+        const diffA=e1.a - e2.a, diffB=e2.b - e1.b;
+        if(diffA!==0 && diffB%diffA===0){ const x=diffB/diffA; if(x>0 && x<= (lv==='hard'?60:40)){
+          return {type, e1,e2, x, a1:e1.a,b1:e1.b,a2:e2.a,b2:e2.b};
+        }}
       }
     }
   }
-  function checkSolve(containerId, state, fbId){
-    let ok=0; const box=id(containerId);
+  function exprVal(e,x){ return e.a*x + e.b; }
+
+  const solAState={items:[]}, solBState={items:[]};
+  function buildSolveSet(state, boxId, lv){
+    const typesA=['comp','supp','vert','lp']; // 4 items
+    state.items=[]; const box=id(boxId); box.innerHTML='';
+    for(let k=0;k<4;k++){
+      const prob=makeLinearProblem(typesA[k], lv);
+      state.items.push(prob);
+      const title = (prob.type==='comp'?'Complementary (sum 90°)':
+                     prob.type==='supp'?'Supplementary (sum 180°)':
+                     prob.type==='lp'?'Linear Pair (adjacent sum 180°)':
+                     'Vertical (equal)');
+      const rel = (prob.type==='vert'? `\\( ${prob.a1}x+${prob.b1} = ${prob.a2}x+${prob.b2} \\)` :
+        `\\( (${prob.a1}x+${prob.b1}) + (${prob.a2}x+${prob.b2}) = ${prob.target} \\)` );
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML=`<div class="text-maroon font-semibold mb-1">${title}</div>
+        <div class="mb-2">Equation: ${rel}</div>
+        <div>Solution: \(x=\) <input class="xin border rounded px-2 py-1 w-20"> &nbsp;
+             ∠1 = <input class="a1in border rounded px-2 py-1 w-20">° &nbsp; ∠2 = <input class="a2in border rounded px-2 py-1 w-20">°</div>`;
+      box.appendChild(row); renderMath(row);
+    }
+  }
+  function solCheck(state, boxId, fbId){
+    let ok=0; const box=id(boxId);
     [...box.children].forEach((row,idx)=>{
-      const P=state.items[idx], x=Number(row.querySelector('.xin').value);
-      const wantX=P.x, want1=exprVal(P.a1,P.b1,wantX), want2=exprVal(P.a2,P.b2,wantX);
-      const goodX=Math.abs(x-wantX)<1e-10;
-      const good1=Math.abs(Number(row.querySelector('.a1in').value)-want1)<1e-10;
-      const good2=Math.abs(Number(row.querySelector('.a2in').value)-want2)<1e-10;
-      row.style.borderColor=(goodX&&good1&&good2)?'#22c55e':'#ef4444'; if(goodX&&good1&&good2) ok++;
+      const p=state.items[idx]; const x=Number(row.querySelector('.xin').value);
+      const a1=Number(row.querySelector('.a1in').value), a2=Number(row.querySelector('.a2in').value);
+      const wantX=p.x, want1=exprVal({a:p.a1,b:p.b1},wantX), want2=exprVal({a:p.a2,b:p.b2},wantX);
+      const goodX=(Math.abs(x-wantX)<1e-10);
+      const good1=(Math.abs(a1-want1)<1e-10);
+      const good2=(Math.abs(a2-want2)<1e-10);
+      row.style.borderColor=(goodX&&good1&&good2)? '#22c55e':'#ef4444'; if(goodX&&good1&&good2) ok++;
     });
-    id(fbId).textContent= ok===state.items.length? '✅ All correct!' : `Score: ${ok}/${state.items.length}`;
+    id(fbId).textContent = ok===state.items.length? '✅ All correct!' : `Score: ${ok}/${state.items.length}`;
     if(ok===state.items.length) confetti();
   }
-  function revealSolveSteps(state, stepsId){
+  function solReveal(state, stepsId){
     const wrap=id(stepsId); wrap.innerHTML='';
-    state.items.forEach((P,idx)=>{
-      if(P.type==='vert'){
-        wrap.insertAdjacentHTML('beforeend', `<div class="workline">${idx+1}) \\(${P.a1}x+${P.b1} = ${P.a2}x+${P.b2}\\) → \\(${P.a1-P.a2}x=${P.b2-P.b1}\\) → \\(x=${P.x}\\).</div>`);
+    state.items.forEach((p,idx)=>{
+      let html='';
+      if(p.type==='vert'){
+        html = `<div class="workline">${idx+1}) Set equal: \\(${p.a1}x+${p.b1} = ${p.a2}x+${p.b2}\\) → \\(${p.a1-p.a2}x = ${p.b2-p.b1}\\) → \\(x=${p.x}\\).</div>`;
       } else {
-        const A=P.a1+P.a2, B=P.b1+P.b2, S=P.target;
-        wrap.insertAdjacentHTML('beforeend', `<div class="workline">${idx+1}) \\((${P.a1}x+${P.b1})+(${P.a2}x+${P.b2})=${S}\\) → \\(${A}x+${B}=${S}\\) → \\(${A}x=${S-B}\\) → \\(x=${P.x}\\).</div>`);
+        const S=p.target; const A=p.a1+p.a2, B=p.b1+p.b2;
+        html = `<div class="workline">${idx+1}) Sum: \\((${p.a1}x+${p.b1})+(${p.a2}x+${p.b2})=${S}\\) → \\(${A}x+${B}=${S}\\) → \\(${A}x=${S-B}\\) → \\(x=${p.x}\\).</div>`;
       }
+      wrap.insertAdjacentHTML('beforeend', html);
     });
     renderMath(wrap);
   }
+  id('solANew').addEventListener('click',()=>buildSolveSet(solAState,'solAList', id('solALevel').value));
+  id('solACheck').addEventListener('click',()=>solCheck(solAState,'solAList','solAFb'));
+  id('solAReveal').addEventListener('click',()=>solReveal(solAState,'solASteps'));
+  id('solBNew').addEventListener('click',()=>buildSolveSet(solBState,'solBList', id('solBLevel').value));
+  id('solBCheck').addEventListener('click',()=>solCheck(solBState,'solBList','solBFb'));
+  id('solBReveal').addEventListener('click',()=>solReveal(solBState,'solBSteps'));
+  // init both sets
+  buildSolveSet(solAState,'solAList','easy'); buildSolveSet(solBState,'solBList','easy');
 
-  const SolveA = {state:{items:[]}};
-  const SolveB = {state:{items:[]}};
-  id('solANew').addEventListener('click',()=>buildSolveSet('solAList','solALevel',SolveA.state)); buildSolveSet('solAList','solALevel',SolveA.state);
-  id('solBNew').addEventListener('click',()=>buildSolveSet('solBList','solBLevel',SolveB.state)); buildSolveSet('solBList','solBLevel',SolveB.state);
-  id('solACheck').addEventListener('click',()=>checkSolve('solAList',SolveA.state,'solAFb'));
-  id('solBCheck').addEventListener('click',()=>checkSolve('solBList',SolveB.state,'solBFb'));
-  id('solAReveal').addEventListener('click',()=>revealSolveSteps(SolveA.state,'solASteps'));
-  id('solBReveal').addEventListener('click',()=>revealSolveSteps(SolveB.state,'solBSteps'));
-  id('solAExportCSV').addEventListener('click',()=>exportSolve(SolveA.state,'solAList','solveA'));
-  id('solAExportJSON').addEventListener('click',()=>exportSolveJSON(SolveA.state,'solAList','solveA'));
-  id('solBExportCSV').addEventListener('click',()=>exportSolve(SolveB.state,'solBList','solveB'));
-  id('solBExportJSON').addEventListener('click',()=>exportSolveJSON(SolveB.state,'solBList','solveB'));
   function exportSolve(state, boxId, base){
     const rows=[['type','expr1','expr2','target/equality','x','a1','a2','user_x','user_a1','user_a2']];
     const box=id(boxId);
     [...box.children].forEach((row,idx)=>{
-      const P=state.items[idx];
-      rows.push([P.type, `${P.a1}x+${P.b1}`, `${P.a2}x+${P.b2}`, (P.type==='vert'?'=':P.target), P.x, exprVal(P.a1,P.b1,P.x), exprVal(P.a2,P.b2,P.x),
+      const p=state.items[idx];
+      const expr1=`${p.a1}x+${p.b1}`, expr2=`${p.a2}x+${p.b2}`, tgt=(p.type==='vert'?'=':p.target);
+      rows.push([p.type, expr1,expr2,tgt, p.x, exprVal({a:p.a1,b:p.b1},p.x), exprVal({a:p.a2,b:p.b2},p.x),
                  row.querySelector('.xin').value||'', row.querySelector('.a1in').value||'', row.querySelector('.a2in').value||'']);
     });
     downloadCSV(`${deckTitle}_${base}.csv`, rows);
   }
   function exportSolveJSON(state, boxId, base){
-    const data=[...id(boxId).children].map((row,idx)=>{
-      const P=state.items[idx];
-      return {type:P.type, expr1:`${P.a1}x+${P.b1}`, expr2:`${P.a2}x+${P.b2}`, target:(P.type==='vert'?null:P.target),
-        solution:{x:P.x, a1:exprVal(P.a1,P.b1,P.x), a2:exprVal(P.a2,P.b2,P.x)},
+    const box=id(boxId);
+    const data=[...box.children].map((row,idx)=>{
+      const p=state.items[idx];
+      return {type:p.type, expr1:`${p.a1}x+${p.b1}`, expr2:`${p.a2}x+${p.b2}`, target:(p.type==='vert'?null:p.target),
+        solution:{x:p.x, a1:exprVal({a:p.a1,b:p.b1},p.x), a2:exprVal({a:p.a2,b:p.b2},p.x)},
         user:{x:row.querySelector('.xin').value||'', a1:row.querySelector('.a1in').value||'', a2:row.querySelector('.a2in').value||''}};
     });
     downloadJSON(`${deckTitle}_${base}.json`, data);
   }
+  id('solAExportCSV').addEventListener('click',()=>exportSolve(solAState,'solAList','solveA'));
+  id('solAExportJSON').addEventListener('click',()=>exportSolveJSON(solAState,'solAList','solveA'));
+  id('solBExportCSV').addEventListener('click',()=>exportSolve(solBState,'solBList','solveB'));
+  id('solBExportJSON').addEventListener('click',()=>exportSolveJSON(solBState,'solBList','solveB'));
 
-  /* Real‑Life P2 */
-  const RealP2 = (()=>{
-    const state={items:[]};
-    function addRow(box,prompt,unit,drawFn,ans){
-      const idx=box.children.length;
-      const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="miniWrap">
-        <svg id="p2RSVG_${idx}" class="miniSvg" viewBox="0 0 360 230"></svg>
-        <div><div class="text-left">${prompt}</div>
-        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> ${unit||''}</div></div></div>`;
-      box.appendChild(row); drawFn(row.querySelector(`#p2RSVG_${idx}`)); state.items.push({ans});
-    }
-    function newSet(){
-      state.items=[]; const box=id('p2RealList'); box.innerHTML='';
-      // Builder hinge to 90°, etc.
-      const open=rand(20,85); addRow(box,`A hinge must open to 90°. It is currently at <b>${open}°</b>. Required additional rotation?`,'°',(s)=>Diagram.rightComplement(s,{a:open,showUnknown:true}),90-open);
-      // Two supports forming linear pair
-      const a=rand(40,150); addRow(box,`Two structural members form a straight line. One makes <b>${a}°</b> with the beam. What is the other?`,'°',(s)=>Diagram.linearPairExact(s,{a,showUnknown:true}),180-a);
-    }
-    function check(){
-      let ok=0; [...id('p2RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
-        const got=Number(el.value); const want=state.items[idx].ans; el.style.borderColor=(Math.abs(got-want)<1e-10)?'#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++;
-      });
-      id('p2RealFb').textContent= ok===state.items.length? '✅ Nicely reasoned.' : `Score: ${ok}/${state.items.length}`;
-      if(ok===state.items.length) confetti();
-    }
-    id('p2RealNew').addEventListener('click',newSet); newSet();
-    id('p2RealCheck').addEventListener('click',check);
-    id('p2RealExportCSV').addEventListener('click',()=>{
-      const rows=[['prompt','answer','user']]; [...id('p2RealList').children].forEach((row,idx)=>rows.push([row.querySelector('.text-left').innerText.trim(), state.items[idx].ans, row.querySelector('.rin').value||'']));
-      downloadCSV(`${deckTitle}_P2_real.csv`, rows);
+  /* ---------- Part 2 Real‑Life ---------- */
+  const p2RealState={items:[]};
+  function p2RealNew(){
+    const lv=id('p2RealLevel').value; p2RealState.items=[]; const box=id('p2RealList'); box.innerHTML='';
+    // Lighting truss (supplement)
+    (function(){
+      const e1={a:rand(1,4), b:rand(10,40)}, e2={a:rand(1,4), b:rand(10,40)}; const target=180;
+      const sumA=e1.a+e2.a, sumB=e1.b+e2.b; const x=(target-sumB)/sumA; if(!Number.isInteger(x) || x<=0) return arguments.callee();
+      const prompt=`Two support bars form a linear pair. Angles are \\(${e1.a}x+${e1.b}\\)° and \\(${e2.a}x+${e2.b}\\)°. Find \(x\).`;
+      p2RealState.items.push({ans:x});
+      addRealRow(box, prompt, '');
+    })();
+    // Framing brace (vertical)
+    (function(){
+      const e1={a:rand(1,4), b:rand(0,30)}, e2={a:rand(1,4), b:rand(0,30)};
+      const diffA=e1.a-e2.a, diffB=e2.b-e1.b; if(diffA===0 || diffB%diffA!==0) return arguments.callee();
+      const x=diffB/diffA; if(x<=0) return arguments.callee();
+      const prompt=`Two braces cross; opposite angles are equal: \\(${e1.a}x+${e1.b}\\)° and \\(${e2.a}x+${e2.b}\\)°. Solve \(x\).`;
+      p2RealState.items.push({ans:x});
+      addRealRow(box, prompt, '');
+    })();
+    // Complementary controls
+    (function(){
+      const e1={a:rand(1,4), b:rand(0,40)}, e2={a:rand(1,4), b:rand(0,40)}, target=90;
+      const sumA=e1.a+e2.a, sumB=e1.b+e2.b; const x=(target-sumB)/sumA; if(!Number.isInteger(x) || x<=0) return arguments.callee();
+      const prompt=`A control dial sets two complementary angles: \\(${e1.a}x+${e1.b}\\)° and \\(${e2.a}x+${e2.b}\\)°. Solve \(x\).`;
+      p2RealState.items.push({ans:x});
+      addRealRow(box, prompt, '');
+    })();
+    // Around a point: four arms (sum 360)
+    (function(){
+      const e1={a:rand(1,3), b:rand(10,60)}, e2={a:rand(1,3), b:rand(10,60)}, e3={a:rand(1,3), b:rand(10,60)}, c=rand(20,120);
+      const sumA=e1.a+e2.a+e3.a, sumB=e1.b+e2.b+e3.b+c; const x=(360-sumB)/sumA; if(!Number.isInteger(x) || x<=0) return arguments.callee();
+      const prompt=`Four light beams around a point: \\(${e1.a}x+${e1.b}\\)°, \\(${e2.a}x+${e2.b}\\)°, \\(${e3.a}x+${e3.b}\\)°, and ${c}°. Sum is 360°. Find \(x\).`;
+      p2RealState.items.push({ans:x});
+      addRealRow(box, prompt, '');
+    })();
+  }
+  id('p2RealNew').addEventListener('click',p2RealNew); p2RealNew();
+  id('p2RealCheck').addEventListener('click',()=>{
+    let ok=0; [...id('p2RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
+      const got=Number(el.value); const want=p2RealState.items[idx].ans;
+      el.style.borderColor=(Math.abs(got-want)<1e-10)? '#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++;
     });
-    id('p2RealExportJSON').addEventListener('click',()=>{
-      const data=[...id('p2RealList').children].map((row,idx)=>({prompt:row.querySelector('.text-left').innerText.trim(), answer:state.items[idx].ans, user:row.querySelector('.rin').value||''}));
-      downloadJSON(`${deckTitle}_P2_real.json`, data);
-    });
-  })();
+    id('p2RealFb').textContent = ok===p2RealState.items.length? '✅ Design approved!' : `Score: ${ok}/${p2RealState.items.length}`;
+    if(ok===p2RealState.items.length) confetti();
+  });
+  id('p2RealExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','answer','user']];
+    [...id('p2RealList').children].forEach((row,idx)=>rows.push([row.children[0].innerText.trim(), p2RealState.items[idx].ans, row.querySelector('.rin').value||'']));
+    downloadCSV(`${deckTitle}_P2_real.csv`, rows);
+  });
+  id('p2RealExportJSON').addEventListener('click',()=>{
+    const data=[...id('p2RealList').children].map((row,idx)=>({prompt:row.children[0].innerText.trim(), answer:p2RealState.items[idx].ans, user:row.querySelector('.rin').value||''}));
+    downloadJSON(`${deckTitle}_P2_real.json`, data);
+  });
 
-  /* ============================================================
-     PART 3 — POLYGONS (SYNCED)
-     ============================================================ */
-  const PolyMissing = (()=>{
-    const state={items:[]};
-    function randomAngles(n){
-      const S=(n-2)*180;
-      const arr=[]; let remain=S;
-      for(let i=0;i<n-1;i++){
-        const min=40, max=Math.min(160, remain - 40*(n-1-i));
-        const v=rand(min,Math.max(min,max)); arr.push(v); remain-=v;
-      }
-      arr.push(remain);
-      return arr;
+  /* ---------- Part 3: Polygon Explorer & Practice ---------- */
+  const polyN=id('polyN'), polyNLabel=id('polyNLabel'), polySum=id('polySum'), polyInt=id('polyInt'), polyExt=id('polyExt');
+  function updatePoly(){
+    const n=Number(polyN.value); polyNLabel.textContent=n;
+    const S=(n-2)*180, ext=360/n, Int=S/n;
+    polySum.textContent=S+'°'; polyInt.textContent=Int.toFixed(2).replace(/\.00$/,'')+'°'; polyExt.textContent=ext.toFixed(2).replace(/\.00$/,'')+'°';
+  }
+  polyN.addEventListener('input',updatePoly); updatePoly();
+
+  const pmState={items:[]};
+  function pmNew(){
+    const lv=id('pmLevel').value; const n = (lv==='easy'? rand(3,5): (lv==='med'? rand(5,7): rand(6,8)));
+    const k=4; pmState.items=[]; const box=id('pmList'); box.innerHTML='';
+    for(let i=0;i<k;i++){
+      const angles = makePolygonAngles(n);
+      const missIdx=rand(0,n-1); const correct=angles[missIdx];
+      const display=angles.map((v,idx)=> idx===missIdx? ' ? ': v+'°').join(', ');
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML=`<div class="text-maroon font-semibold mb-1">n=${n}</div>
+        <div class="mb-2">Angles: [ ${display} ] — Find the missing angle.</div>
+        <div>Answer: <input class="pmIn border rounded px-2 py-1 w-28"> °</div>`;
+      box.appendChild(row);
+      pmState.items.push({n, correct});
     }
-    function newSet(){
-      const lv=id('pmLevel').value; const n=(lv==='easy'? rand(3,5): (lv==='med'? rand(5,7): rand(6,8)));
-      state.items=[]; const box=id('pmList'); box.innerHTML='';
-      for(let i=0;i<4;i++){
-        const angles=randomAngles(n); const miss=rand(0,n-1); const ans=angles[miss];
-        const labels=angles.map((v,k)=> k===miss? '?': (v+''));
+  }
+  function makePolygonAngles(n){
+    const S=(n-2)*180;
+    // generate n-1 random angles between 40 and 160 that leave a reasonable remainder
+    const arr=[]; let remain=S;
+    for(let i=0;i<n-1;i++){
+      const max=Math.min(160, remain - 40*(n-1-i));
+      const min=40;
+      const val=rand(min,Math.max(min,max-1));
+      arr.push(val); remain-=val;
+    }
+    arr.push(remain);
+    return arr.sort(()=>Math.random()-0.5);
+  }
+  function pmCheck(){
+    let ok=0; [...id('pmList').children].forEach((row,idx)=>{
+      const got=Number(row.querySelector('.pmIn').value); const want=pmState.items[idx].correct;
+      row.style.borderColor=(Math.abs(got-want)<1e-10)? '#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++;
+    });
+    id('pmFb').textContent = ok===pmState.items.length? '✅ Nice!' : `Score: ${ok}/${pmState.items.length}`;
+    if(ok===pmState.items.length) confetti();
+  }
+  id('pmNew').addEventListener('click',pmNew); pmNew();
+  id('pmCheck').addEventListener('click',pmCheck);
+  id('pmExportCSV').addEventListener('click',()=>{
+    const rows=[['n','answer','user']];
+    [...id('pmList').children].forEach((row,idx)=>rows.push([pmState.items[idx].n, pmState.items[idx].correct, row.querySelector('.pmIn').value||'']));
+    downloadCSV(`${deckTitle}_P3_missing_interior.csv`, rows);
+  });
+  id('pmExportJSON').addEventListener('click',()=>{
+    const data=[...id('pmList').children].map((row,idx)=>({n:pmState.items[idx].n, answer:pmState.items[idx].correct, user:row.querySelector('.pmIn').value||''}));
+    downloadJSON(`${deckTitle}_P3_missing_interior.json`, data);
+  });
+
+  const exState={mode:'A', items:[]};
+  id('exModeA').addEventListener('click',()=>{ exState.mode='A'; id('exModeA').classList.add('active'); id('exModeB').classList.remove('active'); });
+  id('exModeB').addEventListener('click',()=>{ exState.mode='B'; id('exModeB').classList.add('active'); id('exModeA').classList.remove('active'); });
+
+  function exNew(){
+    const mode=exState.mode; exState.items=[]; const box=id('exList'); box.innerHTML='';
+    for(let i=0;i<6;i++){
+      if(mode==='A'){
+        const n=rand(3,12); const ext=(360/n); const row=document.createElement('div'); row.className='card p-4 text-left';
+        row.innerHTML=`<div>Regular polygon with <b>${n}</b> sides. Exterior angle = <input class="exIn border rounded px-2 py-1 w-24"> °</div>`;
+        box.appendChild(row); exState.items.push({mode:'A',ans:ext});
+      } else {
+        const divisors=[3,4,5,6,8,9,10,12]; const n=choice(divisors); const ext=(360/n);
         const row=document.createElement('div'); row.className='card p-4 text-left';
-        row.innerHTML=`<div class="miniWrap">
-          <svg id="pmSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
-          <div>
-            <div class="text-maroon font-semibold mb-1">n=${n}</div>
-            <div class="mb-2">Interior angles shown; one is missing. Find it.</div>
-            <div>Answer: <input class="pmIn border rounded px-2 py-1 w-28"> °</div>
-          </div></div>`;
-        box.appendChild(row);
-        // use not-to-scale polygon with labels at vertices
-        Diagram.regularPolygon(row.querySelector(`#pmSVG_${i}`),{n, labels, highlightIndex:miss});
-        state.items.push({ans});
+        row.innerHTML=`<div>Regular polygon with exterior angle <b>${ext}°</b>. Number of sides n = <input class="exIn border rounded px-2 py-1 w-24"></div>`;
+        box.appendChild(row); exState.items.push({mode:'B',ans:n});
       }
     }
-    function check(){
-      let ok=0; [...id('pmList').children].forEach((row,idx)=>{
-        const got=Number(row.querySelector('.pmIn').value), want=state.items[idx].ans;
-        row.style.borderColor=(Math.abs(got-want)<1e-10)?'#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++;
-      });
-      id('pmFb').textContent= ok===state.items.length? '✅ Nice!' : `Score: ${ok}/${state.items.length}`;
-      if(ok===state.items.length) confetti();
-    }
-    id('pmNew').addEventListener('click',newSet); newSet();
-    id('pmCheck').addEventListener('click',check);
-    id('pmExportCSV').addEventListener('click',()=>{
-      const rows=[['answer','user']]; [...id('pmList').children].forEach((row,idx)=>rows.push([state.items[idx].ans, row.querySelector('.pmIn').value||'']));
-      downloadCSV(`${deckTitle}_P3_missing_interior.csv`, rows);
+  }
+  function exCheck(){
+    let ok=0; [...id('exList').children].forEach((row,idx)=>{
+      const got=Number(row.querySelector('.exIn').value); const want=exState.items[idx].ans;
+      const good = Math.abs(got-want)<1e-10;
+      row.style.borderColor= good? '#22c55e':'#ef4444'; if(good) ok++;
     });
-    id('pmExportJSON').addEventListener('click',()=>{
-      const data=[...id('pmList').children].map((row,idx)=>({answer:state.items[idx].ans, user:row.querySelector('.pmIn').value||''}));
-      downloadJSON(`${deckTitle}_P3_missing_interior.json`, data);
-    });
-  })();
+    id('exFb').textContent = ok===exState.items.length? '✅ Perfect.' : `Score: ${ok}/${exState.items.length}`;
+    if(ok===exState.items.length) confetti();
+  }
+  id('exNew').addEventListener('click',exNew); exNew();
+  id('exCheck').addEventListener('click',exCheck);
+  id('exExportCSV').addEventListener('click',()=>{
+    const rows=[['mode','answer','user']];
+    [...id('exList').children].forEach((row,idx)=>rows.push([exState.items[idx].mode, exState.items[idx].ans, row.querySelector('.exIn').value||'']));
+    downloadCSV(`${deckTitle}_P3_exterior.csv`, rows);
+  });
+  id('exExportJSON').addEventListener('click',()=>{
+    const data=[...id('exList').children].map((row,idx)=>({mode:exState.items[idx].mode, answer:exState.items[idx].ans, user:row.querySelector('.exIn').value||''}));
+    downloadJSON(`${deckTitle}_P3_exterior.json`, data);
+  });
 
-  const Exterior = (()=>{
-    const state={mode:'A', items:[]};
-    id('exModeA').addEventListener('click',()=>{ state.mode='A'; id('exModeA').classList.add('active'); id('exModeB').classList.remove('active'); });
-    id('exModeB').addEventListener('click',()=>{ state.mode='B'; id('exModeB').classList.add('active'); id('exModeA').classList.remove('active'); });
-    function newSet(){
-      const mode=state.mode; const box=id('exList'); box.innerHTML=''; state.items=[];
-      for(let i=0;i<6;i++){
-        if(mode==='A'){
-          const n=rand(3,12), ans=360/n;
-          const row=document.createElement('div'); row.className='card p-4 text-left';
-          row.innerHTML=`<div class="miniWrap">
-            <svg id="exSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
-            <div>Regular polygon with <b>${n}</b> sides. Exterior angle = <input class="exIn border rounded px-2 py-1 w-24"> °</div>
-          </div>`;
-          box.appendChild(row); Diagram.exteriorRegular(row.querySelector(`#exSVG_${i}`),{n,showValue:false});
-          state.items.push({ans});
-        } else {
-          const n=choice([3,4,5,6,8,9,10,12]), ext=360/n;
-          const row=document.createElement('div'); row.className='card p-4 text-left';
-          row.innerHTML=`<div class="miniWrap">
-            <svg id="exSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
-            <div>Regular polygon with exterior angle <b>${ext}°</b>. Number of sides n = <input class="exIn border rounded px-2 py-1 w-24"></div>
-          </div>`;
-          box.appendChild(row); Diagram.exteriorRegular(row.querySelector(`#exSVG_${i}`),{n,showValue:true,value:ext});
-          state.items.push({ans:n});
-        }
-      }
-    }
-    function check(){
-      let ok=0; [...id('exList').children].forEach((row,idx)=>{
-        const got=Number(row.querySelector('.exIn').value); const want=state.items[idx].ans;
-        row.style.borderColor=(Math.abs(got-want)<1e-10)?'#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++;
-      });
-      id('exFb').textContent= ok===state.items.length? '✅ Perfect.' : `Score: ${ok}/${state.items.length}`;
-      if(ok===state.items.length) confetti();
-    }
-    id('exNew').addEventListener('click',newSet); newSet();
-    id('exCheck').addEventListener('click',check);
-    id('exExportCSV').addEventListener('click',()=>{
-      const rows=[['answer','user']]; [...id('exList').children].forEach((row,idx)=>rows.push([state.items[idx].ans, row.querySelector('.exIn').value||'']));
-      downloadCSV(`${deckTitle}_P3_exterior.csv`, rows);
+  /* ---------- Part 3 Real‑Life ---------- */
+  const p3RealState={items:[]};
+  function p3RealNew(){
+    const lv=id('p3RealLevel').value; p3RealState.items=[]; const box=id('p3RealList'); box.innerHTML='';
+    // Hex tile interior
+    (function(){
+      const n=6; const prompt=`A regular hex tile must meet at a point without gaps. What is each interior angle?`;
+      p3RealState.items.push({ans:(n-2)*180/n});
+      addRealRow(box, prompt, '°');
+    })();
+    // Logo design: given exterior angle → n
+    (function(){
+      const n=choice([5,6,8,10,12]); const ext=360/n; const prompt=`A logo repeats a turn of ${ext}° each corner. How many sides does the regular polygon have?`;
+      p3RealState.items.push({ans:n});
+      addRealRow(box, prompt, '');
+    })();
+    // Robotics turn sum
+    (function(){
+      const n=choice([4,5,6,8]); const ext=360/n; const prompt=`A robot turns the same exterior angle at each vertex to trace a regular polygon. What is each exterior turn for n=${n}?`;
+      p3RealState.items.push({ans:ext});
+      addRealRow(box, prompt, '°');
+    })();
+    // Missing interior angle in a pentagonal panel
+    (function(){
+      const angles=makePolygonAngles(5); const idx=rand(0,4); const ans=angles[idx];
+      const display=angles.map((v,j)=> j===idx? '?': v).join(', ');
+      const prompt=`A pentagonal panel has interior angles [${display}]°. Find the missing angle.`;
+      p3RealState.items.push({ans});
+      addRealRow(box, prompt, '°');
+    })();
+  }
+  id('p3RealNew').addEventListener('click',p3RealNew); p3RealNew();
+  id('p3RealCheck').addEventListener('click',()=>{
+    let ok=0; [...id('p3RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
+      const got=Number(el.value); const want=p3RealState.items[idx].ans;
+      const good=Math.abs(got-want)<1e-10; el.style.borderColor=good? '#22c55e':'#ef4444'; if(good) ok++;
     });
-    id('exExportJSON').addEventListener('click',()=>{
-      const data=[...id('exList').children].map((row,idx)=>({answer:state.items[idx].ans, user:row.querySelector('.exIn').value||''}));
-      downloadJSON(`${deckTitle}_P3_exterior.json`, data);
-    });
-  })();
+    id('p3RealFb').textContent = ok===p3RealState.items.length? '✅ Great real‑world reasoning!' : `Score: ${ok}/${p3RealState.items.length}`;
+    if(ok===p3RealState.items.length) confetti();
+  });
+  id('p3RealExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','answer','user']]; [...id('p3RealList').children].forEach((row,idx)=>rows.push([row.children[0].innerText.trim(), p3RealState.items[idx].ans, row.querySelector('.rin').value||'']));
+    downloadCSV(`${deckTitle}_P3_real.csv`, rows);
+  });
+  id('p3RealExportJSON').addEventListener('click',()=>{
+    const data=[...id('p3RealList').children].map((row,idx)=>({prompt:row.children[0].innerText.trim(), answer:p3RealState.items[idx].ans, user:row.querySelector('.rin').value||''}));
+    downloadJSON(`${deckTitle}_P3_real.json`, data);
+  });
 
-  /* ============================================================
-     PART 4 — CHASE, ERROR, MIXED (SYNCED)
-     ============================================================ */
-  const Chase = (()=>{
-    const state={items:[]};
-    function cross(){
-      const a=rand(25,140);
-      return {ans:a, draw:(s)=>Diagram.verticalExact(s,{a,showUnknown:true}), prompt:`Two lines intersect. One angle is <b>${a}°</b>. Find the vertical angle.`};
+  /* ---------- Part 4: Angle Chase ---------- */
+  const acState={items:[]};
+  function acNew(){
+    const lv=id('acLevel').value; acState.items=[]; const box=id('acList'); box.innerHTML='';
+    for(let i=0;i<6;i++){
+      const t=choice(['cross','line','combo']);
+      const prob = (t==='cross'? buildCross(lv) : (t==='line'? buildLine(lv) : buildCombo(lv)));
+      acState.items.push(prob);
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML=`<div class="text-maroon font-semibold mb-1">Item ${i+1}</div>
+        <div class="mb-2">${prob.prompt}</div>
+        <div>Answer: <input class="acIn border rounded px-2 py-1 w-24"> °</div>`;
+      box.appendChild(row);
     }
-    function line(){
-      const a=rand(25,155); return {ans:180-a, draw:(s)=>Diagram.linearPairExact(s,{a,showUnknown:true}), prompt:`∠A and ∠B form a linear pair. If \(m∠A=${a}°\), find \(m∠B\).`};
-    }
-    function around(){
-      const A=rand(40,140), B=rand(30,120), C=rand(30,110), D=360-(A+B+C);
-      return {ans:D, draw:(s)=>Diagram.aroundPointExact(s,{values:[A,B,C,D],unknownIndex:3}), prompt:`Around a point: ${A}°, ${B}°, ${C}°, and ◻︎. Find ◻︎.`};
-    }
-    function newSet(){
-      const lv=id('acLevel').value; const box=id('acList'); box.innerHTML=''; state.items=[];
-      const builders=[cross,line,around];
-      for(let i=0;i<(lv==='easy'?6:(lv==='med'?8:10)); i++){
-        const prob=choice(builders)(); state.items.push(prob);
-        const row=document.createElement('div'); row.className='card p-4 text-left';
-        row.innerHTML=`<div class="miniWrap">
-          <svg id="acSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
-          <div>
-            <div class="text-maroon font-semibold mb-1">Item ${i+1}</div>
-            <div class="mb-2">${prob.prompt}</div>
-            <div>Answer: <input class="acIn border rounded px-2 py-1 w-24"> °</div>
-          </div></div>`;
-        box.appendChild(row); prob.draw(row.querySelector(`#acSVG_${i}`));
-      }
-    }
-    function check(){
-      let ok=0; [...id('acList').children].forEach((row,idx)=>{
-        const got=Number(row.querySelector('.acIn').value); const want=state.items[idx].ans;
-        row.style.borderColor=(Math.abs(got-want)<1e-10)?'#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++;
-      });
-      id('acFb').textContent= ok===state.items.length? '✅ Angle chase mastered!' : `Score: ${ok}/${state.items.length}`;
-      if(ok===state.items.length) confetti();
-    }
-    id('acNew').addEventListener('click',newSet); newSet();
-    id('acCheck').addEventListener('click',check);
-    id('acExportCSV').addEventListener('click',()=>{
-      const rows=[['prompt','answer','user']]; [...id('acList').children].forEach((row,idx)=>rows.push([row.querySelector('.text-maroon ~ div').innerText.trim(), state.items[idx].ans, row.querySelector('.acIn').value||'']));
-      downloadCSV(`${deckTitle}_P4_chase.csv`, rows);
+  }
+  function buildCross(lv){
+    // two lines cross; give one angle and one algebraic; ask for x or measure
+    const a=rand(25,140); const e2={a:rand(1,3), b:rand(0,50)}; // opposite equals
+    const x=(a - e2.b)/e2.a; if(!Number.isInteger(x) || x<=0) return buildCross(lv);
+    return {prompt:`Two lines intersect. One angle is <b>${a}°</b>. Opposite angle is \\(${e2.a}x+${e2.b}\\)°. Find \(x\).`, ans:x};
+  }
+  function buildLine(lv){
+    const e1={a:rand(1,3), b:rand(0,40)}, e2={a:rand(1,3), b:rand(0,40)}; const x=(180-(e1.b+e2.b))/(e1.a+e2.a);
+    if(!Number.isInteger(x) || x<=0) return buildLine(lv);
+    return {prompt:`Adjacent angles form a linear pair: \\(${e1.a}x+${e1.b}\\)° and \\(${e2.a}x+${e2.b}\\)°. Find \(x\).`, ans:x};
+  }
+  function buildCombo(lv){
+    // chain: given A and B linear pair; B vertical to C; find C
+    const A=rand(20,150); const B=180-A; const C=B; // vertical to B
+    return {prompt:`∠A and ∠B form a linear pair; \(m∠A=${A}°\). ∠B is vertical to ∠C. Find \(m∠C\).`, ans:C};
+  }
+  function acCheck(){
+    let ok=0; [...id('acList').children].forEach((row,idx)=>{
+      const got=Number(row.querySelector('.acIn').value); const want=acState.items[idx].ans;
+      const good=Math.abs(got-want)<1e-10; row.style.borderColor=good? '#22c55e':'#ef4444'; if(good) ok++;
     });
-    id('acExportJSON').addEventListener('click',()=>{
-      const data=[...id('acList').children].map((row,idx)=>({prompt:row.querySelector('.text-maroon ~ div').innerText.trim(), answer:state.items[idx].ans, user:row.querySelector('.acIn').value||''}));
-      downloadJSON(`${deckTitle}_P4_chase.json`, data);
-    });
-  })();
+    id('acFb').textContent = ok===acState.items.length? '✅ Angle chase mastered!' : `Score: ${ok}/${acState.items.length}`;
+    if(ok===acState.items.length) confetti();
+  }
+  id('acNew').addEventListener('click',acNew); acNew();
+  id('acCheck').addEventListener('click',acCheck);
+  id('acExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','answer','user']]; [...id('acList').children].forEach((row,idx)=>rows.push([row.children[0].innerText.trim(), acState.items[idx].ans, row.querySelector('.acIn').value||'']));
+    downloadCSV(`${deckTitle}_P4_chase.csv`, rows);
+  });
+  id('acExportJSON').addEventListener('click',()=>{
+    const data=[...id('acList').children].map((row,idx)=>({prompt:row.children[0].innerText.trim(), answer:acState.items[idx].ans, user:row.querySelector('.acIn').value||''}));
+    downloadJSON(`${deckTitle}_P4_chase.json`, data);
+  });
 
-  const ErrorAnalysis = (()=>{
-    const bank = {
-      easy:[
-        {work:'“Vertical angles add to 180°.”', key:'A', explain:'Vertical angles are equal, not necessarily supplementary.', fig:(s)=>Diagram.verticalExact(s,{a:60,showUnknown:false})},
-        {work:'Complementary: \\(x+(2x+30)=180\\).', key:'B', explain:'Complementary sum is 90°, not 180°.', fig:(s)=>Diagram.rightComplement(s,{a:35,showUnknown:true})},
-        {work:'\\(3x+12=2x+32\\) ⇒ \\(x=44\\).', key:'C', explain:'Subtract \(2x\): \(x+12=32→x=20\).', fig:(s)=>Diagram.verticalSymbolic(s,{label1:'3x+12°',label2:'2x+32°'})},
-        {work:'Pentagon interior sum is \\((n-1)\\cdot180\\).', key:'D', explain:'Use \\((n-2)\\cdot180\\). For \(n=5\): 540°.', fig:(s)=>Diagram.regularPolygon(s,{n:5})}
-      ],
-      med:[
-        {work:'Adjacent angles that sum to 180° are complementary.', key:'A', explain:'They are supplementary; complementary sum to 90°.', fig:(s)=>Diagram.linearPairExact(s,{a:110,showUnknown:false})},
-        {work:'Linear pair: \\((4x+10)+(x+20)=90\\).', key:'B', explain:'Linear pair sums to 180°, not 90°.', fig:(s)=>Diagram.linearPairSymbolic(s,{label1:'4x+10°',label2:'x+20°'})},
-        {work:'If \(2x+15=2x+5\), then \(x=10\).', key:'C', explain:'Subtract \(2x\): \(15=5\) → no solution.', fig:(s)=>Diagram.verticalSymbolic(s,{label1:'2x+15°',label2:'2x+5°'})},
-        {work:'Regular nonagon exterior angle is 20°.', key:'D', explain:'Exterior \(=360/9=40°\).', fig:(s)=>Diagram.exteriorRegular(s,{n:9,showValue:true,value:40})}
-      ],
-      hard:[
-        {work:'Around a point: \(x+(x+30)+(2x-20)=180\\).', key:'B', explain:'Around a point totals 360°, not 180°.', fig:(s)=>Diagram.aroundPointExact(s,{values:[60,90,80,130],unknownIndex:-1})},
-        {work:'“Complementary angles must be adjacent.”', key:'A', explain:'Only the sum matters; adjacency not required.', fig:(s)=>Diagram.rightComplement(s,{a:50,showUnknown:true})},
-        {work:'From \\((3x+5)+(4x+25)=180\\) ⇒ \(7x=180\\).', key:'C', explain:'Forgot constants: \(7x+30=180→x=150/7\\).', fig:(s)=>Diagram.linearPairSymbolic(s,{label1:'3x+5°',label2:'4x+25°'})},
-        {work:'Regular polygon has interior angle \(=200°\\). Then \(n=9\\).', key:'D', explain:'Interior \(=180-360/n\). 200° impossible (convex).', fig:(s)=>Diagram.regularPolygon(s,{n:9})}
-      ]
-    };
-    const state={item:null};
-    function newItem(){
-      const lv=id('errLevel').value; const b=bank[lv]; state.item=choice(b);
-      id('errBox').innerHTML=`Student claim:<br/><div class="mt-1 text-maroon">${state.item.work}</div>`;
-      const s=id('errSvg'); SVG.clear(s); state.item.fig(s); renderMath(id('errSlide'));
-      id('errFb').textContent=''; id('errRevealBox').textContent='';
-    }
-    id('errNew').addEventListener('click',newItem); newItem();
-    id('errCheck').addEventListener('click',()=>{
-      const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-      if(!sel){ id('errFb').textContent='Choose a reason.'; return; }
-      id('errFb').textContent=(sel.value===state.item.key)?'✅ Correct diagnosis.':'❌ Try again.';
-      if(sel.value===state.item.key) confetti();
-    });
-    id('errReveal').addEventListener('click',()=>{ id('errRevealBox').innerHTML=`<div class="hint">${state.item.explain}</div>`; renderMath(id('errSlide')); });
-    id('errExportCSV').addEventListener('click',()=>{
-      const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked)?.value||'';
-      downloadCSV(`${deckTitle}_error.csv`, [['claim','explanation','key','user'], [id('errBox').innerText.trim(), state.item.explain, state.item.key, sel]]);
-    });
-    id('errExportJSON').addEventListener('click',()=>{
-      const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked)?.value||'';
-      downloadJSON(`${deckTitle}_error.json`, {claim:id('errBox').innerText.trim(), explanation:state.item.explain, key:state.item.key, user: sel});
-    });
-  })();
+  /* ---------- Error Analysis ---------- */
+  function errBank(level){
+    const easy=[
+      {work:'“Vertical angles add to 180°.”', correct:'Vertical angles are equal, not necessarily supplementary.', key:'A'},
+      {work:'For complementary angles: \\(x+(2x+30)=180\\).', correct:'Complementary → sum 90°, not 180°.', key:'B'},
+      {work:'Solve: \\(3x+12=2x+32\\) → \\(x=44\\).', correct:'Subtracting \(2x\) gives \(x+12=32\\Rightarrow x=20\\).', key:'C'},
+      {work:'Pentagon interior sum is \\( (n-1)\\cdot 180\\).', correct:'Use \\((n-2)\\cdot 180\\). For \(n=5\), sum \(=540°\\).', key:'D'}
+    ];
+    const med=[
+      {work:'Adjacent angles that sum to 180° are complementary.', correct:'They are supplementary; complementary sum to 90°.', key:'A'},
+      {work:'Linear pair: \\((4x+10)+(x+20)=90\\).', correct:'Linear pair sums to 180°, not 90°.', key:'B'},
+      {work:'If \(2x+15=2x+5\\), then \(x=10\\).', correct:'Subtract \(2x\) first → \(15=5\\) impossible (no solution).', key:'C'},
+      {work:'Regular nonagon exterior angle is \(20°\\).', correct:'Exterior \(=360/9=40°\\).', key:'D'}
+    ];
+    const hard=[
+      {work:'Angles around a point: \(x+ (x+30)+(2x-20)=180\\).', correct:'Around a point must total \(360°\\).', key:'B'},
+      {work:'“Complementary angles must be adjacent.”', correct:'They need not be adjacent; only the sum matters.', key:'A'},
+      {work:'From \\((3x+5)+(4x+25)=180\\) → \(7x=180\\) → \(x≈25.7\\).', correct:'Forgot constants: \(3x+4x + 5+25 = 180 \\Rightarrow 7x+30=180 \\Rightarrow x=150/7\\).', key:'C'},
+      {work:'Regular polygon has interior angle \(= 200°\\). Then \(n=9\\).', correct:'Interior \(=180-360/n\\). Solving gives \(200=180-360/n\\) impossible for convex regular polygon.', key:'D'}
+    ];
+    return level==='easy'? easy : level==='med'? med : hard;
+  }
+  const errState={item:null};
+  function errNew(){
+    const bank=errBank(id('errLevel').value); errState.item=bank[rand(0,bank.length-1)];
+    id('errBox').innerHTML=`Student claim:<br/><div class="mt-1 text-maroon">${errState.item.work}</div>`;
+    id('errFb').textContent=''; id('errRevealBox').textContent=''; renderMath(id('errSlide'));
+  }
+  id('errNew').addEventListener('click',errNew); errNew();
+  id('errCheck').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    if(!sel){ id('errFb').textContent='Choose a reason.'; return; }
+    if(sel.value===errState.item.key){ id('errFb').textContent='✅ Correct diagnosis.'; confetti(); }
+    else id('errFb').textContent='❌ Try again.';
+  });
+  id('errReveal').addEventListener('click',()=>{ id('errRevealBox').innerHTML=`<div class="hint">${errState.item.correct}</div>`; renderMath(id('errSlide')); });
+  id('errExportCSV').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    downloadCSV(`${deckTitle}_error.csv`, [['claim','explanation','key','user'], [id('errBox').innerText.trim(), errState.item.correct, errState.item.key, sel?sel.value:'']]);
+  });
+  id('errExportJSON').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    downloadJSON(`${deckTitle}_error.json`, {claim:id('errBox').innerText.trim(), explanation:errState.item.correct, key:errState.item.key, user: sel?sel.value:''});
+  });
 
-  const Mixed = (()=>{
-    const state={cur:null};
-    function newQ(){
-      const lv=id('mixLevel').value; const t=rand(0,5); const s=id('mixSvg'); SVG.clear(s);
-      if(t===0){ // classify
-        const types=TYPES; const want=choice(types);
-        let P;
-        if(want==='complementary'){ const a=rand(15,70), b=90-a; P={want, prompt:'Name the relationship.', draw:()=>Diagram.rightComplement(s,{a,showUnknown:false})}; }
-        else if(want==='supplementary' || want==='linear pair'){ const a=rand(25,150); P={want:'linear pair', prompt:'Name the relationship.', draw:()=>Diagram.linearPairExact(s,{a,showUnknown:false})}; }
-        else if(want==='vertical'){ const a=rand(25,140); P={want, prompt:'Name the relationship.', draw:()=>Diagram.verticalExact(s,{a,showUnknown:false})}; }
-        else if(want==='adjacent'){ const a=rand(15,80), b=rand(10,80); P={want, prompt:'Name the relationship.', draw:()=>Diagram.adjacentExact(s,{a,b})}; }
-        else { P={want:'neither', prompt:'Name the relationship.', draw:()=>{ angleArc(s,180,115,48,0,40,'#C7A34F',3); angleArc(s,260,115,48,0,60,'#f59e0b',3); }}; }
-        P.draw(); id('mixQ').innerHTML=P.prompt; state.cur={type:'class',want:P.want};
-      } else if(t===1){ // missing angle
-        const kinds=['comp','supp','vert','lp','around']; const K=choice(kinds);
-        let P;
-        if(K==='comp'){ const a=rand(10,80), ans=90-a; P={ans, draw:()=>Diagram.rightComplement(s,{a,showUnknown:true}), prompt:`Find the complement of ${a}°.`}; }
-        else if(K==='supp'){ const a=rand(25,170), ans=180-a; P={ans, draw:()=>Diagram.linearPairExact(s,{a,showUnknown:true}), prompt:`Linear pair with one angle ${a}°. Find the other.`}; }
-        else if(K==='vert'){ const a=rand(15,165), ans=a; P={ans, draw:()=>Diagram.verticalExact(s,{a,showUnknown:true}), prompt:`Find the vertical angle to ${a}°.`}; }
-        else if(K==='lp'){ const a=rand(25,155), ans=180-a; P={ans, draw:()=>Diagram.linearPairExact(s,{a,showUnknown:true}), prompt:`∠X and ∠Y form a straight line; ∠X=${a}°. Find ∠Y.`}; }
-        else { const A=rand(40,140), B=rand(30,120), C=rand(30,110), D=360-(A+B+C); P={ans:D, draw:()=>Diagram.aroundPointExact(s,{values:[A,B,C,D],unknownIndex:3}), prompt:`Around a point: ${A}, ${B}, ${C}, and ?`}; }
-        P.draw(); id('mixQ').innerHTML=P.prompt; state.cur={type:'miss',want:P.ans};
-      } else if(t===2){ // solve for x
-        const mode=choice(['comp','supp','vert']); let P = (mode==='vert')? solveVertical(lv) : solveCompSupp(mode,lv);
-        const eq = (P.type==='vert')? `\\( ${P.a1}x+${P.b1} = ${P.a2}x+${P.b2} \\)` : `\\( (${P.a1}x+${P.b1})+(${P.a2}x+${P.b2})=${P.target} \\)`;
-        id('mixQ').innerHTML=eq; renderMath(id('mixSlide'));
-        if(P.type==='vert') Diagram.verticalSymbolic(s,{label1:`${P.a1}x+${P.b1}°`,label2:`${P.a2}x+${P.b2}°`});
-        else if(P.type==='comp') Diagram.complementSymbolic(s,{label1:`${P.a1}x+${P.b1}°`,label2:`${P.a2}x+${P.b2}°`});
-        else Diagram.linearPairSymbolic(s,{label1:`${P.a1}x+${P.b1}°`,label2:`${P.a2}x+${P.b2}°`});
-        state.cur={type:'solve',want:P.x};
-      } else if(t===3){ // polygon missing
-        const n=(lv==='easy'? rand(3,5): (lv==='med'? rand(5,7): rand(6,8)));
-        const S=(n-2)*180; const arr=[]; let rem=S; for(let k=0;k<n-1;k++){ const v=rand(40,Math.min(160,rem-40*(n-1-k))); arr.push(v); rem-=v; } arr.push(rem);
-        const miss=rand(0,n-1), ans=arr[miss], labels=arr.map((v,k)=>k===miss?'?':(v+''));
-        Diagram.regularPolygon(s,{n,labels,highlightIndex:miss}); id('mixQ').innerHTML=`n=${n}, find the missing interior angle.`; state.cur={type:'polyMiss',want:ans};
-      } else if(t===4){ // ext->n
-        const n=choice([3,4,5,6,8,9,10,12]), ext=360/n; Diagram.exteriorRegular(s,{n,showValue:true,value:ext});
-        id('mixQ').innerHTML=`Exterior angle = ${ext}°. Find n.`; state.cur={type:'ext2n',want:n};
-      } else { // n->ext
-        const n=rand(3,12), ext=360/n; Diagram.exteriorRegular(s,{n,showValue:false});
-        id('mixQ').innerHTML=`Regular polygon with n=${n}. Find exterior angle.`; state.cur={type:'n2ext',want:ext};
-      }
-      id('mixHintBox').textContent=''; id('mixFb').textContent=''; id('mixAns').value='';
+  /* ---------- Mixed Review ---------- */
+  const mixState={cur:null};
+  function mixNew(){
+    const lv=id('mixLevel').value;
+    const type=rand(0,5);
+    if(type===0){ // classify
+      const t=choice(TYPES); mixState.cur={type:'class', want:t};
+      id('mixQ').innerHTML=`Name the relationship: ${buildClassifyPrompt(t, lv)}`;
+    } else if(type===1){ // missing angle
+      const o=buildMissing(choice(['comp','supp','vert','lp','around']), lv);
+      mixState.cur={type:'miss', want:o.ans}; id('mixQ').innerHTML=o.prompt;
+    } else if(type===2){ // solve x complementary/supp etc
+      const t=choice(['comp','supp','lp','vert']); const p=makeLinearProblem(t, lv); mixState.cur={type:'solve', p};
+      id('mixQ').innerHTML=(t==='vert'? `\\( ${p.a1}x+${p.b1} = ${p.a2}x+${p.b2} \\)` : `\\( (${p.a1}x+${p.b1})+(${p.a2}x+${p.b2})=${p.target} \\)`);
+    } else if(type===3){ // polygon missing
+      const n=(lv==='easy'? rand(3,5): (lv==='med'? rand(5,7): rand(6,8))); const angles=makePolygonAngles(n); const idx=rand(0,n-1); const ans=angles[idx];
+      const display=angles.map((v,j)=> j===idx? '?': v).join(', ');
+      mixState.cur={type:'polyMiss', want:ans}; id('mixQ').innerHTML=`n=${n}, Angles [${display}]°. Find the missing angle.`;
+    } else if(type===4){ // exterior->n
+      const n=choice([3,4,5,6,8,9,10,12]), ext=(360/n); mixState.cur={type:'ext2n', want:n};
+      id('mixQ').innerHTML=`Exterior angle = ${ext}°. Find n.`;
+    } else { // n->exterior
+      const n=rand(3,12), ext=(360/n); mixState.cur={type:'n2ext', want:ext};
+      id('mixQ').innerHTML=`Regular polygon with n=${n}. Find exterior angle.`;
     }
-    function hint(){
-      const t=state.cur?.type; let msg='';
-      if(t==='class') msg='Complementary → 90°, Supplementary/Linear Pair → 180°, Vertical → equal, Adjacent → share a side.';
-      else if(t==='miss') msg='Use 90°, 180°, or 360° sums as appropriate.';
-      else if(t==='solve') msg='Write the equation from the diagram, solve for x, then evaluate angles.';
-      else if(t==='polyMiss') msg='Sum of interior angles is (n−2)·180°.';
-      else if(t==='ext2n' || t==='n2ext') msg='Exterior angle of a regular n‑gon equals 360°/n.';
-      id('mixHintBox').innerHTML=`<div class="hint">${msg}</div>`;
+    id('mixHintBox').textContent=''; id('mixFb').textContent=''; id('mixAns').value='';
+    renderMath(id('mixSlide'));
+  }
+  id('mixNew').addEventListener('click',mixNew); mixNew();
+  id('mixHint').addEventListener('click',()=>{
+    if(!mixState.cur) return; const t=mixState.cur.type; let msg='';
+    if(t==='class') msg='Complementary → 90°, Supplementary/Linear Pair → 180°, Vertical → equal, Adjacent → share side.';
+    else if(t==='miss') msg='Use the correct sum: 90°, 180°, or 360°.';
+    else if(t==='solve') msg='Write the equation first, then solve for x; check angle sizes.';
+    else if(t==='polyMiss') msg='Sum of interior angles is (n−2)·180°.';
+    else if(t==='ext2n') msg='For regular polygons, exterior angle = 360°/n.';
+    else msg='Exterior angle of regular n‑gon = 360°/n.';
+    id('mixHintBox').innerHTML=`<div class="hint">${msg}</div>`;
+  });
+  id('mixCheck').addEventListener('click',()=>{
+    const ans=id('mixAns').value.trim(); const t=mixState.cur?.type; if(!t) return;
+    let ok=false, expect='';
+    if(t==='class'){ ok=ans.toLowerCase().includes(mixState.cur.want); expect=mixState.cur.want; }
+    else if(t==='miss' || t==='polyMiss' || t==='n2ext'){ const w=Number(mixState.cur.want); ok=(Math.abs(Number(ans)-w)<1e-10); expect=w; }
+    else if(t==='ext2n'){ ok=(Number(ans)===mixState.cur.want); expect=mixState.cur.want; }
+    else if(t==='solve'){
+      const p=mixState.cur.p; const x=(p.type==='vert'? (p.b2-p.b1)/(p.a1-p.a2) : (p.target - (p.b1+p.b2))/(p.a1+p.a2));
+      ok=(Math.abs(Number(ans)-x)<1e-10); expect='x='+x;
     }
-    function check(){
-      const ans=id('mixAns').value.trim(); const t=state.cur?.type; if(!t) return;
-      let ok=false, expect='';
-      if(t==='class'){ const want=state.cur.want; ok=ans.toLowerCase().includes(want); expect=want; }
-      else{ const want=Number(state.cur.want); ok=(Math.abs(Number(ans)-want)<1e-10); expect=want; }
-      id('mixFb').textContent = ok? '✅ Correct! '+expect : '❌ Expected '+expect;
-      if(ok) confetti();
-    }
-    id('mixNew').addEventListener('click',newQ); newQ();
-    id('mixHint').addEventListener('click',hint);
-    id('mixCheck').addEventListener('click',check);
-    id('mixExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_mixed.csv`, [['prompt','user'], [id('mixQ').textContent, id('mixAns').value||'']]));
-    id('mixExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_mixed.json`, {prompt:id('mixQ').textContent, user:id('mixAns').value||''}));
-  })();
+    id('mixFb').textContent = ok? '✅ Correct! '+expect : '❌ Expected '+expect;
+    if(ok) confetti();
+  });
+  id('mixExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_mixed.csv`, [['prompt','user'], [id('mixQ').textContent, id('mixAns').value||'']]));
+  id('mixExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_mixed.json`, {prompt:id('mixQ').textContent, user:id('mixAns').value||''}));
 
-  /* ------------------------------------------------------------
-     INIT + RESIZE
-     ------------------------------------------------------------ */
-  window.addEventListener('resize',()=>{ if(slides[i].id==='builderSlide') DiagramBoard.drawBuilder(); if(slides[i].id==='polySlide') PolyExplorer.draw(); });
+  /* ---------- Init ---------- */
+  window.addEventListener('resize',()=>{ if(slides[i].id==='builderSlide') drawAngle(); });
   show(0);
 
 })();
