@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G8 • Unit 2 • Angle Facts — Complementary, Supplementary, Vertical & Adjacent (with Diagrams)</title>
+<title>G8 • Unit 2 • Angle Facts — Fully Visual (with Protractor & Teacher Mode)</title>
 
 <!-- Fonts & Tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,16 +71,16 @@
   #partNav{position:fixed;top:18px;left:18px;z-index:35;display:flex;gap:.4rem;background:rgba(255,255,255,.85);padding:.35rem;border-radius:999px;border:2px solid var(--gold);backdrop-filter:blur(4px)}
   #partNav button{font-weight:800}
 
-  /* Angle canvases */
-  #angleSvg{width:100%;max-width:760px;height:360px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
-
-  /* Mini task diagrams */
   .miniWrap{display:grid;grid-template-columns: 1fr;gap:.5rem}
   @media (min-width: 720px){ .miniWrap{grid-template-columns: 360px 1fr} }
   .miniSvg{width:100%;height:230px;border:2px solid #ececec;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa)}
-  .notScale{font-size:.7rem;color:#6b7280}
-
+  .bigSvg{width:100%;max-width:780px;height:360px;border:2px solid #ececec;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa)}
   .tag{display:inline-block;font-size:.65rem;border:1px solid #e5e7eb;border-radius:999px;padding:.08rem .45rem;background:#fff;color:#374151}
+  .ns{font-size:.7rem;color:#6b7280}
+
+  /* Teacher button */
+  #teacherBtn{position:fixed;top:18px;right:18px;z-index:36}
+  #teacherBtn button{border:2px solid var(--gold);border-radius:999px;padding:.35rem .7rem;background:#fff;font-weight:800}
 </style>
 </head>
 <body>
@@ -88,10 +88,11 @@
 <div id="deck" aria-live="polite">
   <div id="slides" class="relative">
     <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
+    <div id="teacherBtn"><button id="tToggle" title="Teacher Mode">🔒 Teacher</button></div>
 
     <!-- 0 • Title -->
     <section class="slide active bg-maroon text-white">
-      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="QLA Partner Banner"></div>
+      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="QLA Partner Banner" onerror="this.style.display='none'"></div>
       <div class="flex items-center gap-8">
         <img src="qla_logo.png" alt="QLA Logo" class="h-24 w-auto" onerror="this.style.display='none'"/>
         <div class="text-left">
@@ -104,20 +105,19 @@
     </section>
 
     <!-- ──────────────────────────────── PART 1 ──────────────────────────────── -->
-    <!-- 1 • Part 1: LO & Keywords -->
     <section class="slide" id="p1Intro">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 1 — Angle Vocabulary & Relationships</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P1)</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Define and identify <strong>adjacent</strong>, <strong>vertical</strong>, <strong>complementary</strong>, <strong>supplementary</strong> angles and <strong>linear pairs</strong>.</li>
-            <li>Use angle‑sum facts: \(90^\circ\), \(180^\circ\), and angles around a point \(360^\circ\).</li>
-            <li>Classify angle pairs and find missing measures.</li>
+            <li>Define and identify <strong>adjacent</strong>, <strong>vertical</strong>, <strong>complementary</strong>, <strong>supplementary</strong>, and <strong>linear pairs</strong>.</li>
+            <li>Use sums \(90^\circ\), \(180^\circ\), and \(360^\circ\) (around a point) to find unknowns.</li>
+            <li>Explain why relationships hold on a diagram (short justification).</li>
           </ul>
         </div>
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap)</h3>
           <div class="flex flex-wrap gap-2 text-lg">
             <span class="chip" data-key="adj">adjacent</span>
             <span class="chip" data-key="vert">vertical</span>
@@ -126,30 +126,30 @@
             <span class="chip" data-key="lp">linear pair</span>
             <span class="chip" data-key="around">angles around a point</span>
           </div>
-          <p class="text-xs text-gray-500 mt-3">Click a keyword to view a quick definition.</p>
+          <p class="text-xs text-gray-500 mt-3">Click a keyword for a concise definition.</p>
         </div>
       </div>
     </section>
 
-    <!-- 2 • Angle Builder (interactive SVG) -->
+    <!-- 2 • Angle Builder (accurate) -->
     <section class="slide" id="builderSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Angle Builder</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Angle Builder (accurate & measurable)</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div class="flex flex-wrap items-center gap-3 mb-3 text-sm">
           <label class="chip">Angle \(A\): <input id="angA" type="range" min="5" max="175" value="40" class="w-56"> <span id="angALabel" class="ml-1 font-bold">40°</span></label>
-          <span class="pill">Complement \(=90^\circ-A\): <b id="compOut">50°</b></span>
-          <span class="pill">Supplement \(=180^\circ-A\): <b id="suppOut">140°</b></span>
-          <span class="pill">Linear‑pair partner: <b id="lpOut">140°</b></span>
+          <span class="pill">Complement: <b id="compOut">50°</b></span>
+          <span class="pill">Supplement: <b id="suppOut">140°</b></span>
           <span class="pill">Vertical to \(A\): <b id="vertOut">40°</b></span>
+          <label class="pill"><input type="checkbox" id="builderPro" class="mr-2"> Protractor</label>
         </div>
-        <svg id="angleSvg" viewBox="0 0 760 360" aria-label="Interactive angle canvas"></svg>
-        <div class="hint mt-3 text-sm">Drag the slider. Complementary sum \(90^\circ\), supplementary/linear‑pairs sum \(180^\circ\); vertical angles are equal.</div>
+        <svg id="angleSvg" class="bigSvg" viewBox="0 0 780 360" aria-label="Interactive angle canvas"></svg>
+        <div class="hint mt-3 text-sm">Slider updates a true ray; arcs are computed from **actual rays**. Protractor overlay aligns to the vertex.</div>
       </div>
     </section>
 
-    <!-- 3 • Classify Angle Pairs (now with diagrams) -->
+    <!-- 3 • Classify Angle Pairs (with per-card protractor) -->
     <section class="slide" id="classifySlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Classify Angle Pairs</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Classify Angle Pairs (diagram‑driven)</h2>
       <div class="flex items-center gap-3 mb-2">
         <span>Level:</span>
         <select id="clfLevel" class="border rounded px-2 py-1">
@@ -166,9 +166,9 @@
       <div id="clfFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 4 • Find the Missing Angle (now with diagrams) -->
+    <!-- 4 • Find the Missing Angle (diagram‑driven) -->
     <section class="slide" id="missSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Find the Missing Angle</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Find the Missing Angle (diagram‑driven)</h2>
       <div class="flex items-center gap-3 mb-2">
         <span>Level:</span>
         <select id="missLevel" class="border rounded px-2 py-1">
@@ -185,16 +185,10 @@
       <div id="missFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 5 • Part 1 Real‑Life (with diagrams) -->
+    <!-- 5 • Real‑Life mini‑tasks -->
     <section class="slide" id="p1RealSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 1 Real‑Life Mini‑Tasks</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Real‑Life Mini‑Tasks (with diagrams)</h2>
       <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="p1RealLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
         <button id="p1RealNew" class="btn">New set</button>
         <button id="p1RealCheck" class="btn maroon">Check</button>
         <button id="p1RealExportCSV" class="btn">Export CSV</button>
@@ -205,34 +199,32 @@
     </section>
 
     <!-- ──────────────────────────────── PART 2 ──────────────────────────────── -->
-    <!-- 6 • Part 2: LO & Keywords -->
     <section class="slide" id="p2Intro">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 2 — Angle Equations & Solving</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P2)</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Translate angle facts into equations (e.g., complementary \(\to x+y=90\)).</li>
-            <li>Solve for unknowns in <strong>vertical</strong>, <strong>linear‑pair</strong>, <strong>complementary</strong>, and <strong>supplementary</strong> settings.</li>
-            <li>Show algebraic steps and check solutions against geometric constraints.</li>
+            <li>Translate diagrams into equations (equal/90/180/360) correctly.</li>
+            <li>Solve for \(x\) and compute angle measures; check reasonableness.</li>
+            <li>Justify each algebraic step briefly.</li>
           </ul>
         </div>
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords</h3>
           <div class="flex flex-wrap gap-2 text-lg">
             <span class="chip" data-key="equiv">equation</span>
             <span class="chip" data-key="subs">substitution</span>
-            <span class="chip" data-key="check">reasonableness check</span>
+            <span class="chip" data-key="check">reasonableness</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 7 • Solve for x — Set A (with diagrams) -->
+    <!-- 7 • Solve for x — Set A -->
     <section class="slide" id="solveSlide1">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Solve for \(x\) — Set A</h2>
       <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
         <select id="solALevel" class="border rounded px-2 py-1">
           <option value="easy" selected>easy</option>
           <option value="med">medium</option>
@@ -249,11 +241,10 @@
       <div id="solASteps" class="mt-2 text-sm"></div>
     </section>
 
-    <!-- 8 • Solve for x — Set B (with diagrams) -->
+    <!-- 8 • Solve for x — Set B -->
     <section class="slide" id="solveSlide2">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Solve for \(x\) — Set B</h2>
       <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
         <select id="solBLevel" class="border rounded px-2 py-1">
           <option value="easy" selected>easy</option>
           <option value="med">medium</option>
@@ -270,16 +261,10 @@
       <div id="solBSteps" class="mt-2 text-sm"></div>
     </section>
 
-    <!-- 9 • Part 2 Real‑Life (with diagrams) -->
+    <!-- 9 • Real‑Life (algebra + diagrams) -->
     <section class="slide" id="p2RealSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 2 Real‑Life Mini‑Tasks (Design & Builds)</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Real‑Life Mini‑Tasks (Design & Build)</h2>
       <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="p2RealLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
         <button id="p2RealNew" class="btn">New set</button>
         <button id="p2RealCheck" class="btn maroon">Check</button>
         <button id="p2RealExportCSV" class="btn">Export CSV</button>
@@ -290,20 +275,19 @@
     </section>
 
     <!-- ──────────────────────────────── PART 3 ──────────────────────────────── -->
-    <!-- 10 • Part 3: LO & Keywords -->
     <section class="slide" id="p3Intro">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 3 — Polygons: Interior & Exterior Angles</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P3)</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Use \(S=(n-2)\\cdot 180^\circ\) to find interior angle sums.</li>
-            <li>For regular polygons, compute one interior and one exterior angle; use exterior sum \(=360^\circ\).</li>
-            <li>Find a missing interior angle given the rest.</li>
+            <li>Use \(S=(n-2)\cdot 180^\circ\) for interior sums; compute a missing interior angle.</li>
+            <li>For regular \(n\)-gons, interior = \(\frac{(n-2)180^\circ}{n}\), exterior = \(\frac{360^\circ}{n}\).</li>
+            <li>Apply polygon angles in contexts.</li>
           </ul>
         </div>
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords</h3>
           <div class="flex flex-wrap gap-2 text-lg">
             <span class="chip" data-key="poly">polygon</span>
             <span class="chip" data-key="reg">regular polygon</span>
@@ -314,26 +298,26 @@
       </div>
     </section>
 
-    <!-- 11 • Polygon Explorer (draws polygon) -->
+    <!-- 11 • Polygon Explorer -->
     <section class="slide" id="polySlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Polygon Explorer</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Polygon Explorer (accurate)</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div class="flex items-center gap-3 mb-2">
           <label class="chip">Sides \(n\): <input id="polyN" type="range" min="3" max="12" value="6" class="w-56"> <b id="polyNLabel">6</b></label>
           <span class="pill">Interior Sum: <b id="polySum">720°</b></span>
-          <span class="pill">Regular \(\\angle_{\\text{int}}\): <b id="polyInt">120°</b></span>
-          <span class="pill">Regular \(\\angle_{\\text{ext}}\): <b id="polyExt">60°</b></span>
+          <span class="pill">Regular \(\\angle_{int}\): <b id="polyInt">120°</b></span>
+          <span class="pill">Regular \(\\angle_{ext}\): <b id="polyExt">60°</b></span>
+          <label class="pill"><input type="checkbox" id="polyPro" class="mr-2"> Protractor</label>
         </div>
-        <svg id="polySvg" viewBox="0 0 640 320" class="miniSvg"></svg>
-        <div class="hint text-sm">Drag \(n\). Exterior angles of any convex polygon sum to \(360^\circ\).</div>
+        <svg id="polySvg" class="miniSvg" viewBox="0 0 640 320"></svg>
+        <div class="hint text-sm">Exterior angles of any convex polygon sum to \(360^\circ\).</div>
       </div>
     </section>
 
-    <!-- 12 • Missing Interior Angle Practice (with polygon diagrams) -->
+    <!-- 12 • Missing Interior Angle -->
     <section class="slide" id="polyMissSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Find the Missing Interior Angle</h2>
       <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
         <select id="pmLevel" class="border rounded px-2 py-1">
           <option value="easy" selected>easy (n=3–5)</option>
           <option value="med">medium (n=5–7)</option>
@@ -348,11 +332,10 @@
       <div id="pmFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 13 • Exterior Angles / Find n (with diagrams) -->
+    <!-- 13 • Exterior Angles / Find n -->
     <section class="slide" id="extSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Exterior Angles & Number of Sides</h2>
       <div class="flex items-center gap-3 mb-2">
-        <span>Mode:</span>
         <span id="exModeA" class="pill active">Given \(n\) → \(\\angle_{ext}\)</span>
         <span id="exModeB" class="pill">Given \(\\angle_{ext}\) → \(n\)</span>
         <button id="exNew" class="btn">New set</button>
@@ -364,16 +347,10 @@
       <div id="exFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 14 • Part 3 Real‑Life (with diagrams) -->
+    <!-- 14 • Real‑Life (Polygons) -->
     <section class="slide" id="p3RealSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 3 Real‑Life Mini‑Tasks (Polygons)</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Real‑Life (Polygons)</h2>
       <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="p3RealLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
         <button id="p3RealNew" class="btn">New set</button>
         <button id="p3RealCheck" class="btn maroon">Check</button>
         <button id="p3RealExportCSV" class="btn">Export CSV</button>
@@ -384,20 +361,19 @@
     </section>
 
     <!-- ──────────────────────────────── PART 4 ──────────────────────────────── -->
-    <!-- 15 • Part 4: LO & Keywords -->
     <section class="slide" id="p4Intro">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 4 — Integrate: Angle Chases, Errors & Mixed Review</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P4)</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Combine angle facts and basic algebra to complete multi‑step “angle chase” tasks.</li>
-            <li>Diagnose and correct common misconceptions and equation‑setup errors.</li>
-            <li>Justify solutions and check for reasonableness.</li>
+            <li>Complete multi‑step “angle chase” problems (combine facts with algebra).</li>
+            <li>Diagnose & correct common misconceptions and setup errors.</li>
+            <li>Justify steps and check reasonableness.</li>
           </ul>
         </div>
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords</h3>
           <div class="flex flex-wrap gap-2 text-lg">
             <span class="chip" data-key="chase">angle chase</span>
             <span class="chip" data-key="reason">justification</span>
@@ -407,13 +383,11 @@
       </div>
     </section>
 
-    <!-- 16 • Angle Chase (with diagrams) -->
+    <!-- 16 • Angle Chase -->
     <section class="slide" id="chaseSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Angle Chase Playground</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
-        <div class="text-sm mb-2">Compute the requested angle(s). Figures show intersections/linear pairs/complements.</div>
         <div class="flex items-center gap-3 mb-2">
-          <span>Level:</span>
           <select id="acLevel" class="border rounded px-2 py-1">
             <option value="easy" selected>easy</option>
             <option value="med">medium</option>
@@ -429,11 +403,10 @@
       </div>
     </section>
 
-    <!-- 17 • Error Analysis (with diagrams) -->
+    <!-- 17 • Error Analysis -->
     <section class="slide" id="errSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Error Analysis</h2>
       <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
         <select id="errLevel" class="border rounded px-2 py-1">
           <option value="easy" selected>easy</option>
           <option value="med">medium</option>
@@ -444,11 +417,11 @@
       </div>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div class="miniWrap">
-          <svg id="errSvg" class="miniSvg"></svg>
+          <svg id="errSvg" class="miniSvg" viewBox="0 0 360 230"></svg>
           <div>
             <div id="errBox" class="text-lg"></div>
             <div class="mt-2">
-              <label class="mr-2"><input type="radio" name="errChoice" value="A"> Wrong definition/relation</label><br/>
+              <label class="mr-2"><input type="radio" name="errChoice" value="A"> Wrong relationship/definition</label><br/>
               <label class="mr-2"><input type="radio" name="errChoice" value="B"> Incorrect equation setup</label><br/>
               <label class="mr-2"><input type="radio" name="errChoice" value="C"> Algebra/Arithmetic slip</label><br/>
               <label class="mr-2"><input type="radio" name="errChoice" value="D"> Polygon formula misuse</label>
@@ -465,15 +438,14 @@
       </div>
     </section>
 
-    <!-- 18 • Mixed Review (with diagrams) -->
+    <!-- 18 • Mixed Review -->
     <section class="slide" id="mixSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Mixed Review Generator</h2>
       <div class="card p-5 w-full max-w-3xl text-left">
         <div class="miniWrap">
-          <svg id="mixSvg" class="miniSvg"></svg>
+          <svg id="mixSvg" class="miniSvg" viewBox="0 0 360 230"></svg>
           <div>
             <div class="flex items-center gap-3">
-              <span>Level:</span>
               <select id="mixLevel" class="border rounded px-2 py-1">
                 <option value="easy" selected>easy</option>
                 <option value="med">medium</option>
@@ -496,7 +468,44 @@
       </div>
     </section>
 
-    <!-- 19 • Exit Ticket -->
+    <!-- ──────────────────────────────── PART 5 (Extension) ──────────────────── -->
+    <section class="slide" id="p5Intro">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 5 — Extension: Parallel Lines & Transversals</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P5)</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Identify corresponding, alternate interior/exterior, and same‑side interior relations.</li>
+            <li>Use equality/supplementarity to find missing angles; solve for \(x\) from diagrams.</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords</h3>
+          <div class="flex flex-wrap gap-2 text-lg">
+            <span class="chip" data-key="pll">parallel lines</span>
+            <span class="chip" data-key="trans">transversal</span>
+            <span class="chip" data-key="corr">corresponding</span>
+            <span class="chip" data-key="altint">alternate interior</span>
+            <span class="chip" data-key="sameside">same‑side interior</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 20 • Parallels: Classify & Solve -->
+    <section class="slide" id="parSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Parallels — Classify & Solve (diagram‑driven)</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <button id="parNew" class="btn">New set</button>
+        <button id="parCheck" class="btn maroon">Check</button>
+        <button id="parExportCSV" class="btn">Export CSV</button>
+        <button id="parExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="parList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
+      <div id="parFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- Exit Ticket -->
     <section class="slide" id="exitSlide">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
@@ -505,15 +514,15 @@
           <ul class="list-disc list-inside">
             <li>3 angle facts you can use instantly</li>
             <li>2 algebra steps you must show when solving</li>
-            <li>1 polygon insight that surprised you</li>
+            <li>1 polygon or parallel‑lines insight that surprised you</li>
           </ul>
         </div>
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon">Up Next</h3>
-          <p>We will extend angle facts to parallel lines & transversals and similarity proofs.</p>
+          <p>We extend to parallel lines with triangle angle sums and similarity proofs.</p>
         </div>
       </div>
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[110px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[110px] banner rounded-md" style="background-image:url('qla_banner.png')" onerror="this.style.display='none'"></div>
     </section>
 
   </div>
@@ -523,7 +532,7 @@
 <div id="controls" role="group" aria-label="Slideshow controls">
   <button id="prev" title="Previous (←)">&laquo;</button>
   <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
-  <div id="counter">1 / 20</div>
+  <div id="counter">1 / 21</div>
   <button id="next" title="Next (→)">&raquo;</button>
 </div>
 <div id="progress"></div>
@@ -534,6 +543,7 @@
   <button id="navP2" class="btn">Part&nbsp;2</button>
   <button id="navP3" class="btn">Part&nbsp;3</button>
   <button id="navP4" class="btn">Part&nbsp;4</button>
+  <button id="navP5" class="btn">Part&nbsp;5</button>
 </div>
 
 <!-- Glossary popover -->
@@ -543,12 +553,17 @@
 </div>
 
 <script>
-/* ----------------------- Core shell & helpers ----------------------- */
+/* ==============================
+   Core shell, glossary & helpers
+   ============================== */
 (function(){
   const slides=[...document.querySelectorAll('.slide')];
   const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
-  const deckTitle='G8_U2_Angle_Facts_Diagrams';
+  const deckTitle='G8_U2_Angle_Facts_FULL';
   let i=0;
+  let TEACHER=false; // Teacher Mode global
+  const REDRAW = {}; // id -> redraw function
+  const registerRedraw=(k,fn)=>{ REDRAW[k]=fn; };
 
   function show(k){
     i=(k+slides.length)%slides.length;
@@ -573,15 +588,25 @@
   }
   fsBtn.addEventListener('click',toggleFS);
 
-  const partStarts=['p1Intro','p2Intro','p3Intro','p4Intro'];
+  const partStarts=['p1Intro','p2Intro','p3Intro','p4Intro','p5Intro'];
   function goPart(idx){
-    const targetId=partStarts[idx]; const node=document.getElementById(targetId);
-    if(!node) return; const pos=slides.findIndex(s=>s.id===targetId); if(pos>=0) show(pos);
+    const targetId=partStarts[idx]; const pos=slides.findIndex(s=>s.id===targetId);
+    if(pos>=0) show(pos);
   }
   id('navP1').addEventListener('click',()=>goPart(0));
   id('navP2').addEventListener('click',()=>goPart(1));
   id('navP3').addEventListener('click',()=>goPart(2));
   id('navP4').addEventListener('click',()=>goPart(3));
+  id('navP5').addEventListener('click',()=>goPart(4));
+
+  // Teacher Mode
+  const tBtn=id('tToggle');
+  tBtn.addEventListener('click',()=>{
+    TEACHER=!TEACHER;
+    tBtn.textContent = TEACHER? '🔓 Teacher' : '🔒 Teacher';
+    // re-render all registered diagrams with current TEACHER state
+    Object.values(REDRAW).forEach(fn=>fn());
+  });
 
   function id(x){return document.getElementById(x)}
   function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
@@ -607,25 +632,30 @@
     a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   }
 
-  /* ----------------------- Glossary ----------------------- */
+  /* ---------- Glossary ---------- */
   const POP=id('pop'), POP_BODY=id('popBody');
   const GLOS={
-    adj:'<strong>Adjacent</strong>: share a vertex and a side; interiors do not overlap.',
-    vert:'<strong>Vertical (opposite) angles</strong>: formed by two intersecting lines; opposite angles are equal.',
-    comp:'<strong>Complementary</strong>: two angles whose measures sum to \\(90^\\circ\\).',
-    supp:'<strong>Supplementary</strong>: two angles whose measures sum to \\(180^\\circ\\).',
+    adj:'<strong>Adjacent</strong>: share a vertex and a common side; interiors do not overlap.',
+    vert:'<strong>Vertical angles</strong>: opposite angles formed by two intersecting lines; they are equal.',
+    comp:'<strong>Complementary</strong>: sum to \\(90^\\circ\\).',
+    supp:'<strong>Supplementary</strong>: sum to \\(180^\\circ\\).',
     lp:'<strong>Linear pair</strong>: adjacent angles forming a straight line (sum \\(180^\\circ\\)).',
     around:'<strong>Angles around a point</strong>: sum to \\(360^\\circ\\).',
-    equiv:'<strong>Equation</strong>: an equality relating unknowns, e.g., \\(x+y=90\\).',
-    subs:'<strong>Substitution</strong>: replace a variable by an equivalent expression or value.',
-    check:'<strong>Reasonableness check</strong>: verify solution fits geometry (e.g., angle \\(>0\\)).',
+    equiv:'<strong>Equation</strong>: equality relating unknowns, e.g., \\(x+y=90\\).',
+    subs:'<strong>Substitution</strong>: replace a variable by an equivalent value/expression.',
+    check:'<strong>Reasonableness</strong>: solution fits geometric bounds (e.g., angle between 0° and 180°).',
     poly:'<strong>Polygon</strong>: closed figure with straight sides.',
-    reg:'<strong>Regular polygon</strong>: all sides and interior angles equal.',
-    sum:'<strong>Interior sum</strong>: \\(S=(n-2)\\cdot180^\\circ\\) for an \\(n\\)-gon.',
-    ext:'<strong>Exterior angle</strong>: for a regular \\(n\\)-gon, each exterior angle is \\(360^\\circ/n\\).',
-    chase:'<strong>Angle chase</strong>: chained deductions using known relations.',
-    reason:'<strong>Justification</strong>: valid geometric/algebraic reason for a step.',
-    trap:'<strong>Trap choice</strong>: plausible but incorrect option.'
+    reg:'<strong>Regular polygon</strong>: equal sides and angles.',
+    sum:'<strong>Interior sum</strong>: \\(S=(n-2)\\cdot180^\\circ\\).',
+    ext:'<strong>Exterior angle</strong>: for regular \\(n\\)-gon, each is \\(360^\\circ/n\\).',
+    chase:'<strong>Angle chase</strong>: chained deductions with angle facts.',
+    reason:'<strong>Justification</strong>: the reason a step is valid.',
+    trap:'<strong>Trap</strong>: plausible but incorrect option.',
+    pll:'<strong>Parallel</strong>: lines in a plane that never meet.',
+    trans:'<strong>Transversal</strong>: a line intersecting two other lines.',
+    corr:'<strong>Corresponding</strong>: same relative position at each intersection.',
+    altint:'<strong>Alternate interior</strong>: interior, on opposite sides of the transversal.',
+    sameside:'<strong>Same‑side interior</strong>: interior, on the same side; they are supplementary.'
   };
   function showPop(html,anchor){
     POP_BODY.innerHTML=html; POP.style.display='block';
@@ -638,525 +668,502 @@
     const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]) showPop(GLOS[key], el);}
   });
 
-  /* ----------------------- Geometry helpers (SVG) ----------------------- */
-  const TAU = Math.PI*2;
-  const deg2rad = d => d*Math.PI/180;
+  /* ==============================
+     Geometry & SVG utilities
+     ============================== */
+  const TAU=Math.PI*2;
+  const d2r = d=>d*Math.PI/180;
+  const r2d = r=>r*180/Math.PI;
+  const norm = a=>((a%360)+360)%360;
+  const minArc = (a,b)=>{ const d=norm(b-a); return d<=180? d : 360-d; };
+  const ccwDiff=(a,b)=>norm(b-a); // CCW difference from a to b (0..359)
+
   function svgEl(tag, attrs={}){ const e=document.createElementNS('http://www.w3.org/2000/svg',tag); for(const k in attrs){ e.setAttribute(k, attrs[k]); } return e; }
   function clearSvg(s){ while(s.firstChild) s.removeChild(s.firstChild); }
-  function polar(cx,cy,r,deg){ const a=deg2rad(deg); return [cx + r*Math.cos(a), cy - r*Math.sin(a)]; }
   function line(s, x1,y1,x2,y2, opt={}){ s.appendChild(svgEl('line', {x1,y1,x2,y2, stroke:opt.stroke||'#374151', 'stroke-width':opt.w||2, 'stroke-dasharray':opt.d||''})); }
-  function circle(s, cx,cy,r, opt={}){ s.appendChild(svgEl('circle', {cx,cy,r, fill:opt.fill||'none', stroke:opt.stroke||'#374151', 'stroke-width':opt.w||2})); }
   function path(s, d, opt={}){ s.appendChild(svgEl('path', {d, fill:opt.fill||'none', stroke:opt.stroke||'#6C1D45', 'stroke-width':opt.w||2, 'stroke-dasharray':opt.d||''})); }
   function text(s, x,y, str, opt={}){ const t=svgEl('text',{x,y, 'text-anchor':opt.anchor||'middle', 'font-size':opt.size||12, fill:opt.fill||'#111'}); t.textContent=str; s.appendChild(t); return t; }
-  function arcPath(cx,cy,r,a0,a1){ // small CCW
-    const A0=deg2rad(a0), A1=deg2rad(a1);
-    const x0=cx+r*Math.cos(A0), y0=cy-r*Math.sin(A0);
-    const x1=cx+r*Math.cos(A1), y1=cy-r*Math.sin(A1);
-    const large = (Math.abs(a1-a0)%360)>180 ? 1:0;
-    const sweep = (a1>=a0)? 0:1; // draw "inside" for clarity
+  function polar(cx,cy,r,deg){ const a=d2r(deg); return [cx + r*Math.cos(a), cy - r*Math.sin(a)]; }
+
+  function drawRay(s, cx,cy, angle, len=180, opt={}){ const [x2,y2]=polar(cx,cy,len,angle); line(s,cx,cy,x2,y2,opt); }
+  function drawLineThrough(s, cx,cy, angle, len=200, opt={}){ const [x1,y1]=polar(cx,cy,len,angle+180), [x2,y2]=polar(cx,cy,len,angle); line(s,x1,y1,x2,y2,opt); }
+
+  function arcPath(cx,cy,r,a0,a1){ // draw minor arc from a0 to a1 CCW or CW chosen by shorter route
+    a0=norm(a0); a1=norm(a1);
+    let diff=ccwDiff(a0,a1); let sweep=0; // 0 means draw "CW" (SVG arc sweep-flag), 1 is CCW; but we will control via large-arc + sweep to get minor arc
+    let large = diff>180 ? 1:0;
+    // We'll always pass the path start at a0 and end at a1, with sweep flag = 1 for CCW
+    sweep = 1;
+    const x0=cx+r*Math.cos(d2r(a0)), y0=cy-r*Math.sin(d2r(a0));
+    const x1=cx+r*Math.cos(d2r(a1)), y1=cy-r*Math.sin(d2r(a1));
+    // If CCW diff > 180, large-arc =1; else 0
     return `M${x0},${y0} A${r},${r} 0 ${large} ${sweep} ${x1},${y1}`;
   }
-  function angleArc(s, cx,cy, r, a0,a1, col='#C7A34F', w=3, dash){ path(s, arcPath(cx,cy,r,a0,a1), {stroke:col, w, d:dash}); }
-  function rightMarker(s, cx,cy, size, baseDeg){ // tiny square at vertex
-    const a=deg2rad(baseDeg), dx=Math.cos(a), dy=Math.sin(a);
-    const p1=[cx+10*dx, cy-10*dy];
+  function drawAngleArc(s, cx,cy, r, aStart, aEnd, col='#C7A34F', w=3, lbl=null){
+    path(s, arcPath(cx,cy,r,aStart,aEnd), {stroke:col, w});
+    if(lbl!==null){
+      // mid along chosen CCW path
+      const mid = norm(aStart + ccwDiff(aStart,aEnd)/2);
+      const [tx,ty] = [cx + (r+16)*Math.cos(d2r(mid)), cy - (r+16)*Math.sin(d2r(mid))];
+      text(s, tx,ty, lbl, {fill:'#6C1D45', size:12});
+    }
+  }
+  function rightMarker(s, cx,cy, size, baseDeg){
+    // Draw a small square indicating a right angle between baseDeg and baseDeg+90
+    const a=d2r(baseDeg), dx=Math.cos(a), dy=Math.sin(a);
+    const p1=[cx+12*dx, cy-12*dy];
     const p2=[p1[0]+size*(-dy), p1[1]-size*(-dx)];
     const p3=[p2[0]+size*(dx), p2[1]-size*(dy)];
-    const p4=[p3[0]+size*(dy), p3[1]+size*(dx)];
+    const p4=[p3[0]+size*(dy), p3[1]-size*(dx)];
     const d=`M${p1[0]},${p1[1]} L${p2[0]},${p2[1]} L${p3[0]},${p3[1]} L${p4[0]},${p4[1]} Z`;
     path(s,d,{fill:'#e5e7eb',stroke:'#9ca3af',w:1.5});
   }
   function tagNS(s){ const t=svgEl('text',{'font-size':10,fill:'#6b7280',x:10,y:16}); t.textContent='not to scale'; s.appendChild(t); }
 
-  /* ---------- Angle Builder ---------- */
-  const builderSvg = id('angleSvg');
-  const angA = id('angA'), angALabel=id('angALabel'), compOut=id('compOut'), suppOut=id('suppOut'), lpOut=id('lpOut'), vertOut=id('vertOut');
-  function drawAngle(){
-    const A = Number(angA.value);
-    angALabel.textContent = A+'°';
-    compOut.textContent = (90-A>0? (90-A)+'°' : '—');
-    const supp = 180-A; suppOut.textContent = supp+'°'; lpOut.textContent=supp+'°'; vertOut.textContent=A+'°';
-
-    clearSvg(builderSvg);
-    const W=760,H=360,cx=380,cy=200,r=120;
-    // Baseline and rays
-    line(builderSvg, cx-220,cy, cx+220,cy, {stroke:'#6C1D45', w:2.4});
-    const [rx,ry]=polar(cx,cy,220,A);
-    line(builderSvg, cx,cy, rx,ry, {stroke:'#C7A34F', w:2.4});
-    // Opposite (vertical) ray dashed
-    const [vx,vy]=polar(cx,cy,220,A+180);
-    line(builderSvg, cx,cy, vx,vy, {stroke:'#9ca3af', w:2, d:'6 6'});
-
-    // Angle arcs
-    angleArc(builderSvg,cx,cy,r,0,A,'#C7A34F',4);
-    angleArc(builderSvg,cx,cy,r-22,A,180,'#bbb',2,'4 4'); // linear partner
-    text(builderSvg, cx+(r+22)*Math.cos(deg2rad(A/2)), cy-(r+22)*Math.sin(deg2rad(A/2)), 'A = '+A+'°',{fill:'#6C1D45', size:13});
-  }
-  angA.addEventListener('input',drawAngle);
-
-  /* ----------------------- Activity Engines (with diagrams) ----------------------- */
-
-  /* Generic diagram builders */
-
-  // Intersecting lines diagram with one given angle label and partner (vertical/adjacent/linear)
-  function drawIntersecting(svg, givenDeg=40, mode='vertical', showUnknown=false, unknownLabel='?'){
-    clearSvg(svg); tagNS(svg);
-    const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-    const cx=W/2, cy=H/2;
-    // random tilt for variety
-    const tilt = 10 + Math.random()*50;
-    // line 1 at 0/180:
-    line(svg, cx-160,cy, cx+160,cy, {w:2.2,stroke:'#374151'});
-    // line 2 rotated by tilt
-    const [x1,y1]=polar(cx,cy,160,tilt);
-    const [x2,y2]=polar(cx,cy,160,tilt+180);
-    line(svg, x1,y1,x2,y2, {w:2.2,stroke:'#374151'});
-
-    // choose quadrant for given angle at 0..tilt
-    const r=68;
-    // We'll treat givenDeg as angle between baseline (0°) and second ray (tilt). We can just draw arcs accordingly from 0.
-    angleArc(svg,cx,cy,r,0,givenDeg,'#C7A34F',3);
-    text(svg, cx+(r+16)*Math.cos(deg2rad(givenDeg/2)), cy-(r+16)*Math.sin(deg2rad(givenDeg/2)), givenDeg+'°',{fill:'#6C1D45',size:12});
-
-    if(mode==='vertical'){
-      // draw opposite arc with same degree
-      angleArc(svg,cx,cy,r,180,180+givenDeg,'#C7A34F',3,'4 2');
-      text(svg, cx+(r+14)*Math.cos(deg2rad(180+givenDeg/2)), cy-(r+14)*Math.sin(deg2rad(180+givenDeg/2)), showUnknown?unknownLabel:(givenDeg+'°'),{size:12});
-    } else if(mode==='adjacent'){
-      // adjacent share a side: use small arc next to givenDeg on the same side (tilt side)
-      const rest = tilt - givenDeg; // illustrative
-      angleArc(svg,cx,cy,r, givenDeg, tilt,'#f59e0b',3);
-      text(svg, cx+(r+14)*Math.cos(deg2rad(givenDeg+(tilt-givenDeg)/2)), cy-(r+14)*Math.sin(deg2rad(givenDeg+(tilt-givenDeg)/2)), showUnknown?unknownLabel:(Math.round(rest)+'°'),{size:12});
-    } else if(mode==='linear'){
-      // linear pair to the right of baseline
-      angleArc(svg,cx,cy,r, givenDeg, 180,'#f59e0b',3);
-      const value=180-givenDeg;
-      text(svg, cx+(r+18)*Math.cos(deg2rad(givenDeg+(180-givenDeg)/2)), cy-(r+18)*Math.sin(deg2rad(givenDeg+(180-givenDeg)/2)), showUnknown?unknownLabel:(value+'°'),{size:12});
+  /* ---------- Protractor overlay (per-svg) ---------- */
+  function drawProtractor(s, cx,cy, r=90, startDeg=0){
+    const base='#94a3b8';
+    // outer semicircle (0..180) from startDeg
+    for(let k=0;k<=180;k+=10){
+      const ang=norm(startDeg+k);
+      const [x1,y1]=polar(cx,cy,r,ang), [x2,y2]=polar(cx,cy,r-10,ang);
+      line(s,x1,y1,x2,y2,{stroke:base,w:(k%30===0?2:1)});
+      if(k%30===0){
+        const [tx,ty]=polar(cx,cy,r-18,ang);
+        const lab = (k===180? '180': String(k));
+        text(s,tx,ty,lab,{size:9,fill:base});
+      }
     }
+    // baseline
+    drawRay(s,cx,cy,startDeg, r+8, {stroke:base,w:2,d:'4 4'});
+    // faint circle
+    path(s, `M ${cx+r},${cy} A ${r},${r} 0 1 1 ${cx-r},${cy}`, {stroke:base,w:1,d:'2 6'});
   }
 
-  // Right-angle complementary diagram
-  function drawComplement(svg, a=30, showUnknown=false, unknownLabel='?'){
-    clearSvg(svg); tagNS(svg);
+  /* ==============================
+     Accurate diagram builders
+     ============================== */
+
+  // 1) Complement at a right corner (baseline ray at 0°, vertical ray at 90°)
+  function diagComplement(svg, a=30, opts={}){
+    const {showUnknown=false, unknownLabel='?', pro=false, teacherVal=null}=opts;
+    clearSvg(svg);
     const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-    const cx=W/2-10, cy=H/2+30;
-    // axes for a right corner:
-    line(svg,cx,cy, cx+150,cy, {w:2.2});
-    line(svg,cx,cy, cx,cy-150, {w:2.2});
+    const cx=W/2-15, cy=H/2+35;
+    // axes
+    drawRay(svg,cx,cy,0,150,{w:2.2});
+    drawRay(svg,cx,cy,90,150,{w:2.2});
     rightMarker(svg,cx,cy,14,0);
-    // draw a inside the right angle from baseline up
-    angleArc(svg,cx,cy,70,0,a,'#C7A34F',3);
-    text(svg, cx+80*Math.cos(deg2rad(a/2)), cy-80*Math.sin(deg2rad(a/2)), a+'°',{fill:'#6C1D45',size:12});
-    // complement
-    angleArc(svg,cx,cy,70,a,90,'#f59e0b',3);
-    const val=90-a;
-    const mid=a+(90-a)/2;
-    text(svg, cx+78*Math.cos(deg2rad(mid)), cy-78*Math.sin(deg2rad(mid)), showUnknown?unknownLabel:(val+'°'),{size:12});
+    // a from 0 to a
+    drawAngleArc(svg,cx,cy,70,0,a,'#C7A34F',3, `${a}°`);
+    // complement from a to 90
+    drawAngleArc(svg,cx,cy,70,a,90,'#f59e0b',3, showUnknown?(teacherVal??unknownLabel):`${90-a}°`);
+    if(pro) drawProtractor(svg,cx,cy,92,0);
+    tagNS(svg);
   }
 
-  // Linear pair diagram
-  function drawLinearPair(svg, a=110, showUnknown=false, unknownLabel='?'){
-    clearSvg(svg); tagNS(svg);
+  // 2) Linear pair on a straight baseline (0° and 180°), other ray at angle a
+  function diagLinearPair(svg, a=120, opts={}){
+    const {showUnknown=false, unknownLabel='?', pro=false, teacherVal=null}=opts;
+    clearSvg(svg);
     const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
     const cx=W/2, cy=H/2+20;
-    line(svg,cx-160,cy, cx+160,cy, {w:2.2});
-    const [rx,ry]=polar(cx,cy,150,a);
-    line(svg,cx,cy, rx,ry, {w:2.2});
-    angleArc(svg,cx,cy,70,0,a,'#C7A34F',3);
-    text(svg, cx+80*Math.cos(deg2rad(a/2)), cy-80*Math.sin(deg2rad(a/2)), a+'°',{fill:'#6C1D45'});
-    angleArc(svg,cx,cy,70,a,180,'#f59e0b',3);
-    const mid=a+(180-a)/2; const val=180-a;
-    text(svg, cx+82*Math.cos(deg2rad(mid)), cy-82*Math.sin(deg2rad(mid)), showUnknown?unknownLabel:(val+'°'),{});
+    drawLineThrough(svg,cx,cy,0,170,{w:2.2});
+    drawRay(svg,cx,cy,a,150,{w:2.2});
+    // angle from 0 to a
+    drawAngleArc(svg,cx,cy,70,0,a,'#C7A34F',3, `${a}°`);
+    // partner from a to 180
+    drawAngleArc(svg,cx,cy,70,a,180,'#f59e0b',3, showUnknown?(teacherVal??unknownLabel):`${180-a}°`);
+    if(pro) drawProtractor(svg,cx,cy,92,0);
+    tagNS(svg);
   }
 
-  // Around a point with 3 given and one unknown
-  function drawAroundPoint(svg, A=120,B=80,C=70, showUnknown=true, unknownLabel='?'){
-    clearSvg(svg); tagNS(svg);
+  // 3) Intersecting lines with exact given angle a (0<a<180)
+  //    We construct two lines at angles α and β so that one region has measure exactly 'a'.
+  function diagIntersecting(svg, a=40, mode='vertical', opts={}){
+    const {showUnknown=false, unknownLabel='?', pro=false, teacherVal=null}=opts;
+    clearSvg(svg);
     const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
     const cx=W/2, cy=H/2;
-    circle(svg,cx,cy,2,{fill:'#374151',stroke:'#374151'});
-    const r=74;
-    let start= -20; // random rotation
-    const sectors=[{d:A,c:'#C7A34F',t:A+'°'},{d:B,c:'#f59e0b',t:B+'°'},{d:C,c:'#60a5fa',t:C+'°'},{d:360-(A+B+C),c:'#ef4444',t: showUnknown?unknownLabel: (360-(A+B+C))+'°'}];
-    sectors.forEach(seg=>{
-      angleArc(svg,cx,cy,r,start,start+seg.d, seg.c,3);
-      const m = start + seg.d/2;
-      text(svg, cx+(r+16)*Math.cos(deg2rad(m)), cy-(r+16)*Math.sin(deg2rad(m)), seg.t, {});
-      start+=seg.d;
-    });
+    // Choose α randomly, then β such that one region equals 'a' (possibly obtuse)
+    const acute = (a<=90)? a : 180-a;
+    const alpha = 10 + Math.random()*40; // base line angle
+    const beta = alpha + acute;
+    drawLineThrough(svg,cx,cy,alpha,180,{w:2.2});
+    drawLineThrough(svg,cx,cy,beta,180,{w:2.2});
+    // Now decide which region to label as 'a' (acute or obtuse)
+    let start, end; // arc from start to end CCW
+    if(a<=90){ start=alpha; end=beta; }
+    else{ // obtuse region between beta and alpha+180
+      start=beta; end=alpha+180;
+    }
+    drawAngleArc(svg,cx,cy,64,start,end,'#C7A34F',3, `${a}°`);
+    // Opposite (vertical) is the same arc shifted by 180
+    if(mode==='vertical'){
+      drawAngleArc(svg,cx,cy,64,start+180,end+180,'#f59e0b',3, showUnknown?(teacherVal??unknownLabel):`${a}°`);
+    } else if(mode==='adjacent'){
+      // Adjacent partner shares a side; pick the other region next to start
+      const otherEnd = (a<=90)? alpha+180 : beta; // ensure adjacency but not vertical
+      const want = 180 - a; // adjacent but not necessarily linear unless aligned with 180
+      drawAngleArc(svg,cx,cy,64,end,otherEnd,'#f59e0b',3, showUnknown?(teacherVal??unknownLabel):`${want}°`);
+    }
+    if(pro) drawProtractor(svg,cx,cy,90,alpha);
+    tagNS(svg);
   }
 
-  // Polygon drawing (regular)
-  function drawRegularPolygon(svg, n=6, highlightIdx=0, labels=[]){
+  // 4) Around a point: three given, one unknown
+  function diagAroundPoint(svg, A=120,B=80,C=70, opts={}){
+    const {showUnknown=true, unknownLabel='?', pro=false, teacherVal=null}=opts;
+    clearSvg(svg);
+    const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
+    const cx=W/2, cy=H/2;
+    const r=74;
+    let start = -20;
+    const D = 360-(A+B+C);
+    const segs = [
+      {d:A,c:'#C7A34F',t:`${A}°`},
+      {d:B,c:'#f59e0b',t:`${B}°`},
+      {d:C,c:'#60a5fa',t:`${C}°`},
+      {d:D,c:'#ef4444',t: showUnknown?(teacherVal??unknownLabel):`${D}°`}
+    ];
+    segs.forEach(seg=>{
+      drawAngleArc(svg,cx,cy,r,start,start+seg.d,seg.c,3, seg.t);
+      start+=seg.d;
+    });
+    if(pro) drawProtractor(svg,cx,cy,96,-20);
+    tagNS(svg);
+  }
+
+  // 5) Regular polygon drawing with label control
+  function drawRegularPolygon(svg, n=6, labels=[], highlightIdx=-1, pro=false){
     clearSvg(svg);
     const W=svg.viewBox.baseVal.width||640, H=svg.viewBox.baseVal.height||320;
     const cx=W/2, cy=H/2+5, R=Math.min(W,H)/3;
     const rot=-90;
     const pts=[];
-    for(let k=0;k<n;k++){
-      const ang=rot + 360*k/n;
-      pts.push(polar(cx,cy,R,ang));
-    }
-    // polygon edges
-    const d = 'M'+pts.map(p=>p[0]+','+p[1]).join(' L ')+' Z';
-    path(svg, d, {stroke:'#374151', w:2});
-    // interior angle tiny arcs + labels
-    const ext=360/n, intr=(n-2)*180/n;
+    for(let k=0;k<n;k++){ const ang=rot + 360*k/n; pts.push(polar(cx,cy,R,ang)); }
+    // edges
+    const d='M'+pts.map(p=>p[0]+','+p[1]).join(' L ')+' Z';
+    path(svg,d,{stroke:'#374151',w:2});
+    const intr=(n-2)*180/n;
     for(let k=0;k<n;k++){
       const P=pts[k];
-      // draw small arc
+      // interior tick
       const a0=rot+360*(k-0.25)/n, a1=rot+360*(k+0.25)/n;
-      angleArc(svg,P[0],P[1],22,a0,a1,'#C7A34F',2);
-      const lab = labels[k] ?? (k===highlightIdx? '?' : intr.toFixed(0)+'°');
-      text(svg, P[0]+28*Math.cos(deg2rad((a0+a1)/2)), P[1]-28*Math.sin(deg2rad((a0+a1)/2)), lab, {size:12});
+      drawAngleArc(svg,P[0],P[1],22,a0,a1,'#C7A34F',2);
+      const lab = labels[k] ?? (k===highlightIdx? '?' : `${Math.round(intr)}°`);
+      const mid=(a0+a1)/2;
+      text(svg, P[0]+28*Math.cos(d2r(mid)), P[1]-28*Math.sin(d2r(mid)), lab, {size:12});
+    }
+    if(pro){ // place a protractor at vertex 0 for reference
+      const P=pts[0]; drawProtractor(svg, P[0],P[1],40, rot);
     }
   }
 
-  // Exterior angle at one vertex (regular)
-  function drawExterior(svg, n=6, showValue=false, value=null){
-    clearSvg(svg); tagNS(svg);
+  // 6) Exterior angle diagram at one vertex of a regular n‑gon
+  function drawExterior(svg, n=6, showValue=false, value=null, pro=false){
+    clearSvg(svg);
     const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-    const cx=W/2, cy=H/2+10, R=Math.min(W,H)/3;
-    const rot=-90;
-    const pts=[];
-    for(let k=0;k<n;k++){ pts.push(polar(cx,cy,R, rot+360*k/n)); }
-    path(svg, 'M'+pts.map(p=>p[0]+','+p[1]).join(' L ')+' Z', {stroke:'#374151', w:2});
-    // take vertex 0
+    const cx=W/2, cy=H/2+10, R=Math.min(W,H)/3, rot=-90;
+    const pts=[]; for(let k=0;k<n;k++) pts.push(polar(cx,cy,R,rot+360*k/n));
+    path(svg, 'M'+pts.map(p=>p[0]+','+p[1]).join(' L ')+' Z', {stroke:'#374151',w:2});
     const P0=pts[0], P1=pts[1], Pn=pts[n-1];
-    // draw exterior ray extension of side P0->Pn
-    const angleEdge = Math.atan2(P0[1]-Pn[1], P0[0]-Pn[0]) * 180/Math.PI;
-    const [ex,ey]=polar(P0[0],P0[1],120, angleEdge+0); // extension forward
-    line(svg, Pn[0],Pn[1], P0[0],P0[1], {w:2});
-    line(svg, P0[0],P0[1], P1[0],P1[1], {w:2});
-    line(svg, P0[0],P0[1], ex,ey, {w:2, d:'6 4'});
-    const ext=360/n;
-    // arc outside between extension and side to P1
-    const a0=angleEdge, a1=Math.atan2(P1[1]-P0[1], P1[0]-P0[0])*180/Math.PI;
-    angleArc(svg,P0[0],P0[1],26,a0,a1,'#C7A34F',3);
-    const mid=(a0+a1)/2;
-    text(svg, P0[0]+38*Math.cos(deg2rad(mid)), P0[1]-38*Math.sin(deg2rad(mid)), showValue? (value ?? (ext.toFixed(0)+'°')) : 'ext',{size:12});
+    // sides meeting at P0
+    line(svg,Pn[0],Pn[1],P0[0],P0[1],{w:2});
+    line(svg,P0[0],P0[1],P1[0],P1[1],{w:2});
+    // extension of Pn->P0
+    const angEdge = r2d(Math.atan2(P0[1]-Pn[1], P0[0]-Pn[0]));
+    const [ex,ey]=polar(P0[0],P0[1],120,angEdge);
+    line(svg,P0[0],P0[1], ex,ey, {w:2, d:'6 4'});
+    const a1=angEdge, a2=r2d(Math.atan2(P1[1]-P0[1], P1[0]-P0[0]));
+    drawAngleArc(svg,P0[0],P0[1],26,a1,a2,'#C7A34F',3, showValue? (value ?? `${Math.round(360/n)}°`) : 'ext');
+    if(pro) drawProtractor(svg,P0[0],P0[1],44,a1);
+    tagNS(svg);
   }
 
-  // Small real-life sketchers
-  function drawFrame(svg, a=30){ // frame corner with complementary partner
-    drawComplement(svg, a, true, (90-a)+'°');
+  /* ---------- Protractor + Teacher helpers per card ---------- */
+  function proToggleEl() { const el=document.createElement('label'); el.className='pill'; el.innerHTML='<input type="checkbox" class="mr-2 proChk"> Protractor'; return el; }
+  function addProToggle(container, svgId, redrawFn){
+    const t = proToggleEl(); container.querySelector('.hdr').appendChild(t);
+    const chk = t.querySelector('.proChk');
+    chk.addEventListener('change', redrawFn);
+    registerRedraw(svgId, redrawFn);
   }
-  function drawDoor(svg, opened=60){ // arc from closed to opened
-    clearSvg(svg); tagNS(svg);
-    const W=svg.viewBox.baseVal.width||360, H=svg.viewBox.baseVal.height||230;
-    const cx=W/2-40, cy=H/2+40;
-    // jamb vertical
-    line(svg,cx,cy-100, cx,cy, {w:3});
-    // door at angle
-    const [dx,dy]=polar(cx,cy-100, 140, -opened);
-    line(svg,cx,cy-100, dx,dy, {w:3, stroke:'#6C1D45'});
-    // arc showing angle
-    angleArc(svg,cx,cy-100,50,0,opened,'#C7A34F',3);
-    text(svg, cx+60*Math.cos(deg2rad(opened/2)), cy-100-60*Math.sin(deg2rad(opened/2)), opened+'°',{fill:'#6C1D45'});
-    text(svg, cx+100, cy-100, 'to 90°?', {anchor:'start', size:11, fill:'#374151'});
-  }
-  function drawBracket(svg, a=120){ drawLinearPair(svg, a, true, (180-a)+'°'); }
-  function drawSpotlights(svg, A,B,C){ drawAroundPoint(svg, A,B,C, true,'?'); }
+  function teacherOverlayText(svg, x,y, txt){ text(svg,x,y,txt,{size:14,fill:'#0ea5e9'}); }
 
-  /* ---------------- Part 1: Classify & Missing (with diagrams) ---------------- */
+  /* ==============================
+     PART 1 — Builder
+     ============================== */
+  const builderSvg = id('angleSvg');
+  const angA=id('angA'), angALabel=id('angALabel'), compOut=id('compOut'), suppOut=id('suppOut'), vertOut=id('vertOut');
+  function drawAngle(){
+    const A=Number(angA.value);
+    angALabel.textContent=A+'°';
+    compOut.textContent=(90-A>0? (90-A)+'°':'—');
+    suppOut.textContent=(180-A)+'°';
+    vertOut.textContent=A+'°';
+    const pro=id('builderPro').checked;
+    clearSvg(builderSvg);
+    const W=780,H=360,cx=W/2,cy=H/2+20;
+    drawLineThrough(builderSvg,cx,cy,0,250,{w:2.6});
+    drawRay(builderSvg,cx,cy,A,240,{w:2.6,stroke:'#C7A34F'});
+    drawAngleArc(builderSvg,cx,cy,100,0,A,'#C7A34F',4, `A=${A}°`);
+    drawAngleArc(builderSvg,cx,cy,78,A,180,'#999',2,'supp');
+    drawAngleArc(builderSvg,cx,cy,60,180,180+A,'#bbb',2,'vert');
+    if(pro) drawProtractor(builderSvg,cx,cy,120,0);
+    tagNS(builderSvg);
+  }
+  angA.addEventListener('input',drawAngle);
+  id('builderPro').addEventListener('change',drawAngle);
+
+  /* ==============================
+     PART 1 — Classify & Missing
+     ============================== */
   const TYPES=['complementary','supplementary','vertical','adjacent','linear pair','neither'];
   function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
   function choice(arr){ return arr[rand(0,arr.length-1)] }
 
   const clfState={items:[]};
   function clfNew(){
-    const lv=id('clfLevel').value; const k= (lv==='easy'?6:(lv==='med'?8:10));
-    clfState.items=[];
-    const box=id('clfList'); box.innerHTML='';
+    const lv=id('clfLevel').value; const k=(lv==='easy'?6:(lv==='med'?8:10));
+    clfState.items=[]; const box=id('clfList'); box.innerHTML='';
     for(let i=0;i<k;i++){
-      const t=choice(TYPES);
-      const prompt=buildClassifyPrompt(t, lv);
-      clfState.items.push({t, prompt});
+      const kind=choice(TYPES);
       const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML=`
-        <div class="miniWrap">
-          <svg id="clfSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
-          <div>
+      row.innerHTML=`<div class="miniWrap">
+        <div>
+          <div class="flex items-center justify-between hdr">
             <div class="text-maroon font-semibold mb-1">Item ${i+1} <span class="tag">diagram</span></div>
-            <div class="mb-2">${prompt}</div>
-            <div class="flex flex-wrap gap-2 text-sm">
-              ${TYPES.map(s=>`<label class="pill"><input type="radio" name="clf_${i}" value="${s}" class="mr-1">${s}</label>`).join('')}
-            </div>
           </div>
-        </div>`;
+          <svg id="clfSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
+        </div>
+        <div>
+          <div class="mb-2">Classify the highlighted pair.</div>
+          <div class="flex flex-wrap gap-2 text-sm">${TYPES.map(s=>`<label class="pill"><input type="radio" name="clf_${i}" value="${s}" class="mr-1">${s}</label>`).join('')}</div>
+        </div>
+      </div>`;
       box.appendChild(row);
-      // draw diagram
-      const s=row.querySelector(`#clfSVG_${i}`);
-      if(t==='vertical'){ drawIntersecting(s, rand(25,140), 'vertical', true,'?'); }
-      else if(t==='adjacent'){ drawIntersecting(s, rand(20,70), 'adjacent', true,'?'); }
-      else if(t==='linear pair'){ drawLinearPair(s, rand(25,160), true,'?'); }
-      else if(t==='complementary'){ drawComplement(s, rand(15,75), true,'?'); }
-      else if(t==='supplementary'){ drawLinearPair(s, rand(20,160), true,'?'); }
-      else { // neither: show two disjoint angles
-        clearSvg(s); tagNS(s);
-        const [cx,cy]=[180,115];
-        line(s, cx-120,cy, cx+120,cy, {w:2.2});
-        angleArc(s,cx-60,cy,50,0,40,'#C7A34F',3); text(s,cx-60+64*Math.cos(deg2rad(20)), cy-64*Math.sin(deg2rad(20)), '40°',{size:12});
-        angleArc(s,cx+60,cy,50,0,60,'#f59e0b',3); text(s,cx+60+66*Math.cos(deg2rad(30)), cy-66*Math.sin(deg2rad(30)), '60°',{size:12});
+      const svg=row.querySelector(`#clfSVG_${i}`);
+      // Build a faithful diagram and remember the correct class
+      let correct=kind, redrawFn;
+      if(kind==='complementary'){
+        const a=rand(15,75);
+        redrawFn=()=>diagComplement(svg,a,{showUnknown:false, pro: row.querySelector('.proChk')?.checked || false});
+      } else if(kind==='supplementary' || kind==='linear pair'){
+        const a=rand(20,160);
+        redrawFn=()=>diagLinearPair(svg,a,{showUnknown:false, pro: row.querySelector('.proChk')?.checked || false});
+        correct=(kind==='supplementary')?'supplementary':'linear pair'; // both acceptable; we keep as chosen
+      } else if(kind==='vertical'){
+        const a=rand(15,165);
+        redrawFn=()=>diagIntersecting(svg,a,'vertical',{showUnknown:true, unknownLabel:'?', pro: row.querySelector('.proChk')?.checked || false, teacherVal: TEACHER?`${a}°`:null});
+      } else if(kind==='adjacent'){
+        // ensure shared side but not 90/180
+        const a=rand(25,70);
+        redrawFn=()=>diagIntersecting(svg, a, 'adjacent', {showUnknown:true, unknownLabel:'?', pro: row.querySelector('.proChk')?.checked || false, teacherVal: TEACHER?`${180-a}°`:null});
+      } else { // neither (two disjoint angles)
+        redrawFn=()=>{
+          clearSvg(svg); const cx=180,cy=115;
+          drawRay(svg,cx-80,cy,0,70,{w:2.2}); drawRay(svg,cx-80,cy,40,70,{w:2.2});
+          drawAngleArc(svg,cx-80,cy,40,0,40,'#C7A34F',3,'40°');
+          drawRay(svg,cx+80,cy,180,70,{w:2.2}); drawRay(svg,cx+80,cy,240,70,{w:2.2});
+          drawAngleArc(svg,cx+80,cy,40,180,240,'#f59e0b',3,'60°'); tagNS(svg);
+        };
       }
+      redrawFn(); addProToggle(row, `clfSVG_${i}`, redrawFn);
+      clfState.items.push({kind:correct});
     }
-    renderMath(id('classifySlide'));
-  }
-  function buildClassifyPrompt(type, lv){
-    let a,b,msg='';
-    if(type==='complementary'){ a=rand(10,70); b=90-a; msg=`Angles show a right corner partitioned into <b>${a}°</b> and <b>${b}°</b>. Relationship?`; }
-    else if(type==='supplementary'){ a=rand(30,150); b=180-a; msg=`Adjacent angles form a straight line: <b>${a}°</b> and <b>${b}°</b>. Relationship?`; }
-    else if(type==='vertical'){ a=rand(20,140); msg=`Two lines intersect. Angle A is <b>${a}°</b>. What is A’s opposite angle B’s relationship to A?`; }
-    else if(type==='adjacent'){ a=rand(20,70); b=rand(20,70); msg=`∠1 and ∠2 share a side at P; \(m∠1=${a}°\), \(m∠2=${b}°\). Relationship?`; }
-    else if(type==='linear pair'){ a=rand(20,160); b=180-a; msg=`∠X and ∠Y are adjacent and form a straight line. Relationship?`; }
-    else { msg=`Two separated angles: neither total \(90°\) nor \(180°\), not opposite at an intersection, and do not share a side. Relationship?`; }
-    if(lv==='hard' && Math.random()<0.3) msg+=` <span class="hint ml-1">Trap: complementary angles need not be adjacent.</span>`;
-    return msg;
   }
   function clfCheck(){
     let ok=0;
     [...id('clfList').children].forEach((row,idx)=>{
       const sel=[...row.querySelectorAll('input[type="radio"]')].find(x=>x.checked)?.value||'';
-      const want=clfState.items[idx].t;
-      row.style.borderColor = (sel===want)? '#22c55e':'#ef4444';
+      const want=clfState.items[idx].kind;
+      row.style.borderColor=(sel===want)? '#22c55e' : '#ef4444';
       if(sel===want) ok++;
     });
-    id('clfFb').textContent = ok===clfState.items.length ? '✅ All correct!' : `Score: ${ok}/${clfState.items.length}`;
+    id('clfFb').textContent = ok===clfState.items.length? '✅ All correct!' : `Score: ${ok}/${clfState.items.length}`;
     if(ok===clfState.items.length) confetti();
   }
   id('clfNew').addEventListener('click',clfNew); clfNew();
   id('clfCheck').addEventListener('click',clfCheck);
   id('clfExportCSV').addEventListener('click',()=>{
-    const rows=[['prompt','correct','user']];
-    [...id('clfList').children].forEach((row,idx)=>{
-      const user=[...row.querySelectorAll('input[type="radio"]')].find(x=>x.checked)?.value||'';
-      rows.push([row.querySelector('.text-maroon ~ div').innerText.trim(), clfState.items[idx].t, user]);
-    });
-    downloadCSV(`${deckTitle}_P1_classify.csv`, rows);
+    const rows=[['correct','user']]; [...id('clfList').children].forEach((row,idx)=>{ const u=[...row.querySelectorAll('input[type="radio"]')].find(x=>x.checked)?.value||''; rows.push([clfState.items[idx].kind,u]); }); downloadCSV(`${deckTitle}_P1_classify.csv`, rows);
   });
   id('clfExportJSON').addEventListener('click',()=>{
-    const data=[...id('clfList').children].map((row,idx)=>({
-      prompt:row.querySelector('.text-maroon ~ div').innerText.trim(),
-      correct:clfState.items[idx].t,
-      user:[...row.querySelectorAll('input[type="radio"]')].find(x=>x.checked)?.value||''
-    }));
-    downloadJSON(`${deckTitle}_P1_classify.json`, data);
+    const data=[...id('clfList').children].map((row,idx)=>({correct:clfState.items[idx].kind, user:[...row.querySelectorAll('input[type="radio"]')].find(x=>x.checked)?.value||''})); downloadJSON(`${deckTitle}_P1_classify.json`, data);
   });
 
   const missState={items:[]};
   function missNew(){
-    const lv=id('missLevel').value; const k = (lv==='easy'?6:(lv==='med'?8:10));
+    const lv=id('missLevel').value; const k=(lv==='easy'?6:(lv==='med'?8:10));
     missState.items=[]; const box=id('missList'); box.innerHTML='';
     for(let i=0;i<k;i++){
-      const kind = choice(['comp','supp','vert','lp','around']);
-      const o=buildMissing(kind, lv);
-      missState.items.push(o);
+      const kind=choice(['comp','supp','vert','lp','around']);
       const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML=`
-        <div class="miniWrap">
+      row.innerHTML=`<div class="miniWrap">
+        <div>
+          <div class="flex items-center justify-between hdr"><div class="text-maroon font-semibold mb-1">Item ${i+1} <span class="tag">diagram</span></div></div>
           <svg id="missSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
-          <div>
-            <div class="font-semibold text-maroon mb-1">Item ${i+1} <span class="tag">diagram</span></div>
-            <div class="mb-2">${o.prompt}</div>
-            <div>Answer: <input class="minp border rounded px-2 py-1 w-24"> °</div>
-          </div>
-        </div>`;
+        </div>
+        <div>
+          <div class="mb-2"></div>
+          <div>Answer: <input class="minp border rounded px-2 py-1 w-24"> °</div>
+        </div>
+      </div>`;
       box.appendChild(row);
-      const s=row.querySelector(`#missSVG_${i}`);
-      if(kind==='comp'){ drawComplement(s, o.a, true,'?'); }
-      else if(kind==='supp'){ drawLinearPair(s, o.a, true,'?'); }
-      else if(kind==='vert'){ drawIntersecting(s, o.a, 'vertical', true,'?'); }
-      else if(kind==='lp'){ drawLinearPair(s, o.a, true,'?'); }
-      else { drawAroundPoint(s, o.A, o.B, o.C, true,'?'); }
-    }
-    renderMath(id('missSlide'));
-  }
-  function buildMissing(kind, lv){
-    if(kind==='comp'){
-      const a=rand(10,80); return {kind,prompt:`Find the complement of <b>${a}°</b>.`, ans:90-a, a};
-    } else if(kind==='supp'){
-      const a=rand(30,170); return {kind,prompt:`∠1 forms a linear pair with ∠2. If \(m∠1=${a}°\), find \(m∠2\).`, ans:180-a, a};
-    } else if(kind==='vert'){
-      const a=rand(15,165); return {kind,prompt:`Two lines intersect. If \(m∠A=${a}°\), find \(m∠A'\) (vertical).`, ans:a, a};
-    } else if(kind==='lp'){
-      const a=rand(25,155); return {kind,prompt:`Adjacent ∠X and ∠Y form a straight line. If \(m∠X=${a}°\), find \(m∠Y\).`, ans:180-a, a};
-    } else {
-      const A=rand(40,140), B=rand(40,140), C=rand(40,140); const sum=A+B+C;
-      const d=360-sum; return {kind,prompt:`Angles around a point: ${A}°, ${B}°, ${C}°, and ∠? . Find ∠?.`, ans:d, A,B,C};
+      const svg=row.querySelector(`#missSVG_${i}`);
+      let ans=0, redrawFn;
+      if(kind==='comp'){
+        const a=rand(15,80); ans=90-a;
+        row.querySelector('.mb-2').innerHTML=`Find the complement of <b>${a}°</b>.`;
+        redrawFn=()=>diagComplement(svg,a,{showUnknown:true, unknownLabel:'?', pro: row.querySelector('.proChk')?.checked || false, teacherVal: TEACHER?`${ans}°`:null});
+      } else if(kind==='supp'){
+        const a=rand(25,170); ans=180-a;
+        row.querySelector('.mb-2').innerHTML=`Linear pair: if one angle is <b>${a}°</b>, find the other.`;
+        redrawFn=()=>diagLinearPair(svg,a,{showUnknown:true, unknownLabel:'?', pro: row.querySelector('.proChk')?.checked || false, teacherVal: TEACHER?`${ans}°`:null});
+      } else if(kind==='vert'){
+        const a=rand(15,165); ans=a;
+        row.querySelector('.mb-2').innerHTML=`Two lines intersect. If \(m∠A=${a}°\), find \(m∠A'\) (vertical).`;
+        redrawFn=()=>diagIntersecting(svg,a,'vertical',{showUnknown:true, unknownLabel:'?', pro: row.querySelector('.proChk')?.checked || false, teacherVal: TEACHER?`${ans}°`:null});
+      } else if(kind==='lp'){
+        const a=rand(25,155); ans=180-a;
+        row.querySelector('.mb-2').innerHTML=`Adjacent ∠X and ∠Y form a straight line. If \(m∠X=${a}°\), find \(m∠Y\).`;
+        redrawFn=()=>diagLinearPair(svg,a,{showUnknown:true, unknownLabel:'?', pro: row.querySelector('.proChk')?.checked || false, teacherVal: TEACHER?`${ans}°`:null});
+      } else {
+        const A=rand(40,140), B=rand(40,140), C=rand(40,140); ans=360-(A+B+C);
+        row.querySelector('.mb-2').innerHTML=`Angles around a point: ${A}°, ${B}°, ${C}°, and ∠? . Find ∠?.`;
+        redrawFn=()=>diagAroundPoint(svg,A,B,C,{showUnknown:true, unknownLabel:'?', pro: row.querySelector('.proChk')?.checked || false, teacherVal: TEACHER?`${ans}°`:null});
+      }
+      redrawFn(); addProToggle(row, `missSVG_${i}`, redrawFn);
+      missState.items.push({ans});
     }
   }
   function missCheck(){
     let ok=0;
     [...id('missList').children].forEach((row,idx)=>{
       const got=Number(row.querySelector('.minp').value); const want=missState.items[idx].ans;
-      row.style.borderColor = (Math.abs(got-want)<1e-10)? '#22c55e':'#ef4444';
+      row.style.borderColor=(Math.abs(got-want)<1e-10)? '#22c55e':'#ef4444';
       if(Math.abs(got-want)<1e-10) ok++;
     });
-    id('missFb').textContent = ok===missState.items.length ? '✅ Great!' : `Score: ${ok}/${missState.items.length}`;
+    id('missFb').textContent = ok===missState.items.length? '✅ Great!' : `Score: ${ok}/${missState.items.length}`;
     if(ok===missState.items.length) confetti();
   }
   id('missNew').addEventListener('click',missNew); missNew();
   id('missCheck').addEventListener('click',missCheck);
   id('missExportCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer','user']];
-    [...id('missList').children].forEach((row,idx)=>{
-      rows.push([row.querySelector('.font-semibold ~ div').innerText.trim(), missState.items[idx].ans, row.querySelector('.minp').value||'']);
-    });
-    downloadCSV(`${deckTitle}_P1_missing.csv`, rows);
+    const rows=[['answer','user']]; [...id('missList').children].forEach((row,idx)=>rows.push([missState.items[idx].ans, row.querySelector('.minp').value||''])); downloadCSV(`${deckTitle}_P1_missing.csv`, rows);
   });
   id('missExportJSON').addEventListener('click',()=>{
-    const data=[...id('missList').children].map((row,idx)=>({prompt:row.querySelector('.font-semibold ~ div').innerText.trim(), answer:missState.items[idx].ans, user:row.querySelector('.minp').value||''}));
-    downloadJSON(`${deckTitle}_P1_missing.json`, data);
+    const data=[...id('missList').children].map((row,idx)=>({answer:missState.items[idx].ans, user:row.querySelector('.minp').value||''})); downloadJSON(`${deckTitle}_P1_missing.json`, data);
   });
 
-  /* ---------------- Part 1 Real‑Life (with diagrams) ---------------- */
+  /* ==============================
+     PART 1 — Real‑Life
+     ============================== */
   const p1RealState={items:[]};
+  function drawDoor(svg, opened=60, opts={}){ const {pro=false}=opts; clearSvg(svg); const W=svg.viewBox.baseVal.width||360,H=svg.viewBox.baseVal.height||230; const cx=W/2-40, cy=H/2+40; drawRay(svg,cx,cy-100,0,150,{w:3}); const [dx,dy]=polar(cx,cy-100,140,-opened); line(svg,cx,cy-100,dx,dy,{w:3,stroke:'#6C1D45'}); drawAngleArc(svg,cx,cy-100,50,0,opened,'#C7A34F',3, `${opened}°`); text(svg,cx+100,cy-100,'to 90°?',{anchor:'start',size:11,fill:'#374151'}); if(pro) drawProtractor(svg,cx,cy-100,68,0); tagNS(svg); }
+  function drawFrame(svg, a=30, opts={}){ const {pro=false}=opts; diagComplement(svg,a,{showUnknown:true,unknownLabel:String(90-a)+'°', pro}); }
+  function drawBracket(svg, a=120, opts={}){ const {pro=false}=opts; diagLinearPair(svg,a,{showUnknown:true,unknownLabel:String(180-a)+'°', pro}); }
+  function drawSpotlights(svg, A,B,C, opts={}){ const {pro=false}=opts; diagAroundPoint(svg,A,B,C,{showUnknown:true,unknownLabel:String(360-(A+B+C))+'°', pro}); }
+
   function p1RealNew(){
-    const lv=id('p1RealLevel').value; p1RealState.items=[]; const box=id('p1RealList'); box.innerHTML='';
-    // Framing (complement)
-    (function(){
-      const a=rand(20,70); const prompt=`A picture frame corner must make a right angle. If one miter cut is <b>${a}°</b> from the edge, what angle must the other cut be?`;
-      p1RealState.items.push({ans:90-a});
-      addRealRow(box,prompt,'°', (s)=>drawFrame(s,a));
-    })();
-    // Door swing (to 90)
-    (function(){
-      const a=rand(35,85); const prompt=`A door opened to <b>${a}°</b>. How many more degrees to reach a right angle?`;
-      p1RealState.items.push({ans:90-a});
-      addRealRow(box,prompt,'°', (s)=>drawDoor(s,a));
-    })();
-    // Linear pair bracket
-    (function(){
-      const a=rand(30,150); const prompt=`A wall bracket forms a straight line with a support. If the support angle is <b>${a}°</b>, find the bracket’s angle with the wall.`;
-      p1RealState.items.push({ans:180-a});
-      addRealRow(box,prompt,'°', (s)=>drawBracket(s,a));
-    })();
-    // Spotlights (around a point)
-    (function(){
-      const A=rand(60,150), B=rand(40,120), C=rand(30,110); const prompt=`Three stage spotlights make angles of ${A}°, ${B}°, ${C}° around the DJ. What angle remains to complete 360°?`;
-      p1RealState.items.push({ans:360-(A+B+C)});
-      addRealRow(box,prompt,'°', (s)=>drawSpotlights(s,A,B,C));
-    })();
-  }
-  function addRealRow(box, prompt, suf, drawFn){
-    const idx = box.children.length;
-    const row=document.createElement('div'); row.className='card p-4';
-    row.innerHTML=`<div class="miniWrap">
-      <svg id="p1RSVG_${idx}" class="miniSvg" viewBox="0 0 360 230"></svg>
-      <div>
-        <div class="text-left">${prompt}</div>
-        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> ${suf||''}</div>
-      </div></div>`;
-    box.appendChild(row);
-    const s=row.querySelector(`#p1RSVG_${idx}`); drawFn(s);
+    p1RealState.items=[]; const box=id('p1RealList'); box.innerHTML='';
+    [
+      (row)=>{ const a=rand(20,70), ans=90-a, prompt=`Picture frame corner: one miter cut is <b>${a}°</b>. What must the other be?`; return {prompt, ans, draw:(svg,pro)=>drawFrame(svg,a,{pro})}; },
+      (row)=>{ const a=rand(35,85), ans=90-a, prompt=`Door opened to <b>${a}°</b>. How many degrees to reach a right angle?`; return {prompt, ans, draw:(svg,pro)=>drawDoor(svg,a,{pro})}; },
+      (row)=>{ const a=rand(30,150), ans=180-a, prompt=`Wall bracket forms a straight line with support. If support angle is <b>${a}°</b>, find bracket’s angle with wall.`; return {prompt, ans, draw:(svg,pro)=>drawBracket(svg,a,{pro})}; },
+      (row)=>{ const A=rand(60,150),B=rand(40,120),C=rand(30,110), ans=360-(A+B+C), prompt=`Spotlights around a DJ: ${A}°, ${B}°, ${C}°. What remains to make 360°?`; return {prompt, ans, draw:(svg,pro)=>drawSpotlights(svg,A,B,C,{pro})}; }
+    ].forEach((gen,idx)=>{
+      const g=gen();
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="miniWrap">
+        <div>
+          <div class="flex items-center justify-between hdr"><div class="text-maroon font-semibold mb-1">Task ${idx+1} <span class="tag">diagram</span></div></div>
+          <svg id="p1RSVG_${idx}" class="miniSvg" viewBox="0 0 360 230"></svg>
+        </div>
+        <div>
+          <div class="text-left">${g.prompt}</div>
+          <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> °</div>
+        </div>
+      </div>`;
+      box.appendChild(row);
+      const svg=row.querySelector(`#p1RSVG_${idx}`);
+      const redraw=()=>g.draw(svg, row.querySelector('.proChk')?.checked || false);
+      redraw(); addProToggle(row, `p1RSVG_${idx}`, redraw);
+      p1RealState.items.push({ans:g.ans});
+    });
   }
   id('p1RealNew').addEventListener('click',p1RealNew); p1RealNew();
   id('p1RealCheck').addEventListener('click',()=>{
-    let ok=0; [...id('p1RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
-      const got=Number(el.value); const want=p1RealState.items[idx].ans;
-      el.style.borderColor=(Math.abs(got-want)<1e-10)? '#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++;
-    });
-    id('p1RealFb').textContent = ok===p1RealState.items.length? '✅ Excellent!' : `Score: ${ok}/${p1RealState.items.length}`;
-    if(ok===p1RealState.items.length) confetti();
+    let ok=0; [...id('p1RealList').querySelectorAll('.rin')].forEach((el,idx)=>{ const got=Number(el.value); const want=p1RealState.items[idx].ans; el.style.borderColor=(Math.abs(got-want)<1e-10)? '#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++; });
+    id('p1RealFb').textContent = ok===p1RealState.items.length? '✅ Excellent!' : `Score: ${ok}/${p1RealState.items.length}`; if(ok===p1RealState.items.length) confetti();
   });
   id('p1RealExportCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer','user']];
-    [...id('p1RealList').children].forEach((row,idx)=>rows.push([row.querySelector('.text-left').innerText.trim(), p1RealState.items[idx].ans, row.querySelector('.rin').value||'']));
-    downloadCSV(`${deckTitle}_P1_real.csv`, rows);
+    const rows=[['answer','user']]; [...id('p1RealList').children].forEach((row,idx)=>rows.push([p1RealState.items[idx].ans, row.querySelector('.rin').value||''])); downloadCSV(`${deckTitle}_P1_real.csv`, rows);
   });
   id('p1RealExportJSON').addEventListener('click',()=>{
-    const data=[...id('p1RealList').children].map((row,idx)=>({prompt:row.querySelector('.text-left').innerText.trim(), answer:p1RealState.items[idx].ans, user:row.querySelector('.rin').value||''}));
-    downloadJSON(`${deckTitle}_P1_real.json`, data);
+    const data=[...id('p1RealList').children].map((row,idx)=>({answer:p1RealState.items[idx].ans, user:row.querySelector('.rin').value||''})); downloadJSON(`${deckTitle}_P1_real.json`, data);
   });
 
-  /* ---------------- Part 2: Solvers (with diagrams) ---------------- */
-  function makeLinearProblem(type, lv){
-    function makeExpr(aRange,bRange){ return {a:rand(...aRange), b:rand(...bRange)}; }
-    if(type==='comp' || type==='supp' || type==='lp'){
-      const target = (type==='comp'?90:180);
-      for(let guard=0; guard<300; guard++){
-        const e1=makeExpr([1,4],[0,30]);
-        const e2=makeExpr([1,4],[0,30]);
-        const sumA=e1.a+e2.a, sumB=e1.b+e2.b;
-        const xNum=target - sumB; if(xNum%sumA===0){ const x=xNum/sumA; if(x>0 && x<= (lv==='hard'?60:50)){
-          return {type, e1,e2, target, x, a1:e1.a, b1:e1.b, a2:e2.a, b2:e2.b};
-        }}
-      }
-    } else if(type==='vert'){
-      for(let guard=0; guard<300; guard++){
-        const e1={a:rand(1,4), b:rand(0,40)}, e2={a:rand(1,4), b:rand(0,40)};
-        const diffA=e1.a - e2.a, diffB=e2.b - e1.b;
-        if(diffA!==0 && diffB%diffA===0){ const x=diffB/diffA; if(x>0 && x<= (lv==='hard'?60:50)){
-          return {type, e1,e2, x, a1:e1.a,b1:e1.b,a2:e2.a,b2:e2.b};
-        }}
-      }
-    }
-    // fallback
-    return makeLinearProblem(type, lv);
-  }
-  function exprVal(e,x){ return e.a*x + e.b; }
+  /* ==============================
+     PART 2 — Solve-for-x
+     ============================== */
+  function makeExpr(aR=[1,4],bR=[0,30]){ return {a:rand(aR[0],aR[1]), b:rand(bR[0],bR[1])}; }
+  function exprVal(e,x){ return e.a*x+e.b; }
 
-  const solAState={items:[]}, solBState={items:[]};
+  function problemComp(lv){ const target=90; for(let g=0;g<300;g++){ const e1=makeExpr(), e2=makeExpr(); const A=e1.a+e2.a,B=e1.b+e2.b,x=(target-B)/A; if(Number.isInteger(x)&&x>0) return {type:'comp',e1,e2,target,x}; } return problemComp(lv); }
+  function problemSupp(lv){ const target=180; for(let g=0;g<300;g++){ const e1=makeExpr(), e2=makeExpr(); const A=e1.a+e2.a,B=e1.b+e2.b,x=(target-B)/A; if(Number.isInteger(x)&&x>0) return {type:'supp',e1,e2,target,x}; } return problemSupp(lv); }
+  function problemLP(lv){ return problemSupp(lv); }
+  function problemVert(lv){ for(let g=0;g<300;g++){ const e1=makeExpr(), e2=makeExpr(); const A=e1.a-e2.a, B=e2.b-e1.b; if(A!==0 && B%A===0){ const x=B/A; if(x>0) return {type:'vert',e1,e2,x}; } } return problemVert(lv); }
+
+  function drawSolve(svg, prob, pro=false){
+    clearSvg(svg);
+    if(prob.type==='comp'){ // right corner, two arcs sum to 90 with expressions
+      const W=svg.viewBox.baseVal.width||360,H=svg.viewBox.baseVal.height||230; const cx=W/2-15, cy=H/2+35;
+      drawRay(svg,cx,cy,0,150,{w:2.2}); drawRay(svg,cx,cy,90,150,{w:2.2}); rightMarker(svg,cx,cy,14,0);
+      drawAngleArc(svg,cx,cy,70,0,38,'#C7A34F',3, `${prob.e1.a}x+${prob.e1.b}°`);
+      drawAngleArc(svg,cx,cy,70,38,90,'#f59e0b',3, `${prob.e2.a}x+${prob.e2.b}°`);
+      if(TEACHER){ const a1=exprVal(prob.e1,prob.x), a2=exprVal(prob.e2,prob.x); teacherOverlayText(svg,cx+100,cy-70,`x=${prob.x}, ∠s=${a1}°,${a2}°`); }
+      if(pro) drawProtractor(svg,cx,cy,92,0);
+    } else if(prob.type==='supp' || prob.type==='lp'){ // straight line
+      const W=svg.viewBox.baseVal.width||360,H=svg.viewBox.baseVal.height||230; const cx=W/2, cy=H/2+20;
+      drawLineThrough(svg,cx,cy,0,170,{w:2.2}); const a=120; drawRay(svg,cx,cy,a,150,{w:2.2});
+      drawAngleArc(svg,cx,cy,70,0,a,'#C7A34F',3, `${prob.e1.a}x+${prob.e1.b}°`);
+      drawAngleArc(svg,cx,cy,70,a,180,'#f59e0b',3, `${prob.e2.a}x+${prob.e2.b}°`);
+      if(TEACHER){ const a1=exprVal(prob.e1,prob.x), a2=exprVal(prob.e2,prob.x); teacherOverlayText(svg,cx+110,cy-20,`x=${prob.x}, ∠s=${a1}°,${a2}°`); }
+      if(pro) drawProtractor(svg,cx,cy,92,0);
+    } else { // vertical equality
+      const W=svg.viewBox.baseVal.width||360,H=svg.viewBox.baseVal.height||230; const cx=W/2, cy=H/2;
+      const alpha=20,beta=100; drawLineThrough(svg,cx,cy,alpha,170,{w:2.2}); drawLineThrough(svg,cx,cy,beta,170,{w:2.2});
+      drawAngleArc(svg,cx,cy,64,alpha,beta,'#C7A34F',3, `${prob.e1.a}x+${prob.e1.b}°`);
+      drawAngleArc(svg,cx,cy,64,alpha+180,beta+180,'#f59e0b',3, `${prob.e2.a}x+${prob.e2.b}°`);
+      if(TEACHER){ const a1=exprVal(prob.e1,prob.x), a2=exprVal(prob.e2,prob.x); teacherOverlayText(svg,cx+0,cy-84,`x=${prob.x}, ∠=${a1}°=${a2}°`); }
+      if(pro) drawProtractor(svg,cx,cy,90,alpha);
+    }
+    tagNS(svg);
+  }
+
   function buildSolveSet(state, boxId, lv){
-    const typesA=['comp','supp','vert','lp'];
-    state.items=[]; const box=id(boxId); box.innerHTML='';
-    for(let k=0;k<4;k++){
-      const p=makeLinearProblem(typesA[k], lv);
+    const kinds=['comp','supp','vert','lp']; const box=id(boxId); box.innerHTML=''; state.items=[];
+    for(let i=0;i<4;i++){
+      const t=kinds[i]; const p = (t==='comp')?problemComp(lv): (t==='supp')?problemSupp(lv): (t==='lp')?problemLP(lv):problemVert(lv);
       state.items.push(p);
-      const title = (p.type==='comp'?'Complementary (sum 90°)':
-                     p.type==='supp'?'Supplementary (sum 180°)':
-                     p.type==='lp'?'Linear Pair (adjacent sum 180°)':
-                     'Vertical (equal)');
-      const rel = (p.type==='vert'? `\\( ${p.a1}x+${p.b1} = ${p.a2}x+${p.b2} \\)` :
-        `\\( (${p.a1}x+${p.b1}) + (${p.a2}x+${p.b2}) = ${p.target} \\)` );
       const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML=`
-        <div class="miniWrap">
-          <svg id="${boxId}_svg_${k}" class="miniSvg" viewBox="0 0 360 230"></svg>
-          <div>
-            <div class="text-maroon font-semibold mb-1">${title} <span class="tag">diagram</span></div>
-            <div class="mb-2">Equation: ${rel}</div>
-            <div>Solution: \(x=\) <input class="xin border rounded px-2 py-1 w-20"> &nbsp;
-                 ∠1 = <input class="a1in border rounded px-2 py-1 w-20">° &nbsp; ∠2 = <input class="a2in border rounded px-2 py-1 w-20">°</div>
-          </div>
-        </div>`;
-      box.appendChild(row); renderMath(row);
-      // draw figure with expressions
-      const s=row.querySelector(`#${boxId}_svg_${k}`);
-      if(p.type==='vert'){
-        clearSvg(s); tagNS(s);
-        const cx=180, cy=115;
-        line(s, cx-160,cy, cx+160,cy, {w:2.2});
-        line(s, cx-120,cy-100, cx+120,cy+100, {w:2.2});
-        // two opposite arcs equal
-        angleArc(s,cx,cy,64,10,10+60,'#C7A34F',3);
-        text(s, cx+84*Math.cos(deg2rad(40)), cy-84*Math.sin(deg2rad(40)), `${p.a1}x+${p.b1}°`,{size:12});
-        angleArc(s,cx,cy,64,190,190+60,'#C7A34F',3,'4 2');
-        text(s, cx+84*Math.cos(deg2rad(220)), cy-84*Math.sin(deg2rad(220)), `${p.a2}x+${p.b2}°`,{size:12});
-      } else if(p.type==='comp'){
-        drawComplement(s, 40, true,'?'); // base shape
-        // overwrite labels as algebraic on the two arcs
-        clearSvg(s); tagNS(s);
-        const W=360,H=230, cx=W/2-10, cy=H/2+30;
-        line(s,cx,cy, cx+150,cy, {w:2.2});
-        line(s,cx,cy, cx,cy-150, {w:2.2});
-        rightMarker(s,cx,cy,14,0);
-        angleArc(s,cx,cy,70,0,40,'#C7A34F',3);
-        text(s, cx+80*Math.cos(deg2rad(20)), cy-80*Math.sin(deg2rad(20)), `${p.a1}x+${p.b1}°`,{size:12});
-        angleArc(s,cx,cy,70,40,90,'#f59e0b',3);
-        text(s, cx+80*Math.cos(deg2rad(65)), cy-80*Math.sin(deg2rad(65)), `${p.a2}x+${p.b2}°`,{size:12});
-      } else if(p.type==='lp' || p.type==='supp'){
-        clearSvg(s); tagNS(s);
-        const W=360,H=230,cx=180,cy=120;
-        line(s,cx-160,cy, cx+160,cy, {w:2.2});
-        const a=120;
-        const [rx,ry]=polar(cx,cy,150,a);
-        line(s,cx,cy, rx,ry, {w:2.2});
-        angleArc(s,cx,cy,70,0,a,'#C7A34F',3);
-        text(s, cx+82*Math.cos(deg2rad(a/2)), cy-82*Math.sin(deg2rad(a/2)), `${p.a1}x+${p.b1}°`,{size:12});
-        angleArc(s,cx,cy,70,a,180,'#f59e0b',3);
-        text(s, cx+84*Math.cos(deg2rad((a+180)/2)), cy-84*Math.sin(deg2rad((a+180)/2)), `${p.a2}x+${p.b2}°`,{size:12});
-      }
+      row.innerHTML=`<div class="miniWrap">
+        <div>
+          <div class="flex items-center justify-between hdr"><div class="text-maroon font-semibold mb-1">${t==='comp'?'Complementary':'supp'===t||'lp'===t?'Linear/Supplementary':'Vertical'} <span class="tag">diagram</span></div></div>
+          <svg id="${boxId}_svg_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
+        </div>
+        <div>
+          <div class="mb-2">${t==='vert' ? `\\( ${p.e1.a}x+${p.e1.b} = ${p.e2.a}x+${p.e2.b} \\)` : `\\( (${p.e1.a}x+${p.e1.b}) + (${p.e2.a}x+${p.e2.b}) = ${p.target} \\)`}</div>
+          <div> \(x=\) <input class="xin border rounded px-2 py-1 w-20"> &nbsp; ∠1 = <input class="a1in border rounded px-2 py-1 w-20">° &nbsp; ∠2 = <input class="a2in border rounded px-2 py-1 w-20">°</div>
+        </div>
+      </div>`;
+      box.appendChild(row);
+      const svg=row.querySelector(`#${boxId}_svg_${i}`);
+      const redraw=()=>drawSolve(svg,p, row.querySelector('.proChk')?.checked || false);
+      redraw(); addProToggle(row, `${boxId}_svg_${i}`, redraw);
+      renderMath(row);
     }
   }
   function solCheck(state, boxId, fbId){
@@ -1164,29 +1171,27 @@
     [...box.children].forEach((row,idx)=>{
       const p=state.items[idx]; const x=Number(row.querySelector('.xin').value);
       const a1=Number(row.querySelector('.a1in').value), a2=Number(row.querySelector('.a2in').value);
-      const wantX=p.x, want1=exprVal({a:p.a1,b:p.b1},wantX), want2=exprVal({a:p.a2,b:p.b2},wantX);
-      const goodX=(Math.abs(x-wantX)<1e-10);
-      const good1=(Math.abs(a1-want1)<1e-10);
-      const good2=(Math.abs(a2-want2)<1e-10);
-      row.style.borderColor=(goodX&&good1&&good2)? '#22c55e':'#ef4444'; if(goodX&&good1&&good2) ok++;
+      const wantX=p.x, w1=exprVal(p.e1,wantX), w2=exprVal(p.e2,wantX);
+      const good=(x===wantX && a1===w1 && a2===w2);
+      row.style.borderColor= good? '#22c55e':'#ef4444';
+      if(good) ok++;
     });
     id(fbId).textContent = ok===state.items.length? '✅ All correct!' : `Score: ${ok}/${state.items.length}`;
     if(ok===state.items.length) confetti();
   }
   function solReveal(state, stepsId){
-    const wrap=id(stepsId); wrap.innerHTML='';
+    const box=id(stepsId); box.innerHTML='';
     state.items.forEach((p,idx)=>{
-      let html='';
       if(p.type==='vert'){
-        html = `<div class="workline">${idx+1}) Set equal: \\(${p.a1}x+${p.b1} = ${p.a2}x+${p.b2}\\) → \\(${p.a1-p.a2}x = ${p.b2-p.b1}\\) → \\(x=${p.x}\\).</div>`;
-      } else {
-        const S=p.target; const A=p.a1+p.a2, B=p.b1+p.b2;
-        html = `<div class="workline">${idx+1}) Sum: \\((${p.a1}x+${p.b1})+(${p.a2}x+${p.b2})=${S}\\) → \\(${A}x+${B}=${S}\\) → \\(${A}x=${S-B}\\) → \\(x=${p.x}\\).</div>`;
+        box.insertAdjacentHTML('beforeend', `<div class="workline">${idx+1}) \\(${p.e1.a}x+${p.e1.b}=${p.e2.a}x+${p.e2.b}\\) ⇒ \\(${p.e1.a-p.e2.a}x=${p.e2.b-p.e1.b}\\) ⇒ \\(x=${p.x}\\).</div>`);
+      }else{
+        const A=p.e1.a+p.e2.a, B=p.e1.b+p.e2.b;
+        box.insertAdjacentHTML('beforeend', `<div class="workline">${idx+1}) \\((${p.e1.a}x+${p.e1.b})+(${p.e2.a}x+${p.e2.b})=${p.target}\\) ⇒ \\(${A}x+${B}=${p.target}\\) ⇒ \\(${A}x=${p.target-B}\\) ⇒ \\(x=${p.x}\\).</div>`);
       }
-      wrap.insertAdjacentHTML('beforeend', html);
     });
-    renderMath(wrap);
+    renderMath(box);
   }
+  const solAState={items:[]}, solBState={items:[]};
   id('solANew').addEventListener('click',()=>buildSolveSet(solAState,'solAList', id('solALevel').value));
   id('solACheck').addEventListener('click',()=>solCheck(solAState,'solAList','solAFb'));
   id('solAReveal').addEventListener('click',()=>solReveal(solAState,'solASteps'));
@@ -1195,425 +1200,339 @@
   id('solBReveal').addEventListener('click',()=>solReveal(solBState,'solBSteps'));
   buildSolveSet(solAState,'solAList','easy'); buildSolveSet(solBState,'solBList','easy');
 
-  function exportSolve(state, boxId, base){
-    const rows=[['type','expr1','expr2','target/equality','x','a1','a2','user_x','user_a1','user_a2']];
-    const box=id(boxId);
-    [...box.children].forEach((row,idx)=>{
-      const p=state.items[idx];
-      const expr1=`${p.a1}x+${p.b1}`, expr2=`${p.a2}x+${p.b2}`, tgt=(p.type==='vert'?'=':p.target);
-      rows.push([p.type, expr1,expr2,tgt, p.x, exprVal({a:p.a1,b:p.b1},p.x), exprVal({a:p.a2,b:p.b2},p.x),
-                 row.querySelector('.xin').value||'', row.querySelector('.a1in').value||'', row.querySelector('.a2in').value||'']);
-    });
-    downloadCSV(`${deckTitle}_${base}.csv`, rows);
-  }
-  function exportSolveJSON(state, boxId, base){
-    const box=id(boxId);
-    const data=[...box.children].map((row,idx)=>{
-      const p=state.items[idx];
-      return {type:p.type, expr1:`${p.a1}x+${p.b1}`, expr2:`${p.a2}x+${p.b2}`, target:(p.type==='vert'?null:p.target),
-        solution:{x:p.x, a1:exprVal({a:p.a1,b:p.b1},p.x), a2:exprVal({a:p.a2,b:p.b2},p.x)},
-        user:{x:row.querySelector('.xin').value||'', a1:row.querySelector('.a1in').value||'', a2:row.querySelector('.a2in').value||''}};
-    });
-    downloadJSON(`${deckTitle}_${base}.json`, data);
-  }
-  id('solAExportCSV').addEventListener('click',()=>exportSolve(solAState,'solAList','solveA'));
-  id('solAExportJSON').addEventListener('click',()=>exportSolveJSON(solAState,'solAList','solveA'));
-  id('solBExportCSV').addEventListener('click',()=>exportSolve(solBState,'solBList','solveB'));
-  id('solBExportJSON').addEventListener('click',()=>exportSolveJSON(solBState,'solBList','solveB'));
+  id('solAExportCSV').addEventListener('click',()=>{ const rows=[['type','x','a1','a2','user_x','user_a1','user_a2']]; [...id('solAList').children].forEach((row,idx)=>{ const p=solAState.items[idx]; rows.push([p.type,p.x,exprVal(p.e1,p.x),exprVal(p.e2,p.x),row.querySelector('.xin').value||'',row.querySelector('.a1in').value||'',row.querySelector('.a2in').value||'']); }); downloadCSV(`${deckTitle}_solveA.csv`, rows); });
+  id('solAExportJSON').addEventListener('click',()=>{ const data=[...id('solAList').children].map((row,idx)=>{ const p=solAState.items[idx]; return {type:p.type,solution:{x:p.x,a1:exprVal(p.e1,p.x),a2:exprVal(p.e2,p.x)}, user:{x:row.querySelector('.xin').value||'',a1:row.querySelector('.a1in').value||'',a2:row.querySelector('.a2in').value||''}}; }); downloadJSON(`${deckTitle}_solveA.json`, data); });
+  id('solBExportCSV').addEventListener('click',()=>{ const rows=[['type','x','a1','a2','user_x','user_a1','user_a2']]; [...id('solBList').children].forEach((row,idx)=>{ const p=solBState.items[idx]; rows.push([p.type,p.x,exprVal(p.e1,p.x),exprVal(p.e2,p.x),row.querySelector('.xin').value||'',row.querySelector('.a1in').value||'',row.querySelector('.a2in').value||'']); }); downloadCSV(`${deckTitle}_solveB.csv`, rows); });
+  id('solBExportJSON').addEventListener('click',()=>{ const data=[...id('solBList').children].map((row,idx)=>{ const p=solBState.items[idx]; return {type:p.type,solution:{x:p.x,a1:exprVal(p.e1,p.x),a2:exprVal(p.e2,p.x)}, user:{x:row.querySelector('.xin').value||'',a1:row.querySelector('.a1in').value||'',a2:row.querySelector('.a2in').value||''}}; }); downloadJSON(`${deckTitle}_solveB.json`, data); });
 
-  /* ---------------- Part 3: Polygon Explorer & Practice (with diagrams) ---------------- */
-  const polySvg = id('polySvg');
-  const polyN=id('polyN'), polyNLabel=id('polyNLabel'), polySum=id('polySum'), polyInt=id('polyInt'), polyExt=id('polyExt');
-  function drawPolyExplorer(){
-    const n=Number(polyN.value); polyNLabel.textContent=n;
-    const S=(n-2)*180, ext=360/n, Int=S/n;
-    polySum.textContent=S+'°'; polyInt.textContent=Int.toFixed(2).replace(/\.00$/,'')+'°'; polyExt.textContent=ext.toFixed(2).replace(/\.00$/,'')+'°';
-    drawRegularPolygon(polySvg, n, 0);
-  }
-  polyN.addEventListener('input',drawPolyExplorer); drawPolyExplorer();
+  /* ==============================
+     PART 3 — Polygons
+     ============================== */
+  const polySvg=id('polySvg'); const polyN=id('polyN'), polyNLabel=id('polyNLabel'), polySum=id('polySum'), polyInt=id('polyInt'), polyExt=id('polyExt');
+  function drawPolyExplorer(){ const n=Number(polyN.value); polyNLabel.textContent=n; const S=(n-2)*180, ext=360/n, Int=S/n; polySum.textContent=S+'°'; polyInt.textContent=(Math.round(Int*100)/100)+'°'; polyExt.textContent=(Math.round(ext*100)/100)+'°'; drawRegularPolygon(polySvg,n,[], -1, id('polyPro').checked); }
+  polyN.addEventListener('input',drawPolyExplorer); id('polyPro').addEventListener('change',drawPolyExplorer); drawPolyExplorer();
 
   const pmState={items:[]};
-  function pmNew(){
-    const lv=id('pmLevel').value; const n = (lv==='easy'? rand(3,5): (lv==='med'? rand(5,7): rand(6,8)));
-    const k=4; pmState.items=[]; const box=id('pmList'); box.innerHTML='';
-    for(let i=0;i<k;i++){
-      const angles = makePolygonAngles(n);
-      const missIdx=rand(0,n-1); const correct=angles[missIdx];
-      const display=angles.map((v,idx)=> idx===missIdx? ' ? ': v+'°').join(', ');
-      const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML=`<div class="miniWrap">
-        <svg id="pmSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
-        <div>
-          <div class="text-maroon font-semibold mb-1">n=${n} <span class="tag">diagram</span></div>
-          <div class="mb-2">Angles: [ ${display} ] — Find the missing angle.</div>
-          <div>Answer: <input class="pmIn border rounded px-2 py-1 w-28"> °</div>
-        </div></div>`;
-      box.appendChild(row);
-      // draw regular n-gon and place labels values (not to scale when values differ)
-      const s=row.querySelector(`#pmSVG_${i}`);
-      drawRegularPolygon(s, n, missIdx, angles.map((v,idx)=> idx===missIdx? '?' : String(v)));
-      pmState.items.push({n, correct});
-    }
-    renderMath(id('polyMissSlide'));
-  }
   function makePolygonAngles(n){
     const S=(n-2)*180; const arr=[]; let remain=S;
-    for(let i=0;i<n-1;i++){
-      const max=Math.min(160, remain - 40*(n-1-i));
-      const min=40;
-      const val=rand(min,Math.max(min,max-1));
-      arr.push(val); remain-=val;
+    for(let i=0;i<n-1;i++){ const min=40,max=Math.min(160, remain-40*(n-1-i)); const val=rand(min,Math.max(min,max)); arr.push(val); remain-=val; }
+    arr.push(remain); return arr.sort(()=>Math.random()-0.5);
+  }
+  function pmNew(){
+    const lv=id('pmLevel').value; const n=(lv==='easy'? rand(3,5):(lv==='med'? rand(5,7): rand(6,8)));
+    const box=id('pmList'); box.innerHTML=''; pmState.items=[];
+    for(let i=0;i<4;i++){
+      const angles=makePolygonAngles(n); const missIdx=rand(0,n-1); const ans=angles[missIdx];
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML=`<div class="miniWrap">
+        <div>
+          <div class="flex items-center justify-between hdr"><div class="text-maroon font-semibold mb-1">n=${n} <span class="tag">diagram</span></div></div>
+          <svg id="pmSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
+        </div>
+        <div>
+          <div class="mb-2">Angles: [ ${angles.map((v,j)=> j===missIdx? '?': v).join(', ')} ] — Find the missing angle.</div>
+          <div>Answer: <input class="pmIn border rounded px-2 py-1 w-28"> °</div>
+        </div>
+      </div>`;
+      box.appendChild(row);
+      const svg=row.querySelector(`#pmSVG_${i}`);
+      const labels=angles.map((v,j)=> j===missIdx? '?' : String(v));
+      const redraw=()=>drawRegularPolygon(svg,n,labels, missIdx, row.querySelector('.proChk')?.checked || false);
+      redraw(); addProToggle(row, `pmSVG_${i}`, redraw);
+      pmState.items.push({ans});
     }
-    arr.push(remain);
-    return arr.sort(()=>Math.random()-0.5);
   }
   function pmCheck(){
-    let ok=0; [...id('pmList').children].forEach((row,idx)=>{
-      const got=Number(row.querySelector('.pmIn').value); const want=pmState.items[idx].correct;
-      row.style.borderColor=(Math.abs(got-want)<1e-10)? '#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++;
-    });
-    id('pmFb').textContent = ok===pmState.items.length? '✅ Nice!' : `Score: ${ok}/${pmState.items.length}`;
-    if(ok===pmState.items.length) confetti();
+    let ok=0; [...id('pmList').children].forEach((row,idx)=>{ const got=Number(row.querySelector('.pmIn').value); const want=pmState.items[idx].ans; row.style.borderColor=(got===want)? '#22c55e':'#ef4444'; if(got===want) ok++; });
+    id('pmFb').textContent = ok===pmState.items.length? '✅ Nice!' : `Score: ${ok}/${pmState.items.length}`; if(ok===pmState.items.length) confetti();
   }
   id('pmNew').addEventListener('click',pmNew); pmNew();
   id('pmCheck').addEventListener('click',pmCheck);
-  id('pmExportCSV').addEventListener('click',()=>{
-    const rows=[['n','answer','user']];
-    [...id('pmList').children].forEach((row,idx)=>rows.push([pmState.items[idx].n, pmState.items[idx].correct, row.querySelector('.pmIn').value||'']));
-    downloadCSV(`${deckTitle}_P3_missing_interior.csv`, rows);
-  });
-  id('pmExportJSON').addEventListener('click',()=>{
-    const data=[...id('pmList').children].map((row,idx)=>({n:pmState.items[idx].n, answer:pmState.items[idx].correct, user:row.querySelector('.pmIn').value||''}));
-    downloadJSON(`${deckTitle}_P3_missing_interior.json`, data);
-  });
+  id('pmExportCSV').addEventListener('click',()=>{ const rows=[['answer','user']]; [...id('pmList').children].forEach((row,idx)=>rows.push([pmState.items[idx].ans,row.querySelector('.pmIn').value||''])); downloadCSV(`${deckTitle}_P3_missing_interior.csv`, rows); });
+  id('pmExportJSON').addEventListener('click',()=>{ const data=[...id('pmList').children].map((row,idx)=>({answer:pmState.items[idx].ans,user:row.querySelector('.pmIn').value||''})); downloadJSON(`${deckTitle}_P3_missing_interior.json`, data); });
 
-  const exState={mode:'A', items:[]};
-  id('exModeA').addEventListener('click',()=>{ exState.mode='A'; id('exModeA').classList.add('active'); id('exModeB').classList.remove('active'); });
-  id('exModeB').addEventListener('click',()=>{ exState.mode='B'; id('exModeB').classList.add('active'); id('exModeA').classList.remove('active'); });
-
+  const exState={mode:'A',items:[]}; id('exModeA').addEventListener('click',()=>{ exState.mode='A'; id('exModeA').classList.add('active'); id('exModeB').classList.remove('active'); }); id('exModeB').addEventListener('click',()=>{ exState.mode='B'; id('exModeB').classList.add('active'); id('exModeA').classList.remove('active'); });
   function exNew(){
-    const mode=exState.mode; exState.items=[]; const box=id('exList'); box.innerHTML='';
+    const box=id('exList'); box.innerHTML=''; exState.items=[];
     for(let i=0;i<6;i++){
-      if(mode==='A'){
-        const n=rand(3,12); const ext=(360/n);
+      if(exState.mode==='A'){
+        const n=rand(3,12), ans=360/n;
         const row=document.createElement('div'); row.className='card p-4 text-left';
         row.innerHTML=`<div class="miniWrap">
-          <svg id="exSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
           <div>
-            <div>Regular polygon with <b>${n}</b> sides. Exterior angle = <input class="exIn border rounded px-2 py-1 w-24"> °</div>
-          </div></div>`;
-        box.appendChild(row); drawExterior(row.querySelector(`#exSVG_${i}`), n, false);
-        exState.items.push({mode:'A',ans:ext});
+            <div class="flex items-center justify-between hdr"><div class="text-maroon font-semibold mb-1">Given n=${n} <span class="tag">diagram</span></div></div>
+            <svg id="exSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
+          </div>
+          <div>Exterior angle = <input class="exIn border rounded px-2 py-1 w-24"> °</div>
+        </div>`;
+        box.appendChild(row);
+        const svg=row.querySelector(`#exSVG_${i}`); const redraw=()=>drawExterior(svg,n,false,null,row.querySelector('.proChk')?.checked || false); redraw(); addProToggle(row, `exSVG_${i}`, redraw);
+        exState.items.push({ans});
       } else {
-        const n=choice([3,4,5,6,8,9,10,12]); const ext=(360/n);
+        const n=choice([3,4,5,6,8,9,10,12]), ext=360/n, ans=n;
         const row=document.createElement('div'); row.className='card p-4 text-left';
         row.innerHTML=`<div class="miniWrap">
-          <svg id="exSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
           <div>
-            <div>Regular polygon with exterior angle <b>${ext}°</b>. Number of sides n = <input class="exIn border rounded px-2 py-1 w-24"></div>
-          </div></div>`;
-        box.appendChild(row); drawExterior(row.querySelector(`#exSVG_${i}`), n, true, ext);
-        exState.items.push({mode:'B',ans:n});
+            <div class="flex items-center justify-between hdr"><div class="text-maroon font-semibold mb-1">Given exterior ${ext}° <span class="tag">diagram</span></div></div>
+            <svg id="exSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
+          </div>
+          <div>Number of sides n = <input class="exIn border rounded px-2 py-1 w-24"></div>
+        </div>`;
+        box.appendChild(row);
+        const svg=row.querySelector(`#exSVG_${i}`); const redraw=()=>drawExterior(svg,n,true,ext,row.querySelector('.proChk')?.checked || false); redraw(); addProToggle(row, `exSVG_${i}`, redraw);
+        exState.items.push({ans});
       }
     }
   }
   function exCheck(){
-    let ok=0; [...id('exList').children].forEach((row,idx)=>{
-      const got=Number(row.querySelector('.exIn').value); const want=exState.items[idx].ans;
-      const good = Math.abs(got-want)<1e-10;
-      row.style.borderColor= good? '#22c55e':'#ef4444'; if(good) ok++;
-    });
-    id('exFb').textContent = ok===exState.items.length? '✅ Perfect.' : `Score: ${ok}/${exState.items.length}`;
-    if(ok===exState.items.length) confetti();
+    let ok=0; [...id('exList').children].forEach((row,idx)=>{ const got=Number(row.querySelector('.exIn').value); const want=exState.items[idx].ans; row.style.borderColor=(Math.abs(got-want)<1e-10)? '#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++; }); id('exFb').textContent= ok===exState.items.length? '✅ Perfect.' : `Score: ${ok}/${exState.items.length}`; if(ok===exState.items.length) confetti();
   }
   id('exNew').addEventListener('click',exNew); exNew();
   id('exCheck').addEventListener('click',exCheck);
-  id('exExportCSV').addEventListener('click',()=>{
-    const rows=[['mode','answer','user']];
-    [...id('exList').children].forEach((row,idx)=>rows.push([exState.items[idx].mode, exState.items[idx].ans, row.querySelector('.exIn').value||'']));
-    downloadCSV(`${deckTitle}_P3_exterior.csv`, rows);
-  });
-  id('exExportJSON').addEventListener('click',()=>{
-    const data=[...id('exList').children].map((row,idx)=>({mode:exState.items[idx].mode, answer:exState.items[idx].ans, user:row.querySelector('.exIn').value||''}));
-    downloadJSON(`${deckTitle}_P3_exterior.json`, data);
-  });
+  id('exExportCSV').addEventListener('click',()=>{ const rows=[['answer','user']]; [...id('exList').children].forEach((row,idx)=>rows.push([exState.items[idx].ans,row.querySelector('.exIn').value||''])); downloadCSV(`${deckTitle}_P3_exterior.csv`, rows); });
+  id('exExportJSON').addEventListener('click',()=>{ const data=[...id('exList').children].map((row,idx)=>({answer:exState.items[idx].ans,user:row.querySelector('.exIn').value||''})); downloadJSON(`${deckTitle}_P3_exterior.json`, data); });
 
-  /* ---------------- Part 3 Real‑Life (with diagrams) ---------------- */
+  /* ==============================
+     PART 3 — Real life (polygons)
+     ============================== */
   const p3RealState={items:[]};
-  function p3RealNew(){
-    const lv=id('p3RealLevel').value; p3RealState.items=[]; const box=id('p3RealList'); box.innerHTML='';
-    // Hex tile interior
-    (function(){
-      const n=6; const prompt=`A regular hex tile must meet at a point without gaps. What is each interior angle?`;
-      p3RealState.items.push({ans:(n-2)*180/n});
-      const row=addRealPolyRow(box,prompt,'°', n, 'int');
-    })();
-    // Logo design: given exterior angle → n
-    (function(){
-      const n=choice([5,6,8,10,12]); const ext=360/n; const prompt=`A logo repeats a turn of ${ext}° each corner. How many sides does the regular polygon have?`;
-      p3RealState.items.push({ans:n});
-      addRealPolyRow(box,prompt,'', n, 'ext', ext);
-    })();
-    // Robotics turn sum
-    (function(){
-      const n=choice([4,5,6,8]); const ext=360/n; const prompt=`A robot turns the same exterior angle at each vertex to trace a regular polygon. What is each exterior turn for n=${n}?`;
-      p3RealState.items.push({ans:ext});
-      addRealPolyRow(box,prompt,'°', n, 'ext');
-    })();
-    // Pentagonal panel missing angle
-    (function(){
-      const angles=makePolygonAngles(5); const idx=rand(0,4); const ans=angles[idx];
-      const display=angles.map((v,j)=> j===idx? '?': v).join(', ');
-      const prompt=`A pentagonal panel has interior angles [${display}]°. Find the missing angle.`;
-      p3RealState.items.push({ans});
-      addRealPolyRow(box,prompt,'°', 5, 'labels', null, angles.map((v,j)=> j===idx? '?' : String(v)));
-    })();
-  }
-  function addRealPolyRow(box,prompt,suf,n, mode='int', extVal=null, labels=null){
-    const idx=box.children.length;
+  function addPolyReal(prompt, ans, n, mode, extVal=null, labels=null){
+    const box=id('p3RealList'); const idx=box.children.length;
     const row=document.createElement('div'); row.className='card p-4';
     row.innerHTML=`<div class="miniWrap">
-      <svg id="p3RSVG_${idx}" class="miniSvg" viewBox="0 0 360 230"></svg>
-      <div><div class="text-left">${prompt}</div>
-      <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> ${suf||''}</div></div></div>`;
+      <div>
+        <div class="flex items-center justify-between hdr"><div class="text-maroon font-semibold mb-1">Task ${idx+1} <span class="tag">diagram</span></div></div>
+        <svg id="p3RSVG_${idx}" class="miniSvg" viewBox="0 0 360 230"></svg>
+      </div>
+      <div><div class="text-left">${prompt}</div><div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div></div>
+    </div>`;
     box.appendChild(row);
-    const s=row.querySelector(`#p3RSVG_${idx}`);
-    if(mode==='int'){ drawRegularPolygon(s,n,0); }
-    else if(mode==='ext'){ drawExterior(s,n,true,extVal); }
-    else if(mode==='labels'){ drawRegularPolygon(s,n, labels.findIndex(v=>v==='?'), labels); }
-    return row;
+    const svg=row.querySelector(`#p3RSVG_${idx}`);
+    const redraw=()=>{
+      if(mode==='int') drawRegularPolygon(svg,n,[], -1, row.querySelector('.proChk')?.checked || false);
+      else if(mode==='ext') drawExterior(svg,n,true,extVal,row.querySelector('.proChk')?.checked || false);
+      else if(mode==='labels') drawRegularPolygon(svg,n,labels, labels.findIndex(v=>v==='?'), row.querySelector('.proChk')?.checked || false);
+    };
+    redraw(); addProToggle(row, `p3RSVG_${idx}`, redraw);
+    p3RealState.items.push({ans});
+  }
+  function p3RealNew(){
+    const box=id('p3RealList'); box.innerHTML=''; p3RealState.items=[];
+    const n1=6; addPolyReal(`A regular hex tile must meet at a point without gaps. What is each interior angle?`, (n1-2)*180/n1, n1,'int');
+    const n2=choice([5,6,8,10,12]); const ext=360/n2; addPolyReal(`A logo repeats a ${ext}° turn at each corner. How many sides has the regular polygon?`, n2, n2,'ext',ext);
+    const n3=choice([4,5,6,8]); addPolyReal(`A robot traces a regular n‑gon with n=${n3}. What is the exterior turn at each vertex?`, 360/n3, n3,'ext');
+    const angles=makePolygonAngles(5), idx=rand(0,4), ans=angles[idx]; angles[idx]='?'; addPolyReal(`A panel has interior angles [${angles.join(', ')}]°. Find the missing angle.`, ans, 5, 'labels', null, angles);
   }
   id('p3RealNew').addEventListener('click',p3RealNew); p3RealNew();
   id('p3RealCheck').addEventListener('click',()=>{
-    let ok=0; [...id('p3RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
-      const got=Number(el.value); const want=p3RealState.items[idx].ans;
-      const good=Math.abs(got-want)<1e-10; el.style.borderColor=good? '#22c55e':'#ef4444'; if(good) ok++;
-    });
-    id('p3RealFb').textContent = ok===p3RealState.items.length? '✅ Great real‑world reasoning!' : `Score: ${ok}/${p3RealState.items.length}`;
-    if(ok===p3RealState.items.length) confetti();
+    let ok=0; [...id('p3RealList').querySelectorAll('.rin')].forEach((el,idx)=>{ const got=Number(el.value); const want=p3RealState.items[idx].ans; const good=(Math.abs(got-want)<1e-10); el.style.borderColor=good? '#22c55e':'#ef4444'; if(good) ok++; });
+    id('p3RealFb').textContent = ok===p3RealState.items.length? '✅ Great!' : `Score: ${ok}/${p3RealState.items.length}`; if(ok===p3RealState.items.length) confetti();
   });
-  id('p3RealExportCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer','user']]; [...id('p3RealList').children].forEach((row,idx)=>rows.push([row.querySelector('.text-left').innerText.trim(), p3RealState.items[idx].ans, row.querySelector('.rin').value||'']));
-    downloadCSV(`${deckTitle}_P3_real.csv`, rows);
-  });
-  id('p3RealExportJSON').addEventListener('click',()=>{
-    const data=[...id('p3RealList').children].map((row,idx)=>({prompt:row.querySelector('.text-left').innerText.trim(), answer:p3RealState.items[idx].ans, user:row.querySelector('.rin').value||''}));
-    downloadJSON(`${deckTitle}_P3_real.json`, data);
-  });
+  id('p3RealExportCSV').addEventListener('click',()=>{ const rows=[['answer','user']]; [...id('p3RealList').children].forEach((row,idx)=>rows.push([p3RealState.items[idx].ans, row.querySelector('.rin').value||''])); downloadCSV(`${deckTitle}_P3_real.csv`, rows); });
+  id('p3RealExportJSON').addEventListener('click',()=>{ const data=[...id('p3RealList').children].map((row,idx)=>({answer:p3RealState.items[idx].ans, user:row.querySelector('.rin').value||''})); downloadJSON(`${deckTitle}_P3_real.json`, data); });
 
-  /* ---------------- Part 4: Angle Chase, Error, Mixed (with diagrams) ---------------- */
+  /* ==============================
+     PART 4 — Angle chase, Error, Mixed
+     ============================== */
   const acState={items:[]};
   function acNew(){
     const lv=id('acLevel').value; acState.items=[]; const box=id('acList'); box.innerHTML='';
     for(let i=0;i<6;i++){
-      const t=choice(['cross','line','combo']);
-      const prob = (t==='cross'? buildCross(lv) : (t==='line'? buildLine(lv) : buildCombo(lv)));
-      acState.items.push(prob);
+      const t=choice(['cross','line','around']);
+      let prob, redraw;
+      if(t==='cross'){ // given one, chase another via vertical/linear pair
+        const a=rand(25,140), want=(180-a); prob={type:t, a,want, prompt:`Given ∠A = ${a}°, find ∠B adjacent to A on the straight line.`};
+        redraw=(svg,pro)=>diagLinearPair(svg,a,{showUnknown:true, unknownLabel:'?', pro, teacherVal:TEACHER?`${want}°`:null});
+      } else if(t==='line'){
+        const a=rand(30,150), want=a; prob={type:t, a,want, prompt:`Two lines intersect. If ∠A = ${a}°, find its vertical angle.`};
+        redraw=(svg,pro)=>diagIntersecting(svg,a,'vertical',{showUnknown:true, unknownLabel:'?', pro, teacherVal:TEACHER?`${want}°`:null});
+      } else {
+        const A=rand(60,150),B=rand(40,120),C=rand(30,110), want=360-(A+B+C); prob={type:t,A,B,C,want, prompt:`Angles around point: ${A}°, ${B}°, ${C}°. Find the fourth.`};
+        redraw=(svg,pro)=>diagAroundPoint(svg,A,B,C,{showUnknown:true,unknownLabel:'?', pro, teacherVal:TEACHER?`${want}°`:null});
+      }
       const row=document.createElement('div'); row.className='card p-4 text-left';
       row.innerHTML=`<div class="miniWrap">
-        <svg id="acSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
         <div>
-          <div class="text-maroon font-semibold mb-1">Item ${i+1} <span class="tag">diagram</span></div>
-          <div class="mb-2">${prob.prompt}</div>
-          <div>Answer: <input class="acIn border rounded px-2 py-1 w-24"> °</div>
-        </div></div>`;
+          <div class="flex items-center justify-between hdr"><div class="text-maroon font-semibold mb-1">Item ${i+1} <span class="tag">diagram</span></div></div>
+          <svg id="acSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
+        </div>
+        <div><div class="mb-2">${prob.prompt}</div><div>Answer: <input class="acIn border rounded px-2 py-1 w-24"> °</div></div>
+      </div>`;
       box.appendChild(row);
-      const s=row.querySelector(`#acSVG_${i}`);
-      if(t==='cross'){
-        clearSvg(s); tagNS(s); const cx=180,cy=115;
-        line(s,cx-150,cy, cx+150,cy, {w:2.2}); line(s,cx-120,cy-100, cx+120,cy+100, {w:2.2});
-        angleArc(s,cx,cy,60,20,20+prob.given,'#C7A34F',3); text(s, cx+80*Math.cos(deg2rad(20+prob.given/2)), cy-80*Math.sin(deg2rad(20+prob.given/2)), prob.given+'°',{});
-        angleArc(s,cx,cy,60,200,200+prob.given,'#f59e0b',3); text(s, cx+80*Math.cos(deg2rad(200+prob.given/2)), cy-80*Math.sin(deg2rad(200+prob.given/2)), `${prob.e2.a}x+${prob.e2.b}°`,{});
-      } else if(t==='line'){
-        drawLinearPair(s, 120, true, `${prob.e2.a}x+${prob.e2.b}°`);
-        // Overwrite first angle label to expr1
-        clearSvg(s); tagNS(s); const cx=180,cy=120; line(s,cx-160,cy, cx+160,cy, {w:2.2}); const a=120; const [rx,ry]=polar(cx,cy,150,a); line(s,cx,cy, rx,ry, {w:2.2});
-        angleArc(s,cx,cy,70,0,a,'#C7A34F',3); text(s, cx+82*Math.cos(deg2rad(a/2)), cy-82*Math.sin(deg2rad(a/2)), `${prob.e1.a}x+${prob.e1.b}°`,{});
-        angleArc(s,cx,cy,70,a,180,'#f59e0b',3); text(s, cx+82*Math.cos(deg2rad((a+180)/2)), cy-82*Math.sin(deg2rad((a+180)/2)), `${prob.e2.a}x+${prob.e2.b}°`,{});
-      } else {
-        // combo: A and B linear; B vertical to C
-        drawLinearPair(s, prob.A, true, (180-prob.A)+'°'); // schematic
-        // Add note
-        text(s, 20,220,'B vertical to C ⇒ m∠C = m∠B',{anchor:'start', size:11, fill:'#374151'});
-      }
+      const svg=row.querySelector(`#acSVG_${i}`); const rfn=()=>redraw(svg, row.querySelector('.proChk')?.checked || false); rfn(); addProToggle(row, `acSVG_${i}`, rfn);
+      acState.items.push(prob);
     }
   }
-  function buildCross(lv){
-    const a=rand(25,140); const e2={a:rand(1,3), b:rand(0,50)};
-    const x=(a - e2.b)/e2.a; if(!Number.isInteger(x) || x<=0) return buildCross(lv);
-    return {type:'cross', prompt:`Two lines intersect. One angle is <b>${a}°</b>. Opposite angle is \\(${e2.a}x+${e2.b}\\)°. Find \(x\).`, ans:x, given:a, e2};
-  }
-  function buildLine(lv){
-    const e1={a:rand(1,3), b:rand(0,40)}, e2={a:rand(1,3), b:rand(0,40)}; const x=(180-(e1.b+e2.b))/(e1.a+e2.a);
-    if(!Number.isInteger(x) || x<=0) return buildLine(lv);
-    return {type:'line', prompt:`Adjacent angles form a linear pair: \\(${e1.a}x+${e1.b}\\)° and \\(${e2.a}x+${e2.b}\\)°. Find \(x\).`, ans:x, e1,e2};
-  }
-  function buildCombo(lv){
-    const A=rand(20,150); const B=180-A; const C=B;
-    return {type:'combo', prompt:`∠A and ∠B form a linear pair; \(m∠A=${A}°\). ∠B is vertical to ∠C. Find \(m∠C\).`, ans:C, A};
-  }
   function acCheck(){
-    let ok=0; [...id('acList').children].forEach((row,idx)=>{
-      const got=Number(row.querySelector('.acIn').value); const want=acState.items[idx].ans;
-      const good=Math.abs(got-want)<1e-10; row.style.borderColor=good? '#22c55e':'#ef4444'; if(good) ok++;
-    });
-    id('acFb').textContent = ok===acState.items.length? '✅ Angle chase mastered!' : `Score: ${ok}/${acState.items.length}`;
-    if(ok===acState.items.length) confetti();
+    let ok=0; [...id('acList').children].forEach((row,idx)=>{ const p=acState.items[idx]; const got=Number(row.querySelector('.acIn').value); const want=p.want; const good=(Math.abs(got-want)<1e-10); row.style.borderColor=good? '#22c55e':'#ef4444'; if(good) ok++; });
+    id('acFb').textContent = ok===acState.items.length? '✅ Angle chase mastered!' : `Score: ${ok}/${acState.items.length}`; if(ok===acState.items.length) confetti();
   }
   id('acNew').addEventListener('click',acNew); acNew();
   id('acCheck').addEventListener('click',acCheck);
-  id('acExportCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer','user']]; [...id('acList').children].forEach((row,idx)=>rows.push([row.querySelector('.text-maroon ~ div').innerText.trim(), acState.items[idx].ans, row.querySelector('.acIn').value||'']));
-    downloadCSV(`${deckTitle}_P4_chase.csv`, rows);
-  });
-  id('acExportJSON').addEventListener('click',()=>{
-    const data=[...id('acList').children].map((row,idx)=>({prompt:row.querySelector('.text-maroon ~ div').innerText.trim(), answer:acState.items[idx].ans, user:row.querySelector('.acIn').value||''}));
-    downloadJSON(`${deckTitle}_P4_chase.json`, data);
-  });
+  id('acExportCSV').addEventListener('click',()=>{ const rows=[['prompt','answer','user']]; [...id('acList').children].forEach((row,idx)=>rows.push([row.querySelector('.mb-2').innerText.trim(), acState.items[idx].want, row.querySelector('.acIn').value||''])); downloadCSV(`${deckTitle}_P4_chase.csv`, rows); });
+  id('acExportJSON').addEventListener('click',()=>{ const data=[...id('acList').children].map((row,idx)=>({prompt:row.querySelector('.mb-2').innerText.trim(), answer:acState.items[idx].want, user:row.querySelector('.acIn').value||''})); downloadJSON(`${deckTitle}_P4_chase.json`, data); });
 
-  /* ---------------- Error Analysis (diagram) ---------------- */
+  // Error analysis (figures + choices)
   function errBank(level){
     const easy=[
-      {work:'“Vertical angles add to 180°.”', correct:'Vertical angles are equal, not necessarily supplementary.', key:'A', fig:'vertical'},
-      {work:'For complementary angles: \\(x+(2x+30)=180\\).', correct:'Complementary → sum 90°, not 180°.', key:'B', fig:'complement'},
-      {work:'Solve: \\(3x+12=2x+32\\) → \\(x=44\\).', correct:'Subtract \(2x\) gives \(x+12=32\\Rightarrow x=20\\).', key:'C', fig:'algebra'},
-      {work:'Pentagon interior sum is \\( (n-1)\\cdot 180\\).', correct:'Use \\((n-2)\\cdot 180\\). For \(n=5\), sum \(=540°\\).', key:'D', fig:'polygon'}
+      {work:'“Vertical angles add to 180°.”', correct:'Vertical angles are equal, not necessarily supplementary.', key:'A', fig:(s,pro)=>diagIntersecting(s,50,'vertical',{showUnknown:false,pro})},
+      {work:'For complementary angles: \\(x+(2x+30)=180\\).', correct:'Complementary sum to 90°, not 180°.', key:'B', fig:(s,pro)=>diagComplement(s,35,{pro})},
+      {work:'Solve: \\(3x+12=2x+32\\) → \\(x=44\\).', correct:'Subtract \(2x\): \(x+12=32\\Rightarrow x=20\\).', key:'C', fig:(s,pro)=>diagLinearPair(s,120,{pro})},
+      {work:'Pentagon interior sum is \\((n-1)\\cdot180\\).', correct:'Use \\((n-2)\\cdot180\\). For \(n=5\), sum \(=540°\\).', key:'D', fig:(s,pro)=>drawRegularPolygon(s,5,[], -1, pro)}
     ];
     const med=[
-      {work:'Adjacent angles that sum to 180° are complementary.', correct:'They are supplementary; complementary sum to 90°.', key:'A', fig:'linear'},
-      {work:'Linear pair: \\((4x+10)+(x+20)=90\\).', correct:'Linear pair sums to 180°, not 90°.', key:'B', fig:'linearx'},
-      {work:'If \(2x+15=2x+5\\), then \(x=10\\).', correct:'Subtract \(2x\): \(15=5\\) → no solution.', key:'C', fig:'algebra'},
-      {work:'Regular nonagon exterior angle is \(20°\\).', correct:'Exterior \(=360/9=40°\\).', key:'D', fig:'exterior'}
+      {work:'Adjacent angles that sum to 180° are complementary.', correct:'They are supplementary; complementary sum to 90°.', key:'A', fig:(s,pro)=>diagLinearPair(s,110,{pro})},
+      {work:'Linear pair: \\((4x+10)+(x+20)=90\\).', correct:'Linear pair → 180°, not 90°.', key:'B', fig:(s,pro)=>diagLinearPair(s,120,{pro})},
+      {work:'If \(2x+15=2x+5\\), then \(x=10\\).', correct:'Subtract \(2x\): \(15=5\\) → no solution.', key:'C', fig:(s,pro)=>diagIntersecting(s,70,'vertical',{pro})},
+      {work:'Regular nonagon exterior angle is \(20°\\).', correct:'Exterior \(=360/9=40°\\).', key:'D', fig:(s,pro)=>drawExterior(s,9,true,40,pro)}
     ];
     const hard=[
-      {work:'Angles around a point: \(x+ (x+30)+(2x-20)=180\\).', correct:'Around a point must total \(360°\\).', key:'B', fig:'around'},
-      {work:'“Complementary angles must be adjacent.”', correct:'Need not be adjacent; only the sum matters.', key:'A', fig:'complement'},
-      {work:'From \\((3x+5)+(4x+25)=180\\) → \(7x=180\\).', correct:'Forgot constants: \(7x+30=180 \\Rightarrow x=150/7\\).', key:'C', fig:'linearx'},
-      {work:'Regular polygon has interior angle \(= 200°\\). Then \(n=9\\).', correct:'Interior \(=180-360/n\\). 200° is impossible for a convex regular polygon.', key:'D', fig:'polygon'}
+      {work:'Angles around a point: \(x+ (x+30)+(2x-20)=180\\).', correct:'Around a point total \(360°\\).', key:'B', fig:(s,pro)=>diagAroundPoint(s,120,90,70,{pro})},
+      {work:'“Complementary angles must be adjacent.”', correct:'They need not be adjacent; only the sum matters.', key:'A', fig:(s,pro)=>diagComplement(s,35,{pro})},
+      {work:'From \\((3x+5)+(4x+25)=180\\) → \(7x=180\\).', correct:'Forgot constants: \(7x+30=180 \\Rightarrow x=150/7\\).', key:'C', fig:(s,pro)=>diagLinearPair(s,130,{pro})},
+      {work:'A convex regular polygon’s interior angle can be \(200°\\).', correct:'Impossible: interior \(=180-360/n<180°\\).', key:'D', fig:(s,pro)=>drawRegularPolygon(s,8,[], -1, pro)}
     ];
-    return level==='easy'? easy : level==='med'? med : hard;
+    return level==='easy'?easy: level==='med'?med: hard;
   }
   const errState={item:null};
   function errNew(){
     const bank=errBank(id('errLevel').value); errState.item=bank[rand(0,bank.length-1)];
     id('errBox').innerHTML=`Student claim:<br/><div class="mt-1 text-maroon">${errState.item.work}</div>`;
-    id('errFb').textContent=''; id('errRevealBox').textContent=''; renderMath(id('errSlide'));
-    // draw figure
-    const s=id('errSvg');
-    if(errState.item.fig==='vertical'){ drawIntersecting(s, 50, 'vertical', false); }
-    else if(errState.item.fig==='linear' || errState.item.fig==='linearx'){ drawLinearPair(s, 110, true, 'x'); }
-    else if(errState.item.fig==='complement'){ drawComplement(s, 35, true, 'x'); }
-    else if(errState.item.fig==='around'){ drawAroundPoint(s, 120, 90, 70, true, 'x'); }
-    else if(errState.item.fig==='exterior'){ drawExterior(s, 9, true, 40); }
-    else { drawRegularPolygon(s,5,0); }
+    id('errFb').textContent=''; id('errRevealBox').textContent='';
+    const pro=false; const s=id('errSvg'); errState.item.fig(s,pro); renderMath(id('errSlide'));
   }
   id('errNew').addEventListener('click',errNew); errNew();
-  id('errCheck').addEventListener('click',()=>{
-    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    if(!sel){ id('errFb').textContent='Choose a reason.'; return; }
-    if(sel.value===errState.item.key){ id('errFb').textContent='✅ Correct diagnosis.'; confetti(); }
-    else id('errFb').textContent='❌ Try again.';
-  });
+  id('errCheck').addEventListener('click',()=>{ const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked); if(!sel){ id('errFb').textContent='Choose a reason.'; return; } if(sel.value===errState.item.key){ id('errFb').textContent='✅ Correct diagnosis.'; confetti(); } else id('errFb').textContent='❌ Try again.'; });
   id('errReveal').addEventListener('click',()=>{ id('errRevealBox').innerHTML=`<div class="hint">${errState.item.correct}</div>`; renderMath(id('errSlide')); });
-  id('errExportCSV').addEventListener('click',()=>{
-    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    downloadCSV(`${deckTitle}_error.csv`, [['claim','explanation','key','user'], [id('errBox').innerText.trim(), errState.item.correct, errState.item.key, sel?sel.value:'']]);
-  });
-  id('errExportJSON').addEventListener('click',()=>{
-    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    downloadJSON(`${deckTitle}_error.json`, {claim:id('errBox').innerText.trim(), explanation:errState.item.correct, key:errState.item.key, user: sel?sel.value:''});
-  });
+  id('errExportCSV').addEventListener('click',()=>{ const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked); downloadCSV(`${deckTitle}_error.csv`, [['claim','explanation','key','user'], [id('errBox').innerText.trim(), errState.item.correct, errState.item.key, sel?sel.value:'']]); });
+  id('errExportJSON').addEventListener('click',()=>{ const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked); downloadJSON(`${deckTitle}_error.json`, {claim:id('errBox').innerText.trim(), explanation:errState.item.correct, key:errState.item.key, user: sel?sel.value:''}); });
 
-  /* ---------------- Mixed Review (diagram) ---------------- */
+  /* ==============================
+     PART 4 — Mixed review
+     ============================== */
   const mixState={cur:null};
   function mixNew(){
-    const lv=id('mixLevel').value;
-    const type=rand(0,5);
-    const s=id('mixSvg'); clearSvg(s); tagNS(s);
-    if(type===0){ // classify
-      const t=choice(TYPES); mixState.cur={type:'class', want:t};
-      id('mixQ').innerHTML=`Name the relationship shown.`;
-      if(t==='vertical') drawIntersecting(s, rand(25,140), 'vertical', false);
-      else if(t==='adjacent') drawIntersecting(s, rand(20,70), 'adjacent', false);
-      else if(t==='linear pair' || t==='supplementary') drawLinearPair(s, rand(30,150), true,'?');
-      else if(t==='complementary') drawComplement(s, rand(20,70), true,'?');
+    const t=rand(0,5), s=id('mixSvg'); clearSvg(s);
+    if(t===0){ // classify
+      const kind=choice(TYPES); mixState.cur={type:'class',want:kind};
+      id('mixQ').innerHTML='Name the relationship shown.';
+      if(kind==='vertical') diagIntersecting(s,rand(25,140),'vertical',{showUnknown:false});
+      else if(kind==='adjacent') diagIntersecting(s,rand(25,70),'adjacent',{showUnknown:false});
+      else if(kind==='linear pair'||kind==='supplementary') diagLinearPair(s,rand(30,150),{showUnknown:false});
+      else if(kind==='complementary') diagComplement(s,rand(20,70),{showUnknown:false});
       else { // neither
-        angleArc(s,180,115,50,0,40,'#C7A34F',3); angleArc(s,260,115,50,0,50,'#f59e0b',3);
+        drawRay(s,120,115,0,70,{w:2.2}); drawRay(s,120,115,35,70,{w:2.2}); drawAngleArc(s,120,115,40,0,35,'#C7A34F',3,'35°');
+        drawRay(s,240,115,180,70,{w:2.2}); drawRay(s,240,115,230,70,{w:2.2}); drawAngleArc(s,240,115,40,180,230,'#f59e0b',3,'50°'); tagNS(s);
       }
-    } else if(type===1){ // missing angle
-      const o=buildMissing(choice(['comp','supp','vert','lp','around']), lv);
-      mixState.cur={type:'miss', want:o.ans}; id('mixQ').innerHTML=o.prompt;
-      const s2=id('mixSvg');
-      if(o.kind==='comp') drawComplement(s2, o.a, true,'?');
-      else if(o.kind==='supp') drawLinearPair(s2, o.a, true,'?');
-      else if(o.kind==='vert') drawIntersecting(s2, o.a, 'vertical', true,'?');
-      else if(o.kind==='lp') drawLinearPair(s2, o.a, true,'?');
-      else drawAroundPoint(s2, o.A,o.B,o.C, true,'?');
-    } else if(type===2){ // solve x
-      const t=choice(['comp','supp','lp','vert']); const p=makeLinearProblem(t, lv); mixState.cur={type:'solve', p};
-      id('mixQ').innerHTML=(t==='vert'? `\\( ${p.a1}x+${p.b1} = ${p.a2}x+${p.b2} \\)` : `\\( (${p.a1}x+${p.b1})+(${p.a2}x+${p.b2})=${p.target} \\)`);
-      renderMath(id('mixSlide'));
-      const s2=id('mixSvg');
-      if(t==='vert'){
-        drawIntersecting(s2, 60, 'vertical', false);
-        // overlay text
-        text(s2, 180+82*Math.cos(deg2rad(40)), 115-82*Math.sin(deg2rad(40)), `${p.a1}x+${p.b1}°`,{});
-        text(s2, 180+82*Math.cos(deg2rad(220)), 115-82*Math.sin(deg2rad(220)), `${p.a2}x+${p.b2}°`,{});
-      } else if(t==='comp'){
-        drawComplement(s2, 40, true, `${p.a2}x+${p.b2}°`);
-        // overwrite first arc text
-        clearSvg(s2); tagNS(s2);
-        const W=360,H=230, cx=180-10, cy=115+30;
-        line(s2,cx,cy, cx+150,cy, {w:2.2}); line(s2,cx,cy, cx,cy-150, {w:2.2}); rightMarker(s2,cx,cy,14,0);
-        angleArc(s2,cx,cy,70,0,40,'#C7A34F',3); text(s2, cx+80*Math.cos(deg2rad(20)), cy-80*Math.sin(deg2rad(20)), `${p.a1}x+${p.b1}°`,{});
-        angleArc(s2,cx,cy,70,40,90,'#f59e0b',3); text(s2, cx+80*Math.cos(deg2rad(65)), cy-80*Math.sin(deg2rad(65)), `${p.a2}x+${p.b2}°`,{});
-      } else {
-        drawLinearPair(s2, 120, true,'?');
-        clearSvg(s2); tagNS(s2); const cx=180,cy=120; line(s2,cx-160,cy, cx+160,cy, {w:2.2}); const a=120; const [rx,ry]=polar(cx,cy,150,a); line(s2,cx,cy, rx,ry, {w:2.2});
-        angleArc(s2,cx,cy,70,0,a,'#C7A34F',3); text(s2, cx+82*Math.cos(deg2rad(a/2)), cy-82*Math.sin(deg2rad(a/2)), `${p.a1}x+${p.b1}°`,{});
-        angleArc(s2,cx,cy,70,a,180,'#f59e0b',3); text(s2, cx+82*Math.cos(deg2rad((a+180)/2)), cy-82*Math.sin(deg2rad((a+180)/2)), `${p.a2}x+${p.b2}°`,{});
-      }
-    } else if(type===3){ // polygon missing
-      const n=(lv==='easy'? rand(3,5): (lv==='med'? rand(5,7): rand(6,8))); const angles=makePolygonAngles(n); const idx=rand(0,n-1); const ans=angles[idx];
-      const display=angles.map((v,j)=> j===idx? '?': v).join(', ');
-      mixState.cur={type:'polyMiss', want:ans}; id('mixQ').innerHTML=`n=${n}, Angles [${display}]°. Find the missing angle.`;
-      drawRegularPolygon(s, n, idx, angles.map((v,j)=> j===idx? '?' : String(v)));
-    } else if(type===4){ // exterior->n
-      const n=choice([3,4,5,6,8,9,10,12]), ext=(360/n); mixState.cur={type:'ext2n', want:n};
-      id('mixQ').innerHTML=`Exterior angle = ${ext}°. Find n.`; drawExterior(s, n, true, ext);
-    } else { // n->exterior
-      const n=rand(3,12), ext=(360/n); mixState.cur={type:'n2ext', want:ext};
-      id('mixQ').innerHTML=`Regular polygon with n=${n}. Find exterior angle.`; drawExterior(s, n, false);
+    } else if(t===1){ // missing
+      const kind=choice(['comp','supp','vert','lp','around']); let o={};
+      if(kind==='comp'){ const a=rand(15,75); o={prompt:`Find the complement of ${a}°`, ans:90-a, draw:(pro)=>diagComplement(s,a,{showUnknown:true,unknownLabel:'?',pro})}; }
+      else if(kind==='supp'){ const a=rand(25,170); o={prompt:`Linear pair with ${a}°. Find the other.`, ans:180-a, draw:(pro)=>diagLinearPair(s,a,{showUnknown:true,unknownLabel:'?',pro})}; }
+      else if(kind==='vert'){ const a=rand(15,165); o={prompt:`Vertical to ${a}°`, ans:a, draw:(pro)=>diagIntersecting(s,a,'vertical',{showUnknown:true,unknownLabel:'?',pro})}; }
+      else if(kind==='lp'){ const a=rand(25,155); o={prompt:`Straight line partner of ${a}°`, ans:180-a, draw:(pro)=>diagLinearPair(s,a,{showUnknown:true,unknownLabel:'?',pro})}; }
+      else { const A=rand(60,140),B=rand(40,120),C=rand(30,110); o={prompt:`Around point: ${A}, ${B}, ${C}`, ans:360-(A+B+C), draw:(pro)=>diagAroundPoint(s,A,B,C,{showUnknown:true,unknownLabel:'?',pro})}; }
+      id('mixQ').innerHTML=o.prompt; mixState.cur={type:'miss',want:o.ans}; o.draw(false);
+    } else if(t===2){ // solve x
+      const p=problemSupp(); mixState.cur={type:'solve', p}; id('mixQ').innerHTML=(p.type==='vert'? `\\( ${p.e1.a}x+${p.e1.b} = ${p.e2.a}x+${p.e2.b} \\)` : `\\( (${p.e1.a}x+${p.e1.b})+(${p.e2.a}x+${p.e2.b})=${p.target} \\)`); renderMath(id('mixSlide')); drawSolve(s,p,false);
+    } else if(t===3){ // polygon missing
+      const n=rand(4,7); const A=makePolygonAngles(n); const idx=rand(0,n-1); const ans=A[idx]; const labels=A.map((v,j)=> j===idx? '?' : String(v));
+      mixState.cur={type:'polyMiss',want:ans}; id('mixQ').innerHTML=`n=${n}, find the missing interior angle.`; drawRegularPolygon(s,n,labels, idx,false);
+    } else if(t===4){ // ext->n
+      const n=choice([3,4,5,6,8,9,10,12]), ext=360/n; mixState.cur={type:'ext2n',want:n}; id('mixQ').innerHTML=`Exterior angle = ${ext}°. Find n.`; drawExterior(s,n,true,ext,false);
+    } else { // n->ext
+      const n=rand(3,12), ext=360/n; mixState.cur={type:'n2ext',want:ext}; id('mixQ').innerHTML=`Regular polygon with n=${n}. Find exterior angle.`; drawExterior(s,n,false,null,false);
     }
     id('mixHintBox').textContent=''; id('mixFb').textContent=''; id('mixAns').value='';
-    renderMath(id('mixSlide'));
   }
   id('mixNew').addEventListener('click',mixNew); mixNew();
-  id('mixHint').addEventListener('click',()=>{
-    if(!mixState.cur) return; const t=mixState.cur.type; let msg='';
-    if(t==='class') msg='Complementary → 90°, Supplementary/Linear Pair → 180°, Vertical → equal, Adjacent → share side.';
-    else if(t==='miss') msg='Use the correct sum: 90°, 180°, or 360°.';
-    else if(t==='solve') msg='Write the equation first, then solve for x; check angle sizes.';
-    else if(t==='polyMiss') msg='Sum of interior angles is (n−2)·180°.';
-    else if(t==='ext2n') msg='For regular polygons, exterior angle = 360°/n.';
-    else msg='Exterior angle of regular n‑gon = 360°/n.';
-    id('mixHintBox').innerHTML=`<div class="hint">${msg}</div>`;
-  });
-  id('mixCheck').addEventListener('click',()=>{
-    const ans=id('mixAns').value.trim(); const t=mixState.cur?.type; if(!t) return;
-    let ok=false, expect='';
-    if(t==='class'){ ok=ans.toLowerCase().includes(mixState.cur.want); expect=mixState.cur.want; }
-    else if(t==='miss' || t==='polyMiss' || t==='n2ext'){ const w=Number(mixState.cur.want); ok=(Math.abs(Number(ans)-w)<1e-10); expect=w; }
-    else if(t==='ext2n'){ ok=(Number(ans)===mixState.cur.want); expect=mixState.cur.want; }
-    else if(t==='solve'){
-      const p=mixState.cur.p; const x=(p.type==='vert'? (p.b2-p.b1)/(p.a1-p.a2) : (p.target - (p.b1+p.b2))/(p.a1+p.a2));
-      ok=(Math.abs(Number(ans)-x)<1e-10); expect='x='+x;
+  id('mixHint').addEventListener('click',()=>{ const t=mixState.cur?.type; let msg=''; if(t==='class') msg='Complementary→90°, Linear/Supplementary→180°, Vertical→equal, Adjacent→share a side.'; else if(t==='miss') msg='Use the correct sum: 90°, 180°, or 360°.'; else if(t==='solve') msg='Form the equation from the diagram then solve for x; check angle sizes.'; else if(t==='polyMiss') msg='Sum of interior angles is (n−2)·180°.'; else if(t==='ext2n') msg='Exterior of regular n‑gon is 360°/n.'; else msg='Exterior of regular n‑gon is 360°/n.'; id('mixHintBox').innerHTML=`<div class="hint">${msg}</div>`; });
+  id('mixCheck').addEventListener('click',()=>{ const ans=id('mixAns').value.trim(); const t=mixState.cur?.type; if(!t) return; let ok=false, expect=''; if(t==='class'){ ok=ans.toLowerCase().includes(mixState.cur.want); expect=mixState.cur.want; } else if(t==='miss'||t==='polyMiss'||t==='n2ext'){ const w=Number(mixState.cur.want); ok=(Number(ans)===w); expect=w; } else if(t==='ext2n'){ ok=(Number(ans)===mixState.cur.want); expect=mixState.cur.want; } else if(t==='solve'){ const p=mixState.cur.p; const x=(p.type==='vert'? (p.e2.b-p.e1.b)/(p.e1.a-p.e2.a) : (p.target-(p.e1.b+p.e2.b))/(p.e1.a+p.e2.a)); ok=(Number(ans)===x); expect='x='+x; } id('mixFb').textContent= ok? '✅ Correct! '+expect : '❌ Expected '+expect; if(ok) confetti(); });
+  id('mixExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_mixed.csv`, [['prompt','user'], [id('mixQ').textContent, id('mixAns').value||'']])); id('mixExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_mixed.json`, {prompt:id('mixQ').textContent, user:id('mixAns').value||''}));
+
+  /* ==============================
+     PART 5 — Parallels & Transversal
+     ============================== */
+  // diagram engine for two parallel horizontal lines and a transversal at angle t
+  function diagParallels(svg, baseAngle=50, relation='corresponding', opts={}){
+    const {showUnknown=false, unknownLabel='?', pro=false, teacherVal=null}=opts;
+    clearSvg(svg);
+    const W=svg.viewBox.baseVal.width||360,H=svg.viewBox.baseVal.height||230;
+    const top=H/2-40, bot=H/2+40; const tAng=baseAngle; const x1=40, x2=W-40;
+    line(svg,x1,top,x2,top,{w:2.2}); line(svg,x1,bot,x2,bot,{w:2.2});
+    // transversal crossing both
+    const tx=W/2, ty=H/2; const len=160;
+    drawLineThrough(svg, W/2, top, tAng, 200,{w:2.2});
+    drawLineThrough(svg, W/2, bot, tAng, 200,{w:2.2});
+    // At each intersection, the acute angle with the top line equals a (call it 'a')
+    // acute a is min(|tAng|, 180-|tAng|)
+    const a = (baseAngle<=90? baseAngle : 180-baseAngle);
+    // choose positions to label based on relation
+    const r=28;
+    // top intersection center
+    const txc=W/2, tyc=top;
+    // bottom intersection center
+    const bxc=W/2, byc=bot;
+    // We use 0° as rightward baseline for the lines; top line baseline angle 0; bottom also 0
+    // An exterior/interior choice is positional; we will pick standard "top-left" at each intersection.
+    // Label A (given) at top-left interior angle = a; unknown label at the related position
+    // Determine quadrant arcs: from baseline 0 to transversal angle (taking acute)
+    const startTop = 0, endTop = (baseAngle<=90? baseAngle : 360-baseAngle); // CCW minor
+    drawAngleArc(svg, txc, tyc, r, startTop, endTop,'#C7A34F',3, `${a}°`);
+    let placeUnknownAt=''; // 'top-right', 'bottom-left', etc.; we’ll map by relation
+    if(relation==='corresponding'){ // same relative position (top-left top ↔ top-left bottom)
+      drawAngleArc(svg, bxc, byc, r, startTop, endTop,'#f59e0b',3, showUnknown?(teacherVal??unknownLabel):`${a}°`);
+    } else if(relation==='alternate interior'){
+      // interior on opposite sides of transversal: top-left interior equals bottom-right interior
+      // bottom-right: arc from 180 to 180+(-endTop)? easier: use 180 - a with orientation mirrored.
+      drawAngleArc(svg, bxc, byc, r, 180, 180+ (baseAngle<=90? baseAngle : -baseAngle),'#f59e0b',3, showUnknown?(teacherVal??unknownLabel):`${a}°`);
+    } else if(relation==='same-side interior'){
+      // interior angles on same side sum to 180 → partner at bottom-left interior equals 180-a
+      drawAngleArc(svg, bxc, byc, r, startTop, endTop,'#f59e0b',3, showUnknown?(teacherVal??unknownLabel):`${180-a}°`);
+    } else if(relation==='alternate exterior'){
+      // exterior top-right with bottom-left equal to a
+      drawAngleArc(svg, bxc, byc, r, 180, 180+ (baseAngle<=90? baseAngle : -baseAngle),'#f59e0b',3, showUnknown?(teacherVal??unknownLabel):`${a}°`);
+    } else if(relation==='vertical'){
+      // at top intersection itself: vertical equal
+      drawAngleArc(svg, txc, tyc, r, startTop+180, endTop+180,'#f59e0b',3, showUnknown?(teacherVal??unknownLabel):`${a}°`);
     }
-    id('mixFb').textContent = ok? '✅ Correct! '+expect : '❌ Expected '+expect;
-    if(ok) confetti();
-  });
-  id('mixExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_mixed.csv`, [['prompt','user'], [id('mixQ').textContent, id('mixAns').value||'']]));
-  id('mixExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_mixed.json`, {prompt:id('mixQ').textContent, user:id('mixAns').value||''}));
+    if(pro){ drawProtractor(svg, txc, tyc, 52, 0); drawProtractor(svg, bxc, byc, 52, 0); }
+    tagNS(svg);
+  }
+
+  const parState={items:[]};
+  function parNew(){
+    const box=id('parList'); box.innerHTML=''; parState.items=[];
+    for(let i=0;i<6;i++){
+      const type=choice(['corresponding','alternate interior','same-side interior','vertical']);
+      const base=choice([35,45,55,65,75,105,125]); // ensures variety and acute measure a
+      let ans;
+      if(type==='same-side interior') ans=(base<=90? 180-base : 180-(180-base)); else ans=(base<=90? base : 180-base);
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML=`<div class="miniWrap">
+        <div>
+          <div class="flex items-center justify-between hdr"><div class="text-maroon font-semibold mb-1">Item ${i+1} (${type}) <span class="tag">diagram</span></div></div>
+          <svg id="parSVG_${i}" class="miniSvg" viewBox="0 0 360 230"></svg>
+        </div>
+        <div>
+          <div class="mb-2">Given the highlighted angle \(=a\). Find the related angle.</div>
+          <div>Answer: <input class="parIn border rounded px-2 py-1 w-24"> °</div>
+        </div>
+      </div>`;
+      box.appendChild(row);
+      const svg=row.querySelector(`#parSVG_${i}`);
+      const redraw=()=>diagParallels(svg, base, type, {showUnknown:true, unknownLabel:'?', pro: row.querySelector('.proChk')?.checked || false, teacherVal: TEACHER?`${ans}°`:null});
+      redraw(); addProToggle(row, `parSVG_${i}`, redraw);
+      parState.items.push({ans});
+    }
+  }
+  function parCheck(){
+    let ok=0; [...id('parList').children].forEach((row,idx)=>{ const got=Number(row.querySelector('.parIn').value); const want=parState.items[idx].ans; const good=(Math.abs(got-want)<1e-10); row.style.borderColor=good? '#22c55e':'#ef4444'; if(good) ok++; });
+    id('parFb').textContent = ok===parState.items.length? '✅ Parallels on lock!' : `Score: ${ok}/${parState.items.length}`; if(ok===parState.items.length) confetti();
+  }
+  id('parNew').addEventListener('click',parNew); parNew();
+  id('parCheck').addEventListener('click',parCheck);
+  id('parExportCSV').addEventListener('click',()=>{ const rows=[['answer','user']]; [...id('parList').children].forEach((row,idx)=>rows.push([parState.items[idx].ans, row.querySelector('.parIn').value||''])); downloadCSV(`${deckTitle}_P5_parallels.csv`, rows); });
+  id('parExportJSON').addEventListener('click',()=>{ const data=[...id('parList').children].map((row,idx)=>({answer:parState.items[idx].ans, user:row.querySelector('.parIn').value||''})); downloadJSON(`${deckTitle}_P5_parallels.json`, data); });
 
   /* ---------- Init ---------- */
   window.addEventListener('resize',()=>{ if(slides[i].id==='builderSlide') drawAngle(); if(slides[i].id==='polySlide') drawPolyExplorer(); });
