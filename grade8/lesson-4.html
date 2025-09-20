@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G8 • Unit 1 • Lesson 4 • Rounding Numbers (QLA)</title>
+<title>G8 • Unit 1 • Lesson 4 • Rounding Numbers (QLA) — Enhanced</title>
 
 <!-- Fonts & Tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +44,7 @@
   /* Stage */
   #deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
   #slides{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
-  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
+  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:left;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
   .slide.active{opacity:1;transform:none;pointer-events:auto}
   .bg-maroon{background-color:var(--maroon)} .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
   .banner{width:100%;height:110px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
@@ -53,25 +53,37 @@
   .chip:hover{outline:2px solid var(--gold)}
   .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
   .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+  .btn.ghost{background:transparent;border-color:#ddd}
   .btn:hover{filter:brightness(0.98)}
   #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
   #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700}
   #controls button:hover{transform:scale(1.06)}
-  #counter{color:#fff;font-weight:700;min-width:84px;text-align:center}
+  #counter{color:#fff;font-weight:700;min-width:140px;text-align:center}
   #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:30;transition:width .35s ease}
   #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
-
-  /* Popover */
-  #pop{position:fixed;inset:auto auto 20px 20px;max-width:min(560px,90vw);background:#fff;border:2px solid var(--gold);border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.25);padding:14px 16px;z-index:40;display:none;text-align:left}
-  #pop strong{color:var(--maroon)} #pop .close{float:right;color:#666;cursor:pointer;font-weight:800}
-
-  /* Number line */
+  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.6rem .8rem}
+  .success{background:#ecfdf5;border:1px solid #a7f3d0;border-radius:10px;padding:.6rem .8rem}
+  .danger{background:#fee2e2;border:1px solid #fecaca;border-radius:10px;padding:.6rem .8rem}
+  .tok{display:inline-block;padding:.05rem .25rem;border-radius:6px}
+  .section-hdr{font-size:1.5rem;font-weight:800;color:var(--maroon);margin-bottom:.25rem}
+  .micro{font-size:.85rem;color:#6b7280}
+  .pill{border:1px solid #ddd;border-radius:9999px;padding:.25rem .6rem;background:#fff}
+  .kbd{display:inline-block;border:1px solid #ddd;border-radius:6px;padding:.1rem .35rem;background:#f8fafc;font-weight:700;font-size:.85em}
   .nl-wrap{width:100%;max-width:920px}
   canvas.nline{width:100%;height:170px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
-
   .confetti{position:fixed;pointer-events:none;z-index:50}
-  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
-  .tok{display:inline-block;padding:.05rem .25rem;border-radius:6px}
+  /* Tabs */
+  .tabs{display:flex;gap:.5rem;margin-top:.25rem;flex-wrap:wrap}
+  .tab{padding:.35rem .7rem;border-radius:9999px;background:#f1f5f9;border:1px solid #e2e8f0;cursor:pointer}
+  .tab.active{background:#6C1D45;color:#fff;border-color:#6C1D45}
+  .tabpanes > div{display:none} .tabpanes > div.active{display:block}
+  /* Popover */
+  #pop{position:fixed;inset:auto auto 20px 20px;max-width:min(620px,92vw);background:#fff;border:2px solid var(--gold);border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.25);padding:14px 16px;z-index:40;display:none;text-align:left}
+  #pop strong{color:var(--maroon)} #pop .close{float:right;color:#666;cursor:pointer;font-weight:800}
+  #pop .pop-tabs{display:flex;gap:.4rem;margin:.35rem 0}
+  #pop .pop-tab{padding:.25rem .6rem;border:1px solid #ddd;border-radius:9999px;background:#f8fafc;cursor:pointer}
+  #pop .pop-tab.active{background:#6C1D45;color:#fff;border-color:#6C1D45}
+  #pop .exa{background:#f9fafb;border:1px dashed #e5e7eb;border-radius:8px;padding:.4rem .6rem;margin-top:.4rem}
 </style>
 </head>
 <body>
@@ -79,6 +91,23 @@
 <div id="deck" aria-live="polite">
   <div id="slides" class="relative">
     <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
+
+    <!-- Global toolbar -->
+    <div class="absolute top-3 left-3 flex items-center gap-2 z-20">
+      <span class="pill"><b>Set:</b>
+        <select id="setSelect" class="ml-1 border rounded px-2 py-1">
+          <option value="A" selected>Set A</option>
+          <option value="B">Set B</option>
+          <option value="C">Set C</option>
+        </select>
+      </span>
+      <span class="pill"><b>Mode:</b>
+        <select id="modeSelect" class="ml-1 border rounded px-2 py-1">
+          <option value="student" selected>Student</option>
+          <option value="teacher">Teacher</option>
+        </select>
+      </span>
+    </div>
 
     <!-- 0 • Title -->
     <section class="slide active bg-maroon text-white" id="titleSlide">
@@ -91,24 +120,29 @@
           <p class="mt-2 text-lg">Qatar Leadership Academy — Mathematics</p>
         </div>
       </div>
-      <div class="absolute bottom-6 text-sm text-gray-100">Aligned to AERO 8.NS &amp; 8.EE readiness.</div>
+      <div class="absolute bottom-6 text-sm text-gray-100">Aligned to AERO 8.NS &amp; 8.EE readiness. <span class="ml-2">Standard rounding: <b>half‑up</b> (symmetric for negatives).</span></div>
     </section>
 
-    <!-- 1 • Learning Objectives & Keywords -->
+    <!-- 1 • Learning Outcomes & Success Criteria + Keywords -->
     <section class="slide" id="loSlide">
-      <h2 class="text-4xl font-extrabold text-maroon mb-2">Learning Objectives &amp; Keywords</h2>
-      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+      <h2 class="text-4xl font-extrabold text-maroon mb-1">Learning Outcomes &amp; Keywords</h2>
+      <p class="micro mb-3">Students will be able to… (check off as you achieve each outcome)</p>
+      <div class="grid lg:grid-cols-2 gap-6 max-w-6xl">
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Objectives</h3>
-          <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Round whole numbers and decimals to a specified place (nearest 10, 100, 0.1, 0.01, …) using the **half‑up** rule (symmetric for negatives).</li>
-            <li>Round to a given number of <strong>significant figures</strong> and in <strong>scientific notation</strong>.</li>
-            <li>Interpret a rounded value’s **bounds** (interval of possible true values).</li>
-            <li>Choose suitable rounding for **estimation** in real‑world contexts and justify reasonableness.</li>
+          <h3 class="text-2xl font-bold text-maroon mb-2">Learning Outcomes (LOs)</h3>
+          <ul class="space-y-2 text-lg">
+            <li><label><input type="checkbox" class="loChk mr-2">Round whole numbers and decimals to a specified place using the <b>half‑up</b> rule, including negatives.</label></li>
+            <li><label><input type="checkbox" class="loChk mr-2">Round to a specified number of <b>significant figures</b> and in <b>scientific notation</b>.</label></li>
+            <li><label><input type="checkbox" class="loChk mr-2">Interpret a rounded value’s <b>bounds</b> (error interval) and explain what values are possible.</label></li>
+            <li><label><input type="checkbox" class="loChk mr-2">Choose appropriate rounding for <b>estimation</b> and justify reasonableness in Qatar contexts (QAR, distances, times).</label></li>
           </ul>
+          <div class="mt-3 flex gap-2">
+            <button id="loSave" class="btn">Export LO status</button>
+            <span id="loPct" class="pill">0% completed</span>
+          </div>
         </div>
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for quick defs)</h3>
+          <h3 class="text-2xl font-bold text-maroon mb-2">Keywords (tap to define • EN/AR)</h3>
           <div class="flex flex-wrap gap-2 text-lg">
             <span class="chip" data-key="halfup">half‑up rounding</span>
             <span class="chip" data-key="place">place value</span>
@@ -117,44 +151,87 @@
             <span class="chip" data-key="sci">scientific notation</span>
             <span class="chip" data-key="bounds">bounds / error interval</span>
             <span class="chip" data-key="estimate">estimation</span>
+            <span class="chip" data-key="mantissa">mantissa</span>
+            <span class="chip" data-key="unit">rounding unit</span>
           </div>
-          <p class="text-xs text-gray-500 mt-3">We use the **school standard** half‑up rule: a trailing 5 rounds **away from 0** (e.g., \(-1.5\to -2\)).</p>
+          <p class="text-xs text-gray-500 mt-3">We use the **school standard** half‑up rule: a trailing 5 rounds <b>away from 0</b> (e.g., \(-1.5\to -2\)).</p>
+          <div class="mt-3">
+            <button id="kwQuizOpen" class="btn maroon">Open Keyword Quiz</button>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 2 • Warm‑up Quick Check -->
+    <!-- 2 • Concept Primer (I-Do) -->
+    <section class="slide" id="primerSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Primer: What is Rounding & Why it Matters</h2>
+      <div class="grid lg:grid-cols-2 gap-6 max-w-6xl">
+        <div class="card p-5">
+          <div class="section-hdr">Core idea</div>
+          <p>Rounding replaces a number with a nearby value that has fewer digits, to simplify communication or computation while keeping the value <em>close enough</em> for the purpose. We choose a <b>rounding unit \(u\)</b> (like 1, 0.1, 10, 100) and use the half‑up rule.</p>
+          <div class="section-hdr mt-3">The half‑up rule</div>
+          <ul class="list-disc list-inside">
+            <li>Highlight the <b>rounding digit</b> (place you are rounding to) and look one digit <b>to the right</b>.</li>
+            <li>If that digit is 0–4: keep the rounding digit; if 5–9: increase by 1.</li>
+            <li>For negatives, “away from 0” at a tie (e.g., \(-2.5\) → \(-3\)).</li>
+          </ul>
+          <div class="hint mt-3 text-sm">Minimal checks: to round to unit \(u\), find the nearest multiple of \(u\). On a number line, the cutoffs are at midpoints \(r\pm \tfrac{u}{2}\).</div>
+        </div>
+        <div class="card p-5">
+          <div class="section-hdr">Examples (explain before doing)</div>
+          <div class="space-y-2 text-lg">
+            <div>\( 246.38 \) to 1 dp → \( 246.4 \) (since the hundredths digit is 8 ≥ 5)</div>
+            <div>\( 7{,}950 \) to nearest thousand → \( 8{,}000 \) (since 950 ≥ 500)</div>
+            <div>\( -12.5 \) to integer → \( -13 \) (tie goes away from 0)</div>
+          </div>
+          <div class="section-hdr mt-3">Think–Pair–Share</div>
+          <ol class="list-decimal list-inside">
+            <li><b>Think:</b> Why might a shop in Qatar round prices to the nearest 0.25 QAR? What is \(u\) here?</li>
+            <li><b>Pair:</b> Explain the tie rule for negatives to your partner with an example.</li>
+            <li><b>Share:</b> Is \(u=100\) a good unit for reporting school enrollment? Why/why not?</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 • Warm‑up Quick Check (We-Do) -->
     <section class="slide" id="warmSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm‑Up: Decide Fast!</h2>
-      <div class="grid md:grid-cols-3 gap-4 w-full max-w-5xl">
-        <div class="card p-4 text-left">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Guided Warm‑Up (We‑Do)</h2>
+      <p class="micro mb-2">First predict, then compute, then explain your decision rule in one sentence.</p>
+      <div class="grid md:grid-cols-3 gap-4 w-full max-w-6xl">
+        <div class="card p-4">
           <div class="font-bold text-maroon mb-1">Nearest hundred</div>
           <div class="text-xl">\( 12{,}649 \) → <input id="w1" class="border rounded px-2 py-1 w-32" placeholder="e.g., 12,600"></div>
+          <div class="micro mt-1">Explain: <input id="w1e" class="border rounded px-2 py-1 w-full" placeholder="Why?"/></div>
         </div>
-        <div class="card p-4 text-left">
+        <div class="card p-4">
           <div class="font-bold text-maroon mb-1">1 decimal place</div>
           <div class="text-xl">\( 7.45 \) → <input id="w2" class="border rounded px-2 py-1 w-24" placeholder="7.5"></div>
+          <div class="micro mt-1">Explain: <input id="w2e" class="border rounded px-2 py-1 w-full" placeholder="Why?"/></div>
         </div>
-        <div class="card p-4 text-left">
+        <div class="card p-4">
           <div class="font-bold text-maroon mb-1">Nearest integer (negative)</div>
           <div class="text-xl">\( -2.5 \) → <input id="w3" class="border rounded px-2 py-1 w-24" placeholder="-3"></div>
+          <div class="micro mt-1">Explain: <input id="w3e" class="border rounded px-2 py-1 w-full" placeholder="Why?"/></div>
         </div>
       </div>
       <div class="mt-3 flex gap-2">
         <button id="warmCheck" class="btn maroon">Check</button>
         <button id="warmReset" class="btn">Reset</button>
+        <button id="warmExplain" class="btn ghost">Show model explanations</button>
       </div>
       <div id="warmFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 3 • Place Value & Rule -->
-    <section class="slide" id="placeSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Place Value &amp; The Rounding Rule</h2>
-      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
+    <!-- 4 • Explore Lab (Student-centered) -->
+    <section class="slide" id="exploreSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Exploration Lab (You‑Do): Predict → Test → Explain</h2>
+      <div class="grid lg:grid-cols-2 gap-6 max-w-6xl">
         <div class="card p-5">
-          <p class="mb-2">Highlight the rounding digit and the next digit (to decide up/down).</p>
+          <h3 class="text-xl font-bold text-maroon mb-2">A) Place‑Value Lens</h3>
+          <p class="micro mb-2">Set a unit, predict the rounded value, then test and explain.</p>
           <div class="text-2xl" id="pvNumber"></div>
-          <div class="mt-2 flex items-center gap-3">
+          <div class="mt-2 flex items-center gap-3 flex-wrap">
             <label>Round to:</label>
             <select id="pvPlace" class="border rounded px-2 py-1">
               <option value="1">ones</option>
@@ -167,78 +244,95 @@
             </select>
             <button id="pvNew" class="btn">New number</button>
           </div>
+          <div class="mt-2">Your prediction: <input id="pvGuess" class="border rounded px-2 py-1 w-40" placeholder="predict"/></div>
           <div class="mt-2">Result: <span id="pvResult" class="font-bold"></span></div>
-          <div class="hint mt-3 text-sm">Rule: look at the digit **to the right**. If it’s 5–9, increase the rounding digit by 1; if 0–4, keep it the same. For negatives, “away from 0” at 5.</div>
+          <div class="micro mt-1">Explain: <input id="pvWhy" class="border rounded px-2 py-1 w-full" placeholder="What digit did you look at?"/></div>
+          <div class="mt-3 flex gap-2">
+            <button id="pvCheck" class="btn maroon">Check prediction</button>
+            <button id="pvExportCSV" class="btn">Export CSV</button>
+            <button id="pvExportJSON" class="btn">Export JSON</button>
+          </div>
+          <div id="pvFb" class="mt-1 h-6 font-semibold"></div>
         </div>
         <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon mb-2">Examples</h3>
-          <div class="space-y-2 text-lg">
-            <div>\( 246.38 \) to 1 dp → \( 246.4 \)</div>
-            <div>\( 7{,}950 \) to nearest thousand → \( 8{,}000 \)</div>
-            <div>\( -12.5 \) to integer → \( -13 \)</div>
+          <h3 class="text-xl font-bold text-maroon mb-2">B) Number‑Line Lens</h3>
+          <p class="micro mb-2">Adjust \(x\) and the unit; identify midpoints \(r\pm \tfrac{u}{2}\) and justify the rounded result.</p>
+          <div class="nl-wrap"><canvas id="roundLine" class="nline" aria-label="Rounding number line"></canvas></div>
+          <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
+            <label class="chip">x = <input id="lineX" class="border rounded px-2 py-1 w-28" value="23.47"></label>
+            <label class="chip">unit =
+              <select id="lineUnit" class="border rounded px-2 py-1">
+                <option value="1">1 (nearest integer)</option>
+                <option value="0.1" selected>0.1 (1 dp)</option>
+                <option value="0.01">0.01 (2 dp)</option>
+                <option value="10">10 (nearest 10)</option>
+                <option value="100">100 (nearest 100)</option>
+              </select>
+            </label>
+            <span class="chip">rounded = <b id="lineOut">23.5</b></span>
+            <button id="lineRand" class="btn">Randomize</button>
+            <button id="lineExportCSV" class="btn">Export CSV</button>
+            <button id="lineExportJSON" class="btn">Export JSON</button>
           </div>
+          <div class="micro mt-2">Explain: <input id="lineWhy" class="border rounded px-2 py-1 w-full" placeholder="Where are the midpoints? Which side is x on?"/></div>
         </div>
       </div>
+    </section>
+
+    <!-- 5 • Keyword Quiz -->
+    <section class="slide" id="kwQuizSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Keyword Quick‑Check</h2>
+      <p class="micro mb-2">Choose the best definition. Immediate feedback is provided.</p>
+      <div id="kwQuizList" class="grid md:grid-cols-2 gap-4 max-w-6xl"></div>
       <div class="mt-3 flex gap-2">
-        <button id="pvExportCSV" class="btn">Export CSV</button>
-        <button id="pvExportJSON" class="btn">Export JSON</button>
+        <button id="kwQuizNew" class="btn">New set</button>
+        <button id="kwQuizCheck" class="btn maroon">Check</button>
+        <button id="kwQuizCSV" class="btn">Export CSV</button>
       </div>
+      <div id="kwQuizFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 4 • Rounding Explorer (Number Line) -->
-    <section class="slide" id="lineSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Rounding Explorer (Number Line)</h2>
-      <p class="text-gray-600 mb-2">Choose a rounding unit. The number line shows cutoffs and the rounded value.</p>
-      <div class="nl-wrap"><canvas id="roundLine" class="nline" aria-label="Rounding number line"></canvas></div>
-      <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
-        <label class="chip">x = <input id="lineX" class="border rounded px-2 py-1 w-28" value="23.47"></label>
-        <label class="chip">unit = 
-          <select id="lineUnit" class="border rounded px-2 py-1">
-            <option value="1">1 (nearest integer)</option>
-            <option value="0.1" selected>0.1 (1 dp)</option>
-            <option value="0.01">0.01 (2 dp)</option>
-            <option value="10">10 (nearest 10)</option>
-            <option value="100">100 (nearest 100)</option>
-          </select>
-        </label>
-        <span class="chip">rounded = <b id="lineOut">23.5</b></span>
-        <button id="lineRand" class="btn">Randomize</button>
-        <button id="lineExportCSV" class="btn">Export CSV</button>
-        <button id="lineExportJSON" class="btn">Export JSON</button>
+    <!-- 6 • Qatar Applications -->
+    <section class="slide" id="qatSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Apply in Qatar Contexts</h2>
+      <p class="micro mb-2">Estimate first, then compute exactly; decide if your estimate is reasonable.</p>
+      <div id="qatList" class="grid md:grid-cols-2 gap-4 max-w-6xl"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="qatNew" class="btn">New set</button>
+        <button id="qatCheck" class="btn maroon">Check</button>
+        <button id="qatCSV" class="btn">Export CSV</button>
+        <button id="qatJSON" class="btn">Export JSON</button>
       </div>
+      <div id="qatFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 5 • Practice Generator (by level) -->
-    <section class="slide" id="pracSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice Generator</h2>
-      <div class="card p-5 w-full max-w-5xl text-left">
-        <div class="flex items-center gap-3">
-          <span>Level:</span>
-          <select id="prLevel" class="border rounded px-2 py-1">
-            <option value="easy">easy (nearest 10/100, 1 dp)</option>
-            <option value="med" selected>medium (−numbers, 2–3 dp)</option>
-            <option value="hard">hard (mixed places)</option>
-            <option value="expert">expert (mixed incl. sig figs)</option>
-          </select>
-          <button id="prNew" class="btn">New set</button>
-        </div>
-        <div id="prList" class="grid md:grid-cols-2 gap-3 mt-3"></div>
-        <div class="mt-3 flex gap-2">
-          <button id="prCheck" class="btn maroon">Check</button>
-          <button id="prExportCSV" class="btn">Export CSV</button>
-          <button id="prExportJSON" class="btn">Export JSON</button>
-        </div>
-        <div id="prFb" class="mt-2 h-6 font-semibold"></div>
-      </div>
-    </section>
-
-    <!-- 6 • Significant Figures: count & round -->
+    <!-- 7 • Significant Figures -->
     <section class="slide" id="sigSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Significant Figures</h2>
-      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
+      <div class="grid lg:grid-cols-2 gap-6 max-w-6xl">
         <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon mb-2">Count s.f.</h3>
-          <div id="sigCountList" class="grid gap-2"></div>
+          <h3 class="text-xl font-bold text-maroon mb-2">Count s.f. (discover the rules)</h3>
+          <div class="tabs">
+            <button class="tab active" data-tab="#sigRules">Rules</button>
+            <button class="tab" data-tab="#sigMis">Misconceptions</button>
+          </div>
+          <div class="tabpanes mt-2">
+            <div id="sigRules" class="active">
+              <ul class="list-disc list-inside">
+                <li>Ignore <b>leading zeros</b>.</li>
+                <li>Zeros <b>between</b> non‑zeros count.</li>
+                <li><b>Trailing zeros</b> count only if there’s a decimal point.</li>
+              </ul>
+              <div class="hint mt-2 text-sm">Example: \(1200\) has 2 s.f.; \(1200.\) has 4 s.f.; \(0.00340\) has 3 s.f.</div>
+            </div>
+            <div id="sigMis">
+              <ul class="list-disc list-inside">
+                <li>“All zeros don’t count.” ❌ Only some zeros are ignored.</li>
+                <li>“Decimal point doesn’t matter.” ❌ It affects trailing zeros.</li>
+              </ul>
+            </div>
+          </div>
+          <div id="sigCountList" class="grid gap-2 mt-3"></div>
           <div class="mt-3 flex gap-2">
             <button id="sigCountNew" class="btn">New set</button>
             <button id="sigCountCheck" class="btn maroon">Check</button>
@@ -248,7 +342,7 @@
           <div id="sigCountFb" class="mt-2 h-6 font-semibold"></div>
         </div>
         <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon mb-2">Round to n s.f.</h3>
+          <h3 class="text-xl font-bold text-maroon mb-2">Round to n s.f. (practice)</h3>
           <div id="sigRoundList" class="grid gap-2"></div>
           <div class="mt-3 flex gap-2">
             <button id="sigRoundNew" class="btn">New set</button>
@@ -259,13 +353,12 @@
           <div id="sigRoundFb" class="mt-2 h-6 font-semibold"></div>
         </div>
       </div>
-      <div class="hint mt-3 text-sm">Rules: ignore **leading zeros**; zeros **between** non‑zeros count; **trailing zeros** count <em>only</em> if there’s a decimal point (e.g., \(1200\) has 2 s.f.; \(1200.\) has 4 s.f.).</div>
     </section>
 
-    <!-- 7 • Scientific Notation Rounding -->
+    <!-- 8 • Scientific Notation -->
     <section class="slide" id="sciSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Scientific Notation (Round Mantissa)</h2>
-      <div class="card p-5 w-full max-w-5xl text-left">
+      <div class="card p-5 w-full max-w-6xl">
         <div id="sciList" class="grid md:grid-cols-2 gap-3"></div>
         <div class="mt-3 flex gap-2">
           <button id="sciNew" class="btn">New set</button>
@@ -277,11 +370,11 @@
       </div>
     </section>
 
-    <!-- 8 • Bounds / Error Intervals -->
+    <!-- 9 • Bounds / Error Intervals -->
     <section class="slide" id="boundSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Bounds (when a value is rounded)</h2>
-      <div class="card p-5 w-full max-w-5xl text-left">
-        <p class="mb-2">If \( x \) rounds to \( r \) to the nearest unit \(u\), then the true value \(x\) is in the interval \( [\,r-\tfrac{u}{2},\; r+\tfrac{u}{2}\,) \).</p>
+      <div class="card p-5 w-full max-w-6xl">
+        <p class="mb-2">If \( x \) rounds to \( r \) to the nearest unit \(u\), then the true value \(x\) is in the interval \( [\,r-\tfrac{u}{2},\; r+\tfrac{u}{2}\,) \). The right endpoint is open.</p>
         <div id="bdList" class="grid md:grid-cols-2 gap-3"></div>
         <div class="mt-3 flex gap-2">
           <button id="bdNew" class="btn">New set</button>
@@ -293,25 +386,35 @@
       </div>
     </section>
 
-    <!-- 9 • Real‑World Practice -->
-    <section class="slide" id="realSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Real‑World Practice</h2>
-      <div class="card p-5 w-full max-w-5xl text-left">
-        <div id="realList" class="grid md:grid-cols-2 gap-3"></div>
-        <div class="mt-3 flex gap-2">
-          <button id="realNew" class="btn">New set</button>
-          <button id="realCheck" class="btn maroon">Check</button>
-          <button id="realCSV" class="btn">Export CSV</button>
-          <button id="realJSON" class="btn">Export JSON</button>
+    <!-- 10 • Practice Generator (multi-set) -->
+    <section class="slide" id="pracSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice Generator (Differentiated Sets)</h2>
+      <div class="card p-5 w-full max-w-6xl">
+        <div class="flex items-center gap-3 flex-wrap">
+          <span>Level:</span>
+          <select id="prLevel" class="border rounded px-2 py-1">
+            <option value="easy">easy (nearest 10/100, 1 dp)</option>
+            <option value="med" selected>medium (−numbers, 2–3 dp)</option>
+            <option value="hard">hard (mixed places)</option>
+            <option value="expert">expert (mixed incl. sig figs)</option>
+          </select>
+          <button id="prNew" class="btn">New set</button>
+          <span class="pill">Current set: <b id="setLabel">A</b></span>
         </div>
-        <div id="realFb" class="mt-2 h-6 font-semibold"></div>
+        <div id="prList" class="grid md:grid-cols-2 gap-3 mt-3"></div>
+        <div class="mt-3 flex gap-2">
+          <button id="prCheck" class="btn maroon">Check</button>
+          <button id="prExportCSV" class="btn">Export CSV</button>
+          <button id="prExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="prFb" class="mt-2 h-6 font-semibold"></div>
       </div>
     </section>
 
-    <!-- 10 • Challenge Mode -->
+    <!-- 11 • Challenge Mode -->
     <section class="slide" id="challengeSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Challenge Mode</h2>
-      <div class="card p-5 w-full max-w-5xl text-left">
+      <div class="card p-5 w-full max-w-6xl">
         <div class="flex items-center gap-3">
           <span>Level:</span>
           <select id="chLevel" class="border rounded px-2 py-1">
@@ -336,10 +439,25 @@
       </div>
     </section>
 
-    <!-- 11 • Exit ticket -->
-    <section class="slide">
-      <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
-      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+    <!-- 12 • Real‑World Practice (retained) -->
+    <section class="slide" id="realSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Real‑World Practice (General)</h2>
+      <div class="card p-5 w-full max-w-6xl">
+        <div id="realList" class="grid md:grid-cols-2 gap-3"></div>
+        <div class="mt-3 flex gap-2">
+          <button id="realNew" class="btn">New set</button>
+          <button id="realCheck" class="btn maroon">Check</button>
+          <button id="realCSV" class="btn">Export CSV</button>
+          <button id="realJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="realFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- 13 • Exit ticket & Self-assessment -->
+    <section class="slide" id="exitSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket & Self‑Assessment</h2>
+      <div class="grid md:grid-cols-2 gap-6 max-w-6xl">
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon">3–2–1 Reflect</h3>
           <ul class="list-disc list-inside">
@@ -347,10 +465,23 @@
             <li>2 contexts where rounding was helpful</li>
             <li>1 mistake you will avoid next time</li>
           </ul>
+          <div class="mt-2">Your reflection: <textarea id="exitTxt" class="border rounded px-2 py-1 w-full h-24" placeholder="Write here…"></textarea></div>
+          <div class="mt-2 flex gap-2">
+            <button id="exitSave" class="btn">Export reflection</button>
+          </div>
         </div>
         <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon">Up Next</h3>
-          <p>Estimation in multi‑step calculations and percent error comparisons.</p>
+          <h3 class="text-xl font-bold text-maroon">Success Criteria (student)</h3>
+          <ul class="space-y-2">
+            <li><label><input type="checkbox" class="scChk mr-2">I can explain the half‑up rule and apply it to negatives.</label></li>
+            <li><label><input type="checkbox" class="scChk mr-2">I can justify a rounded value using a number line.</label></li>
+            <li><label><input type="checkbox" class="scChk mr-2">I can count s.f. correctly in tricky cases.</label></li>
+            <li><label><input type="checkbox" class="scChk mr-2">I can state the bounds for a rounded measurement.</label></li>
+          </ul>
+          <div class="mt-3 flex gap-2">
+            <button id="scSave" class="btn">Export self‑assessment</button>
+            <span id="scPct" class="pill">0% met</span>
+          </div>
         </div>
       </div>
       <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[100px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
@@ -363,7 +494,7 @@
 <div id="controls" role="group" aria-label="Slideshow controls">
   <button id="prev" title="Previous (←)">&laquo;</button>
   <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
-  <div id="counter">1 / 12</div>
+  <div id="counter">1 / 14</div>
   <button id="next" title="Next (→)">&raquo;</button>
 </div>
 <div id="progress"></div>
@@ -371,22 +502,26 @@
 <!-- Glossary popover -->
 <div id="pop" role="dialog" aria-modal="true" aria-live="polite">
   <span class="close" title="Close">✕</span>
+  <div class="pop-tabs">
+    <button class="pop-tab active" data-poplang="en">EN</button>
+    <button class="pop-tab" data-poplang="ar">العربية</button>
+    <button class="pop-tab" data-popread="speak">🔊</button>
+  </div>
   <div id="popBody"></div>
 </div>
 
 <script>
-/* ------------------------- Core Helpers ------------------------- */
+/* ------------------------- Core Helpers & Seeded RNG ------------------------- */
 (function(){
   const slides=[...document.querySelectorAll('.slide')];
   const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
-  const deckTitle='G8_Unit1_L4_Rounding_QLA';
+  const deckTitle='G8_Unit1_L4_Rounding_QLA_Enhanced';
   let i=0;
 
   function id(x){return document.getElementById(x)}
   function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
-  function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
   function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
-    for(let k=0;k<20;k++){
+    for(let k=0;k<24;k++){
       const d=document.createElement('div'); d.className='confetti';
       d.style.left=x+'px'; d.style.top=y+'px'; d.style.width='8px'; d.style.height='8px';
       d.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8a3d64'][k%4];
@@ -396,8 +531,7 @@
                 {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
     }
   }
-
-  // Export helpers
+  // Exports
   function downloadJSON(filename, data){
     const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob); const a=document.createElement('a');
@@ -408,6 +542,12 @@
     const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
     a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   }
+  // Seeded RNG (mulberry32)
+  const seedFromSet = s => ({A: 123456789, B: 987654321, C: 314159265}[s] || 123456789);
+  function mulberry32(a){return function(){let t=a+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;}}
+  function choice(rng, arr){return arr[Math.floor(rng()*arr.length)]}
+  function randInt(rng,a,b){return Math.floor(rng()*(b-a+1))+a}
+  function randFloat(rng,a,b,dp=2){return +( (rng()*(b-a)+a).toFixed(dp) )}
 
   /* ---------- Navigation ---------- */
   function show(k){
@@ -416,9 +556,11 @@
     counter.textContent=(i+1)+' / '+slides.length;
     progress.style.width=((i+1)/slides.length*100)+'%';
     const sid=slides[i].id||'';
-    if(sid==='lineSlide') drawRoundLine();
-    if(sid==='placeSlide') renderPV();
-    renderMath(slides[i]);
+    if(sid==='exploreSlide') { drawRoundLine(); renderPV(); }
+    if(sid==='sigSlide') renderMath(id('sigSlide'));
+    if(sid==='challengeSlide') renderMath(id('challengeSlide'));
+    if(sid==='boundSlide') renderMath(id('boundSlide'));
+    if(sid==='sciSlide') renderMath(id('sciSlide'));
   }
   prev.addEventListener('click',()=>show(i-1));
   next.addEventListener('click',()=>show(i+1));
@@ -435,7 +577,6 @@
   fsBtn.addEventListener('click',toggleFS);
 
   /* ------------------------- Rounding Logic ------------------------- */
-  // Symmetric half-up rounding to nearest multiple of unit u
   function roundHalfUpToUnit(x,u){
     const q=x/u;
     const s=q>=0?1:-1, a=Math.abs(q);
@@ -444,17 +585,15 @@
   }
   function decPlacesFromUnit(u){
     if(u>=1) return 0;
-    const p = Math.round(Math.log10(1/u)); // units are powers of 10
+    const p = Math.round(Math.log10(1/u));
     return Math.max(0,p);
   }
   function fmtToUnit(x,u){
     const dp = decPlacesFromUnit(u);
-    return (Math.round((x+0)*10**dp)/10**dp).toFixed(dp); // normalize
+    const n = (Math.round((x+0)*10**dp)/10**dp).toFixed(dp);
+    return n.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
   function roundToDP(x,dp){ const u=10**(-dp); return roundHalfUpToUnit(x,u); }
-  function roundToPlace(x,placeUnit){ return roundHalfUpToUnit(x,placeUnit); }
-
-  // Significant figures
   function roundToSig(x,n){
     if(x===0) return 0;
     const s = x<0? -1: 1;
@@ -465,41 +604,105 @@
   }
   function countSigStr(s){
     s = s.trim();
-    if(/^0*\.?0*$/.test(s)) return 1; // zero has 1 s.f.
+    if(/^0*\.?0*$/.test(s)) return 1;
     const hasDot = s.includes('.');
-    // strip sign
     s = s.replace(/^[-+]/,'');
     let t = s;
-    if(!hasDot){
-      // no decimal: remove trailing zeros
-      t = t.replace(/0+$/,'');
-    }
-    // remove leading zeros and decimal point
+    if(!hasDot) t = t.replace(/0+$/,'');
     t = t.replace(/^0+/,'').replace('.','');
     return t.replace(/[^0-9]/g,'').length;
   }
-
-  // Scientific notation rounding (mantissa in [1,10))
   function sciRound(m,e,n){
     let r = roundToSig(m, n);
     if(Math.abs(r)>=10){ r = r/10; e += 1; }
     return {m:r,e};
   }
 
-  /* ------------------------- Glossary ------------------------- */
+  /* ------------------------- Glossary (EN/AR + speech) ------------------------- */
   const POP=id('pop'), POP_BODY=id('popBody');
   const GLOS={
-    halfup:'<strong>Half‑up rounding</strong>: 5–9 rounds away from 0; 0–4 round toward 0 (symmetric for negatives).',
-    place:'<strong>Place value</strong>: ones, tens, hundreds, tenths, hundredths, …',
-    dp:'<strong>Decimal places</strong>: digits to the right of the decimal point.',
-    sf:'<strong>Significant figures</strong>: digits that convey precision; leading zeros don’t count; trailing zeros count only with a decimal point.',
-    sci:'<strong>Scientific notation</strong>: \( a\\times 10^n \) with \(1\\le |a|&lt;10\).',
-    bounds:'<strong>Bounds</strong>: the interval of true values a rounded number could represent (± half a unit).',
-    estimate:'<strong>Estimation</strong>: rounding first to simplify a computation while keeping a reasonable approximation.'
+    halfup:{
+      en:'<strong>Half‑up rounding</strong>: 5–9 rounds away from 0; 0–4 rounds toward 0 (symmetric for negatives). Example: \\(-2.5\\to -3\\).',
+      ar:'<strong>التقريب بنظام النصف للأعلى</strong>: إذا كانت الخانة التالية 5–9 نقرب بعيدًا عن الصفر، وإذا كانت 0–4 نبقي الرقم كما هو. ينطبق ذلك أيضًا على الأعداد السالبة (مثال: \\(-2.5\\to -3\\)).',
+      ex:'Try: \(7.45\) to 1 dp → 7.5; \(−1.5\) to integer → −2.'
+    },
+    place:{
+      en:'<strong>Place value</strong>: ones, tens, hundreds, tenths, hundredths, … The chosen place determines the rounding unit \(u\).',
+      ar:'<strong>القيمة المكانية</strong>: الآحاد، العشرات، المئات، الأعشار، الجزء من المائة… وتحدد المكان المختار وحدة التقريب \(u\).',
+      ex:'Nearest hundred ⇒ \(u=100\); 1 dp ⇒ \(u=0.1\).'
+    },
+    dp:{
+      en:'<strong>Decimal places (dp)</strong>: number of digits to the right of the decimal point.',
+      ar:'<strong>المنازل العشرية</strong>: عدد الخانات على يمين الفاصلة العشرية.',
+      ex:'1 dp keeps tenths; 2 dp keeps hundredths.'
+    },
+    sf:{
+      en:'<strong>Significant figures (s.f.)</strong>: digits that convey precision; leading zeros don’t count; zeros between digits count; trailing zeros count only with a decimal point.',
+      ar:'<strong>الأرقام ذات الدلالة</strong>: الأرقام التي تعبّر عن الدقة؛ الأصفار في البداية لا تُحسب، والأصفار بين الأرقام تُحسب، وأصفار النهاية تُحسب فقط بوجود فاصلة عشرية.',
+      ex:'\(1200\): 2 s.f.; \(1200.\): 4 s.f.; \(0.00340\): 3 s.f.'
+    },
+    sci:{
+      en:'<strong>Scientific notation</strong>: \(a\\times 10^n\) with \(1\\le |a|<10\). Round the <em>mantissa</em> \(a\) to s.f.',
+      ar:'<strong>الترميز العلمي</strong>: \(a\\times 10^n\) حيث \(1\\le |a|<10\). نقرّب العدد <em>العشري</em> \(a\) بعدد من الأرقام ذات الدلالة.',
+      ex:'\(3.276\\times10^5\\) to 3 s.f. → \(3.28\\times10^5\).'
+    },
+    bounds:{
+      en:'<strong>Bounds</strong>: the interval of true values a rounded number could represent: \([r-\\tfrac{u}{2},\\, r+\\tfrac{u}{2})\).',
+      ar:'<strong>الحدود/مجال الخطأ</strong>: المجال الذي يمكن أن يمثّل القيمة الحقيقية بعد التقريب: \([r-\\tfrac{u}{2},\\, r+\\tfrac{u}{2})\).',
+      ex:'Rounded to nearest 10 as 150 ⇒ true \(x\\in [145,155)\).'
+    },
+    estimate:{
+      en:'<strong>Estimation</strong>: rounding first to simplify a calculation while keeping a reasonable approximation.',
+      ar:'<strong>التقدير</strong>: إجراء التقريب أولًا لتبسيط الحساب مع الحفاظ على قيمة تقريبية معقولة.',
+      ex:'QAR 18.95 ≈ 19 to estimate a total quickly.'
+    },
+    mantissa:{
+      en:'<strong>Mantissa</strong>: the decimal part \(a\) in scientific notation \(a\\times10^n\), with \(1\\le |a|<10\).',
+      ar:'<strong>الجزء العشري</strong> (Mantissa): الجزء \(a\) في الترميز العلمي \(a\\times10^n\) حيث \(1\\le |a|<10\).',
+      ex:'In \(6.02\\times10^{23}\), mantissa is 6.02.'
+    },
+    unit:{
+      en:'<strong>Rounding unit</strong>: the step \(u\) to which we round (e.g., 1, 0.1, 10, 100).',
+      ar:'<strong>وحدة التقريب</strong>: مقدار الخطوة \(u\) التي نقرّب إليها (مثل 1، 0.1، 10، 100).',
+      ex:'Nearest hundred ⇒ \(u=100\).'
+    }
   };
   POP.querySelector('.close').addEventListener('click',()=>POP.style.display='none');
   document.addEventListener('click',e=>{
-    const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]){POP_BODY.innerHTML=GLOS[key]; POP.style.display='block'; const r=el.getBoundingClientRect(); POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px'; POP.style.bottom=(window.innerHeight-r.top+10)+'px';}}
+    const el=e.target.closest('.chip[data-key]');
+    if(el){
+      const key=el.dataset.key, obj=GLOS[key]; if(!obj) return;
+      buildPop(obj);
+      const r=el.getBoundingClientRect();
+      POP.style.display='block';
+      POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px';
+      POP.style.bottom=(window.innerHeight-r.top+10)+'px';
+      renderMath(POP);
+    }
+  });
+  function buildPop(obj){
+    // tabs for EN/AR + speak
+    POP.dataset.lang='en';
+    POP_BODY.innerHTML = `<div class="exa" data-en="${obj.en.replace(/"/g,'&quot;')}" data-ar="${obj.ar.replace(/"/g,'&quot;')}">
+      <div class="mb-2" id="popText">${obj.en}</div>
+      <div class="micro"><b>Example:</b> ${obj.ex}</div>
+    </div>`;
+  }
+  document.querySelectorAll('#pop .pop-tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const tEn=btn.dataset.poplang==='en', tAr=btn.dataset.poplang==='ar', speak=btn.dataset.popread==='speak';
+      document.querySelectorAll('#pop .pop-tab').forEach(b=>b.classList.toggle('active',b===btn));
+      const exa=POP_BODY.querySelector('.exa'); if(!exa) return;
+      if(tEn){ POP.dataset.lang='en'; id('popText').innerHTML=exa.dataset.en; renderMath(POP); }
+      else if(tAr){ POP.dataset.lang='ar'; id('popText').innerHTML=exa.dataset.ar; renderMath(POP); }
+      else if(speak){
+        const text = id('popText').textContent;
+        if('speechSynthesis' in window){
+          const u = new SpeechSynthesisUtterance(text);
+          window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+        }
+      }
+    });
   });
 
   /* ------------------------- Warm-up ------------------------- */
@@ -508,76 +711,86 @@
     const ok2 = Math.abs(Number(id('w2').value)-7.5)<1e-10;
     const ok3 = (Number(id('w3').value)===-3);
     const score=(ok1?1:0)+(ok2?1:0)+(ok3?1:0);
-    id('warmFb').textContent = score===3 ? '✅ Great start!' : `Score: ${score}/3`;
-    id('w1').style.borderColor=ok1?'#22c55e':'#ef4444';
-    id('w2').style.borderColor=ok2?'#22c55e':'#ef4444';
-    id('w3').style.borderColor=ok3?'#22c55e':'#ef4444';
+    id('warmFb').textContent = score===3 ? '✅ Great start! Now explain your rule in the text boxes.' : `Score: ${score}/3`;
+    ['w1','w2','w3'].forEach((x,idx)=>{
+      const ok=[ok1,ok2,ok3][idx];
+      id(x).style.borderColor=ok?'#22c55e':'#ef4444';
+    });
     if(score===3) confetti();
   });
-  id('warmReset').addEventListener('click',()=>{['w1','w2','w3'].forEach(x=>{id(x).value=''; id(x).style.borderColor='#e5e7eb'}); id('warmFb').textContent='';});
+  id('warmReset').addEventListener('click',()=>{['w1','w2','w3','w1e','w2e','w3e'].forEach(x=>{id(x).value=''; id(x).style.borderColor='#e5e7eb'}); id('warmFb').textContent='';});
+  id('warmExplain').addEventListener('click',()=>{
+    id('w1e').value='950 ≥ 500 → round up to 12,600';
+    id('w2e').value='Hundredths digit 5 → round tenths up to 7.5';
+    id('w3e').value='Tie at −2.5 goes away from 0 → −3';
+  });
 
-  /* ------------------------- Place Value Lens ------------------------- */
+  /* ------------------------- Place Value Lens (Exploration) ------------------------- */
+  const setLabel=id('setLabel');
   const pvState={x:246.38,u:0.01};
+  function seededRNG(){
+    const s = id('setSelect').value;
+    return mulberry32(seedFromSet(s));
+  }
   function newPV(){
-    // random number with 3–5 integer digits and 1–3 decimals, maybe negative
-    const sign=Math.random()<0.2?-1:1;
-    const int = Math.floor(Math.random()*900)+100; // 100..999
-    const dp = Math.floor(Math.random()*3)+1;      // 1..3
-    const frac = Math.floor(Math.random()*(10**dp));
+    const rng=seededRNG();
+    const sign=rng()<0.2?-1:1;
+    const int = randInt(rng,100,999);
+    const dp = randInt(rng,1,3);
+    const frac = randInt(rng,0,(10**dp)-1);
     pvState.x = sign*(int + frac/10**dp);
     renderPV();
   }
   function renderPV(){
-    const s = pvState.x.toString();
-    const [whole, frac=''] = Math.abs(pvState.x).toString().split('.');
+    const [absWhole, absFracRaw] = Math.abs(pvState.x).toString().split('.');
+    const frac = absFracRaw||'';
     const sign = pvState.x<0 ? '−' : '';
     const u = Number(id('pvPlace').value);
     pvState.u = u;
-    // where is the rounding digit index?
-    const dp = decPlacesFromUnit(u);
-    let roundingIndexFromRight; // counting including decimal for fractional places
     let display='';
     if(u>=1){
-      // e.g., tens -> index in whole part
-      const idx = whole.length - Math.log10(u) - 1; // rounding digit position in whole
+      const idx = absWhole.length - Math.log10(u) - 1;
       const ridx = Math.round(idx);
-      for(let j=0;j<whole.length;j++){
+      for(let j=0;j<absWhole.length;j++){
         const cls = (j===ridx)?'bg-yellow-200 tok':'tok';
-        display += `<span class="${cls}">${whole[j]}</span>`;
+        display += `<span class="${cls}">${absWhole[j]}</span>`;
       }
       if(frac.length) display += `<span class="tok">.</span>${[...frac].map(c=>`<span class="tok">${c}</span>`).join('')}`;
     }else{
-      // e.g., hundredths -> highlight in fractional digits
-      const need = decPlacesFromUnit(u); // e.g., 2 dp -> mark frac[1]
-      for(let j=0;j<whole.length;j++){ display += `<span class="tok">${whole[j]}</span>`}
-      if(frac.length || need>0){
-        display += `<span class="tok">.</span>`;
-        for(let j=0;j<Math.max(frac.length,need+1);j++){
-          const d = frac[j] || '0';
-          const cls = (j===need-1)?'bg-yellow-200 tok':'tok';
-          display += `<span class="${cls}">${d}</span>`;
-        }
+      const need = decPlacesFromUnit(u);
+      for(let j=0;j<absWhole.length;j++){ display += `<span class="tok">${absWhole[j]}</span>`}
+      display += `<span class="tok">.</span>`;
+      for(let j=0;j<Math.max(frac.length,need+1);j++){
+        const d = frac[j] || '0';
+        const cls = (j===need-1)?'bg-yellow-200 tok':'tok';
+        display += `<span class="${cls}">${d}</span>`;
       }
     }
     id('pvNumber').innerHTML = `${sign}${display}`;
     const y = roundHalfUpToUnit(pvState.x, u);
-    id('pvResult').textContent = fmtToUnit(y,u).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    renderMath(id('placeSlide'));
+    id('pvResult').textContent = fmtToUnit(y,u);
+    renderMath(id('exploreSlide'));
   }
   id('pvPlace').addEventListener('change',renderPV);
   id('pvNew').addEventListener('click',newPV);
+  id('pvCheck').addEventListener('click',()=>{
+    const want = roundHalfUpToUnit(pvState.x,pvState.u);
+    const got = Number(id('pvGuess').value.replace(/,/g,''));
+    const ok = Math.abs(got-want)<1e-10;
+    id('pvFb').textContent = ok? '✅ Prediction matched!' : '❌ Different from rounded value. Re-check the next digit.';
+    if(ok) confetti();
+  });
   id('pvExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_placevalue.csv`, [['x','unit','result'], [pvState.x, pvState.u, fmtToUnit(roundHalfUpToUnit(pvState.x,pvState.u),pvState.u)]]));
   id('pvExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_placevalue.json`, pvState));
   newPV();
 
-  /* ------------------------- Rounding Explorer (Number Line) ------------------------- */
+  /* ------------------------- Number Line (Exploration) ------------------------- */
   const cL=id('roundLine'); const lineX=id('lineX'), lineUnit=id('lineUnit'), lineOut=id('lineOut');
   const lineState={x:23.47,u:0.1};
   function drawRoundLine(){
     const ctx=cL.getContext('2d'); cL.width=cL.clientWidth*devicePixelRatio; cL.height=cL.clientHeight*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio);
     const y=cL.clientHeight/2, m=28; ctx.clearRect(0,0,cL.clientWidth,cL.clientHeight);
     ctx.lineWidth=2; ctx.strokeStyle='#6C1D45'; ctx.beginPath(); ctx.moveTo(m,y); ctx.lineTo(cL.clientWidth-m,y); ctx.stroke();
-    // ticks around nearest multiples of u
     const u=lineState.u, x=lineState.x;
     const r=roundHalfUpToUnit(x,u);
     const left = Math.floor((x-4*u)/u)*u;
@@ -588,11 +801,9 @@
       ctx.beginPath(); ctx.moveTo(px,y-10); ctx.lineTo(px,y+10); ctx.stroke();
       if(k%2===0){ ctx.fillText(fmtToUnit(val,u), px-12, y+26); }
     }
-    // midpoint boundaries
     const low = r - u/2, high = r + u/2;
     ctx.strokeStyle='#C7A34F'; ctx.setLineDash([6,4]); ctx.beginPath(); ctx.moveTo(map(low),y-30); ctx.lineTo(map(low),y+30); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(map(high),y-30); ctx.lineTo(map(high),y+30); ctx.stroke(); ctx.setLineDash([]);
-    // x and rounded marker
     ctx.fillStyle='#6C1D45'; ctx.beginPath(); ctx.arc(map(x),y,8,0,Math.PI*2); ctx.fill();
     ctx.fillStyle='#C7A34F'; ctx.beginPath(); ctx.arc(map(r),y,9,0,Math.PI*2); ctx.fill();
     lineOut.textContent = fmtToUnit(r,u);
@@ -600,84 +811,117 @@
   }
   lineX.addEventListener('input',()=>{ lineState.x=Number(lineX.value); drawRoundLine(); });
   lineUnit.addEventListener('change',()=>{ lineState.u=Number(lineUnit.value); drawRoundLine(); });
-  id('lineRand').addEventListener('click',()=>{ lineState.x = +(Math.random()*200-100).toFixed(3); lineX.value=lineState.x; drawRoundLine(); });
+  id('lineRand').addEventListener('click',()=>{ const rng=seededRNG(); lineState.x = +( (rng()*200-100).toFixed(3) ); lineX.value=lineState.x; drawRoundLine(); });
   id('lineExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_line.csv`, [['x','unit','rounded'], [lineState.x,lineState.u,fmtToUnit(roundHalfUpToUnit(lineState.x,lineState.u),lineState.u)]]));
   id('lineExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_line.json`, {x:lineState.x,unit:lineState.u,rounded:roundHalfUpToUnit(lineState.x,lineState.u)}));
   drawRoundLine();
-  window.addEventListener('resize',()=>{ if(slides[i].id==='lineSlide') drawRoundLine(); });
+  window.addEventListener('resize',()=>{ if(slides[i].id==='exploreSlide') drawRoundLine(); });
 
-  /* ------------------------- Practice Generator ------------------------- */
-  const prState={items:[]};
-  function prBuild(){
-    const lv=id('prLevel').value;
-    const list=[];
-    function task(x,unit,label){ return {type:'unit', prompt:`Round ${x} to ${label}`, x, unit, label, ans: roundHalfUpToUnit(x,unit), fmt:fmtToUnit(roundHalfUpToUnit(x,unit),unit)};}
-    function taskSig(x,n){const ans=roundToSig(x,n); return {type:'sig', prompt:`Round ${x} to ${n} s.f.`, x, n, ans, fmt:ans.toPrecision(n)};}
-    for(let k=0;k<4;k++){
-      if(lv==='easy'){
-        const a = Math.floor(Math.random()*900)+100;
-        const unit = Math.random()<0.5?10:100;
-        list.push(task(a,unit, unit===10?'nearest 10':'nearest 100'));
-      }else if(lv==='med'){
-        const x = +( (Math.random()*200-100).toFixed(Math.random()<0.5?1:2) );
-        const unit = Math.random()<0.5?0.1:0.01;
-        list.push(task(x,unit, unit===0.1?'1 dp':'2 dp'));
-      }else if(lv==='hard'){
-        const mix = Math.random();
-        if(mix<0.5){
-          const unit = [0.001,0.01,0.1,1,10,100][Math.floor(Math.random()*6)];
-          const x = +( (Math.random()*200-100).toFixed(unit<1?3:0) );
-          const lab = unit>=1? `nearest ${unit}` : `${decPlacesFromUnit(unit)} dp`;
-          list.push(task(x,unit,lab));
-        }else{
-          const x = +( (Math.random()*9000-4500).toFixed(3) );
-          const n = [2,3,4][Math.floor(Math.random()*3)];
-          list.push(taskSig(x,n));
-        }
-      }else{ // expert
-        if(Math.random()<0.5){
-          const x = +( (Math.random()*9000-4500).toFixed(4) );
-          const n = [2,3,4][Math.floor(Math.random()*3)];
-          list.push(taskSig(x,n));
-        }else{
-          const unit = [0.001,0.01,0.1,1,10,100,1000][Math.floor(Math.random()*7)];
-          const x = +( (Math.random()*50000-25000).toFixed(unit<1?3:0) );
-          const lab = unit>=1? `nearest ${unit}` : `${decPlacesFromUnit(unit)} dp`;
-          list.push(task(x,unit,lab));
-        }
-      }
-    }
-    prState.items=list;
-    const box=id('prList'); box.innerHTML='';
+  /* ------------------------- Keyword Quiz ------------------------- */
+  const KW_BANK=[
+    {k:'halfup', q:'Half‑up rounding means…', choices:[
+      'At a tie (5), round away from 0; 0–4 stay, 6–9 up.',
+      'Always round up at 4 and above.',
+      'Round toward 0 at a tie (5).'
+    ], ans:0},
+    {k:'sf', q:'Significant figures count…', choices:[
+      'All digits including leading zeros.',
+      'Digits that show precision; leading zeros excluded; trailing zeros count only with decimal point.',
+      'Only non‑zero digits.'
+    ], ans:1},
+    {k:'bounds', q:'Bounds after rounding to unit \(u\) are…', choices:[
+      '\\([r-\\tfrac{u}{2},\\, r+\\tfrac{u}{2})\\)',
+      '\\((r-\\tfrac{u}{2},\\, r+\\tfrac{u}{2}]\\)',
+      '\\([r-u,\\, r+u]\\)'
+    ], ans:0},
+    {k:'dp', q:'1 dp means keeping…', choices:[
+      'Ones place only.',
+      'Tenths only.',
+      'Hundredths only.'
+    ], ans:1},
+    {k:'sci', q:'In scientific notation \(a\\times10^n\), \(a\) must satisfy…', choices:[
+      '\\(0\\le a<1\\)',
+      '\\(1\\le |a|<10\\)',
+      'Any real \(a\\)'
+    ], ans:1},
+  ];
+  const kwState={items:[]};
+  function kwNew(){
+    const rng=seededRNG();
+    const pool=[...KW_BANK].sort(()=>rng()-0.5).slice(0,4);
+    kwState.items=pool;
+    const box=id('kwQuizList'); box.innerHTML='';
+    pool.forEach((o,idx)=>{
+      const card=document.createElement('div'); card.className='card p-4';
+      let opts='';
+      o.choices.forEach((c,j)=>{
+        opts+=`<label class="block mt-1"><input type="radio" name="kw_${idx}" value="${j}"> <span class="ml-1">${c}</span></label>`;
+      });
+      card.innerHTML=`<div class="text-maroon font-semibold mb-1">Q${idx+1}. ${o.q}</div>${opts}`;
+      box.appendChild(card);
+    });
+    renderMath(id('kwQuizSlide'));
+  }
+  id('kwQuizOpen').addEventListener('click',()=>{ show(slides.findIndex(s=>s.id==='kwQuizSlide')); });
+  id('kwQuizNew').addEventListener('click',kwNew); kwNew();
+  id('kwQuizCheck').addEventListener('click',()=>{
+    let ok=0;
+    [...id('kwQuizList').querySelectorAll('.card')].forEach((card,idx)=>{
+      const sel=card.querySelector('input[type=radio]:checked');
+      if(sel && Number(sel.value)===kwState.items[idx].ans){ ok++; card.classList.add('success'); card.classList.remove('danger'); }
+      else { card.classList.add('danger'); card.classList.remove('success'); }
+    });
+    id('kwQuizFb').textContent = ok===kwState.items.length ? '✅ Keyword mastery!' : `Score: ${ok}/${kwState.items.length}`;
+    if(ok===kwState.items.length) confetti();
+  });
+  id('kwQuizCSV').addEventListener('click',()=>{
+    const rows=[['question','correct_index','choices']]; kwState.items.forEach(o=>rows.push([o.q,o.ans,o.choices.join(' | ')])); downloadCSV(`${deckTitle}_keywords_quiz.csv`, rows);
+  });
+
+  /* ------------------------- Qatar Applications ------------------------- */
+  const qatState={items:[]};
+  function qatNew(){
+    const rng=seededRNG(); const list=[];
+    // Karak / café bill estimation (QAR)
+    const price = randFloat(rng,1.25,9.95,2); const qty = randInt(rng,3,12);
+    list.push({type:'est', prompt:`Estimate the total cost of ${qty} items at QAR ${price} each by rounding to the nearest riyal (QAR).`, ans: Math.round(price)*qty});
+    // Lusail Stadium attendance rounding
+    const crowd = randInt(rng,60000,88000);
+    list.push({type:'unit', prompt:`Round Lusail Stadium attendance ${crowd.toLocaleString()} to the nearest thousand.`, unit:1000, ans: roundHalfUpToUnit(crowd,1000)});
+    // Doha–Al Khor distance
+    const dist = randFloat(rng,40.2,58.9,2);
+    list.push({type:'unit', prompt:`Round the driving distance ${dist} km to 1 dp.`, unit:0.1, ans: roundHalfUpToUnit(dist,0.1)});
+    // Taxi time rounding
+    const minutes = randFloat(rng,13.0,49.9,1);
+    list.push({type:'unit', prompt:`A Karwa trip took ${minutes} minutes. Round to the nearest minute.`, unit:1, ans: roundHalfUpToUnit(minutes,1)});
+    qatState.items=list;
+    const box=id('qatList'); box.innerHTML='';
     list.forEach((o,idx)=>{
       const row=document.createElement('div'); row.className='card p-4';
       row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
-        <div class="text-xl mt-1">${o.prompt} = <input class="prin border rounded px-2 py-1 w-40" placeholder="answer"></div>`;
+        <div class="text-xl mt-1">${o.prompt} = <input class="qatin border rounded px-2 py-1 w-44" placeholder="answer"></div>`;
       box.appendChild(row);
     });
   }
-  id('prNew').addEventListener('click',prBuild); prBuild();
-  id('prCheck').addEventListener('click',()=>{
-    let ok=0; id('prList').querySelectorAll('.card').forEach((row,idx)=>{
-      const inp=row.querySelector('.prin'); const item=prState.items[idx];
-      const v = Number(inp.value.replace(/,/g,'')); const want = item.ans;
-      const good = Math.abs(v-want)<1e-10;
-      inp.style.borderColor = good? '#22c55e':'#ef4444';
-      if(good) ok++;
+  id('qatNew').addEventListener('click',qatNew); qatNew();
+  id('qatCheck').addEventListener('click',()=>{
+    let ok=0; id('qatList').querySelectorAll('.card').forEach((row,idx)=>{
+      const item=qatState.items[idx]; const v=Number(row.querySelector('.qatin').value.replace(/,/g,''));
+      const good=Math.abs(v-item.ans)<1e-10; row.querySelector('.qatin').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
     });
-    id('prFb').textContent = ok===prState.items.length? '✅ All correct!' : `Score: ${ok}/${prState.items.length}`;
-    if(ok===prState.items.length) confetti();
+    id('qatFb').textContent = ok===qatState.items.length? '✅ Nice work, ready for real contexts!' : `Score: ${ok}/${qatState.items.length}`;
+    if(ok===qatState.items.length) confetti();
   });
-  id('prExportCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer']]; prState.items.forEach(o=>rows.push([o.prompt,o.fmt||o.ans])); downloadCSV(`${deckTitle}_practice.csv`, rows);
-  });
-  id('prExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_practice.json`, prState.items));
+  id('qatCSV').addEventListener('click',()=>{ const rows=[['prompt','answer']]; qatState.items.forEach(o=>rows.push([o.prompt,o.ans])); downloadCSV(`${deckTitle}_qatar_apps.csv`, rows); });
+  id('qatJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_qatar_apps.json`, qatState.items));
 
   /* ------------------------- Significant Figures ------------------------- */
   const sigCState={items:[]}, sigRState={items:[]};
   function genSigCount(){
+    const rng=seededRNG();
     const pool=['0.00340','1200','1200.','5.060','0.0702','30007','2.90','0.0005','40','40.0'];
-    sigCState.items = pool.sort(()=>Math.random()-0.5).slice(0,4).map(s=>({s,ans:countSigStr(s)}));
+    const pick=[...pool].sort(()=>rng()-0.5).slice(0,4);
+    sigCState.items = pick.map(s=>({s,ans:countSigStr(s)}));
     const box=id('sigCountList'); box.innerHTML='';
     sigCState.items.forEach((o,idx)=>{
       const row=document.createElement('div'); row.className='card p-3';
@@ -687,10 +931,11 @@
     renderMath(id('sigSlide'));
   }
   function genSigRound(){
+    const rng=seededRNG();
     const items=[];
     for(let k=0;k<4;k++){
-      const x = +( (Math.random()*9000-1000).toFixed(4) );
-      const n=[2,3,4][Math.floor(Math.random()*3)];
+      const x = +( (rng()*9000-1000).toFixed(4) );
+      const n=[2,3,4][randInt(rng,0,2)];
       const ans = roundToSig(x,n);
       items.push({x,n,ans,fmt:ans.toPrecision(n)});
     }
@@ -703,6 +948,15 @@
     });
     renderMath(id('sigSlide'));
   }
+  // Tabs
+  document.querySelectorAll('#sigSlide .tab').forEach(t=>{
+    t.addEventListener('click',()=>{
+      document.querySelectorAll('#sigSlide .tab').forEach(a=>a.classList.remove('active'));
+      t.classList.add('active');
+      const trg=t.dataset.tab;
+      document.querySelectorAll('#sigSlide .tabpanes > div').forEach(p=>p.classList.toggle('active','#'+p.id===trg));
+    });
+  });
   id('sigCountNew').addEventListener('click',genSigCount);
   id('sigRoundNew').addEventListener('click',genSigRound);
   genSigCount(); genSigRound();
@@ -722,23 +976,20 @@
     id('sigRoundFb').textContent = ok===sigRState.items.length? '✅ Excellent!' : `Score: ${ok}/${sigRState.items.length}`;
     if(ok===sigRState.items.length) confetti();
   });
-  id('sigCountCSV').addEventListener('click',()=>{
-    const rows=[['number','sig_figs']]; sigCState.items.forEach(o=>rows.push([o.s,o.ans])); downloadCSV(`${deckTitle}_sig_count.csv`, rows);
-  });
+  id('sigCountCSV').addEventListener('click',()=>{ const rows=[['number','sig_figs']]; sigCState.items.forEach(o=>rows.push([o.s,o.ans])); downloadCSV(`${deckTitle}_sig_count.csv`, rows); });
   id('sigCountJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_sig_count.json`, sigCState.items));
-  id('sigRoundCSV').addEventListener('click',()=>{
-    const rows=[['x','n_sf','answer']]; sigRState.items.forEach(o=>rows.push([o.x,o.n,o.fmt])); downloadCSV(`${deckTitle}_sig_round.csv`, rows);
-  });
+  id('sigRoundCSV').addEventListener('click',()=>{ const rows=[['x','n_sf','answer']]; sigRState.items.forEach(o=>rows.push([o.x,o.n,o.fmt])); downloadCSV(`${deckTitle}_sig_round.csv`, rows); });
   id('sigRoundJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_sig_round.json`, sigRState.items));
 
   /* ------------------------- Scientific Notation ------------------------- */
   const sciState={items:[]};
   function sciNew(){
+    const rng=seededRNG();
     const list=[];
     for(let k=0;k<4;k++){
-      const e = Math.floor(Math.random()*7)-3; // -3..3
-      const m = +( (Math.random()*9+1).toFixed(4) ); // 1..10
-      const n=[2,3,4][Math.floor(Math.random()*3)];
+      const e = randInt(rng,-3,3);
+      const m = +( (rng()*9+1).toFixed(4) );
+      const n=[2,3,4][randInt(rng,0,2)];
       const r=sciRound(m,e,n);
       list.push({m,e,n,ans:r});
     }
@@ -746,7 +997,7 @@
     const box=id('sciList'); box.innerHTML='';
     list.forEach((o,idx)=>{
       const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-xl">Round \\( ${o.m}\\times 10^{${o.e}} \\) to ${o.n} s.f.: mantissa = <input class="sciin border rounded px-2 py-1 w-20" placeholder="m">, exponent = <input class="sciexp border rounded px-2 py-1 w-20" placeholder="e"></div>`;
+      row.innerHTML=`<div class="text-xl">Round \\( ${o.m}\\times 10^{${o.e}} \\) to ${o.n} s.f.: mantissa = <input class="sciin border rounded px-2 py-1 w-24" placeholder="m">, exponent = <input class="sciexp border rounded px-2 py-1 w-20" placeholder="e"></div>`;
       box.appendChild(row);
     });
     renderMath(id('sciSlide'));
@@ -755,23 +1006,24 @@
   id('sciCheck').addEventListener('click',()=>{
     let ok=0; id('sciList').querySelectorAll('.card').forEach((row,idx)=>{
       const item=sciState.items[idx]; const m=Number(row.querySelector('.sciin').value); const e=Number(row.querySelector('.sciexp').value);
-      const good= Math.abs(m-item.ans.m)<1e-10 && e===item.ans.e; row.querySelector('.sciin').style.borderColor=good?'#22c55e':'#ef4444'; row.querySelector('.sciexp').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
+      const good= Math.abs(m-item.ans.m)<1e-10 && e===item.ans.e;
+      row.querySelector('.sciin').style.borderColor=good?'#22c55e':'#ef4444';
+      row.querySelector('.sciexp').style.borderColor=good?'#22c55e':'#ef4444';
+      if(good) ok++;
     });
     id('sciFb').textContent = ok===sciState.items.length? '✅ Perfect!' : `Score: ${ok}/${sciState.items.length}`;
     if(ok===sciState.items.length) confetti();
   });
-  id('sciCSV').addEventListener('click',()=>{
-    const rows=[['m','e','n_sf','m_ans','e_ans']]; sciState.items.forEach(o=>rows.push([o.m,o.e,o.n,o.ans.m,o.ans.e])); downloadCSV(`${deckTitle}_scientific.csv`, rows);
-  });
+  id('sciCSV').addEventListener('click',()=>{ const rows=[['m','e','n_sf','m_ans','e_ans']]; sciState.items.forEach(o=>rows.push([o.m,o.e,o.n,o.ans.m,o.ans.e])); downloadCSV(`${deckTitle}_scientific.csv`, rows); });
   id('sciJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_scientific.json`, sciState.items));
 
   /* ------------------------- Bounds ------------------------- */
   const bdState={items:[]};
   function bdNew(){
-    const list=[];
+    const rng=seededRNG(); const list=[];
     for(let k=0;k<4;k++){
-      const unit=[0.001,0.01,0.1,1,10,100][Math.floor(Math.random()*6)];
-      const x = +( (Math.random()*1000-500).toFixed(unit<1?3:0) );
+      const unit=[0.001,0.01,0.1,1,10,100][randInt(rng,0,5)];
+      const x = +( (rng()*1000-500).toFixed(unit<1?3:0) );
       const r = roundHalfUpToUnit(x,unit);
       const lb = r - unit/2, ub = r + unit/2;
       const label = unit>=1? `nearest ${unit}` : `${decPlacesFromUnit(unit)} dp`;
@@ -801,36 +1053,93 @@
     id('bdFb').textContent = ok===bdState.items.length? '✅ Excellent!' : `Score: ${ok}/${bdState.items.length}`;
     if(ok===bdState.items.length) confetti();
   });
-  id('bdCSV').addEventListener('click',()=>{
-    const rows=[['reported','unit','label','lower','upper']];
-    bdState.items.forEach(o=>rows.push([fmtToUnit(o.r,o.unit),o.unit,o.label,o.lb,o.ub]));
-    downloadCSV(`${deckTitle}_bounds.csv`, rows);
-  });
+  id('bdCSV').addEventListener('click',()=>{ const rows=[['reported','unit','label','lower','upper']]; bdState.items.forEach(o=>rows.push([fmtToUnit(o.r,o.unit),o.unit,o.label,o.lb,o.ub])); downloadCSV(`${deckTitle}_bounds.csv`, rows); });
   id('bdJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_bounds.json`, bdState.items));
 
-  /* ------------------------- Real-world ------------------------- */
+  /* ------------------------- Practice Generator ------------------------- */
+  const prState={items:[]};
+  function prBuild(){
+    const rng=seededRNG();
+    const lv=id('prLevel').value;
+    const list=[];
+    function task(x,unit,label){ return {type:'unit', prompt:`Round ${x} to ${label}`, x, unit, label, ans: roundHalfUpToUnit(x,unit), fmt:fmtToUnit(roundHalfUpToUnit(x,unit),unit)};}
+    function taskSig(x,n){const ans=roundToSig(x,n); return {type:'sig', prompt:`Round ${x} to ${n} s.f.`, x, n, ans, fmt:ans.toPrecision(n)};}
+    for(let k=0;k<6;k++){
+      if(lv==='easy'){
+        const a = randInt(rng,100,999);
+        const unit = rng()<0.5?10:100;
+        list.push(task(a,unit, unit===10?'nearest 10':'nearest 100'));
+      }else if(lv==='med'){
+        const x = +( (rng()*200-100).toFixed(rng()<0.5?1:2) );
+        const unit = rng()<0.5?0.1:0.01;
+        list.push(task(x,unit, unit===0.1?'1 dp':'2 dp'));
+      }else if(lv==='hard'){
+        if(rng()<0.5){
+          const unit = [0.001,0.01,0.1,1,10,100][randInt(rng,0,5)];
+          const x = +( (rng()*200-100).toFixed(unit<1?3:0) );
+          const lab = unit>=1? `nearest ${unit}` : `${decPlacesFromUnit(unit)} dp`;
+          list.push(task(x,unit,lab));
+        }else{
+          const x = +( (rng()*9000-4500).toFixed(3) );
+          const n = [2,3,4][randInt(rng,0,2)];
+          list.push(taskSig(x,n));
+        }
+      }else{ // expert
+        if(rng()<0.5){
+          const x = +( (rng()*9000-4500).toFixed(4) );
+          const n = [2,3,4][randInt(rng,0,2)];
+          list.push(taskSig(x,n));
+        }else{
+          const unit = [0.001,0.01,0.1,1,10,100,1000][randInt(rng,0,6)];
+          const x = +( (rng()*50000-25000).toFixed(unit<1?3:0) );
+          const lab = unit>=1? `nearest ${unit}` : `${decPlacesFromUnit(unit)} dp`;
+          list.push(task(x,unit,lab));
+        }
+      }
+    }
+    prState.items=list;
+    const box=id('prList'); box.innerHTML='';
+    list.forEach((o,idx)=>{
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
+        <div class="text-xl mt-1">${o.prompt} = <input class="prin border rounded px-2 py-1 w-44" placeholder="answer"></div>`;
+      box.appendChild(row);
+    });
+  }
+  id('prNew').addEventListener('click',prBuild); prBuild();
+  id('prCheck').addEventListener('click',()=>{
+    let ok=0; id('prList').querySelectorAll('.card').forEach((row,idx)=>{
+      const inp=row.querySelector('.prin'); const item=prState.items[idx];
+      const v = Number(inp.value.replace(/,/g,'')); const want = item.ans;
+      const good = Math.abs(v-want)<1e-10;
+      inp.style.borderColor = good? '#22c55e':'#ef4444';
+      if(good) ok++;
+    });
+    id('prFb').textContent = ok===prState.items.length? '✅ All correct!' : `Score: ${ok}/${prState.items.length}`;
+    if(ok===prState.items.length) confetti();
+  });
+  id('prExportCSV').addEventListener('click',()=>{ const rows=[['prompt','answer']]; prState.items.forEach(o=>rows.push([o.prompt,o.fmt||o.ans])); downloadCSV(`${deckTitle}_practice.csv`, rows); });
+  id('prExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_practice.json`, prState.items));
+
+  /* ------------------------- Real-world (General) ------------------------- */
   const realState={items:[]};
   function realNew(){
-    const list=[];
-    // Currency estimation
-    const price = +( (Math.random()*40+10).toFixed(2) );
-    const qty = Math.floor(Math.random()*7)+4; // 4..10
+    const rng=seededRNG(); const list=[];
+    const price = +( (rng()*40+10).toFixed(2) );
+    const qty = randInt(rng,4,10);
     list.push({type:'est', prompt:`Estimate the total cost of ${qty} items at QAR ${price} each by rounding to the nearest riyal (QAR).`, ans: Math.round(price)*qty });
-    // Population rounding
-    const pop = Math.floor(Math.random()*7e6)+3e6;
+    const pop = randInt(rng,3_000_000,9_000_000);
     list.push({type:'unit', prompt:`Round the population ${pop.toLocaleString()} to the nearest hundred thousand.`, unit:100000, ans: roundHalfUpToUnit(pop,100000)});
-    // Distance with dp
-    const dist = +( (Math.random()*150+5).toFixed(2) );
+    const dist = +( (rng()*150+5).toFixed(2) );
     list.push({type:'unit', prompt:`Round the distance ${dist} km to 1 dp.`, unit:0.1, ans: roundHalfUpToUnit(dist,0.1)});
-    // Time rounding
-    const minutes = +( (Math.random()*180).toFixed(1) );
+    const minutes = +( (rng()*180).toFixed(1) );
     list.push({type:'unit', prompt:`Round the running time ${minutes} minutes to the nearest minute.`, unit:1, ans: roundHalfUpToUnit(minutes,1)});
     realState.items=list;
     const box=id('realList'); box.innerHTML='';
     list.forEach((o,idx)=>{
       const row=document.createElement('div'); row.className='card p-4';
       row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
-        <div class="text-xl mt-1">${o.prompt} = <input class="rin border rounded px-2 py-1 w-40" placeholder="answer"></div>`;
+        <div class="text-xl mt-1">${o.prompt} = <input class="rin border rounded px-2 py-1 w-44" placeholder="answer"></div>`;
       box.appendChild(row);
     });
   }
@@ -843,31 +1152,30 @@
     id('realFb').textContent = ok===realState.items.length? '✅ Real‑world ready!' : `Score: ${ok}/${realState.items.length}`;
     if(ok===realState.items.length) confetti();
   });
-  id('realCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer']]; realState.items.forEach(o=>rows.push([o.prompt,o.ans])); downloadCSV(`${deckTitle}_realworld.csv`, rows);
-  });
+  id('realCSV').addEventListener('click',()=>{ const rows=[['prompt','answer']]; realState.items.forEach(o=>rows.push([o.prompt,o.ans])); downloadCSV(`${deckTitle}_realworld.csv`, rows); });
   id('realJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_realworld.json`, realState.items));
 
   /* ------------------------- Challenge Mode ------------------------- */
   const chState={cur:null, streak:0, history:[]};
   function chNew(){
+    const rng=seededRNG();
     const lv=id('chLevel').value;
     let prompt='', ans=null;
-    const r = Math.random();
+    const r = rng();
     if(lv==='easy'){
-      const x = Math.floor(Math.random()*900)+100, unit=10;
+      const x = randInt(rng,100,999), unit=10;
       ans = roundHalfUpToUnit(x,unit);
       prompt = `Round ${x} to the nearest 10`;
     }else if(lv==='med'){
-      const x = +( (Math.random()*200-100).toFixed(2) ); const dp=1;
+      const x = +( (rng()*200-100).toFixed(2) ); const dp=1;
       ans = roundToDP(x,dp); prompt=`Round ${x} to ${dp} dp`;
     }else if(lv==='hard'){
-      if(r<0.5){ const x=+( (Math.random()*9000-3000).toFixed(3) ); const n=[2,3,4][Math.floor(Math.random()*3)]; ans=roundToSig(x,n); prompt=`Round ${x} to ${n} s.f.`; }
-      else { const unit=[0.01,0.1,1,10,100][Math.floor(Math.random()*5)]; const x=+( (Math.random()*2000-1000).toFixed(unit<1?2:0) ); ans=roundHalfUpToUnit(x,unit); prompt=`Round ${x} to ${unit>=1? 'nearest '+unit : decPlacesFromUnit(unit)+' dp'}`; }
+      if(r<0.5){ const x=+( (rng()*9000-3000).toFixed(3) ); const n=[2,3,4][randInt(rng,0,2)]; ans=roundToSig(x,n); prompt=`Round ${x} to ${n} s.f.`; }
+      else { const unit=[0.01,0.1,1,10,100][randInt(rng,0,4)]; const x=+( (rng()*2000-1000).toFixed(unit<1?2:0) ); ans=roundHalfUpToUnit(x,unit); prompt=`Round ${x} to ${unit>=1? 'nearest '+unit : decPlacesFromUnit(unit)+' dp'}`; }
     }else{ // expert
-      if(r<0.33){ const e=Math.floor(Math.random()*7)-3; const m=+( (Math.random()*9+1).toFixed(4) ); const n=[2,3,4][Math.floor(Math.random()*3)]; const rr=sciRound(m,e,n); ans=rr.m*10**rr.e; prompt=`Round ${m}×10^${e} to ${n} s.f. (enter numeric value)`; }
-      else if(r<0.66){ const unit=[0.001,0.01,0.1,1,10,100][Math.floor(Math.random()*6)]; const r0=+( (Math.random()*1000-500).toFixed(unit<1?3:0) ); const rr=roundHalfUpToUnit(r0,unit); const lb=rr-unit/2, ub=rr+unit/2; ans=lb; prompt=`Given value rounded to ${unit>=1?'nearest '+unit: decPlacesFromUnit(unit)+' dp'} is ${fmtToUnit(rr,unit)}. Enter the <lower bound>.`; }
-      else { const x=+( (Math.random()*9000-1000).toFixed(4) ); const n=[2,3,4][Math.floor(Math.random()*3)]; ans=roundToSig(x,n); prompt=`Round ${x} to ${n} s.f.`; }
+      if(r<0.33){ const e=randInt(rng,-3,3); const m=+( (rng()*9+1).toFixed(4) ); const n=[2,3,4][randInt(rng,0,2)]; const rr=sciRound(m,e,n); ans=rr.m*10**rr.e; prompt=`Round ${m}×10^${e} to ${n} s.f. (enter numeric value)`; }
+      else if(r<0.66){ const unit=[0.001,0.01,0.1,1,10,100][randInt(rng,0,5)]; const r0=+( (rng()*1000-500).toFixed(unit<1?3:0) ); const rr=roundHalfUpToUnit(r0,unit); const lb=rr-unit/2; ans=lb; prompt=`Given value rounded to ${unit>=1?'nearest '+unit: decPlacesFromUnit(unit)+' dp'} is ${fmtToUnit(rr,unit)}. Enter the <lower bound>.`; }
+      else { const x=+( (rng()*9000-1000).toFixed(4) ); const n=[2,3,4][randInt(rng,0,2)]; ans=roundToSig(x,n); prompt=`Round ${x} to ${n} s.f.`; }
     }
     chState.cur={prompt,ans}; id('chText').textContent=prompt; id('chAns').value=''; id('chFb').textContent=''; id('chHintBox').textContent=''; renderMath(id('challengeSlide'));
   }
@@ -880,15 +1188,50 @@
     else { chState.streak=0; id('chFb').textContent='❌ Not quite. Expected '+want; id('chFb').className='mt-2 h-6 font-semibold text-red-700'; chState.history.push({prompt:chState.cur.prompt, answer:want, correct:false}); }
     id('streakOut').textContent=chState.streak;
   });
-  id('chCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer','correct']]; chState.history.forEach(h=>rows.push([h.prompt,h.answer,h.correct])); downloadCSV(`${deckTitle}_challenge.csv`, rows);
-  });
+  id('chCSV').addEventListener('click',()=>{ const rows=[['prompt','answer','correct']]; chState.history.forEach(h=>rows.push([h.prompt,h.answer,h.correct])); downloadCSV(`${deckTitle}_challenge.csv`, rows); });
   id('chJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_challenge.json`, chState.history));
 
-  /* ------------------------- Init ------------------------- */
-  window.addEventListener('resize',()=>{ if(slides[i].id==='lineSlide') drawRoundLine(); });
-  show(0);
+  /* ------------------------- LO & Self-assessment ------------------------- */
+  const loChks=[...document.querySelectorAll('.loChk')];
+  function updateLOPct(){
+    const k=loChks.filter(x=>x.checked).length, n=loChks.length;
+    id('loPct').textContent = Math.round(100*k/n) + '% completed';
+  }
+  loChks.forEach(c=>c.addEventListener('change',updateLOPct)); updateLOPct();
+  id('loSave').addEventListener('click',()=>{
+    const rows=[['learning_outcome','completed']]; loChks.forEach((c,j)=>rows.push(['LO'+(j+1), c.checked])); downloadCSV(`${deckTitle}_LO_status.csv`, rows);
+  });
 
+  const scChks=[...document.querySelectorAll('.scChk')];
+  function updateSCPct(){
+    const k=scChks.filter(x=>x.checked).length, n=scChks.length;
+    id('scPct').textContent = Math.round(100*k/n) + '% met';
+  }
+  scChks.forEach(c=>c.addEventListener('change',updateSCPct)); updateSCPct();
+  id('scSave').addEventListener('click',()=>{
+    const rows=[['criterion','met']]; scChks.forEach((c,j)=>rows.push(['SC'+(j+1), c.checked])); downloadCSV(`${deckTitle}_self_assessment.csv`, rows);
+  });
+  id('exitSave').addEventListener('click',()=>{
+    downloadCSV(`${deckTitle}_exit_ticket.csv`, [['reflection'], [id('exitTxt').value]]);
+  });
+
+  /* ------------------------- Global Set/Mode effects ------------------------- */
+  function rebuildAll(){
+    setLabel.textContent = id('setSelect').value;
+    // Rebuild all random sets with the chosen seed
+    newPV(); drawRoundLine(); kwNew(); qatNew(); genSigCount(); genSigRound(); sciNew(); bdNew(); prBuild(); realNew(); chNew();
+  }
+  id('setSelect').addEventListener('change',rebuildAll);
+
+  // Teacher mode shows extra hints
+  id('modeSelect').addEventListener('change',()=>{
+    const t = id('modeSelect').value==='teacher';
+    document.querySelectorAll('.micro').forEach(el=>el.style.opacity = t? '1':'0.9');
+  });
+
+  /* ------------------------- Init ------------------------- */
+  window.addEventListener('resize',()=>{ if(slides[i].id==='exploreSlide') drawRoundLine(); });
+  show(0);
 })();
 </script>
 </body>
