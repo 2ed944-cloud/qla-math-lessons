@@ -11,12 +11,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- KaTeX -->
+<!-- KaTeX: CSS + JS (robust auto-render bootstrap) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 <script>
-  // KaTeX boot + global re-render
+  // Boot KaTeX and expose a global re-typeset helper
   window.addEventListener('DOMContentLoaded', () => {
     const run = (root = document.body) => {
       if (!window.renderMathInElement) return;
@@ -54,51 +54,31 @@
   .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
   .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
   .btn:hover{filter:brightness(0.98)}
-  #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:40;backdrop-filter:blur(6px)}
+  #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
   #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700}
   #controls button:hover{transform:scale(1.06)}
-  #counter{color:#fff;font-weight:700;min-width:96px;text-align:center}
+  #counter{color:#fff;font-weight:700;min-width:120px;text-align:center}
   #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:30;transition:width .35s ease}
   #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
 
-  /* Popover + Drawer */
-  #pop{position:fixed;inset:auto auto 20px 20px;max-width:min(560px,90vw);background:#fff;border:2px solid var(--gold);border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.25);padding:14px 16px;z-index:50;display:none;text-align:left}
+  /* Popover */
+  #pop{position:fixed;inset:auto auto 20px 20px;max-width:min(560px,90vw);background:#fff;border:2px solid var(--gold);border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.25);padding:14px 16px;z-index:40;display:none;text-align:left}
   #pop strong{color:var(--maroon)} #pop .close{float:right;color:#666;cursor:pointer;font-weight:800}
-
-  #glossBtn{position:fixed;top:16px;left:16px;z-index:45;background:#fff;border:2px solid var(--gold);border-radius:999px;padding:.45rem .8rem;box-shadow:0 8px 20px rgba(0,0,0,.2);cursor:pointer}
-  #drawer{position:fixed;top:0;right:-420px;width:400px;height:100vh;background:#fff;border-left:3px solid var(--gold);z-index:60;transition:right .4s ease;display:flex;flex-direction:column}
-  #drawer.open{right:0}
-  #drawer header{padding:14px 16px;border-bottom:1px solid #eee}
-  #drawer .body{flex:1;overflow:auto;padding:12px 16px}
-  .kw{border:1px solid #eee;border-radius:10px;padding:.6rem .7rem;margin-bottom:.5rem}
-  .kw h4{margin:0;font-size:1rem;color:var(--maroon)}
-  .kw small{color:#555}
-  .kw .quiz{margin-top:.4rem}
 
   /* Number line */
   .nl-wrap{width:100%;max-width:920px}
   canvas.nline{width:100%;height:170px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
 
-  .confetti{position:fixed;pointer-events:none;z-index:70}
-  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.6rem .8rem}
-  .intro{background:#eef6ff;border:1px solid #cfe1ff;border-radius:12px;padding:.8rem 1rem}
+  .confetti{position:fixed;pointer-events:none;z-index:50}
+  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
+  .lead{background:#eef6ff;border:1px solid #bfdbfe;border-radius:12px;padding:.8rem 1rem}
+  .t-notes{display:none;font-size:.95rem;background:#f8f5ff;border:1px dashed #bda5ff;border-radius:10px;padding:.6rem .8rem}
+  body.teacher .t-notes{display:block}
   .tok{display:inline-block;padding:.05rem .25rem;border-radius:6px}
 
-  /* Settings pop */
-  #settings{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);z-index:55;background:#fff;border:2px solid var(--gold);border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.25);padding:14px 16px;min-width:320px;display:none}
-  #settings .row{display:flex;align-items:center;gap:.75rem;margin:.35rem 0}
-
-  /* MCQ */
-  .mcq .q{border:1px solid #e5e7eb;border-radius:12px;background:#fff;padding:.8rem}
-  .mcq label{display:flex;gap:.6rem;align-items:flex-start;border:1px solid #eee;background:#fafafa;border-radius:10px;padding:.55rem .6rem;margin:.35rem 0;cursor:pointer}
-  .mcq label.correct{border-color:#22c55e;background:#ecfdf5}
-  .mcq label.wrong{border-color:#ef4444;background:#fff1f1}
-  .badge{display:inline-block;padding:.1rem .45rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-size:.75rem}
-
-  /* Tables */
-  .tbl{width:100%;border-collapse:collapse}
-  .tbl th,.tbl td{border-bottom:1px solid #eee;padding:.5rem;text-align:left}
-  .tbl th{background:#fafafa}
+  .pill{display:inline-flex;align-items:center;gap:.5rem;border-radius:9999px;padding:.25rem .6rem;border:1px solid #e5e7eb;background:#fff}
+  .pill input[type="checkbox"]{transform:scale(1.2)}
+  .kbd{padding:.05rem .4rem;border:1px solid #ddd;border-bottom-width:2px;border-radius:6px;background:#fff;font-family:ui-monospace, SFMono-Regular, Menlo, monospace}
 
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
@@ -108,92 +88,130 @@
 <div id="deck" aria-live="polite">
   <div id="slides" class="relative">
     <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
-    <button id="glossBtn" title="Glossary (G)">🔎 Keywords</button>
 
     <!-- 0 • Title -->
     <section class="slide active bg-maroon text-white" id="titleSlide">
-      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('../assets/qla_banner.png')" aria-label="QLA Partner Banner"></div>
+      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="QLA Partner Banner"></div>
       <div class="flex items-center gap-8">
-        <img src="../assets/qla_logo.png" alt="QLA Logo" class="h-20 w-auto" onerror="this.style.display='none'"/>
+        <img src="qla_logo.png" alt="QLA Logo" class="h-20 w-auto" onerror="this.style.display='none'"/>
         <div class="text-left">
           <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Unit 1 — Lesson 4: Rounding Numbers</h1>
           <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Grade 8 • Whole numbers • Decimals • Significant Figures • Bounds</p>
           <p class="mt-2 text-lg">Qatar Leadership Academy — Mathematics</p>
         </div>
       </div>
-      <div class="absolute bottom-6 text-sm text-gray-100">Aligned to AERO 8.NS &amp; 8.EE readiness.</div>
+      <div class="absolute bottom-6 text-sm text-gray-100">Aligned to AERO 8.NS &amp; 8.EE readiness. Built‑in Qatar contexts.</div>
     </section>
 
-    <!-- 0a • Overview & Success Criteria -->
-    <section class="slide" id="overviewSlide">
-      <h2 class="text-4xl font-extrabold text-maroon mb-2">Lesson Overview</h2>
-      <div class="grid md:grid-cols-2 gap-6 w-full max-w-5xl">
+    <!-- 0.5 • Lesson Flow (teacher & student overview) -->
+    <section class="slide" id="flowSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Lesson Flow &amp; Success Criteria</h2>
+      <div class="grid md:grid-cols-2 gap-6 max-w-5xl">
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon">Learning Objectives</h3>
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (LOs)</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Round whole numbers and decimals using the <strong>half‑up</strong> rule, including negatives.</li>
-            <li>Round to a specified number of <strong>decimal places</strong> and <strong>significant figures</strong>.</li>
-            <li>Interpret <strong>bounds</strong> (error intervals) for a reported value.</li>
-            <li>Select appropriate rounding for <strong>estimation</strong> in real‑world contexts in Qatar and justify the choice.</li>
+            <li>I can round integers and decimals using the <b>half‑up</b> rule (including negatives).</li>
+            <li>I can round to a given number of <b>significant figures</b> and in <b>scientific notation</b>.</li>
+            <li>I can interpret <b>bounds</b> (error intervals) for a rounded value.</li>
+            <li>I can choose suitable rounding for <b>Qatar‑based</b> real‑world contexts and justify my choice.</li>
           </ul>
-          <div class="mt-2 text-sm text-gray-600">Optional investigation: compare Half‑Up vs Ties‑to‑Even (banker’s rounding) and discuss fairness.</div>
+          <div class="t-notes mt-3">
+            <b>Teacher note.</b> Invite students to self‑assess at the end with the LO checklist (see final slide).
+          </div>
         </div>
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon">Success Criteria</h3>
-          <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>I can <em>identify</em> the rounding digit and decide up/down correctly.</li>
-            <li>I can <em>explain</em> why a rounded value implies an interval of possible true values.</li>
-            <li>I can <em>choose</em> a rounding unit that keeps results reasonable for a given purpose.</li>
-            <li>I can <em>analyze</em> the impact of rounding on sums/totals (round then sum vs sum then round).</li>
-          </ul>
-          <div class="hint mt-3">Tip: We always use the **school standard** Half‑Up rule. We will only toggle banker’s rounding when investigating tie‑cases.</div>
+          <h3 class="text-2xl font-bold text-maroon mb-1">Lesson Flow</h3>
+          <ol class="list-decimal list-inside space-y-1">
+            <li><b>Notice &amp; Wonder (Qatar receipts)</b> — surface ideas about rounding.</li>
+            <li><b>Explainers</b> before each activity — brief, targeted key ideas.</li>
+            <li><b>Explore Stations</b> — number line, significant figures, bounds.</li>
+            <li><b>Qatar Applications Lab</b> — metro times, QAR prices, stadium capacities.</li>
+            <li><b>Misconception Clinic</b> — diagnose and correct reasoning.</li>
+            <li><b>Choice Board Practice</b> — differentiated sets.</li>
+            <li><b>Exit Ticket &amp; LO Self‑Check</b>.</li>
+          </ol>
+          <div class="mt-3 text-sm text-gray-600">Controls: <span class="kbd">←</span>/<span class="kbd">→</span> navigate, <span class="kbd">F</span> fullscreen, “Teacher” toggles facilitation notes.</div>
         </div>
-      </div>
-      <div class="card p-4 mt-4 w-full max-w-5xl intro">
-        <strong>How today works:</strong> Explore ➜ Explain ➜ Apply ➜ Reflect. You’ll see a short explainer before each activity, then you’ll try, compare, and discuss.
       </div>
     </section>
 
-    <!-- 1 • Learning Objectives & Keywords -->
+    <!-- 1 • Learning Objectives & Keywords (enhanced) -->
     <section class="slide" id="loSlide">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Learning Objectives &amp; Keywords</h2>
-      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-6xl">
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-1">Learning Objectives</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Round to a specified place (nearest 10, 100, 0.1, 0.01, …) using Half‑Up.</li>
-            <li>Round to a given number of <strong>significant figures</strong> and in <strong>scientific notation</strong>.</li>
-            <li>Interpret a rounded value’s <strong>bounds</strong> (interval of possible true values).</li>
-            <li>Choose suitable rounding for <strong>estimation</strong> in real‑world contexts and justify reasonableness.</li>
+            <li>Round whole numbers and decimals to a specified place (nearest 10, 100, 0.1, 0.01, …) using the <b>half‑up</b> rule (symmetric for negatives).</li>
+            <li>Round to a given number of <b>significant figures</b> and in <b>scientific notation</b>.</li>
+            <li>Interpret a rounded value’s <b>bounds</b> (interval of possible true values).</li>
+            <li>Choose suitable rounding for <b>estimation</b> in real‑world contexts and justify reasonableness.</li>
           </ul>
+          <div class="t-notes mt-3">
+            <b>Teacher note.</b> Ask: “Where have you seen rounding today?” (money, transport schedules, measurements).
+          </div>
         </div>
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for quick defs)</h3>
-          <div class="flex flex-wrap gap-2 text-lg">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <div class="flex flex-wrap gap-2 text-lg mb-2">
             <span class="chip" data-key="halfup">half‑up rounding</span>
             <span class="chip" data-key="place">place value</span>
-            <span class="chip" data-key="rounddigit">rounding digit</span>
             <span class="chip" data-key="dp">decimal places (dp)</span>
             <span class="chip" data-key="sf">significant figures (s.f.)</span>
             <span class="chip" data-key="sci">scientific notation</span>
             <span class="chip" data-key="bounds">bounds / error interval</span>
-            <span class="chip" data-key="midpoint">midpoint (tie)</span>
             <span class="chip" data-key="estimate">estimation</span>
           </div>
-          <p class="text-xs text-gray-500 mt-3">Half‑Up rule: a trailing 5 rounds <strong>away from 0</strong> (e.g., \(-1.5\to -2\)).</p>
+          <div class="flex gap-2 mt-2">
+            <input id="glossSearch" aria-label="Search keyword" class="border rounded px-2 py-1 w-60" placeholder="Search keyword… (e.g., bounds)">
+            <button id="glossOpen" class="btn">Open</button>
+            <button id="glossQuiz" class="btn maroon">Glossary Quiz</button>
+          </div>
+          <p class="text-xs text-gray-500 mt-3">We use the school standard <b>half‑up</b> rule: a trailing 5 rounds <b>away from 0</b> (e.g., \(-1.5\to -2\)).</p>
         </div>
       </div>
     </section>
 
-    <!-- 2 • Warm‑up (with pre‑activity explanation) -->
+    <!-- 1.5 • Notice & Wonder (Qatar Receipts) -->
+    <section class="slide" id="nwSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Launch — Notice &amp; Wonder (Qatar)</h2>
+      <div class="lead mb-3">
+        <b>Read this first:</b> You’ll see three short receipts or measurements from Qatar. Without calculating, write what you <i>notice</i> and what you <i>wonder</i> about rounding in each case.
+      </div>
+      <div class="card p-5 w-full max-w-5xl">
+        <div class="grid md:grid-cols-3 gap-3 text-lg">
+          <div class="card p-3">
+            <b>Receipt A</b><br>QAR 18.95 × 6 items<br><span class="text-gray-600 text-sm">Coffee shop in Lusail</span>
+          </div>
+          <div class="card p-3">
+            <b>Metro Time</b><br>Arrival in 12.6 min<br><span class="text-gray-600 text-sm">Doha Metro app</span>
+          </div>
+          <div class="card p-3">
+            <b>Stadium Seats</b><br>80,023 seats<br><span class="text-gray-600 text-sm">Lusail Stadium</span>
+          </div>
+        </div>
+        <div class="mt-3 grid md:grid-cols-2 gap-3">
+          <textarea id="nwNotice" class="border rounded p-2 h-24" placeholder="Notice… (e.g., prices end in .95; time has 1 dp)…"></textarea>
+          <textarea id="nwWonder" class="border rounded p-2 h-24" placeholder="Wonder… (e.g., should I round to riyals? to the minute? to the nearest thousand?)…"></textarea>
+        </div>
+        <div class="mt-3 flex gap-2">
+          <button id="nwSave" class="btn maroon">Save Notes</button>
+          <button id="nwClear" class="btn">Clear</button>
+        </div>
+        <div id="nwFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+      <div class="t-notes mt-3">
+        <b>Teacher move.</b> Cold‑call 2–3 notices, 2–3 wonders. Chart “<i>Which unit?</i>” and “<i>Why?</i>” to foreshadow bounds.
+      </div>
+    </section>
+
+    <!-- 2 • Warm‑up Quick Check (with explainer) -->
     <section class="slide" id="warmSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm‑Up: Decide Fast!</h2>
-      <div class="card p-4 w-full max-w-5xl intro">
-        <p><strong>Why this matters:</strong> We practice identifying the rounding digit and the next digit quickly. Speed comes from *method*, not guessing.</p>
-        <p class="mt-1"><strong>How to do it:</strong> Mark the rounding digit → look one digit right → decide up/down (5–9 up; 0–4 stays). For negatives, at 5 we go **away from 0**.</p>
-        <p class="mt-1"><strong>Common pitfalls:</strong> Forgetting commas; misreading \(-2.5\); mixing decimal places with significant figures.</p>
+      <div class="lead mb-3">
+        <b>Read this first:</b> Identify the <i>rounding digit</i> and the next digit to decide up/down. For negatives, a tie at 5 rounds <i>away from 0</i>.
       </div>
-      <div class="grid md:grid-cols-3 gap-4 w-full max-w-5xl mt-3">
+      <div class="grid md:grid-cols-3 gap-4 w-full max-w-5xl">
         <div class="card p-4 text-left">
           <div class="font-bold text-maroon mb-1">Nearest hundred</div>
           <div class="text-xl">\( 12{,}649 \) → <input id="w1" class="border rounded px-2 py-1 w-32" placeholder="e.g., 12,600"></div>
@@ -214,29 +232,19 @@
       <div id="warmFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 3 • Place Value & Rule (with settings + intro) -->
+    <!-- 3 • Place Value & Rule (with explainer) -->
     <section class="slide" id="placeSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Place Value &amp; The Rounding Rule</h2>
-      <div class="card p-4 w-full max-w-5xl intro">
-        <p><strong>Why this matters:</strong> Accurate rounding begins with reading the number by <em>place value</em> and choosing the <em>rounding digit</em> correctly.</p>
-        <p class="mt-1"><strong>Try this:</strong> Highlight the rounding digit, then the digit to its right. Decide up/down with Half‑Up. Optionally, toggle banker’s rounding to see how “ties” behave differently.</p>
+      <div class="lead mb-3">
+        <b>Read this first:</b> Mark the rounding place, then check the digit to its right (0–4 stay, 5–9 go up). For negatives, a 5 still rounds away from 0.
       </div>
-      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left mt-2">
+      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
         <div class="card p-5">
-          <div class="flex flex-wrap items-center gap-3">
-            <label class="chip">Mode:
-              <select id="modeSelect" class="border rounded px-2 py-1">
-                <option value="half">Half‑Up (school standard)</option>
-                <option value="even">Ties‑to‑Even (investigation)</option>
-              </select>
-            </label>
-            <span class="text-sm text-gray-600">Switching mode changes only how <em>ties</em> (e.g., 2.5) behave.</span>
-          </div>
-          <p class="mb-2 mt-2">Highlight the rounding digit and the next digit (to decide up/down).</p>
+          <p class="mb-2">Highlight the rounding digit and the next digit (to decide up/down).</p>
           <div class="text-2xl" id="pvNumber" aria-live="polite"></div>
           <div class="mt-2 flex items-center gap-3">
             <label>Round to:</label>
-            <select id="pvPlace" class="border rounded px-2 py-1">
+            <select id="pvPlace" class="border rounded px-2 py-1" aria-label="choose place">
               <option value="1">ones</option>
               <option value="10">tens</option>
               <option value="100">hundreds</option>
@@ -248,16 +256,16 @@
             <button id="pvNew" class="btn">New number</button>
           </div>
           <div class="mt-2">Result: <span id="pvResult" class="font-bold"></span></div>
-          <div class="hint mt-3 text-sm">Rule: look at the digit **to the right**. If it’s 5–9, increase the rounding digit by 1; if 0–4, keep it the same. For negatives, “away from 0” at 5.</div>
+          <div class="hint mt-3 text-sm">Rule: check the digit <b>to the right</b>. If 5–9 → increase by 1; if 0–4 → keep. Negatives: still away from 0 at 5.</div>
         </div>
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon mb-2">Examples</h3>
-          <div class="space-y-2 text-lg" id="pvExamples">
+          <div class="space-y-2 text-lg">
             <div>\( 246.38 \) to 1 dp → \( 246.4 \)</div>
             <div>\( 7{,}950 \) to nearest thousand → \( 8{,}000 \)</div>
             <div>\( -12.5 \) to integer → \( -13 \)</div>
           </div>
-          <p class="mt-2 text-sm text-gray-600">Investigate: In Ties‑to‑Even mode, \(2.5\to 2\), \(3.5\to 4\). Why might banks prefer this?</p>
+          <div class="t-notes mt-3">Ask: “Which digit did we look at? Why?” Have students annotate with color on mini‑whiteboards.</div>
         </div>
       </div>
       <div class="mt-3 flex gap-2">
@@ -269,11 +277,10 @@
     <!-- 4 • Rounding Explorer (Number Line) -->
     <section class="slide" id="lineSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Rounding Explorer (Number Line)</h2>
-      <div class="card p-4 w-full max-w-5xl intro">
-        <p><strong>Why this matters:</strong> Rounding is choosing the nearest multiple of a unit \(u\). Midpoints (like 23.45 when \(u=0.1\)) create the tie rule.</p>
-        <p class="mt-1"><strong>How to read it:</strong> The dashed lines mark the half‑unit boundaries. The gold dot shows the rounded value.</p>
+      <div class="lead mb-3">
+        <b>Read this first:</b> The yellow dashed lines are the <i>midpoints</i>. If \(x\) is at or past the midpoint, it rounds to the next tick. Visualize why 5’s “tip” the number up (or away from 0).
       </div>
-      <div class="nl-wrap mt-2"><canvas id="roundLine" class="nline" aria-label="Rounding number line"></canvas></div>
+      <div class="nl-wrap"><canvas id="roundLine" class="nline" aria-label="Rounding number line"></canvas></div>
       <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
         <label class="chip">x = <input id="lineX" class="border rounded px-2 py-1 w-28" value="23.47" aria-label="x value"></label>
         <label class="chip">unit = 
@@ -290,28 +297,66 @@
         <button id="lineExportCSV" class="btn">Export CSV</button>
         <button id="lineExportJSON" class="btn">Export JSON</button>
       </div>
+      <div class="t-notes mt-3">Have students drag through values that are just below/above the midpoint and predict outcomes.</div>
     </section>
 
-    <!-- 5 • Practice Generator (multi sets) -->
+    <!-- 4.5 • Station Rotation (student-centered exploration) -->
+    <section class="slide" id="stationSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Explore — Station Rotation</h2>
+      <div class="lead mb-3">
+        <b>Read this first:</b> Choose a station. Record your reasoning. You may switch after finishing one set. Aim to explain the <i>why</i>, not only the answer.
+      </div>
+      <div class="grid md:grid-cols-3 gap-4 max-w-6xl">
+        <div class="card p-4">
+          <h3 class="text-xl font-bold text-maroon">Station A — Number Line</h3>
+          <p class="text-sm">Decide the rounded value by <i>reasoning from midpoints</i>.</p>
+          <div id="staA" class="space-y-2"></div>
+          <div class="mt-2 flex gap-2">
+            <button id="staANew" class="btn">New set</button>
+            <button id="staACheck" class="btn maroon">Check</button>
+          </div>
+          <div id="staAFb" class="mt-2 h-6 font-semibold"></div>
+        </div>
+        <div class="card p-4">
+          <h3 class="text-xl font-bold text-maroon">Station B — Significant Figures</h3>
+          <p class="text-sm">Explain which digits count and why.</p>
+          <div id="staB" class="space-y-2"></div>
+          <div class="mt-2 flex gap-2">
+            <button id="staBNew" class="btn">New set</button>
+            <button id="staBCheck" class="btn maroon">Check</button>
+          </div>
+          <div id="staBFb" class="mt-2 h-6 font-semibold"></div>
+        </div>
+        <div class="card p-4">
+          <h3 class="text-xl font-bold text-maroon">Station C — Bounds</h3>
+          <p class="text-sm">From the reported value and unit, give the lower/upper bounds.</p>
+          <div id="staC" class="space-y-2"></div>
+          <div class="mt-2 flex gap-2">
+            <button id="staCNew" class="btn">New set</button>
+            <button id="staCCheck" class="btn maroon">Check</button>
+          </div>
+          <div id="staCFb" class="mt-2 h-6 font-semibold"></div>
+        </div>
+      </div>
+      <div class="t-notes mt-3">
+        <b>Teacher note.</b> Use “5 second share” at each station. Prompt: “What convinced you?” Encourage diagrams.
+      </div>
+    </section>
+
+    <!-- 5 • Practice Generator (choice board) -->
     <section class="slide" id="pracSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice Generator</h2>
-      <div class="card p-4 w-full max-w-5xl intro">
-        <p><strong>How to use:</strong> Pick a level, generate a set, answer, and check. Then generate a fresh set (A/B/C) and compare your own accuracy and speed.</p>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Choice Board Practice</h2>
+      <div class="lead mb-3">
+        <b>Read this first:</b> Pick a difficulty. Write the <i>fewest necessary checks</i> and justify your rounding choice (place or s.f.). Then check.
       </div>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div class="flex flex-wrap items-center gap-3">
           <span>Level:</span>
-          <select id="prLevel" class="border rounded px-2 py-1">
+          <select id="prLevel" class="border rounded px-2 py-1" aria-label="level">
             <option value="easy">easy (nearest 10/100, 1 dp)</option>
             <option value="med" selected>medium (−numbers, 2–3 dp)</option>
             <option value="hard">hard (mixed places)</option>
             <option value="expert">expert (mixed incl. sig figs)</option>
-          </select>
-          <span>Set:</span>
-          <select id="prSet" class="border rounded px-2 py-1">
-            <option value="A" selected>A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
           </select>
           <button id="prNew" class="btn">New set</button>
         </div>
@@ -325,12 +370,11 @@
       </div>
     </section>
 
-    <!-- 6 • Significant Figures -->
+    <!-- 6 • Significant Figures (explainer + interactivity) -->
     <section class="slide" id="sigSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Significant Figures</h2>
-      <div class="card p-4 w-full max-w-5xl intro">
-        <p><strong>Idea:</strong> Significant figures measure <em>precision</em>. Leading zeros do not count; zeros between non‑zeros do; trailing zeros count only if there’s a decimal point.</p>
-        <p class="mt-1"><strong>Strategy:</strong> Convert to scientific notation mentally; then counting s.f. becomes the count of digits in the mantissa.</p>
+      <div class="lead mb-3">
+        <b>Read this first:</b> Leading zeros never count. Zeros between non‑zeros do count. Trailing zeros count only if there is a decimal point.
       </div>
       <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
         <div class="card p-5">
@@ -356,14 +400,14 @@
           <div id="sigRoundFb" class="mt-2 h-6 font-semibold"></div>
         </div>
       </div>
-      <div class="hint mt-3 text-sm">Rules: ignore **leading zeros**; zeros **between** non‑zeros count; **trailing zeros** count only if there’s a decimal point (e.g., \(1200\) has 2 s.f.; \(1200.\) has 4 s.f.).</div>
+      <div class="hint mt-3 text-sm">Examples: \(1200\) has 2 s.f.; \(1200.\) has 4 s.f.; \(0.00450\) has 3 s.f.</div>
     </section>
 
-    <!-- 7 • Scientific Notation -->
+    <!-- 7 • Scientific Notation Rounding (explainer + interactivity) -->
     <section class="slide" id="sciSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Scientific Notation (Round the Mantissa)</h2>
-      <div class="card p-4 w-full max-w-5xl intro">
-        <p><strong>Why:</strong> Scientific notation communicates scale and precision together. We round the mantissa and adjust the exponent if needed.</p>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Scientific Notation (Round Mantissa)</h2>
+      <div class="lead mb-3">
+        <b>Read this first:</b> Keep mantissa in \([1,10)\). If rounding pushes it to \( \ge 10\), divide by 10 and increase the exponent by 1.
       </div>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div id="sciList" class="grid md:grid-cols-2 gap-3"></div>
@@ -377,12 +421,11 @@
       </div>
     </section>
 
-    <!-- 8 • Bounds / Error Intervals -->
+    <!-- 8 • Bounds / Error Intervals (explainer + interactivity) -->
     <section class="slide" id="boundSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Bounds (Error Intervals)</h2>
-      <div class="card p-4 w-full max-w-5xl intro">
-        <p><strong>Key idea:</strong> If \(x\) rounds to \(r\) to unit \(u\), then \(x\in[\,r-\tfrac{u}{2},\,r+\tfrac{u}{2}\,)\). Bounds explain what the rounded number could mean in reality.</p>
-        <p class="mt-1"><strong>Move:</strong> Given a reported value and unit, write the lower and upper bounds.</p>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Bounds (when a value is rounded)</h2>
+      <div class="lead mb-3">
+        <b>Read this first:</b> If \( x \) rounds to \( r \) to the nearest unit \(u\), then the true value \(x\) lies in \( [\,r-\tfrac{u}{2},\; r+\tfrac{u}{2}\,) \).
       </div>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div id="bdList" class="grid md:grid-cols-2 gap-3"></div>
@@ -396,114 +439,47 @@
       </div>
     </section>
 
-    <!-- 9 • Qatar Data Lab (student-centered exploration) -->
-    <section class="slide" id="qatarLabSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Qatar Data Lab — Rounding Policies</h2>
-      <div class="card p-4 w-full max-w-5xl intro">
-        <p><strong>Your task:</strong> Choose rounding policies for a real‑world dataset from Qatar. Compare <em>Round‑Then‑Sum</em> vs <em>Sum‑Then‑Round</em>. Explain which policy is fair/appropriate and why.</p>
-        <p class="mt-1"><strong>Datasets:</strong> Souq Waqif shopping (cash: 0.05 QAR), Fuel purchase (litres & QAR), Doha Metro travel times, Stadium attendance.</p>
+    <!-- 8.5 • Misconception Clinic (T/F with explanations) -->
+    <section class="slide" id="misconSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Misconception Clinic</h2>
+      <div class="lead mb-3">
+        <b>Read this first:</b> Decide True/False, then read why. Many “almost true” ideas hide here!
       </div>
-      <div class="card p-5 w-full max-w-5xl">
-        <div class="flex flex-wrap items-center gap-3">
-          <label>Dataset:
-            <select id="dsSelect" class="border rounded px-2 py-1">
-              <option value="souq">Souq Waqif (cash rounding to 0.05 QAR)</option>
-              <option value="fuel">Fuel station (litres & cost)</option>
-              <option value="metro">Doha Metro (travel times)</option>
-              <option value="match">Match attendance (counts)</option>
-            </select>
-          </label>
-          <label>Rounding mode:
-            <select id="labMode" class="border rounded px-2 py-1">
-              <option value="half">Half‑Up</option>
-              <option value="even">Ties‑to‑Even</option>
-            </select>
-          </label>
-          <button id="dsNew" class="btn">New data</button>
-        </div>
-
-        <div class="mt-3 overflow-auto">
-          <table class="tbl" id="dsTable" aria-label="Dataset table"></table>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-4 mt-3">
-          <div class="card p-4">
-            <h4 class="font-bold text-maroon mb-1">Policy (column units)</h4>
-            <div id="dsUnits" class="grid gap-2 text-sm"></div>
-            <div class="hint mt-2 text-sm">Cash often rounds to <strong>0.05 QAR</strong> if coins are limited; times may round to the nearest minute or 5 minutes.</div>
-          </div>
-          <div class="card p-4">
-            <h4 class="font-bold text-maroon mb-1">Compare Totals</h4>
-            <div class="text-sm">Round‑Then‑Sum total: <b id="rtsOut">—</b></div>
-            <div class="text-sm">Sum‑Then‑Round total: <b id="strOut">—</b></div>
-            <div class="text-sm mt-1">Absolute error: <b id="absErr">—</b> &nbsp;|&nbsp; Relative error: <b id="relErr">—</b></div>
-            <div class="mt-2">
-              <button id="dsCompute" class="btn maroon">Compute</button>
-              <button id="dsExportCSV" class="btn">Export CSV</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-3">
-          <div class="hint">
-            <strong>Explain:</strong> Which policy is most appropriate for this context and why? Consider fairness, predictability, and error size. Write 2–3 sentences.
-          </div>
-        </div>
+      <div id="misconList" class="grid md:grid-cols-2 gap-3 w-full max-w-6xl"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="misconNew" class="btn">New set</button>
+        <button id="misconCheck" class="btn maroon">Reveal</button>
       </div>
+      <div id="misconFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 10 • Real‑World Practice (Qatar‑focused) -->
-    <section class="slide" id="realSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Real‑World Practice (Qatar)</h2>
-      <div class="card p-4 w-full max-w-5xl intro">
-        <p><strong>Apply:</strong> Solve mixed, Qatar‑flavoured tasks (currency, population, distance, time). Choose appropriate units (nearest 0.05 QAR? minute? hundred thousand?).</p>
+    <!-- 9 • Qatar Applications Lab (scenarios) -->
+    <section class="slide" id="qatLabSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Qatar Applications Lab</h2>
+      <div class="lead mb-3">
+        <b>Read this first:</b> In each scenario, choose a sensible unit/precision and justify it. Then compute the rounded value and (where relevant) bounds.
       </div>
-      <div class="card p-5 w-full max-w-5xl text-left">
-        <div id="realList" class="grid md:grid-cols-2 gap-3"></div>
+      <div class="card p-5 w-full max-w-6xl text-left">
+        <div id="qatList" class="grid md:grid-cols-2 gap-3"></div>
         <div class="mt-3 flex gap-2">
-          <button id="realNew" class="btn">New set</button>
-          <button id="realCheck" class="btn maroon">Check</button>
-          <button id="realCSV" class="btn">Export CSV</button>
-          <button id="realJSON" class="btn">Export JSON</button>
+          <button id="qatNew" class="btn">New set</button>
+          <button id="qatCheck" class="btn maroon">Check</button>
         </div>
-        <div id="realFb" class="mt-2 h-6 font-semibold"></div>
+        <div id="qatFb" class="mt-2 h-6 font-semibold"></div>
       </div>
+      <div class="t-notes mt-3">Ask: “What is the decision here? What precision is <i>fit for purpose</i>?” Emphasize justification.</div>
     </section>
 
-    <!-- 11 • MCQ Bank (multi sets with explanations) -->
-    <section class="slide" id="mcqSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">MCQ Bank — Check Your Understanding</h2>
-      <div class="card p-4 w-full max-w-5xl intro">
-        <p><strong>Use:</strong> Choose Set A/B/C, answer all, then reveal explanations. Discuss any items you missed—What concept tripped you?</p>
-      </div>
-      <div class="card p-5 w-full max-w-5xl mcq">
-        <div class="flex items-center gap-3">
-          <label>Set:
-            <select id="mcqSet" class="border rounded px-2 py-1">
-              <option value="A" selected>A</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-            </select>
-          </label>
-          <button id="mcqNew" class="btn">Load set</button>
-          <button id="mcqCheck" class="btn maroon">Check</button>
-          <button id="mcqExplain" class="btn">Show explanations</button>
-        </div>
-        <div id="mcqList" class="grid md:grid-cols-2 gap-3 mt-3"></div>
-        <div id="mcqFb" class="mt-2 h-6 font-semibold"></div>
-      </div>
-    </section>
-
-    <!-- 12 • Challenge Mode -->
+    <!-- 10 • Challenge Mode -->
     <section class="slide" id="challengeSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Challenge Mode</h2>
-      <div class="card p-4 w-full max-w-5xl intro">
-        <p><strong>Goal:</strong> Build a streak. Questions adapt across units, s.f., scientific notation, and bounds. Use hints wisely.</p>
+      <div class="lead mb-3">
+        <b>Read this first:</b> Expect multi‑step thinking. Read carefully which unit or s.f. is expected. For bounds, enter the lower bound unless told otherwise.
       </div>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div class="flex items-center gap-3">
           <span>Level:</span>
-          <select id="chLevel" class="border rounded px-2 py-1">
+          <select id="chLevel" class="border rounded px-2 py-1" aria-label="challenge level">
             <option value="easy">easy</option>
             <option value="med" selected>medium</option>
             <option value="hard">hard</option>
@@ -516,7 +492,8 @@
         </div>
         <div class="mt-3 text-2xl">Task: <span id="chText" class="font-extrabold"></span></div>
         <div class="mt-2">
-          <input id="chAns" class="border rounded px-3 py-2 w-60" placeholder="answer" aria-label="challenge answer"/>
+          <label class="sr-only" for="chAns">answer</label>
+          <input id="chAns" class="border rounded px-3 py-2 w-60" placeholder="answer"/>
           <button id="chCheck" class="btn maroon">Check</button>
           <button id="chHint" class="btn">Hint</button>
         </div>
@@ -525,10 +502,10 @@
       </div>
     </section>
 
-    <!-- 13 • Exit ticket -->
+    <!-- 11 • Exit ticket -->
     <section class="slide" id="exitSlide">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
-      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-6xl">
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon">3–2–1 Reflect</h3>
           <ul class="list-disc list-inside">
@@ -536,19 +513,36 @@
             <li>2 contexts where rounding was helpful</li>
             <li>1 mistake you will avoid next time</li>
           </ul>
-          <div class="mt-3">
-            <label class="block text-sm text-gray-700">Confidence after today (0–10):</label>
-            <input id="confSlider" type="range" min="0" max="10" step="1" class="w-full"/>
-            <div>Confidence: <b id="confOut">5</b>/10</div>
-          </div>
+          <textarea id="exitRef" class="border rounded p-2 mt-2 h-28 w-full" placeholder="Write your reflection here…"></textarea>
+          <div class="mt-2"><button id="exitSave" class="btn maroon">Save</button> <button id="exitClear" class="btn">Clear</button></div>
+          <div id="exitFb" class="mt-2 h-6 font-semibold"></div>
         </div>
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon">Up Next</h3>
           <p>Estimation in multi‑step calculations and percent error comparisons.</p>
-          <div class="mt-3 text-sm text-gray-600">Optional prep: Bring one example from daily life in Qatar where rounding mattered (bill, travel time, measurement).</div>
+          <div class="mt-3">
+            <h4 class="font-bold">LO Self‑Assessment</h4>
+            <div class="space-y-2 text-sm" id="loCheck"></div>
+          </div>
         </div>
       </div>
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[100px] banner rounded-md" style="background-image:url('../assets/qla_banner.png')"></div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[100px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
+    </section>
+
+    <!-- 12 • Original Real‑World Practice (retained for extra sets) -->
+    <section class="slide" id="realSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Extra Practice (General)</h2>
+      <div class="lead mb-3"><b>Read this first:</b> These are mixed skill checks. Use them for homework or fast finishers.</div>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div id="realList" class="grid md:grid-cols-2 gap-3"></div>
+        <div class="mt-3 flex gap-2">
+          <button id="realNew" class="btn">New set</button>
+          <button id="realCheck" class="btn maroon">Check</button>
+          <button id="realCSV" class="btn">Export CSV</button>
+          <button id="realJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="realFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
     </section>
 
   </div>
@@ -558,86 +552,42 @@
 <div id="controls" role="group" aria-label="Slideshow controls">
   <button id="prev" title="Previous (←)">&laquo;</button>
   <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
-  <div id="counter">1 / 14</div>
+  <button id="teacherToggle" title="Toggle Teacher Mode">Teacher</button>
+  <div id="counter">1 / 13</div>
   <button id="next" title="Next (→)">&raquo;</button>
-  <button id="gear" title="Settings (Rounding Mode)">⚙</button>
 </div>
 <div id="progress"></div>
 
-<!-- Glossary popover (quick chip tap) -->
+<!-- Glossary popover -->
 <div id="pop" role="dialog" aria-modal="true" aria-live="polite">
-  <span class="close" title="Close">✕</span>
+  <span class="close" title="Close" aria-label="Close">✕</span>
   <div id="popBody"></div>
 </div>
 
-<!-- Glossary Drawer -->
-<aside id="drawer" aria-label="Glossary drawer" aria-hidden="true">
-  <header class="flex items-center justify-between">
-    <div class="font-bold text-maroon">Glossary • المصطلحات</div>
-    <button id="drawerClose" class="btn">Close</button>
-  </header>
-  <div class="body">
-    <div class="mb-2 flex gap-2">
-      <input id="kwSearch" class="border rounded px-2 py-1 w-full" placeholder="Search keyword… / ابحث عن مصطلح…"/>
-      <select id="langSelect" class="border rounded px-2 py-1">
-        <option value="en" selected>EN</option>
-        <option value="ar">AR</option>
-      </select>
-    </div>
-    <div id="kwList"></div>
-  </div>
-</aside>
-
-<!-- Settings pop -->
-<div id="settings" role="dialog" aria-modal="true" aria-live="polite" aria-label="Settings">
-  <div class="row"><strong class="text-maroon">Settings</strong> <span class="badge">lesson</span></div>
-  <div class="row">
-    <label>Rounding mode:</label>
-    <select id="setMode" class="border rounded px-2 py-1">
-      <option value="half">Half‑Up (school standard)</option>
-      <option value="even">Ties‑to‑Even (investigation)</option>
-    </select>
-  </div>
-  <div class="row">
-    <label>Glossary language:</label>
-    <select id="setLang" class="border rounded px-2 py-1">
-      <option value="en">EN</option>
-      <option value="ar">AR</option>
-    </select>
-  </div>
-  <div class="row justify-end">
-    <button id="settingsClose" class="btn">Close</button>
-  </div>
-</div>
-
 <script>
-/* ========================= Core Helpers & State ========================= */
+/* ------------------------- Core Helpers ------------------------- */
 (function(){
   const slides=[...document.querySelectorAll('.slide')];
-  const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs'), gear=id('gear');
+  const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs'), tBtn=id('teacherToggle');
   const deckTitle='G8_Unit1_L4_Rounding_QLA_Enhanced';
   let i=0;
-
-  const State = {
-    mode: 'half', // 'half' | 'even'
-    lang: 'en'
-  };
 
   function id(x){return document.getElementById(x)}
   function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
   function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
   function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
-    for(let k=0;k<24;k++){
+    for(let k=0;k<22;k++){
       const d=document.createElement('div'); d.className='confetti';
       d.style.left=x+'px'; d.style.top=y+'px'; d.style.width='8px'; d.style.height='8px';
       d.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8a3d64'][k%4];
       document.body.appendChild(d);
       const dx=(Math.random()*2-1)*240, dy=(Math.random()*-1-0.3)*300, rot=Math.random()*720;
       d.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],
-                {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
+                {duration:1000+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
     }
   }
-  const EPS=1e-12;
+  function setLS(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+  function getLS(k, def=null){try{const v=localStorage.getItem(k); return v?JSON.parse(v):def;}catch{return def}}
 
   // Export helpers
   function downloadJSON(filename, data){
@@ -650,7 +600,6 @@
     const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
     a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   }
-  function pretty(x, dp=2){ return Number(x.toFixed(dp)).toLocaleString(); }
 
   /* ---------- Navigation ---------- */
   function show(k){
@@ -661,7 +610,8 @@
     const sid=slides[i].id||'';
     if(sid==='lineSlide') drawRoundLine();
     if(sid==='placeSlide') renderPV();
-    if(sid==='qatarLabSlide') renderDataset();
+    if(sid==='stationSlide') { staBuildA(); staBuildB(); staBuildC(); }
+    if(sid==='qatLabSlide') qatNew(); 
     renderMath(slides[i]);
   }
   prev.addEventListener('click',()=>show(i-1));
@@ -670,7 +620,6 @@
     if(e.key==='ArrowRight') show(i+1);
     if(e.key==='ArrowLeft') show(i-1);
     if(e.key.toLowerCase()==='f') toggleFS();
-    if(e.key.toLowerCase()==='g') toggleDrawer(true);
   });
   function toggleFS(){
     const el=id('slides');
@@ -678,110 +627,129 @@
     else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(document);}
   }
   fsBtn.addEventListener('click',toggleFS);
+  tBtn.addEventListener('click',()=>{ document.body.classList.toggle('teacher'); });
 
-  /* ========================= Rounding Core ========================= */
-  function isTie(q){
-    const k=Math.floor(q);
-    return Math.abs(q - (k+0.5))<EPS;
-  }
-  function roundIntHalfUp(q){
-    // symmetric half-up to nearest integer
-    const s=q>=0?1:-1, a=Math.abs(q);
-    const k=Math.floor(a+0.5);
-    return s*k;
-  }
-  function roundIntTiesToEven(q){
-    const k=Math.floor(q);
-    if(Math.abs(q-(k+0.5))<EPS){
-      // choose even among k and k+1
-      return (k%2===0)? k : k+1;
-    }
-    return Math.round(q); // JS rounds ties away from 0, but we excluded ties
-  }
-  function roundToUnitMode(x,u,mode){
+  /* ------------------------- Rounding Logic ------------------------- */
+  // Symmetric half-up rounding to nearest multiple of unit u
+  function roundHalfUpToUnit(x,u){
     const q=x/u;
-    let n;
-    if(mode==='even') n=roundIntTiesToEven(q);
-    else n=roundIntHalfUp(q);
-    return n*u;
+    const s=q>=0?1:-1, a=Math.abs(q);
+    const k = Math.floor(a + 0.5);
+    return s*k*u;
   }
-  function roundHalfUpToUnit(x,u){ return roundToUnitMode(x,u,'half'); }
-  function roundToDP(x,dp){ const u=10**(-dp); return roundToUnitMode(x,u,State.mode); }
-  function roundToPlace(x,u){ return roundToUnitMode(x,u,State.mode); }
-  function decPlacesFromUnit(u){ if(u>=1) return 0; const p=Math.round(Math.log10(1/u)); return Math.max(0,p); }
+  function decPlacesFromUnit(u){
+    if(u>=1) return 0;
+    const p = Math.round(Math.log10(1/u)); // units are powers of 10
+    return Math.max(0,p);
+  }
   function fmtToUnit(x,u){
-    const dp=decPlacesFromUnit(u);
-    return (Math.round(x*10**dp)/10**dp).toFixed(dp).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+    const dp = decPlacesFromUnit(u);
+    return (Math.round((x+0)*10**dp)/10**dp).toFixed(dp); // normalize
   }
+  function roundToDP(x,dp){ const u=10**(-dp); return roundHalfUpToUnit(x,u); }
+  function roundToPlace(x,placeUnit){ return roundHalfUpToUnit(x,placeUnit); }
+
+  // Significant figures
   function roundToSig(x,n){
     if(x===0) return 0;
-    const s = x<0? -1: 1, ax=Math.abs(x), k=Math.floor(Math.log10(ax)), scale=10**(k-n+1);
-    return s*roundToUnitMode(ax, scale, State.mode);
+    const s = x<0? -1: 1;
+    const ax = Math.abs(x);
+    const k = Math.floor(Math.log10(ax));
+    const scale = 10**(k-n+1);
+    return s*roundHalfUpToUnit(ax, scale);
   }
+  function countSigStr(s){
+    s = s.trim();
+    if(/^0*\.?0*$/.test(s)) return 1; // zero has 1 s.f.
+    const hasDot = s.includes('.');
+    s = s.replace(/^[-+]/,''); // strip sign
+    let t = s;
+    if(!hasDot){
+      t = t.replace(/0+$/,''); // no decimal: remove trailing zeros
+    }
+    t = t.replace(/^0+/,'').replace('.',''); // remove leading zeros and dot
+    return t.replace(/[^0-9]/g,'').length;
+  }
+
+  // Scientific notation rounding
   function sciRound(m,e,n){
     let r = roundToSig(m, n);
     if(Math.abs(r)>=10){ r = r/10; e += 1; }
     return {m:r,e};
   }
 
-  /* ========================= Glossary (chips + drawer) ========================= */
+  /* ------------------------- Glossary ------------------------- */
   const POP=id('pop'), POP_BODY=id('popBody');
   const GLOS={
-    halfup:{en:'<strong>Half‑up rounding</strong>: 5–9 rounds away from 0; 0–4 toward 0 (symmetric for negatives).', ar:'<strong>التقريب نصف لأعلى</strong>: الأعداد التي تنتهي بـ 5 إلى 9 تُقَرَّب بعيداً عن الصفر، و0 إلى 4 نحو الصفر.'},
-    place:{en:'<strong>Place value</strong>: ones, tens, hundreds, tenths, hundredths, …', ar:'<strong>القيمة المكانية</strong>: الآحاد، العشرات، المئات، الأعشار، المئات…'},
-    rounddigit:{en:'<strong>Rounding digit</strong>: the digit you change (or keep) when rounding to a place or s.f.', ar:'<strong>رقم التقريب</strong>: الرقم الذي نعدِّله (أو نثبته) عند التقريب.'},
-    dp:{en:'<strong>Decimal places</strong>: digits to the right of the decimal point.', ar:'<strong>الخانات العشرية</strong>: الأرقام على يمين الفاصلة العشرية.'},
-    sf:{en:'<strong>Significant figures</strong>: digits conveying precision; leading zeros don’t count; trailing zeros count only if a decimal point is shown.', ar:'<strong>الأرقام المهمة</strong>: تقيس الدقة؛ الأصفار البادئة لا تُعد، والأصفار اللاحقة تُعد إذا وُجدت فاصلة عشرية.'},
-    sci:{en:'<strong>Scientific notation</strong>: \( a\\times 10^n \) with \(1\\le |a|<10\\).', ar:'<strong>الترميز العلمي</strong>: ‎\(a\\times 10^n\\) بحيث \(1\\le |a|<10\\).'},
-    bounds:{en:'<strong>Bounds</strong>: all possible true values for a rounded number: \( [r-\\tfrac{u}{2},\\, r+\\tfrac{u}{2}) \).', ar:'<strong>الحدود (نطاق الخطأ)</strong>: مجموعة القيم الحقيقية الممكنة بعد التقريب.'},
-    midpoint:{en:'<strong>Midpoint</strong>: the half‑unit boundary between two rounding targets; tie cases live here.', ar:'<strong>نقطة المنتصف</strong>: حد نصف الوحدة بين قيمتين محتملتين للتقريب.'},
-    estimate:{en:'<strong>Estimation</strong>: choosing rounding that simplifies computation while staying reasonable.', ar:'<strong>التقدير</strong>: اختيار تقريبات تُسهِّل الحساب مع الحفاظ على المعقولية.'}
+    halfup:{
+      title:'Half‑up rounding',
+      def:'5–9 rounds away from 0; 0–4 round toward 0 (symmetric for negatives).',
+      ex:'\\(7.45\\to 7.5\\), \\(-2.5\\to -3\\).',
+      why:'Standard classroom rule; links to midpoint logic on number lines.'
+    },
+    place:{
+      title:'Place value',
+      def:'Digit positions: ones, tens, hundreds, tenths, hundredths, …',
+      ex:'In 246.38, the “6” is in the ones place; “3” is hundredths.',
+      why:'Knowing the rounding digit requires place value awareness.'
+    },
+    dp:{
+      title:'Decimal places (dp)',
+      def:'Digits to the right of the decimal point.',
+      ex:'2 dp means to nearest 0.01.',
+      why:'Controls precision for money and measurements.'
+    },
+    sf:{
+      title:'Significant figures (s.f.)',
+      def:'Digits that carry meaningful precision: leading zeros don’t count; trailing zeros count only if there’s a decimal point.',
+      ex:'1200 has 2 s.f.; 1200. has 4 s.f.; 0.00450 has 3 s.f.',
+      why:'Used for measured data and scientific reporting.'
+    },
+    sci:{
+      title:'Scientific notation',
+      def:'Express a number as \\(a\\times 10^n\\) with \\(1\\le |a|<10\\).',
+      ex:'\\(3.21\\times10^5\\), \\(9.8\\times10^{-3}\\).',
+      why:'Keeps very large/small numbers readable and precise.'
+    },
+    bounds:{
+      title:'Bounds / Error interval',
+      def:'Set of true values a rounded value could represent: \\([r-\\tfrac{u}{2}, r+\\tfrac{u}{2})\\).',
+      ex:'If 2.3 m to 1 dp, true \\(x\\in[2.25,2.35)\\).',
+      why:'Essential for understanding rounding error and tolerance.'
+    },
+    estimate:{
+      title:'Estimation',
+      def:'Choose a suitable rounding to quickly approximate a result.',
+      ex:'QAR 18.95 ≈ 19; 7 items cost ≈ 7×19 = QAR 133.',
+      why:'Decision‑making: speed vs precision.'
+    }
   };
+  function openGlossary(key){
+    const g=GLOS[key]; if(!g) return;
+    POP_BODY.innerHTML = `
+      <div><strong>${g.title}</strong></div>
+      <div class="mt-1">${g.def}</div>
+      <div class="mt-1 text-sm text-gray-700">Example: \\(${g.ex}\\)</div>
+      <div class="mt-1 text-sm text-gray-700"><b>Why it matters:</b> ${g.why}</div>`;
+    POP.style.display='block'; renderMath(POP_BODY);
+  }
   POP.querySelector('.close').addEventListener('click',()=>POP.style.display='none');
   document.addEventListener('click',e=>{
-    const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]){POP_BODY.innerHTML=GLOS[key][State.lang]||GLOS[key].en; POP.style.display='block'; const r=el.getBoundingClientRect(); POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px'; POP.style.bottom=(window.innerHeight-r.top+10)+'px';}}
+    const el=e.target.closest('.chip[data-key]'); if(el){openGlossary(el.dataset.key); const r=el.getBoundingClientRect(); POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px'; POP.style.bottom=(window.innerHeight-r.top+10)+'px';}
   });
+  id('glossOpen').addEventListener('click',()=>{
+    const q=(id('glossSearch').value||'').trim().toLowerCase();
+    const keys=Object.keys(GLOS);
+    const match = keys.find(k=>k.includes(q)) || keys.find(k=>GLOS[k].title.toLowerCase().includes(q));
+    if(match) openGlossary(match);
+  });
+  id('glossQuiz').addEventListener('click',()=>buildGlossaryQuiz());
 
-  // Drawer
-  const drawer=id('drawer'), glossBtn=id('glossBtn'), drawerClose=id('drawerClose'), kwSearch=id('kwSearch'), langSelect=id('langSelect'), kwList=id('kwList');
-  glossBtn.addEventListener('click',()=>toggleDrawer(true));
-  drawerClose.addEventListener('click',()=>toggleDrawer(false));
-  function toggleDrawer(open){ drawer.classList.toggle('open',open); drawer.setAttribute('aria-hidden', String(!open)); if(open){ renderKW(); kwSearch.focus(); } }
-  langSelect.addEventListener('change',()=>{ State.lang=langSelect.value; renderKW(); });
-  function renderKW(filter=''){
-    const L=State.lang; kwList.innerHTML='';
-    Object.entries(GLOS).forEach(([k,obj])=>{
-      const txt=(obj[L]||obj.en).toLowerCase(); if(filter && !txt.includes(filter.toLowerCase())) return;
-      const box=document.createElement('div'); box.className='kw';
-      box.innerHTML=`<h4>${label(k)} <small class="badge">${L==='ar'?'AR':'EN'}</small></h4>
-        <div class="mt-1">${obj[L]||obj.en}</div>
-        <div class="quiz">
-          <em>Quick check:</em> Type a short example or meaning → 
-          <input class="kwTry border rounded px-2 py-1 w-48" placeholder="${L==='ar'?'مثال / معنى':'example / meaning'}"/>
-          <button class="btn btn-sm" style="padding:.3rem .6rem">Save</button>
-        </div>`;
-      kwList.appendChild(box);
-    });
-  }
-  function label(k){
-    const names={halfup:'Half‑Up Rounding',place:'Place Value',rounddigit:'Rounding Digit',dp:'Decimal Places (dp)',sf:'Significant Figures (s.f.)',sci:'Scientific Notation',bounds:'Bounds / Error Interval',midpoint:'Midpoint (Tie)',estimate:'Estimation'};
-    return names[k]||k;
-  }
-  kwSearch.addEventListener('input',e=>renderKW(e.target.value));
-
-  /* ========================= Settings Panel ========================= */
-  const settings=id('settings'), settingsClose=id('settingsClose'), setMode=id('setMode'), setLang=id('setLang'), modeSelect=id('modeSelect');
-  gear.addEventListener('click',()=>{ setMode.value=State.mode; setLang.value=State.lang; settings.style.display='block'; });
-  settingsClose.addEventListener('click',()=>settings.style.display='none');
-  setMode.addEventListener('change',()=>{ State.mode=setMode.value; modeSelect.value=State.mode; renderPV(); drawRoundLine(); });
-  setLang.addEventListener('change',()=>{ State.lang=setLang.value; langSelect.value=State.lang; });
-
-  /* ========================= Warm-up ========================= */
+  /* ------------------------- Warm-up ------------------------- */
   id('warmCheck').addEventListener('click',()=>{
     const v1=id('w1').value.replace(/,/g,''); const ok1 = (Number(v1)===12600);
     const ok2 = Math.abs(Number(id('w2').value)-7.5)<1e-10;
-    const want3 = (State.mode==='even')? -2 : -3; // tie behavior for -2.5
-    const ok3 = (Number(id('w3').value)===want3);
+    const ok3 = (Number(id('w3').value)===-3);
     const score=(ok1?1:0)+(ok2?1:0)+(ok3?1:0);
     id('warmFb').textContent = score===3 ? '✅ Great start!' : `Score: ${score}/3`;
     id('w1').style.borderColor=ok1?'#22c55e':'#ef4444';
@@ -791,7 +759,15 @@
   });
   id('warmReset').addEventListener('click',()=>{['w1','w2','w3'].forEach(x=>{id(x).value=''; id(x).style.borderColor='#e5e7eb'}); id('warmFb').textContent='';});
 
-  /* ========================= Place Value Lens ========================= */
+  /* ------------------------- Notice & Wonder ------------------------- */
+  id('nwSave').addEventListener('click',()=>{
+    const data={notice:id('nwNotice').value, wonder:id('nwWonder').value};
+    setLS(deckTitle+'_NW', data); id('nwFb').textContent='💾 Saved!';
+  });
+  id('nwClear').addEventListener('click',()=>{ id('nwNotice').value=''; id('nwWonder').value=''; id('nwFb').textContent=''; setLS(deckTitle+'_NW',null); });
+  const nwSaved=getLS(deckTitle+'_NW'); if(nwSaved){ id('nwNotice').value=nwSaved.notice||''; id('nwWonder').value=nwSaved.wonder||''; }
+
+  /* ------------------------- Place Value Lens ------------------------- */
   const pvState={x:246.38,u:0.01};
   function newPV(){
     const sign=Math.random()<0.2?-1:1;
@@ -802,15 +778,13 @@
     renderPV();
   }
   function renderPV(){
-    id('modeSelect').value=State.mode;
     const [whole, frac=''] = Math.abs(pvState.x).toString().split('.');
     const sign = pvState.x<0 ? '−' : '';
-    const u = Number(id('pvPlace').value);
-    pvState.u = u;
+    const u = Number(id('pvPlace').value); pvState.u = u;
     const dp = decPlacesFromUnit(u);
     let display='';
     if(u>=1){
-      const idx = whole.length - Math.log10(u) - 1;
+      const idx = whole.length - Math.log10(u) - 1; // rounding digit position
       const ridx = Math.round(idx);
       for(let j=0;j<whole.length;j++){
         const cls = (j===ridx)?'bg-yellow-200 tok':'tok';
@@ -818,7 +792,7 @@
       }
       if(frac.length) display += `<span class="tok">.</span>${[...frac].map(c=>`<span class="tok">${c}</span>`).join('')}`;
     }else{
-      const need = decPlacesFromUnit(u);
+      const need = decPlacesFromUnit(u); // which fractional index to highlight
       for(let j=0;j<whole.length;j++){ display += `<span class="tok">${whole[j]}</span>`}
       display += `<span class="tok">.</span>`;
       for(let j=0;j<Math.max(frac.length,need+1);j++){
@@ -828,26 +802,26 @@
       }
     }
     id('pvNumber').innerHTML = `${sign}${display}`;
-    const y = roundToUnitMode(pvState.x, u, State.mode);
-    id('pvResult').textContent = fmtToUnit(y,u);
+    const y = roundHalfUpToUnit(pvState.x, u);
+    id('pvResult').textContent = fmtToUnit(y,u).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     renderMath(id('placeSlide'));
   }
   id('pvPlace').addEventListener('change',renderPV);
   id('pvNew').addEventListener('click',newPV);
-  id('modeSelect').addEventListener('change',e=>{ State.mode=e.target.value; setMode.value=State.mode; renderPV(); drawRoundLine(); });
-  id('pvExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_placevalue.csv`, [['x','unit','mode','result'], [pvState.x, pvState.u, State.mode, fmtToUnit(roundToUnitMode(pvState.x,pvState.u,State.mode),pvState.u)]]));
-  id('pvExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_placevalue.json`, {...pvState,mode:State.mode}));
+  id('pvExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_placevalue.csv`, [['x','unit','result'], [pvState.x, pvState.u, fmtToUnit(roundHalfUpToUnit(pvState.x,pvState.u),pvState.u)]]));
+  id('pvExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_placevalue.json`, pvState));
   newPV();
 
-  /* ========================= Number Line ========================= */
+  /* ------------------------- Rounding Explorer (Number Line) ------------------------- */
   const cL=id('roundLine'); const lineX=id('lineX'), lineUnit=id('lineUnit'), lineOut=id('lineOut');
   const lineState={x:23.47,u:0.1};
   function drawRoundLine(){
     const ctx=cL.getContext('2d'); cL.width=cL.clientWidth*devicePixelRatio; cL.height=cL.clientHeight*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio);
     const y=cL.clientHeight/2, m=28; ctx.clearRect(0,0,cL.clientWidth,cL.clientHeight);
     ctx.lineWidth=2; ctx.strokeStyle='#6C1D45'; ctx.beginPath(); ctx.moveTo(m,y); ctx.lineTo(cL.clientWidth-m,y); ctx.stroke();
+    // ticks around nearest multiples of u
     const u=lineState.u, x=lineState.x;
-    const r=roundToUnitMode(x,u,State.mode);
+    const r=roundHalfUpToUnit(x,u);
     const left = Math.floor((x-4*u)/u)*u;
     ctx.font='12px Inter'; ctx.fillStyle='#555';
     for(let k=0;k<=10;k++){
@@ -869,49 +843,132 @@
   lineX.addEventListener('input',()=>{ lineState.x=Number(lineX.value); drawRoundLine(); });
   lineUnit.addEventListener('change',()=>{ lineState.u=Number(lineUnit.value); drawRoundLine(); });
   id('lineRand').addEventListener('click',()=>{ lineState.x = +(Math.random()*200-100).toFixed(3); lineX.value=lineState.x; drawRoundLine(); });
-  id('lineExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_line.csv`, [['x','unit','mode','rounded'], [lineState.x,lineState.u,State.mode,fmtToUnit(roundToUnitMode(lineState.x,lineState.u,State.mode),lineState.u)]]));
-  id('lineExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_line.json`, {x:lineState.x,unit:lineState.u,mode:State.mode,rounded:roundToUnitMode(lineState.x,lineState.u,State.mode)}));
+  id('lineExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_line.csv`, [['x','unit','rounded'], [lineState.x,lineState.u,fmtToUnit(roundHalfUpToUnit(lineState.x,lineState.u),lineState.u)]]));
+  id('lineExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_line.json`, {x:lineState.x,unit:lineState.u,rounded:roundHalfUpToUnit(lineState.x,lineState.u)}));
   drawRoundLine();
   window.addEventListener('resize',()=>{ if(slides[i].id==='lineSlide') drawRoundLine(); });
 
-  /* ========================= Practice Generator ========================= */
-  const prState={items:[], set:'A'};
-  const prSet=id('prSet');
-  function prBuild(){
-    const lv=id('prLevel').value; prState.set=prSet.value;
+  /* ------------------------- Station Rotation ------------------------- */
+  // A: Number line reasoning items
+  const staAState={items:[]};
+  function staBuildA(){
     const list=[];
-    function task(x,unit,label){ return {type:'unit', prompt:`Round ${x} to ${label}`, x, unit, label, ans: roundToUnitMode(x,unit,State.mode), fmt:fmtToUnit(roundToUnitMode(x,unit,State.mode),unit)};}
+    for(let k=0;k<4;k++){
+      const u=[0.1,1,10,100][Math.floor(Math.random()*4)];
+      const x=+( (Math.random()*200-100).toFixed(u<1?2:0) );
+      list.push({x,u,ans:roundHalfUpToUnit(x,u)});
+    }
+    staAState.items=list;
+    const box=id('staA'); box.innerHTML='';
+    list.forEach((o,idx)=>{
+      const row=document.createElement('div'); row.className='card p-3';
+      row.innerHTML=`<div>Round \\( ${o.x} \\) to ${o.u>=1? 'nearest '+o.u : decPlacesFromUnit(o.u)+'\\,dp'} (reason from midpoints).<br>
+      Answer: <input class="staAin border rounded px-2 py-1 w-36" placeholder="value"></div>`;
+      box.appendChild(row);
+    });
+    renderMath(id('stationSlide'));
+  }
+  id('staANew').addEventListener('click',staBuildA);
+  id('staACheck').addEventListener('click',()=>{
+    let ok=0; id('staA').querySelectorAll('.card').forEach((row,idx)=>{
+      const got=Number(row.querySelector('.staAin').value), want=staAState.items[idx].ans;
+      const good=Math.abs(got-want)<1e-10; row.querySelector('.staAin').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
+    });
+    id('staAFb').textContent = ok===staAState.items.length? '✅ Station A perfect!' : `Score: ${ok}/${staAState.items.length}`;
+    if(ok===staAState.items.length) confetti();
+  });
+
+  // B: Significant figures items
+  const staBState={items:[]};
+  function staBuildB(){
+    const pool=['0.00340','1200','1200.','5.060','0.0702','30007','2.90','0.0005','40','40.0','83.050','10.','0.5000'];
+    staBState.items = pool.sort(()=>Math.random()-0.5).slice(0,4).map(s=>({s,ans:countSigStr(s)}));
+    const box=id('staB'); box.innerHTML='';
+    staBState.items.forEach((o)=>{
+      const row=document.createElement('div'); row.className='card p-3';
+      row.innerHTML=`<div class="text-lg">\\( ${o.s} \\) has <input class="staBin border rounded px-2 py-1 w-20" placeholder="s.f."> s.f. — explain why.</div>`;
+      box.appendChild(row);
+    });
+    renderMath(id('stationSlide'));
+  }
+  id('staBNew').addEventListener('click',staBuildB);
+  id('staBCheck').addEventListener('click',()=>{
+    let ok=0; id('staB').querySelectorAll('.card').forEach((row,idx)=>{
+      const want=staBState.items[idx].ans; const got=Number(row.querySelector('.staBin').value);
+      const good=got===want; row.querySelector('.staBin').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
+    });
+    id('staBFb').textContent = ok===staBState.items.length? '✅ Station B perfect!' : `Score: ${ok}/${staBState.items.length}`;
+    if(ok===staBState.items.length) confetti();
+  });
+
+  // C: Bounds items
+  const staCState={items:[]};
+  function staBuildC(){
+    const list=[];
+    for(let k=0;k<4;k++){
+      const unit=[0.01,0.1,1,10,100][Math.floor(Math.random()*5)];
+      const x=+( (Math.random()*1000-500).toFixed(unit<1?2:0) );
+      const r=roundHalfUpToUnit(x,unit), lb=r-unit/2, ub=r+unit/2;
+      list.push({r,unit,lb,ub});
+    }
+    staCState.items=list;
+    const box=id('staC'); box.innerHTML='';
+    list.forEach((o,idx)=>{
+      const row=document.createElement('div'); row.className='card p-3';
+      row.innerHTML=`<div>Reported: <b>${fmtToUnit(o.r,o.unit)}</b> (${o.unit>=1?'nearest '+o.unit: decPlacesFromUnit(o.unit)+' dp'})<br>
+        Lower: <input class="staCl border rounded px-2 py-1 w-28"> Upper: <input class="staCu border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row);
+    });
+  }
+  id('staCNew').addEventListener('click',staBuildC);
+  id('staCCheck').addEventListener('click',()=>{
+    let ok=0; id('staC').querySelectorAll('.card').forEach((row,idx)=>{
+      const item=staCState.items[idx]; const lb=Number(row.querySelector('.staCl').value), ub=Number(row.querySelector('.staCu').value);
+      const good = Math.abs(lb-item.lb)<1e-10 && Math.abs(ub-item.ub)<1e-10;
+      row.querySelector('.staCl').style.borderColor=good?'#22c55e':'#ef4444';
+      row.querySelector('.staCu').style.borderColor=good?'#22c55e':'#ef4444';
+      if(good) ok++;
+    });
+    id('staCFb').textContent = ok===staCState.items.length? '✅ Station C perfect!' : `Score: ${ok}/${staCState.items.length}`;
+    if(ok===staCState.items.length) confetti();
+  });
+
+  /* ------------------------- Practice Generator (retained & improved) ------------------------- */
+  const prState={items:[]};
+  function prBuild(){
+    const lv=id('prLevel').value;
+    const list=[];
+    function task(x,unit,label){ return {type:'unit', prompt:`Round ${x} to ${label}`, x, unit, label, ans: roundHalfUpToUnit(x,unit), fmt:fmtToUnit(roundHalfUpToUnit(x,unit),unit)};}
     function taskSig(x,n){const ans=roundToSig(x,n); return {type:'sig', prompt:`Round ${x} to ${n} s.f.`, x, n, ans, fmt:ans.toPrecision(n)};}
-    const seed = prState.set.charCodeAt(0)-65; // A:0,B:1,C:2
     for(let k=0;k<6;k++){
-      const r = Math.random() + seed*0.11; // small deterministic shift by set
       if(lv==='easy'){
-        const a = Math.floor((r%1)*900)+100;
-        const unit = (r%1)<0.5?10:100;
+        const a = Math.floor(Math.random()*900)+100;
+        const unit = Math.random()<0.5?10:100;
         list.push(task(a,unit, unit===10?'nearest 10':'nearest 100'));
       }else if(lv==='med'){
-        const x = +( ((r%1)*200-100).toFixed(((r%1)<0.5)?1:2) );
-        const unit = ((r*7)%1)<0.5?0.1:0.01;
+        const x = +( (Math.random()*200-100).toFixed(Math.random()<0.5?1:2) );
+        const unit = Math.random()<0.5?0.1:0.01;
         list.push(task(x,unit, unit===0.1?'1 dp':'2 dp'));
       }else if(lv==='hard'){
-        if(((r*5)%1)<0.5){
-          const unit = [0.001,0.01,0.1,1,10,100][Math.floor(((r*19)%1)*6)];
-          const x = +( ((r%1)*200-100).toFixed(unit<1?3:0) );
+        const mix = Math.random();
+        if(mix<0.5){
+          const unit = [0.001,0.01,0.1,1,10,100][Math.floor(Math.random()*6)];
+          const x = +( (Math.random()*200-100).toFixed(unit<1?3:0) );
           const lab = unit>=1? `nearest ${unit}` : `${decPlacesFromUnit(unit)} dp`;
           list.push(task(x,unit,lab));
         }else{
-          const x = +( ((r%1)*9000-4500).toFixed(3) );
-          const n = [2,3,4][Math.floor(((r*13)%1)*3)];
+          const x = +( (Math.random()*9000-4500).toFixed(3) );
+          const n = [2,3,4][Math.floor(Math.random()*3)];
           list.push(taskSig(x,n));
         }
       }else{ // expert
-        if(((r*3)%1)<0.5){
-          const x = +( ((r%1)*9000-4500).toFixed(4) );
-          const n = [2,3,4][Math.floor(((r*17)%1)*3)];
+        if(Math.random()<0.5){
+          const x = +( (Math.random()*9000-4500).toFixed(4) );
+          const n = [2,3,4][Math.floor(Math.random()*3)];
           list.push(taskSig(x,n));
         }else{
-          const unit = [0.001,0.01,0.1,1,10,100,1000][Math.floor(((r*23)%1)*7)];
-          const x = +( ((r%1)*50000-25000).toFixed(unit<1?3:0) );
+          const unit = [0.001,0.01,0.1,1,10,100,1000][Math.floor(Math.random()*7)];
+          const x = +( (Math.random()*50000-25000).toFixed(unit<1?3:0) );
           const lab = unit>=1? `nearest ${unit}` : `${decPlacesFromUnit(unit)} dp`;
           list.push(task(x,unit,lab));
         }
@@ -921,16 +978,16 @@
     const box=id('prList'); box.innerHTML='';
     list.forEach((o,idx)=>{
       const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1} <span class="badge">${prState.set}</span></div>
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
         <div class="text-xl mt-1">${o.prompt} = <input class="prin border rounded px-2 py-1 w-40" placeholder="answer"></div>`;
       box.appendChild(row);
     });
   }
-  id('prNew').addEventListener('click',prBuild); prSet.addEventListener('change',prBuild); prBuild();
+  id('prNew').addEventListener('click',prBuild); prBuild();
   id('prCheck').addEventListener('click',()=>{
     let ok=0; id('prList').querySelectorAll('.card').forEach((row,idx)=>{
       const inp=row.querySelector('.prin'); const item=prState.items[idx];
-      const v = Number(String(inp.value).replace(/,/g,'')); const want = item.ans;
+      const v = Number(inp.value.replace(/,/g,'')); const want = item.ans;
       const good = Math.abs(v-want)<1e-10;
       inp.style.borderColor = good? '#22c55e':'#ef4444';
       if(good) ok++;
@@ -939,27 +996,17 @@
     if(ok===prState.items.length) confetti();
   });
   id('prExportCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer','mode']]; prState.items.forEach(o=>rows.push([o.prompt,o.fmt||o.ans,State.mode])); downloadCSV(`${deckTitle}_practice_${prState.set}.csv`, rows);
+    const rows=[['prompt','answer']]; prState.items.forEach(o=>rows.push([o.prompt,o.fmt||o.ans])); downloadCSV(`${deckTitle}_practice.csv`, rows);
   });
-  id('prExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_practice_${prState.set}.json`, prState.items));
+  id('prExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_practice.json`, prState.items));
 
-  /* ========================= Significant Figures ========================= */
+  /* ------------------------- Significant Figures (retained) ------------------------- */
   const sigCState={items:[]}, sigRState={items:[]};
-  function countSigStr(s){
-    s = s.trim();
-    if(/^0*\.?0*$/.test(s)) return 1; // zero has 1 s.f.
-    const hasDot = s.includes('.');
-    s = s.replace(/^[-+]/,'');
-    let t = s;
-    if(!hasDot){ t = t.replace(/0+$/,''); }
-    t = t.replace(/^0+/,'').replace('.','');
-    return t.replace(/[^0-9]/g,'').length;
-  }
   function genSigCount(){
-    const pool=['0.00340','1200','1200.','5.060','0.0702','30007','2.90','0.0005','40','40.0'];
+    const pool=['0.00340','1200','1200.','5.060','0.0702','30007','2.90','0.0005','40','40.0','83.050','10.','0.5000'];
     sigCState.items = pool.sort(()=>Math.random()-0.5).slice(0,4).map(s=>({s,ans:countSigStr(s)}));
     const box=id('sigCountList'); box.innerHTML='';
-    sigCState.items.forEach((o,idx)=>{
+    sigCState.items.forEach((o)=>{
       const row=document.createElement('div'); row.className='card p-3';
       row.innerHTML=`<div class="text-xl">\\( ${o.s} \\) has <input class="scin border rounded px-2 py-1 w-20" placeholder="s.f."> s.f.</div>`;
       box.appendChild(row);
@@ -976,7 +1023,7 @@
     }
     sigRState.items=items;
     const box=id('sigRoundList'); box.innerHTML='';
-    items.forEach((o,idx)=>{
+    items.forEach((o)=>{
       const row=document.createElement('div'); row.className='card p-3';
       row.innerHTML=`<div class="text-xl">Round \\( ${o.x} \\) to ${o.n} s.f. = <input class="srin border rounded px-2 py-1 w-40" placeholder="answer"></div>`;
       box.appendChild(row);
@@ -1011,7 +1058,7 @@
   });
   id('sigRoundJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_sig_round.json`, sigRState.items));
 
-  /* ========================= Scientific Notation ========================= */
+  /* ------------------------- Scientific Notation ------------------------- */
   const sciState={items:[]};
   function sciNew(){
     const list=[];
@@ -1024,7 +1071,7 @@
     }
     sciState.items=list;
     const box=id('sciList'); box.innerHTML='';
-    list.forEach((o,idx)=>{
+    list.forEach((o)=>{
       const row=document.createElement('div'); row.className='card p-4';
       row.innerHTML=`<div class="text-xl">Round \\( ${o.m}\\times 10^{${o.e}} \\) to ${o.n} s.f.: mantissa = <input class="sciin border rounded px-2 py-1 w-20" placeholder="m">, exponent = <input class="sciexp border rounded px-2 py-1 w-20" placeholder="e"></div>`;
       box.appendChild(row);
@@ -1035,7 +1082,9 @@
   id('sciCheck').addEventListener('click',()=>{
     let ok=0; id('sciList').querySelectorAll('.card').forEach((row,idx)=>{
       const item=sciState.items[idx]; const m=Number(row.querySelector('.sciin').value); const e=Number(row.querySelector('.sciexp').value);
-      const good= Math.abs(m-item.ans.m)<1e-10 && e===item.ans.e; row.querySelector('.sciin').style.borderColor=good?'#22c55e':'#ef4444'; row.querySelector('.sciexp').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
+      const good= Math.abs(m-item.ans.m)<1e-10 && e===item.ans.e; 
+      row.querySelector('.sciin').style.borderColor=good?'#22c55e':'#ef4444'; row.querySelector('.sciexp').style.borderColor=good?'#22c55e':'#ef4444'; 
+      if(good) ok++;
     });
     id('sciFb').textContent = ok===sciState.items.length? '✅ Perfect!' : `Score: ${ok}/${sciState.items.length}`;
     if(ok===sciState.items.length) confetti();
@@ -1045,14 +1094,14 @@
   });
   id('sciJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_scientific.json`, sciState.items));
 
-  /* ========================= Bounds ========================= */
+  /* ------------------------- Bounds ------------------------- */
   const bdState={items:[]};
   function bdNew(){
     const list=[];
     for(let k=0;k<4;k++){
       const unit=[0.001,0.01,0.1,1,10,100][Math.floor(Math.random()*6)];
       const x = +( (Math.random()*1000-500).toFixed(unit<1?3:0) );
-      const r = roundToUnitMode(x,unit,State.mode);
+      const r = roundHalfUpToUnit(x,unit);
       const lb = r - unit/2, ub = r + unit/2;
       const label = unit>=1? `nearest ${unit}` : `${decPlacesFromUnit(unit)} dp`;
       list.push({r,unit,lb,ub,label});
@@ -1082,294 +1131,92 @@
     if(ok===bdState.items.length) confetti();
   });
   id('bdCSV').addEventListener('click',()=>{
-    const rows=[['reported','unit','label','lower','upper','mode']];
-    bdState.items.forEach(o=>rows.push([fmtToUnit(o.r,o.unit),o.unit,o.label,o.lb,o.ub,State.mode]));
+    const rows=[['reported','unit','label','lower','upper']]; bdState.items.forEach(o=>rows.push([fmtToUnit(o.r,o.unit),o.unit,o.label,o.lb,o.ub]));
     downloadCSV(`${deckTitle}_bounds.csv`, rows);
   });
   id('bdJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_bounds.json`, bdState.items));
 
-  /* ========================= Qatar Data Lab ========================= */
-  const dsDefs = {
-    souq: {
-      title:'Souq Waqif (cash rounding to 0.05 QAR)',
-      cols:[{k:'item',name:'Item'},{k:'price',name:'Price (QAR)',u:[0.01,0.05,0.1,1]},{k:'qty',name:'Qty',u:[1]},{k:'subtotal',name:'Subtotal (QAR)'}],
-      gen:()=> {
-        const items=['Bracelet','Spices','Falcon keychain','Lamp','Perfume sample','Sweets','Handicraft','Scarf'];
-        const rows=[];
-        for(let r=0;r<5;r++){
-          const it=items[Math.floor(Math.random()*items.length)];
-          const price= +( (Math.random()*40+5).toFixed(2) );
-          const qty= Math.floor(Math.random()*5)+1;
-          rows.push({item:it, price, qty, subtotal: price*qty});
-        }
-        return rows;
-      },
-      totalRow: (rows)=> rows.reduce((s,r)=>s+r.subtotal,0)
-    },
-    fuel: {
-      title:'Fuel Station (litres & cost)',
-      cols:[{k:'litre',name:'Litres (L)',u:[0.1,0.5,1]},{k:'ppL',name:'Price per L (QAR)',u:[0.01,0.05,0.1]},{k:'cost',name:'Cost (QAR)'}],
-      gen:()=> {
-        const rows=[];
-        for(let r=0;r<4;r++){
-          const litre= +( (Math.random()*45+10).toFixed(2) );
-          const ppL= +( (Math.random()*1.2+1.4).toFixed(2) ); // hypothetical
-          rows.push({litre, ppL, cost: litre*ppL});
-        }
-        return rows;
-      },
-      totalRow: (rows)=> rows.reduce((s,r)=>s+r.cost,0)
-    },
-    metro: {
-      title:'Doha Metro (travel times)',
-      cols:[{k:'leg',name:'Leg'},{k:'mins',name:'Time (min)',u:[1,5] }],
-      gen:()=> {
-        const legs=['Al Bidda→Souq Waqif','Al Messila→Hamad Hospital','Al Wakra→Qatar University','Lusail→DECC'];
-        const rows=[];
-        for(let r=0;r<4;r++){
-          const leg=legs[r%legs.length];
-          const mins= +( (Math.random()*28+7).toFixed(1) );
-          rows.push({leg, mins});
-        }
-        return rows;
-      },
-      totalRow: (rows)=> rows.reduce((s,r)=>s+r.mins,0)
-    },
-    match: {
-      title:'Match Attendance',
-      cols:[{k:'match',name:'Match'},{k:'att',name:'Attendance',u:[10,100,1000]}],
-      gen:()=> {
-        const games=['Match 1','Match 2','Match 3','Match 4','Match 5'];
-        const rows=[];
-        for(let r=0;r<5;r++){
-          const match=games[r%games.length];
-          const att = Math.floor(Math.random()*25000)+15000;
-          rows.push({match, att});
-        }
-        return rows;
-      },
-      totalRow: (rows)=> rows.reduce((s,r)=>s+r.att,0)
-    }
-  };
-
-  const dsSelect=id('dsSelect'), labMode=id('labMode'), dsTable=id('dsTable'), dsUnits=id('dsUnits');
-  const rtsOut=id('rtsOut'), strOut=id('strOut'), absErr=id('absErr'), relErr=id('relErr');
-  let dsState={key:'souq', rows:[], cols:[], unitSel:{}};
-
-  function renderDataset(){
-    const def=dsDefs[dsState.key];
-    // Table
-    let html='<thead><tr>';
-    def.cols.forEach(c=>{ html += `<th>${c.name}</th>`;});
-    html+='</tr></thead><tbody>';
-    dsState.rows.forEach(r=>{
-      html+='<tr>';
-      def.cols.forEach(c=>{
-        const v=r[c.k];
-        if(typeof v==='number') html+=`<td>${Number(v.toFixed(3)).toLocaleString()}</td>`;
-        else html+=`<td>${v||''}</td>`;
-      });
-      html+='</tr>';
-    });
-    html+='</tbody>';
-    dsTable.innerHTML=html;
-
-    // Units panel
-    dsUnits.innerHTML='';
-    def.cols.forEach(c=>{
-      if(!c.u) return;
-      const wrap=document.createElement('div');
-      wrap.innerHTML=`<label>${c.name}: 
-          <select data-col="${c.k}" class="border rounded px-2 py-1">
-            ${c.u.map(u=>`<option value="${u}">${ (u>=1)?('nearest '+u): ( (u===0.05)?'0.05 QAR':' '+decPlacesFromUnit(u)+' dp') }</option>`).join('')}
-          </select>
-        </label>`;
-      const sel=wrap.querySelector('select');
-      sel.value= (c.k==='price')? 0.05 : c.u[0];
-      dsState.unitSel[c.k]=Number(sel.value);
-      sel.addEventListener('change',e=>{dsState.unitSel[c.k]=Number(e.target.value);});
-      dsUnits.appendChild(wrap);
-    });
-
-    rtsOut.textContent='—'; strOut.textContent='—'; absErr.textContent='—'; relErr.textContent='—';
-  }
-
-  function loadDS(){
-    dsState.key=dsSelect.value; State.mode=labMode.value; setMode.value=State.mode; modeSelect.value=State.mode;
-    const def=dsDefs[dsState.key];
-    dsState.rows=def.gen(); dsState.cols=def.cols.map(c=>({...c}));
-    renderDataset();
-  }
-  function computeDS(){
-    const def=dsDefs[dsState.key];
-    let rtsTotal=0, exactTotal=def.totalRow(dsState.rows);
-    // Round-Then-Sum: round relevant fields before subtotal or total
-    if(dsState.key==='souq'){
-      // round price, qty fixed, then subtotal per row rounded to currency unit?
-      const uP=dsState.unitSel.price||0.05;
-      rtsTotal = dsState.rows.reduce((s,r)=>{
-        const rp= roundToUnitMode(r.price, uP, State.mode);
-        const sub = rp * r.qty;
-        return s + sub;
-      },0);
-    }else if(dsState.key==='fuel'){
-      const uL=dsState.unitSel.litre||0.1; const uP=dsState.unitSel.ppL||0.05;
-      rtsTotal = dsState.rows.reduce((s,r)=>{
-        const rl= roundToUnitMode(r.litre, uL, State.mode);
-        const rp= roundToUnitMode(r.ppL, uP, State.mode);
-        return s + rl*rp;
-      },0);
-    }else if(dsState.key==='metro'){
-      const uM=dsState.unitSel.mins||1;
-      rtsTotal = dsState.rows.reduce((s,r)=> s + roundToUnitMode(r.mins, uM, State.mode), 0);
-    }else if(dsState.key==='match'){
-      const uA=dsState.unitSel.att||100;
-      rtsTotal = dsState.rows.reduce((s,r)=> s + roundToUnitMode(r.att, uA, State.mode), 0);
-    }
-
-    // Sum-Then-Round (round the final total to the same natural unit)
-    let unitForTotal = 1;
-    if(dsState.key==='souq' || dsState.key==='fuel') unitForTotal = dsState.unitSel.price||0.05;
-    if(dsState.key==='metro') unitForTotal = dsState.unitSel.mins||1;
-    if(dsState.key==='match') unitForTotal = dsState.unitSel.att||100;
-
-    const strTotal = roundToUnitMode(exactTotal, unitForTotal, State.mode);
-
-    const abs = Math.abs(rtsTotal - strTotal), rel = (Math.abs(strTotal)>EPS)? (abs/Math.abs(strTotal))*100 : 0;
-    rtsOut.textContent = pretty(rtsTotal,2);
-    strOut.textContent = pretty(strTotal,2);
-    absErr.textContent = pretty(abs,2);
-    relErr.textContent = pretty(rel,2) + ' %';
-  }
-
-  dsSelect.addEventListener('change',loadDS);
-  labMode.addEventListener('change',()=>{ State.mode=labMode.value; setMode.value=State.mode; modeSelect.value=State.mode; });
-  id('dsNew').addEventListener('click',loadDS);
-  id('dsCompute').addEventListener('click',computeDS);
-  id('dsExportCSV').addEventListener('click',()=>{
-    const def=dsDefs[dsState.key];
-    const rows=[['dataset',def.title],[],def.cols.map(c=>c.name)];
-    dsState.rows.forEach(r=>{
-      rows.push(def.cols.map(c=> (typeof r[c.k]==='number')? Number(r[c.k].toFixed(3)) : (r[c.k]??'')));
-    });
-    rows.push([]);
-    rows.push(['policy'].concat(def.cols.map(c=> dsState.unitSel[c.k]??'' )));
-    downloadCSV(`${deckTitle}_QatarLab_${dsState.key}.csv`, rows);
-  });
-  // init
-  loadDS();
-
-  /* ========================= Real‑World Practice ========================= */
-  const realState={items:[]};
-  function realNew(){
-    const list=[];
-    // Currency estimation with 0.05 QAR
-    const price = +( (Math.random()*40+10).toFixed(2) );
-    const qty = Math.floor(Math.random()*7)+4; // 4..10
-    const u=[0.01,0.05,0.1][Math.floor(Math.random()*3)];
-    list.push({type:'est', prompt:`Estimate the total for ${qty} items at QAR ${price} each using nearest ${u===0.05?'0.05 QAR': (u<1? decPlacesFromUnit(u)+' dp':'QAR')}.`, unit:u, ans: roundToUnitMode(price,u,State.mode)*qty });
-
-    // Population rounding
-    const pop = Math.floor(Math.random()*700000)+2300000; // plausible range
-    list.push({type:'unit', prompt:`Round the population ${pop.toLocaleString()} to the nearest hundred thousand.`, unit:100000, ans: roundToUnitMode(pop,100000,State.mode)});
-
-    // Distance with dp
-    const dist = +( (Math.random()*150+5).toFixed(2) );
-    list.push({type:'unit', prompt:`Round the distance ${dist} km to 1 dp.`, unit:0.1, ans: roundToUnitMode(dist,0.1,State.mode)});
-
-    // Time rounding
-    const minutes = +( (Math.random()*180).toFixed(1) );
-    list.push({type:'unit', prompt:`Round the running time ${minutes} minutes to the nearest minute.`, unit:1, ans: roundToUnitMode(minutes,1,State.mode)});
-
-    realState.items=list;
-    const box=id('realList'); box.innerHTML='';
-    list.forEach((o,idx)=>{
+  /* ------------------------- Misconception Clinic ------------------------- */
+  const MISCONS=[
+    {q:'Rounding −2.5 to the nearest integer gives −2.', ans:false, why:'Half‑up is away from 0: −2.5 → −3.'},
+    {q:'If a number ends with .50, it always rounds down.', ans:false, why:'Midpoint (.5) rounds up/away from 0.'},
+    {q:'Trailing zeros never count toward significant figures.', ans:false, why:'They count when there is a decimal point (e.g., 1200. has 4 s.f.).'},
+    {q:'If a value is rounded to the nearest 0.1, the error interval width is 0.1.', ans:false, why:'Width is 0.1; but bounds are ±0.05 from the rounded value (total width 0.1).'},
+    {q:'If I’m not divisible by 2 or 5, my money result must be exact to the dirham.', ans:false, why:'Prices can have two decimal places; divisibility doesn’t ensure exactness of totals.'},
+    {q:'In scientific notation, rounding the mantissa never changes the exponent.', ans:false, why:'If mantissa becomes ≥10, you must increase the exponent.'}
+  ];
+  function misconBuild(){
+    const chosen=[...MISCONS].sort(()=>Math.random()-0.5).slice(0,4);
+    const box=id('misconList'); box.innerHTML='';
+    chosen.forEach((o,idx)=>{
       const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
-        <div class="text-xl mt-1">${o.prompt} = <input class="rin border rounded px-2 py-1 w-40" placeholder="answer"></div>`;
+      row.innerHTML=`<div class="font-semibold">Q${idx+1}. ${o.q}</div>
+      <div class="mt-1 flex gap-3">
+        <label class="pill"><input type="radio" name="m${idx}" value="true"> True</label>
+        <label class="pill"><input type="radio" name="m${idx}" value="false"> False</label>
+      </div>
+      <div class="mt-2 text-sm text-gray-700 hidden" data-exp>Explanation: ${o.why}</div>`;
+      row.dataset.ans=String(o.ans);
       box.appendChild(row);
     });
   }
-  id('realNew').addEventListener('click',realNew); realNew();
-  id('realCheck').addEventListener('click',()=>{
-    let ok=0; id('realList').querySelectorAll('.card').forEach((row,idx)=>{
-      const item=realState.items[idx]; const v=Number(String(row.querySelector('.rin').value).replace(/,/g,''));
-      const good=Math.abs(v-item.ans)<1e-10; row.querySelector('.rin').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
+  id('misconNew').addEventListener('click',misconBuild); misconBuild();
+  id('misconCheck').addEventListener('click',()=>{
+    let correct=0; id('misconList').querySelectorAll('.card').forEach(card=>{
+      const want=card.dataset.ans; const got=(card.querySelector('input[type=radio]:checked')||{}).value;
+      const exp=card.querySelector('[data-exp]'); exp.classList.remove('hidden');
+      if(String(got)===String(want)) { correct++; card.style.borderColor='#22c55e'; } else { card.style.borderColor='#ef4444'; }
     });
-    id('realFb').textContent = ok===realState.items.length? '✅ Real‑world ready!' : `Score: ${ok}/${realState.items.length}`;
-    if(ok===realState.items.length) confetti();
+    id('misconFb').textContent = `Your score: ${correct}/4`;
+    if(correct===4) confetti();
   });
-  id('realCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer','mode']]; realState.items.forEach(o=>rows.push([o.prompt,o.ans,State.mode])); downloadCSV(`${deckTitle}_realworld.csv`, rows);
-  });
-  id('realJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_realworld.json`, realState.items));
 
-  /* ========================= MCQ Bank ========================= */
-  const MCQS = {
-    A: [
-      {q:'Round 7.45 to 1 decimal place.', opts:['7.4','7.5','7.6','7.45'], a:1, why:'Look at the hundredths (5) → round up the tenths (4→5).'},
-      {q:'Which rounds to 500 (nearest hundred)?', opts:['449','450','550','599'], a:3, why:'Nearest hundred: 449→400, 450→500 (tie → half‑up goes up), 550→600, 599→600. The one that becomes 500 is 450.'},
-      {q:'How many s.f. does 1200. have?', opts:['2','3','4','depends'], a:2, why:'Trailing zeros count when a decimal point is present → 4 s.f.'},
-      {q:'Bounds for 3.6 to 1 dp are:', opts:['[3.5,3.7)','[3.55,3.65)','[3.55,3.66)','(3.55,3.65]'], a:0, why:'Unit u=0.1 ⇒ bounds [3.6−0.05, 3.6+0.05).'},
-      {q:'Rounding digit in 2,947 to nearest hundred is:', opts:['2','9','4','7'], a:2, why:'Hundreds place is 9? Actually 2,947: thousands(2), hundreds(9), tens(4), ones(7). Rounding digit is 9 when rounding to hundred.'},
-      {q:'In banker’s rounding, 2.5 becomes…', opts:['2','3','2 or 3','undefined'], a:0, why:'Ties‑to‑even → 2.5 → 2.'}
-    ],
-    B: [
-      {q:'Round -2.5 to nearest integer (Half‑Up).', opts:['-2','-3','-1','0'], a:1, why:'Half‑Up rounds away from 0 at the tie → -2.5 → -3.'},
-      {q:'Digits in 0.007020 (s.f.)', opts:['2','3','4','5'], a:2, why:'Leading zeros ignore; 7,0,2,0 with decimal point ⇒ 4 s.f.'},
-      {q:'Round 18.975 QAR to nearest 0.05 QAR.', opts:['18.95','19.00','19.05','18.90'], a:1, why:'0.05 steps: 18.95, 19.00, 19.05… 18.975 is at midpoint → Half‑Up goes up to 19.00.'},
-      {q:'Which is the mantissa in 4.02 × 10^3 ?', opts:['4','4.0','4.02','10^3'], a:2, why:'Mantissa is the 4.02; exponent part is 10^3.'},
-      {q:'Nearest thousand to 7,499 is:', opts:['7,000','7,500','8,000','7,400'], a:1, why:'Tie at 7,500 would go to 8,000; 7,499 goes to 7,000.'},
-      {q:'Bounds for 1200 (nearest 100) are:', opts:['[1100,1300)','[1150,1250)','[1199,1201)','[1000,2000)'], a:0, why:'u=100 → [r−50, r+50) = [1150,1250)? Careful: nearest 100: r=1200, u=100 ⇒ [1150,1250). Correct answer is [1150,1250).'}
-    ],
-    C: [
-      {q:'Round 0.864 to 2 dp.', opts:['0.86','0.87','0.88','0.864'], a:1, why:'Hundredths digit 6, thousandths 4 <5 → 0.86? Wait: 0.864 to 2dp: check hundredths is 6, thousandths is 4 → stays 6 → 0.86. Correct is 0.86.'},
-      {q:'How many s.f. in 40 ?', opts:['1','2','3','depends'], a:3, why:'Without a decimal point, trailing zero is ambiguous → usually 1 s.f. unless notation clarifies.'},
-      {q:'Which policy gives the smaller total for positive addends?', opts:['Round‑Then‑Sum','Sum‑Then‑Round','Always equal','Cannot say'], a:3, why:'It depends on the data and units—students should analyze empirically.'},
-      {q:'Round 3.25 to integer (Ties‑to‑Even).', opts:['3','4','2','depends'], a:0, why:'Tie 3.5? This is 3.25 not a tie. 3.25 → nearest integer is 3 in both modes.'},
-      {q:'Bounds for 8.0 (1 dp) are:', opts:['[7.9,8.1)','[7.95,8.05)','[8.0,8.1)','[7.95,8.0]'], a:1, why:'u=0.1 ⇒ [8.0−0.05,8.0+0.05).'},
-      {q:'Which number has 3 s.f.?', opts:['0.00450','4500','450.','45.0'], a:3, why:'0.00450 has 3 s.f. (4,5,0); 4500 is ambiguous (often 2 s.f.); 450. has 3 s.f.; 45.0 has 3 s.f. Multiple correct? To avoid ambiguity, pick 45.0.'}
-    ]
-  };
-  // Fix the few ambiguous/typo items above for robustness:
-  MCQS.A[4].why='Hundreds digit in 2,947 is 9 (thousands 2, hundreds 9, tens 4, ones 7).';
-  MCQS.B[5].why='u=100 → [r−50, r+50) = [1150,1250).';
-  MCQS.C[0].a=0; MCQS.C[0].why='0.864 to 2 dp: hundredths 6, thousandths 4 (<5) → 0.86.';
-  MCQS.C[5]={q:'Which numbers have exactly 3 s.f.? (choose one best answer)', opts:['0.00450','4500','450.','45.0'], a:2, why:'450. explicitly has 3 s.f. (trailing zero counts due to decimal point).'};
-
-  const mcqList=id('mcqList'), mcqSet=id('mcqSet');
-  function mcqLoad(){
-    const set=mcqSet.value; const qs=MCQS[set];
-    mcqList.innerHTML='';
-    qs.forEach((item,idx)=>{
-      const box=document.createElement('div'); box.className='q';
-      const name='mcq_'+idx;
-      box.innerHTML=`<div class="font-semibold text-maroon mb-1">Q${idx+1}. ${item.q}</div>
-        ${item.opts.map((opt,j)=>`<label><input type="radio" name="${name}" value="${j}"/> <span>${opt}</span></label>`).join('')}
-        <div class="explain mt-1 text-sm text-gray-700 hidden">${item.why}</div>`;
-      mcqList.appendChild(box);
+  /* ------------------------- Qatar Applications Lab ------------------------- */
+  const qatState={items:[]};
+  function qatNew(){
+    const items=[];
+    // 1. Doha Metro arrival time
+    const tm= +( (Math.random()*20+5).toFixed(1) );
+    items.push({type:'metro', prompt:`Doha Metro app shows arrival in ${tm} minutes. Choose: nearest minute or 0.1 min? Round and explain.`, unitChoices:[1,0.1], ans:roundHalfUpToUnit(tm,1)});
+    // 2. QAR prices
+    const price = +((Math.random()*40+10).toFixed(2));
+    const qty = Math.floor(Math.random()*6)+5;
+    items.push({type:'qar', prompt:`QAR ${price} each, ${qty} items. Round unit price sensibly and estimate total.`, unitChoices:['riyals','0.1 riyal'], ans:Math.round(price)*qty});
+    // 3. Stadium capacity
+    const cap = 80023;
+    items.push({type:'stadium', prompt:`Lusail Stadium seats ${cap.toLocaleString()} people. Round to a sensible figure for a news headline.`, unitChoices:[1000,10000], ans:roundHalfUpToUnit(cap,10000)});
+    // 4. HIA flight time
+    const ft= +( (Math.random()*180+40).toFixed(1) );
+    items.push({type:'flight', prompt:`Flight time is ${ft} minutes. For boarding screens, round to the nearest minute.`, unitChoices:[1,0.1], ans:roundHalfUpToUnit(ft,1)});
+    qatState.items=items;
+    const box=id('qatList'); box.innerHTML='';
+    items.forEach((o,idx)=>{
+      const row=document.createElement('div'); row.className='card p-4';
+      const choices = o.unitChoices.map(c=>`<option value="${c}">${typeof c==='number'?(c>=1?'nearest '+c:decPlacesFromUnit(c)+' dp'):c}</option>`).join('');
+      row.innerHTML=`<div class="font-semibold">Scenario ${idx+1}</div>
+        <div class="mt-1">${o.prompt}</div>
+        <div class="mt-2 flex items-center gap-2">
+          <label>Precision:</label>
+          <select class="qatUnit border rounded px-2 py-1">${choices}</select>
+          <span>Rounded value:</span> <input class="qatAns border rounded px-2 py-1 w-40" placeholder="answer">
+        </div>`;
+      box.appendChild(row);
     });
   }
-  function mcqCheck(){
-    const qs=MCQS[mcqSet.value]; let ok=0;
-    [...mcqList.querySelectorAll('.q')].forEach((box,idx)=>{
-      const chosen=box.querySelector('input[type="radio"]:checked');
-      const labels=[...box.querySelectorAll('label')];
-      labels.forEach(l=>l.classList.remove('correct','wrong'));
-      if(!chosen) return;
-      const v=Number(chosen.value);
-      if(v===qs[idx].a){ ok++; labels[v].classList.add('correct'); } else { labels[v].classList.add('wrong'); labels[qs[idx].a].classList.add('correct'); }
+  id('qatNew').addEventListener('click',qatNew);
+  id('qatCheck').addEventListener('click',()=>{
+    let ok=0; id('qatList').querySelectorAll('.card').forEach((row,idx)=>{
+      const item=qatState.items[idx];
+      const got=Number(row.querySelector('.qatAns').value);
+      const good=Math.abs(got-item.ans)<1e-10;
+      row.querySelector('.qatAns').style.borderColor=good?'#22c55e':'#ef4444';
+      if(good) ok++;
     });
-    id('mcqFb').textContent = `Score: ${ok}/${qs.length}`;
-    if(ok===qs.length) confetti();
-  }
-  function mcqExplain(){ [...mcqList.querySelectorAll('.explain')].forEach(el=>el.classList.remove('hidden')); }
-  id('mcqNew').addEventListener('click',mcqLoad);
-  id('mcqCheck').addEventListener('click',mcqCheck);
-  id('mcqExplain').addEventListener('click',mcqExplain);
-  mcqLoad();
+    id('qatFb').textContent = ok===qatState.items.length? '✅ Nicely justified!' : `Auto‑check (numeric parts): ${ok}/${qatState.items.length}. Ensure your justification too.`;
+    if(ok===qatState.items.length) confetti();
+  });
 
-  /* ========================= Challenge Mode (unchanged core) ========================= */
+  /* ------------------------- Challenge Mode (retained) ------------------------- */
   const chState={cur:null, streak:0, history:[]};
   function chNew(){
     const lv=id('chLevel').value;
@@ -1377,23 +1224,23 @@
     const r = Math.random();
     if(lv==='easy'){
       const x = Math.floor(Math.random()*900)+100, unit=10;
-      ans = roundToUnitMode(x,unit,State.mode);
+      ans = roundHalfUpToUnit(x,unit);
       prompt = `Round ${x} to the nearest 10`;
     }else if(lv==='med'){
       const x = +( (Math.random()*200-100).toFixed(2) ); const dp=1;
-      ans = roundToUnitMode(x,10**(-dp),State.mode); prompt=`Round ${x} to ${dp} dp`;
+      ans = roundToDP(x,dp); prompt=`Round ${x} to ${dp} dp`;
     }else if(lv==='hard'){
       if(r<0.5){ const x=+( (Math.random()*9000-3000).toFixed(3) ); const n=[2,3,4][Math.floor(Math.random()*3)]; ans=roundToSig(x,n); prompt=`Round ${x} to ${n} s.f.`; }
-      else { const unit=[0.01,0.1,1,10,100][Math.floor(Math.random()*5)]; const x=+( (Math.random()*2000-1000).toFixed(unit<1?2:0) ); ans=roundToUnitMode(x,unit,State.mode); prompt=`Round ${x} to ${unit>=1? 'nearest '+unit : decPlacesFromUnit(unit)+' dp'}`; }
+      else { const unit=[0.01,0.1,1,10,100][Math.floor(Math.random()*5)]; const x=+( (Math.random()*2000-1000).toFixed(unit<1?2:0) ); ans=roundHalfUpToUnit(x,unit); prompt=`Round ${x} to ${unit>=1? 'nearest '+unit : decPlacesFromUnit(unit)+' dp'}`; }
     }else{ // expert
       if(r<0.33){ const e=Math.floor(Math.random()*7)-3; const m=+( (Math.random()*9+1).toFixed(4) ); const n=[2,3,4][Math.floor(Math.random()*3)]; const rr=sciRound(m,e,n); ans=rr.m*10**rr.e; prompt=`Round ${m}×10^${e} to ${n} s.f. (enter numeric value)`; }
-      else if(r<0.66){ const unit=[0.001,0.01,0.1,1,10,100][Math.floor(Math.random()*6)]; const r0=+( (Math.random()*1000-500).toFixed(unit<1?3:0) ); const rr=roundToUnitMode(r0,unit,State.mode); const lb=rr-unit/2; ans=lb; prompt=`Given value rounded to ${unit>=1?'nearest '+unit: decPlacesFromUnit(unit)+' dp'} is ${fmtToUnit(rr,unit)}. Enter the <lower bound>.`; }
+      else if(r<0.66){ const unit=[0.001,0.01,0.1,1,10,100][Math.floor(Math.random()*6)]; const r0=+( (Math.random()*1000-500).toFixed(unit<1?3:0) ); const rr=roundHalfUpToUnit(r0,unit); const lb=rr-unit/2; ans=lb; prompt=`Given value rounded to ${unit>=1?'nearest '+unit: decPlacesFromUnit(unit)+' dp'} is ${fmtToUnit(rr,unit)}. Enter the <lower bound>.`; }
       else { const x=+( (Math.random()*9000-1000).toFixed(4) ); const n=[2,3,4][Math.floor(Math.random()*3)]; ans=roundToSig(x,n); prompt=`Round ${x} to ${n} s.f.`; }
     }
     chState.cur={prompt,ans}; id('chText').textContent=prompt; id('chAns').value=''; id('chFb').textContent=''; id('chHintBox').textContent=''; renderMath(id('challengeSlide'));
   }
   id('chNew').addEventListener('click',chNew); chNew();
-  id('chHint').addEventListener('click',()=>{ id('chHintBox').innerHTML=`<div class="hint">Half‑Up unless investigating ties. Bounds: \\([r-\\tfrac{u}{2},\\; r+\\tfrac{u}{2})\\).</div>`; renderMath(id('challengeSlide')); });
+  id('chHint').addEventListener('click',()=>{ id('chHintBox').innerHTML=`<div class="hint">Use half‑up rounding. For bounds: interval is \\([r-\\tfrac{u}{2},\\; r+\\tfrac{u}{2})\\).</div>`; renderMath(id('challengeSlide')); });
   id('chCheck').addEventListener('click',()=>{
     const got=Number(id('chAns').value), want=chState.cur.ans;
     const ok = Math.abs(got-want)<1e-10;
@@ -1406,12 +1253,112 @@
   });
   id('chJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_challenge.json`, chState.history));
 
-  /* ========================= Exit Ticket ========================= */
-  const confSlider=id('confSlider'), confOut=id('confOut'); confOut.textContent=confSlider.value; confSlider.addEventListener('input',()=>confOut.textContent=confSlider.value);
+  /* ------------------------- Extra Practice (retained) ------------------------- */
+  const realState={items:[]};
+  function realNew(){
+    const list=[];
+    // Currency estimation
+    const price = +( (Math.random()*40+10).toFixed(2) );
+    const qty = Math.floor(Math.random()*7)+4; // 4..10
+    list.push({type:'est', prompt:`Estimate the total cost of ${qty} items at QAR ${price} each by rounding to the nearest riyal (QAR).`, ans: Math.round(price)*qty });
+    // Population rounding
+    const pop = Math.floor(Math.random()*7e6)+3e6;
+    list.push({type:'unit', prompt:`Round the population ${pop.toLocaleString()} to the nearest hundred thousand.`, unit:100000, ans: roundHalfUpToUnit(pop,100000)});
+    // Distance with dp
+    const dist = +( (Math.random()*150+5).toFixed(2) );
+    list.push({type:'unit', prompt:`Round the distance ${dist} km to 1 dp.`, unit:0.1, ans: roundHalfUpToUnit(dist,0.1)});
+    // Time rounding
+    const minutes = +( (Math.random()*180).toFixed(1) );
+    list.push({type:'unit', prompt:`Round the running time ${minutes} minutes to the nearest minute.`, unit:1, ans: roundHalfUpToUnit(minutes,1)});
+    realState.items=list;
+    const box=id('realList'); box.innerHTML='';
+    list.forEach((o,idx)=>{
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
+        <div class="text-xl mt-1">${o.prompt} = <input class="rin border rounded px-2 py-1 w-40" placeholder="answer"></div>`;
+      box.appendChild(row);
+    });
+  }
+  id('realNew').addEventListener('click',realNew); realNew();
+  id('realCheck').addEventListener('click',()=>{
+    let ok=0; id('realList').querySelectorAll('.card').forEach((row,idx)=>{
+      const item=realState.items[idx]; const v=Number(row.querySelector('.rin').value);
+      const good=Math.abs(v-item.ans)<1e-10; row.querySelector('.rin').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
+    });
+    id('realFb').textContent = ok===realState.items.length? '✅ Real‑world ready!' : `Score: ${ok}/${realState.items.length}`;
+    if(ok===realState.items.length) confetti();
+  });
+  id('realCSV').addEventListener('click',()=>{
+    const rows=[['prompt','answer']]; realState.items.forEach(o=>rows.push([o.prompt,o.ans])); downloadCSV(`${deckTitle}_realworld.csv`, rows);
+  });
+  id('realJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_realworld.json`, realState.items));
 
-  /* ========================= Drawer + Initial Show ========================= */
-  function initKW(){ langSelect.value=State.lang; renderKW(); }
-  initKW();
+  /* ------------------------- Glossary Quiz ------------------------- */
+  function buildGlossaryQuiz(){
+    const keys=Object.keys(GLOS).sort(()=>Math.random()-0.5).slice(0,4);
+    const defs=keys.map(k=>({k,def:GLOS[k].def})).sort(()=>Math.random()-0.5);
+    const dlg=document.createElement('div');
+    dlg.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:60;display:flex;align-items:center;justify-content:center;';
+    dlg.innerHTML=`<div class="card p-4" style="max-width:700px;">
+      <div class="flex items-center justify-between">
+        <b>Glossary Match</b>
+        <button class="btn" id="gqClose">Close</button>
+      </div>
+      <div class="grid md:grid-cols-2 gap-3 mt-2">
+        <div>${keys.map((k,i)=>`<div class="pill">${i+1}. <b>${GLOS[k].title}</b></div>`).join('')}</div>
+        <div>${defs.map((d,j)=>`<div class="card p-2 text-sm"><b>${j+1}</b>. ${d.def}</div>`).join('')}</div>
+      </div>
+      <div class="mt-2">Enter matches as pairs like: 1→3, 2→1, …</div>
+      <input id="gqAns" class="border rounded px-2 py-1 w-full mt-2" placeholder="e.g., 1-2,2-4,3-1,4-3">
+      <div class="mt-2"><button class="btn maroon" id="gqCheck">Check</button></div>
+      <div id="gqFb" class="mt-2 h-6 font-semibold"></div>
+    </div>`;
+    document.body.appendChild(dlg);
+    dlg.querySelector('#gqClose').addEventListener('click',()=>dlg.remove());
+    dlg.querySelector('#gqCheck').addEventListener('click',()=>{
+      const mapInput=(dlg.querySelector('#gqAns').value||'').split(',').map(s=>s.trim());
+      let score=0;
+      // Build correct mapping by index
+      const keyIndex = {}; keys.forEach((k,idx)=>keyIndex[idx+1]=k);
+      const defIndex = {}; defs.forEach((d,idx)=>defIndex[idx+1]=d.k);
+      mapInput.forEach(pair=>{
+        const m=pair.match(/^(\d+)\s*[-→]\s*(\d+)$/);
+        if(m){ const a=Number(m[1]), b=Number(m[2]); if(keyIndex[a] && defIndex[b] && keyIndex[a]===defIndex[b]) score++; }
+      });
+      const fb=dlg.querySelector('#gqFb'); fb.textContent=`Score: ${score}/${keys.length}`;
+      if(score===keys.length) confetti();
+    });
+    renderMath(dlg);
+  }
+
+  /* ------------------------- Exit Ticket & LO checklist ------------------------- */
+  id('exitSave').addEventListener('click',()=>{ setLS(deckTitle+'_EXIT', {text:id('exitRef').value}); id('exitFb').textContent='💾 Saved'; });
+  id('exitClear').addEventListener('click',()=>{ id('exitRef').value=''; setLS(deckTitle+'_EXIT',null); id('exitFb').textContent=''; });
+  const xSav=getLS(deckTitle+'_EXIT'); if(xSav) id('exitRef').value=xSav.text||'';
+
+  const LO_ITEMS=[
+    'I can round using the half‑up rule (including negatives).',
+    'I can round to a specified number of decimal places.',
+    'I can count and round to significant figures.',
+    'I can use scientific notation with correct mantissa/exponent after rounding.',
+    'I can state correct bounds (error intervals).',
+    'I can choose appropriate precision for real‑world Qatar contexts and justify it.'
+  ];
+  const loBox=id('loCheck'); loBox.innerHTML='';
+  const loState=getLS(deckTitle+'_LO', {})||{};
+  LO_ITEMS.forEach((t,idx)=>{
+    const idc='locb'+idx;
+    const wrap=document.createElement('div');
+    wrap.innerHTML=`<label class="pill"><input type="checkbox" id="${idc}"> <span>${t}</span></label>`;
+    loBox.appendChild(wrap);
+    const cb=wrap.querySelector('input'); cb.checked=!!loState[idc];
+    cb.addEventListener('change',()=>{ loState[idc]=cb.checked; setLS(deckTitle+'_LO', loState); });
+  });
+
+  /* ------------------------- Init ------------------------- */
+  function initNWRestore(){ const d=getLS(deckTitle+'_NW'); if(d){ id('nwNotice').value=d.notice||''; id('nwWonder').value=d.wonder||''; } }
+  initNWRestore();
+  window.addEventListener('resize',()=>{ if(slides[i].id==='lineSlide') drawRoundLine(); });
   show(0);
 
 })();
