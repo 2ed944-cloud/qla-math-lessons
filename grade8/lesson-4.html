@@ -759,24 +759,13 @@
     const lo = 10**(n-1), hi = 10**n - 1;
     return Math.floor(Math.random()*(hi-lo+1))+lo;
   }
-function newPV(){
-  const sign=Math.random()<0.2?-1:1;
-  const int = randIntDigits(pvState.intDigits);
-
-  let dp;
-  if(pvState.mode==='dp'){
-    const target = Number(id('pvDp').value);
-    // ensure at least target+1 decimals, sometimes +2
-    dp = Math.max(target+1, Math.min(pvState.maxDp, target + 1 + Math.floor(Math.random()*2)));
-  }else{
-    dp = Math.floor(Math.random()*(pvState.maxDp+1));
-  }
-
-  const frac = dp? Math.floor(Math.random()*(10**dp)) : 0;
-  pvState.x = sign*(int + frac/10**dp);
-  renderPV();
-}
-
+  function newPV(){
+    const sign=Math.random()<0.2?-1:1;
+    const int = randIntDigits(pvState.intDigits); // up to 11 digits
+    const dp = Math.floor(Math.random()*(pvState.maxDp+1)); // 0..maxDp
+    const frac = dp? Math.floor(Math.random()*(10**dp)) : 0;
+    pvState.x = sign*(int + frac/10**dp);
+    renderPV();
   }
   function renderPV(){
     const {x, mode} = pvState;
@@ -845,11 +834,7 @@ function newPV(){
   });
   id('pvExplain').addEventListener('click',()=>{ const box=id('pvSteps'); box.style.display= box.style.display==='none'? 'block':'none'; });
   id('pvPlace').addEventListener('change',renderPV);
-  id('pvDp').addEventListener('change',()=>{
-  // regenerate so there is always a decision digit for the chosen dp
-  if(pvState.mode==='dp') newPV(); else renderPV();
-});
-
+  id('pvDp').addEventListener('change',renderPV);
   id('pvIntDigits').addEventListener('input', (e)=>{ pvState.intDigits = clamp(parseInt(e.target.value||6),3,11); newPV(); });
   id('pvMaxDp').addEventListener('input', (e)=>{ pvState.maxDp = clamp(parseInt(e.target.value||3),0,6); newPV(); });
   id('pvNew').addEventListener('click',newPV);
