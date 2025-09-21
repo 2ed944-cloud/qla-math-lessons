@@ -874,7 +874,13 @@
   }
   lineX.addEventListener('input',()=>{ lineState.x=Number(lineX.value); drawRoundLine(); });
   lineDp.addEventListener('change',()=>{ lineState.dp=Number(lineDp.value); drawRoundLine(); });
-  id('lineRand').addEventListener('click',()=>{ const dp = Math.floor(Math.random()*7); lineState.dp=dp; lineDp.value=dp; lineState.x = +( (Math.random()*200-100).toFixed(dp) ); lineX.value=lineState.x; drawRoundLine(); });
+  id('lineRand').addEventListener('click',()=>{const dp = Math.floor(Math.random()*7); // 0..6 lineState.dp = dp; lineDp.value = dp;
+  const extra = 1 + Math.floor(Math.random()*2); // +1 or +2 decimals beyond target
+  lineState.x = +((Math.random()*200 - 100).toFixed(dp + extra));
+  lineX.value = lineState.x;
+  drawRoundLine();
+});
+
   id('lineExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_line.csv`, [['x','dp','rounded'], [lineState.x,lineState.dp,roundToDP(lineState.x,lineState.dp).toFixed(lineState.dp)]]));
   id('lineExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_line.json`, {x:lineState.x,dp:lineState.dp,rounded:roundToDP(lineState.x,lineState.dp)}));
   drawRoundLine();
