@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G8 • Unit 1 • Lesson 4 • Rounding Numbers (QLA) — Enhanced</title>
+<title>G8 • Unit 1 • Lesson 4 • Rounding Numbers (QLA) — Final</title>
 
 <!-- Fonts & Tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,13 +11,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- KaTeX: CSS + JS -->
+<!-- KaTeX -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 
 <script>
-  // Boot KaTeX + expose global re-typeset helper
+  // Boot KaTeX + expose re-typeset helper
   window.addEventListener('DOMContentLoaded', () => {
     const run = (root = document.body) => {
       if (!window.renderMathInElement) return;
@@ -91,7 +91,7 @@
         <img src="../assets/qla_logo.png" alt="QLA Logo" class="h-20 w-auto" onerror="this.style.display='none'"/>
         <div class="text-left">
           <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Unit 1 — Lesson 4: Rounding Numbers</h1>
-          <p class="text-gold text-xl md:text-2xl mt-2 font-semibold">Grade 8 • Whole numbers • Decimals (0–6 dp) • Significant Figures • Scientific Notation • Bounds</p>
+          <p class="text-gold text-xl md:text-2xl mt-2 font-semibold">Grade 8 • Whole Numbers • Decimals (0–6 dp) • Significant Figures • Scientific Notation • Bounds</p>
           <p class="mt-1">Qatar Leadership Academy — Mathematics</p>
         </div>
       </div>
@@ -162,22 +162,20 @@
     <!-- 2 • Glossary Quick Quiz -->
     <section class="slide" id="kwQuizSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Glossary Quick Quiz</h2>
-      <p class="lead mb-3">Choose the correct match. Language: <span id="kwQuizLangOut" class="font-bold">English</span>. <span class="ml-2">Change from the Keywords slide.</span></p>
+      <p class="lead mb-3">Choose the correct match. Language: <span id="kwQuizLangOut" class="font-bold">English</span>. Change from the Keywords slide.</p>
       <div id="kwQuizList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
       <div class="mt-3 flex gap-2">
         <button id="kwQuizCheck" class="btn maroon">Check</button>
         <button id="kwQuizNew" class="btn">New Quiz</button>
       </div>
       <div id="kwQuizFb" class="mt-2 h-6 font-semibold"></div>
-      <div class="hint mt-3 text-sm max-w-5xl">Tip: Say the definition in your own words first, then look for the closest formal match.</div>
     </section>
 
-    <!-- 3 • Warm‑up (Pre-explainer first) -->
+    <!-- 3 • Warm‑up -->
     <section class="slide" id="warmSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm‑Up (Explain → Try)</h2>
       <div class="card p-4 w-full max-w-5xl mb-3">
-        <p class="lead"><strong>Before doing:</strong> To round, identify (1) the <em>rounding digit</em>; (2) the digit to its right (decision digit). If the decision digit is 5–9, increase the rounding digit by 1; if 0–4, keep it. For negatives, a 5 goes <em>away from 0</em>.</p>
-        <p class="lead mt-1">Success Check: I can say which two digits I looked at and why.</p>
+        <p class="lead"><strong>Before doing:</strong> Identify (1) the <em>rounding digit</em>; (2) the digit to its right (decision digit). If the decision digit is 5–9, increase the rounding digit by 1; if 0–4, keep it. For negatives, a 5 goes <em>away from 0</em>.</p>
       </div>
       <div class="grid md:grid-cols-3 gap-4 w-full max-w-5xl">
         <div class="card p-4 text-left">
@@ -200,15 +198,11 @@
       <div id="warmFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- 4 • Place Value & Rule (extended digits & dp) -->
+    <!-- 4 • Place Value & Rule (dp mode guarantees decision digit) -->
     <section class="slide" id="placeSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Place Value &amp; The Rounding Rule</h2>
       <div class="card p-4 w-full max-w-5xl mb-3">
-        <p class="lead"><strong>Read first:</strong> Decide the <em>target precision</em> (place value like tens/hundreds <em>or</em> decimal places). Highlight the rounding digit and the next digit. Make a prediction, then test with the tool.</p>
-        <ul class="list-disc list-inside text-sm mt-1">
-          <li>For decimal rounding to \(n\) dp, the unit is \(u=10^{-n}\).</li>
-          <li>For place rounding to \(10^k\), the unit is \(u=10^k\).</li>
-        </ul>
+        <p class="lead"><strong>Read first:</strong> Choose the target precision (place value or \(n\) dp). Highlight the rounding digit and the next digit. Make a prediction, then test.</p>
       </div>
       <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl">
         <div class="card p-5">
@@ -223,7 +217,9 @@
             </label>
             <button id="pvNew" class="btn sm">New number</button>
           </div>
+
           <div class="text-2xl" id="pvNumber"></div>
+
           <div class="mt-2 flex items-center gap-3">
             <label id="pvLabelPlace">Round to:
               <select id="pvPlace" class="border rounded px-2 py-1">
@@ -247,12 +243,14 @@
                 <option value="6">6 dp</option>
               </select>
             </label>
-            <button id="pvExplain" class="btn sm">Show step-by-step</button>
+            <button id="pvExplain" class="btn sm">Show step‑by‑step</button>
           </div>
+
           <div class="mt-2">Prediction: <input id="pvPred" class="border rounded px-2 py-1 w-40" placeholder="your guess"></div>
           <div class="mt-2">Rounded result: <span id="pvResult" class="font-bold"></span></div>
           <div id="pvSteps" class="hint mt-3 text-sm" style="display:none"></div>
         </div>
+
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon mb-2">Sample Worked Examples</h3>
           <div class="space-y-2 text-lg">
@@ -263,6 +261,7 @@
           </div>
         </div>
       </div>
+
       <div class="mt-3 flex gap-2">
         <button id="pvExportCSV" class="btn">Export CSV</button>
         <button id="pvExportJSON" class="btn">Export JSON</button>
@@ -273,11 +272,11 @@
     <section class="slide" id="lineSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Rounding Explorer (Number Line)</h2>
       <div class="card p-4 w-full max-w-5xl mb-3">
-        <p class="lead"><strong>Explore:</strong> Choose dp (0–6). The gold dashed lines show the half‑unit cutoffs. Place your number and predict the rounded value <em>before</em> revealing.</p>
+        <p class="lead"><strong>Explore:</strong> Choose dp (0–6). Gold dashed lines show the half‑unit cutoffs. Use <span class="kbd">Randomize</span> to get an \(x\) with extra decimals so the decision digit is visible.</p>
       </div>
       <div class="nl-wrap"><canvas id="roundLine" class="nline" aria-label="Rounding number line"></canvas></div>
       <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
-        <label class="chip">x = <input id="lineX" class="border rounded px-2 py-1 w-32" value="23.47"></label>
+        <label class="chip">x = <input id="lineX" class="border rounded px-2 py-1 w-40" value="23.47"></label>
         <label class="chip">dp =
           <select id="lineDp" class="border rounded px-2 py-1">
             <option value="0">0 dp (nearest integer)</option>
@@ -296,10 +295,10 @@
       </div>
     </section>
 
-    <!-- 6 • Station Exploration (Student-centered) -->
+    <!-- 6 • Exploration Stations -->
     <section class="slide" id="stationsSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Exploration Stations</h2>
-      <p class="lead mb-3"><strong>Rotate in groups.</strong> At each station: predict → test → explain to a peer. Write one sentence: “We decided to round to … because …”.</p>
+      <p class="lead mb-3"><strong>Rotate in groups.</strong> At each station: predict → test → explain. Write: “We rounded to … because …”.</p>
       <div class="grid md:grid-cols-2 gap-4 w-full max-w-5xl">
         <div class="card p-4">
           <div class="font-bold text-maroon mb-1">S1 • Place Value Big Numbers</div>
@@ -313,14 +312,16 @@
           <button class="btn sm mt-2 s1check">Check</button>
           <div class="s1fb mt-1 font-semibold"></div>
         </div>
+
         <div class="card p-4">
           <div class="font-bold text-maroon mb-1">S2 • Decimals (Fuel)</div>
-          <p>Fuel price: \( \text{QAR } 2.137\,/\,\text{L} \). Round to 2 dp and 3 dp.</p>
+          <p>Fuel price: \( \text{QAR } 2.1379\,/\,\text{L} \). Round to 2 dp and 3 dp.</p>
           <input class="s2a border rounded px-2 py-1 w-28 mt-2" placeholder="2 dp">
           <input class="s2b border rounded px-2 py-1 w-28 mt-2" placeholder="3 dp">
           <button class="btn sm mt-2 s2check">Check</button>
           <div class="s2fb mt-1 font-semibold"></div>
         </div>
+
         <div class="card p-4">
           <div class="font-bold text-maroon mb-1">S3 • Significant Figures</div>
           <p>\( 0.004\,987\,1 \) → 2 s.f. and 4 s.f.</p>
@@ -329,6 +330,7 @@
           <button class="btn sm mt-2 s3check">Check</button>
           <div class="s3fb mt-1 font-semibold"></div>
         </div>
+
         <div class="card p-4">
           <div class="font-bold text-maroon mb-1">S4 • Bounds</div>
           <p>Reported: \( 7.3 \) km (to 1 dp). Give lower & upper bounds.</p>
@@ -340,7 +342,7 @@
       </div>
     </section>
 
-    <!-- 7 • Practice Generator (levels + size + dp/digits controls) -->
+    <!-- 7 • Practice Generator (final) -->
     <section class="slide" id="pracSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice Generator (Differentiated)</h2>
       <div class="card p-5 w-full max-w-5xl">
@@ -369,7 +371,7 @@
             <button id="prNew" class="btn">New set</button>
           </div>
           <div class="hint text-sm">
-            Mix includes: place rounding, dp rounding, significant figures, scientific notation mantissa, and bounds. Use the controls to push or support learners.
+            Numbers rounded to \(n\) dp are generated with at least \(n+1\) decimals, so you must examine the decision digit.
           </div>
         </div>
         <div id="prList" class="grid md:grid-cols-2 gap-3 mt-3"></div>
@@ -478,7 +480,7 @@
     <section class="slide" id="challengeSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Challenge Mode</h2>
       <div class="card p-4 w-full max-w-5xl mb-3">
-        <p class="lead">Try a single higher‑order task. Explain your reasoning to a partner.</p>
+        <p class="lead">Try one higher‑order task. Explain your reasoning to a partner.</p>
       </div>
       <div class="card p-5 w-full max-w-5xl">
         <div class="flex flex-wrap items-center gap-3">
@@ -545,11 +547,11 @@
 </div>
 
 <script>
-/* ------------------------- Core Helpers ------------------------- */
+/* ------------------------- Core Helpers & Math ------------------------- */
 (function(){
   const slides=[...document.querySelectorAll('.slide')];
   const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
-  const deckTitle='G8_Unit1_L4_Rounding_QLA_Enhanced';
+  const deckTitle='G8_Unit1_L4_Rounding_QLA_Final';
   let i=0;
 
   function id(x){return document.getElementById(x)}
@@ -566,8 +568,6 @@
                 {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
     }
   }
-
-  // Export helpers
   function downloadJSON(filename, data){
     const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob); const a=document.createElement('a');
@@ -577,6 +577,44 @@
     const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
     const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
     a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+
+  // Rounding logic
+  function roundHalfUpToUnit(x,u){
+    const q=x/u;
+    const s=q>=0?1:-1, a=Math.abs(q);
+    const k = Math.floor(a + 0.5);
+    return s*k*u;
+  }
+  function unitFromDp(dp){ return 10**(-dp); }
+  function decPlacesFromUnit(u){ return u>=1?0:Math.max(0, Math.round(Math.log10(1/u))); }
+  function fmtToUnit(x,u){ const dp = decPlacesFromUnit(u); return (Math.round(x*10**dp)/10**dp).toFixed(dp); }
+  function roundToDP(x,dp){ return roundHalfUpToUnit(x,unitFromDp(dp)); }
+  function roundToPlace(x,placeUnit){ return roundHalfUpToUnit(x,placeUnit); }
+
+  // Significant figures
+  function roundToSig(x,n){
+    if(x===0) return 0;
+    const s = x<0? -1: 1;
+    const ax = Math.abs(x);
+    const k = Math.floor(Math.log10(ax));
+    const scale = 10**(k-n+1);
+    return s*roundHalfUpToUnit(ax, scale);
+  }
+  function countSigStr(s){
+    s = s.trim();
+    if(/^[-+]?0*\.?0*$/.test(s)) return 1; // zero has 1 s.f.
+    const hasDot = s.includes('.');
+    s = s.replace(/^[-+]/,'');
+    let t = s;
+    if(!hasDot){ t = t.replace(/0+$/,''); }
+    t = t.replace(/^0+/,'').replace('.','');
+    return t.replace(/[^0-9]/g,'').length;
+  }
+  function sciRound(m,e,n){
+    let r = roundToSig(m, n);
+    if(Math.abs(r)>=10){ r = r/10; e += 1; }
+    return {m:r,e};
   }
 
   /* ---------- Navigation ---------- */
@@ -605,61 +643,13 @@
   }
   fsBtn.addEventListener('click',toggleFS);
 
-  /* ------------------------- Rounding Logic ------------------------- */
-  // Symmetric half-up rounding to nearest multiple of unit u (u>0, power of 10)
-  function roundHalfUpToUnit(x,u){
-    const q=x/u;
-    const s=q>=0?1:-1, a=Math.abs(q);
-    const k = Math.floor(a + 0.5);
-    return s*k*u;
-  }
-  function unitFromDp(dp){ return 10**(-dp); }
-  function decPlacesFromUnit(u){
-    if(u>=1) return 0;
-    const p = Math.round(Math.log10(1/u));
-    return Math.max(0,p);
-  }
-  function fmtToUnit(x,u){
-    const dp = decPlacesFromUnit(u);
-    return (Math.round((x+0)*10**dp)/10**dp).toFixed(dp);
-  }
-  function roundToDP(x,dp){ const u=unitFromDp(dp); return roundHalfUpToUnit(x,u); }
-  function roundToPlace(x,placeUnit){ return roundHalfUpToUnit(x,placeUnit); }
-
-  // Significant figures
-  function roundToSig(x,n){
-    if(x===0) return 0;
-    const s = x<0? -1: 1;
-    const ax = Math.abs(x);
-    const k = Math.floor(Math.log10(ax));
-    const scale = 10**(k-n+1);
-    return s*roundHalfUpToUnit(ax, scale);
-  }
-  function countSigStr(s){
-    s = s.trim();
-    if(/^[-+]?0*\.?0*$/.test(s)) return 1; // zero has 1 s.f.
-    const hasDot = s.includes('.');
-    s = s.replace(/^[-+]/,'');
-    let t = s;
-    if(!hasDot){ t = t.replace(/0+$/,''); } // remove trailing zeros only if no dot
-    t = t.replace(/^0+/,'').replace('.','');
-    return t.replace(/[^0-9]/g,'').length;
-  }
-
-  // Scientific notation
-  function sciRound(m,e,n){
-    let r = roundToSig(m, n);
-    if(Math.abs(r)>=10){ r = r/10; e += 1; }
-    return {m:r,e};
-  }
-
   /* ------------------------- Bilingual Glossary ------------------------- */
   const KW = {
     en: {
       halfup: {term:"half‑up rounding", def:"If the next digit is 5–9, round away from 0; if 0–4, keep the digit.", ex:"-1.5 → -2"},
       place:  {term:"place value",      def:"The position of a digit (ones, tens, hundreds, tenths, …) which determines its value.", ex:"In 3,482, the 4 is hundreds."},
       dp:     {term:"decimal places (dp)", def:"Digits to the right of the decimal point used for rounding.", ex:"2.137 to 2 dp → 2.14"},
-      sf:     {term:"significant figures (s.f.)", def:"Digits that convey precision; leading zeros don’t count; trailing zeros count only if there’s a decimal point.", ex:"0.00450 has 3 s.f."},
+      sf:     {term:"significant figures (s.f.)", def:"Digits that convey precision; leading zeros don’t count; trailing zeros count only with a decimal point.", ex:"0.00450 has 3 s.f."},
       sci:    {term:"scientific notation", def:"Write numbers as a×10^n with 1≤|a|<10.", ex:"12500 = 1.25×10^4"},
       bounds: {term:"bounds / error interval", def:"Range of true values a rounded number can represent (± half a unit).", ex:"7.3 (to 1 dp) → [7.25, 7.35)"},
       estimate:{term:"estimation", def:"Using rounding to simplify a calculation while keeping it reasonable.", ex:"QAR 27.9≈28"}
@@ -688,11 +678,7 @@
   }
   function showGlossary(key, anchorEl){
     const d = KW[kwLang][key]; if(!d) return;
-    POP_BODY.innerHTML = `
-      <div><strong>${d.term}</strong></div>
-      <div class="mt-1">${d.def}</div>
-      <div class="mt-1 text-sm text-gray-600"><em>Example:</em> ${d.ex}</div>
-    `;
+    POP_BODY.innerHTML = `<div><strong>${d.term}</strong></div><div class="mt-1">${d.def}</div><div class="mt-1 text-sm text-gray-600"><em>Example:</em> ${d.ex}</div>`;
     POP.style.display='block';
     const r=anchorEl.getBoundingClientRect();
     POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px';
@@ -706,7 +692,6 @@
   });
   id('kwQuizBtn').addEventListener('click',()=>{ show(slides.findIndex(s=>s.id==='kwQuizSlide')); });
 
-  // Glossary quiz
   function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
   function kwQuizNew(){
     id('kwQuizLangOut').textContent = (kwLang==='en'?'English':'العربية');
@@ -714,7 +699,6 @@
     const picked = shuffle(entries.slice()).slice(0,6);
     const box=id('kwQuizList'); box.innerHTML='';
     picked.forEach(([k,v],idx)=>{
-      // 50% show term → choose definition, 50% definition → choose term
       const asTerm = Math.random()<0.5;
       const options = shuffle(entries.slice()).slice(0,4).map(e=>asTerm? e[1].def : e[1].term);
       if(!options.includes(asTerm? v.def : v.term)){
@@ -754,87 +738,114 @@
   id('warmReset').addEventListener('click',()=>{['w1','w2','w3'].forEach(x=>{id(x).value=''; id(x).style.borderColor='#e5e7eb'}); id('warmFb').textContent='';});
 
   /* ------------------------- Place Value & DP (extended) ------------------------- */
-  const pvState={x:246.38, mode:'place', u:100, intDigits:6, maxDp:3};
-  function randIntDigits(n){ // random n-digit integer (no leading zeros)
-    const lo = 10**(n-1), hi = 10**n - 1;
-    return Math.floor(Math.random()*(hi-lo+1))+lo;
+  const pvState={x:246.38, s:'246.38', mode:'place', u:100, intDigits:6, maxDp:3};
+
+  // Create a number string with at least targetDp+1 decimals (decision digit visible)
+  function buildNumberStringForDp(targetDp, intDigits, maxDp){
+    const extra = 1 + Math.floor(Math.random()*2); // +1 or +2
+    const dp = Math.max(targetDp+1, Math.min(maxDp, targetDp + extra));
+    const sign = Math.random()<0.2? '-' : '';
+    const int = randIntDigits(intDigits);
+    // fractional digits as array
+    const frac = new Array(dp).fill(0).map(()=>Math.floor(Math.random()*10));
+    // force informative decision digit at index targetDp
+    if(dp>targetDp){
+      frac[targetDp] = (Math.random()<0.35) ? 5 : (1 + Math.floor(Math.random()*9)); // 5 or 1..9
+    }
+    return `${sign}${int}.${frac.join('')}`;
   }
+  function randIntDigits(n){ const lo = 10**(n-1), hi = 10**n - 1; return Math.floor(Math.random()*(hi-lo+1))+lo; }
+
   function newPV(){
-    const sign=Math.random()<0.2?-1:1;
-    const int = randIntDigits(pvState.intDigits); // up to 11 digits
-    const dp = Math.floor(Math.random()*(pvState.maxDp+1)); // 0..maxDp
-    const frac = dp? Math.floor(Math.random()*(10**dp)) : 0;
-    pvState.x = sign*(int + frac/10**dp);
+    if(pvState.mode==='dp'){
+      const target = Number(id('pvDp').value);
+      const s = buildNumberStringForDp(target, pvState.intDigits, pvState.maxDp);
+      pvState.s = s; pvState.x = Number(s);
+    }else{
+      const sign=Math.random()<0.2?-1:1;
+      const int = randIntDigits(pvState.intDigits);
+      const dp = Math.floor(Math.random()*(pvState.maxDp+1));
+      const frac = dp? Math.floor(Math.random()*(10**dp)) : 0;
+      pvState.x = sign*(int + frac/10**dp);
+      pvState.s = pvState.x.toString();
+    }
     renderPV();
   }
+
   function renderPV(){
-    const {x, mode} = pvState;
-    const sgn = x<0 ? '−' : '';
-    const [whole0, frac0=''] = Math.abs(x).toString().split('.');
-    const whole=[...whole0], frac=[...frac0];
+    const {mode,u} = pvState;
+    // parse from preserved string to keep trailing zeros
+    const raw = pvState.s || pvState.x.toString();
+    const isNeg = raw.startsWith('-');
+    const core = isNeg ? raw.slice(1) : raw;
+    const parts = core.split('.');
+    const whole = parts[0].split('');
+    const frac = (parts[1]||'').split('');
 
     // Target unit
-    let u = 1, label='';
+    let unit = 1, label='';
     if(mode==='place'){
-      u = Number(id('pvPlace').value);
-      label = u>=1? `nearest ${u}`:'';
+      unit = Number(id('pvPlace').value);
+      label = `nearest ${unit.toLocaleString()}`;
     }else{
       const dp = Number(id('pvDp').value);
-      u = unitFromDp(dp); label = `${dp} dp`;
+      unit = unitFromDp(dp); label = `${dp}\u202Fdp`;
     }
-    pvState.u = u;
+    pvState.u = unit;
 
-    // Highlight rounding digit
+    // Render with rounding digit highlighted
     let display='';
-    const dpReq = decPlacesFromUnit(u);
-    if(u>=1){
-      const k = Math.round(Math.log10(u)); // 10^k
-      const ridx = whole.length - k - 1; // index in whole
+    if(unit>=1){
+      const k = Math.round(Math.log10(unit)); // 10^k
+      const ridx = whole.length - k - 1;
       for(let j=0;j<whole.length;j++){
         const cls = (j===ridx)?'bg-yellow-200 tok':'tok';
         display += `<span class="${cls}">${whole[j]}</span>`;
       }
       if(frac.length) display += `<span class="tok">.</span>${frac.map(c=>`<span class="tok">${c}</span>`).join('')}`;
     }else{
+      const dpReq = decPlacesFromUnit(unit); // e.g., 3 dp -> highlight frac[2]
       for(let j=0;j<whole.length;j++){ display += `<span class="tok">${whole[j]}</span>`}
       display += `<span class="tok">.</span>`;
-      for(let j=0;j<Math.max(frac.length,dpReq+1);j++){
+      const need = Math.max(frac.length, dpReq+1);
+      for(let j=0;j<need;j++){
         const d = frac[j] || '0';
         const cls = (j===dpReq-1)?'bg-yellow-200 tok':'tok';
         display += `<span class="${cls}">${d}</span>`;
       }
     }
-    id('pvNumber').innerHTML = `${sgn}${display}`;
+    id('pvNumber').innerHTML = `${isNeg?'−':''}${display}`;
 
-    // Prediction + Step explanation
-    const y = roundHalfUpToUnit(pvState.x, u);
-    id('pvResult').textContent = fmtToUnit(y,u).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    const nextDigit = (()=>{
-      if(u>=1){
-        const k=Math.round(Math.log10(u));
-        const idx = whole.length - k; // digit to the right in whole (or first fractional)
-        return idx<whole.length? Number(whole[idx]) : (frac.length? Number(frac[0]):0);
-      }else{
-        const dp=decPlacesFromUnit(u);
-        const idx=dp; // right after rounding digit in fractional
-        return frac.length>idx? Number(frac[idx]) : 0;
-      }
-    })();
+    // Step explanation
+    const y = roundHalfUpToUnit(pvState.x, unit);
+    id('pvResult').textContent = fmtToUnit(y,unit).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    // compute decision digit shown
+    let nextDigit=0;
+    if(unit>=1){
+      const k=Math.round(Math.log10(unit));
+      const idx = whole.length - k; // next right position
+      nextDigit = idx<whole.length? Number(whole[idx]) : (frac.length? Number(frac[0]):0);
+    }else{
+      const dp=decPlacesFromUnit(unit);
+      const idx=dp; // right after rounding digit
+      nextDigit = frac.length>idx? Number(frac[idx]) : 0;
+    }
     id('pvSteps').innerHTML =
-      `<div><strong>Steps:</strong> (1) Mark rounding digit for ${label}. (2) Decision digit = <b>${nextDigit}</b>. (3) ${nextDigit>=5?'Increase by 1 (5–9).':'Keep the digit (0–4).'} (4) Rewrite remaining digits as 0s (place mode) or keep up to dp.</div>`;
+      `<div><strong>Steps:</strong> (1) Mark rounding digit for ${label}. (2) Decision digit = <b>${nextDigit}</b>. (3) ${nextDigit>=5?'Increase by 1 (5–9).':'Keep the digit (0–4).'} (4) Rewrite remaining digits as 0s (place) or keep up to dp.</div>`;
     renderMath(id('placeSlide'));
   }
+
   document.getElementsByName('pvMode').forEach(r=>{
     r.addEventListener('change',e=>{
       pvState.mode = e.target.value;
       id('pvLabelPlace').style.display = pvState.mode==='place'? 'inline-block':'none';
       id('pvLabelDp').style.display = pvState.mode==='dp'? 'inline-block':'none';
-      renderPV();
+      newPV(); // regenerate to guarantee decision digit in dp mode
     })
   });
   id('pvExplain').addEventListener('click',()=>{ const box=id('pvSteps'); box.style.display= box.style.display==='none'? 'block':'none'; });
   id('pvPlace').addEventListener('change',renderPV);
-  id('pvDp').addEventListener('change',renderPV);
+  id('pvDp').addEventListener('change',()=>{ if(pvState.mode==='dp') newPV(); else renderPV(); });
   id('pvIntDigits').addEventListener('input', (e)=>{ pvState.intDigits = clamp(parseInt(e.target.value||6),3,11); newPV(); });
   id('pvMaxDp').addEventListener('input', (e)=>{ pvState.maxDp = clamp(parseInt(e.target.value||3),0,6); newPV(); });
   id('pvNew').addEventListener('click',newPV);
@@ -842,13 +853,15 @@
   id('pvExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_placevalue.json`, pvState));
   newPV();
 
-  /* ------------------------- Number Line (dp 0–6) ------------------------- */
+  /* ------------------------- Number Line (dp 0–6, extra decimals) ------------------------- */
   const cL=id('roundLine'); const lineX=id('lineX'), lineDp=id('lineDp'), lineOut=id('lineOut');
   const lineState={x:23.47,dp:1};
+
   function drawRoundLine(){
     const ctx=cL.getContext('2d'); cL.width=cL.clientWidth*devicePixelRatio; cL.height=cL.clientHeight*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio);
     const y=cL.clientHeight/2, m=28; ctx.clearRect(0,0,cL.clientWidth,cL.clientHeight);
     ctx.lineWidth=2; ctx.strokeStyle='#6C1D45'; ctx.beginPath(); ctx.moveTo(m,y); ctx.lineTo(cL.clientWidth-m,y); ctx.stroke();
+
     const u = unitFromDp(lineState.dp), x=lineState.x;
     const r=roundHalfUpToUnit(x,u);
     const span = 10*u;
@@ -860,7 +873,7 @@
       ctx.beginPath(); ctx.moveTo(px,y-10); ctx.lineTo(px,y+10); ctx.stroke();
       if(k%2===0){ ctx.fillText(val.toFixed(lineState.dp), px-18, y+26); }
     }
-    // cutoff lines
+    // cutoffs
     const low = r - u/2, high = r + u/2;
     ctx.strokeStyle='#C7A34F'; ctx.setLineDash([6,4]); ctx.beginPath(); ctx.moveTo(map(low),y-34); ctx.lineTo(map(low),y+34); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(map(high),y-34); ctx.lineTo(map(high),y+34); ctx.stroke(); ctx.setLineDash([]);
@@ -872,15 +885,20 @@
 
     function map(val){const W=cL.clientWidth;return m+(val-(left))*((W-2*m)/(span));}
   }
+
+  // Randomize with extra decimals so decision digit is visible
+  id('lineRand').addEventListener('click',()=>{
+    const dp = Math.floor(Math.random()*7); // 0..6
+    lineState.dp = dp; lineDp.value = dp;
+    const extra = 1 + Math.floor(Math.random()*2); // +1 or +2 extra
+    const s = (Math.random()*200 - 100).toFixed(dp + extra);
+    lineState.x = Number(s);
+    lineX.value = s; // keep trailing zeros visible in the input
+    drawRoundLine();
+  });
+
   lineX.addEventListener('input',()=>{ lineState.x=Number(lineX.value); drawRoundLine(); });
   lineDp.addEventListener('change',()=>{ lineState.dp=Number(lineDp.value); drawRoundLine(); });
-  id('lineRand').addEventListener('click',()=>{const dp = Math.floor(Math.random()*7); // 0..6 lineState.dp = dp; lineDp.value = dp;
-  const extra = 1 + Math.floor(Math.random()*2); // +1 or +2 decimals beyond target
-  lineState.x = +((Math.random()*200 - 100).toFixed(dp + extra));
-  lineX.value = lineState.x;
-  drawRoundLine();
-});
-
   id('lineExportCSV').addEventListener('click',()=>downloadCSV(`${deckTitle}_line.csv`, [['x','dp','rounded'], [lineState.x,lineState.dp,roundToDP(lineState.x,lineState.dp).toFixed(lineState.dp)]]));
   id('lineExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_line.json`, {x:lineState.x,dp:lineState.dp,rounded:roundToDP(lineState.x,lineState.dp)}));
   drawRoundLine();
@@ -896,8 +914,8 @@
     if(ok) confetti();
   });
   document.querySelector('.s2check').addEventListener('click',()=>{
-    const a = roundToDP(2.137,2).toFixed(2);
-    const b = roundToDP(2.137,3).toFixed(3);
+    const a = roundToDP(2.1379,2).toFixed(2);
+    const b = roundToDP(2.1379,3).toFixed(3);
     const ga = document.querySelector('.s2a').value; const gb = document.querySelector('.s2b').value;
     const ok = (ga===a)&&(gb===b);
     document.querySelector('.s2fb').textContent = ok? '✅ Correct' : `Ans: ${a}, ${b}`;
@@ -919,192 +937,162 @@
     if(ok) confetti();
   });
 
+  /* ------------------------- Practice Generator (guarantee decision digit) ------------------------- */
+  const prState={items:[]};
 
-// ------------------------- Practice Generator ------------------------- //
-const prState={items:[]};
-
-function randIntDigits(n){ // n-digit integer, no leading zeros
-  const lo = 10**(n-1), hi = 10**n - 1;
-  return Math.floor(Math.random()*(hi-lo+1))+lo;
-}
-function randIntDigitsUpTo(maxDigits){
-  const d = Math.floor(Math.random()*(maxDigits-2))+3; // 3..maxDigits
-  return randIntDigits(d);
-}
-
-/**
- * Build a number for rounding to targetDp with >= targetDp+1 decimals.
- * Ensures the decision digit (index = targetDp) is non-zero and often 5.
- * Returns { x:Number, display:String } where display preserves all decimals.
- */
-function randNumForTargetDp(targetDp, maxDigits, allowNeg=true){
-  const extra = 1 + Math.floor(Math.random()*3); // 1..3 extra decimals
-  const actualDp = targetDp + extra;
-
-  const sign = (allowNeg && Math.random()<0.5) ? -1 : 1;
-  const int = randIntDigitsUpTo(maxDigits);
-
-  // build fractional digits
-  const frac = new Array(actualDp).fill(0).map(()=>Math.floor(Math.random()*10));
-  const di = targetDp; // decision index
-  // make decision digit informative: favor 5 sometimes, otherwise 1..9
-  frac[di] = (Math.random()<0.35) ? 5 : (1 + Math.floor(Math.random()*9)); // 5 or 1..9
-  // avoid long tail of zeros after decision just to keep variety
-  for(let j=di+1;j<actualDp;j++){
-    frac[j] = Math.floor(Math.random()*10);
+  function randIntDigitsUpTo(maxDigits){
+    const d = Math.floor(Math.random()*(maxDigits-2))+3; // 3..maxDigits
+    return randIntDigits(d);
   }
 
-  const fracStr = frac.join('');
-  const s = (sign<0?'-':'') + int.toString() + '.' + fracStr;
-  return { x: Number(s), display: s };
-}
-
-function unitFromDp(dp){ return 10**(-dp); }
-function roundHalfUpToUnit(x,u){
-  const q=x/u;
-  const s=q>=0?1:-1, a=Math.abs(q);
-  const k = Math.floor(a + 0.5);
-  return s*k*u;
-}
-function decPlacesFromUnit(u){ return u>=1?0:Math.max(0, Math.round(Math.log10(1/u))); }
-function fmtToUnit(x,u){ const dp = decPlacesFromUnit(u); return (Math.round(x*10**dp)/10**dp).toFixed(dp); }
-
-function prBuild(){
-  const lv=id('prLevel').value;
-  const count = clamp(parseInt(id('prCount').value||8),4,16);
-  const minDp = clamp(parseInt(id('prMinDp').value||0),0,6);
-  const maxDp = clamp(parseInt(id('prMaxDp').value||3),minDp,6);
-  const maxDigits = clamp(parseInt(id('prMaxDigits').value||8),3,11);
-
-  const list=[];
-  // factories
-  function taskPlace(x,unit,label){
-    return {type:'unit', prompt:`Round ${x.toLocaleString()} to ${label}`, x, unit, label,
-            ans: roundHalfUpToUnit(x,unit), fmt:fmtToUnit(roundHalfUpToUnit(x,unit),unit)};
-  }
-  function taskDp(targetDp, allowNeg){
-    const {x, display} = randNumForTargetDp(targetDp, maxDigits, allowNeg);
-    const u = unitFromDp(targetDp);
-    return {type:'unit', prompt:`Round ${display} to ${targetDp}\u202Fdp`, x, unit:u, label:`${targetDp}\u202Fdp`,
-            ans: roundHalfUpToUnit(x,u), fmt:fmtToUnit(roundHalfUpToUnit(x,u),u)};
-  }
-  function taskSig(x,n){
-    const ans=roundToSig(x,n);
-    return {type:'sig', prompt:`Round ${x} to ${n} s.f.`, x, n, ans, fmt:ans.toPrecision(n)};
-  }
-  function taskSci(m,e,n){ const r=sciRound(m,e,n); return {type:'sci', prompt:`Round ${m}×10^${e} to ${n} s.f.: give mantissa & exponent`, m,e,n, ans:r}; }
-  function taskBounds(r,u,label){ const lb=r-u/2, ub=r+u/2; return {type:'bnd', prompt:`Reported ${fmtToUnit(r,u)} (${label}). Give [lower, upper).`, r,u,label, lb, ub}; }
-
-  function chooseDp(){ return Math.floor(Math.random()*(maxDp-minDp+1))+minDp; }
-  function randDecimalForSig(maxDpLocal){
-    return +((Math.random()*9.9e6-1e5).toFixed(Math.min(4, maxDpLocal)));
+  // Build decimal with ≥ targetDp+1 decimals; decision digit non-zero, often 5
+  function randNumForTargetDp(targetDp, maxDigits, allowNeg=true){
+    const extra = 1 + Math.floor(Math.random()*3); // 1..3 extra
+    const actualDp = targetDp + extra;
+    const sign = (allowNeg && Math.random()<0.5) ? -1 : 1;
+    const int = randIntDigitsUpTo(maxDigits);
+    const frac = new Array(actualDp).fill(0).map(()=>Math.floor(Math.random()*10));
+    const di = targetDp;
+    frac[di] = (Math.random()<0.35) ? 5 : (1 + Math.floor(Math.random()*9));
+    for(let j=di+1;j<actualDp;j++){ frac[j] = Math.floor(Math.random()*10); }
+    const fracStr = frac.join('');
+    const s = (sign<0?'-':'') + int.toString() + '.' + fracStr;
+    return { x: Number(s), display: s };
   }
 
-  for(let k=0;k<count;k++){
-    const r = Math.random();
-    if(lv==='easy'){
-      if(r<0.5){
-        const x = randIntDigitsUpTo(Math.min(7,maxDigits));
-        const unit = Math.random()<0.5?10:100;
-        list.push(taskPlace(x,unit, unit===10?'nearest 10':'nearest 100'));
-      }else{
-        // Easy dp: ensure extra decimals, keep positive
-        const t = Math.min(2, maxDp);
-        list.push(taskDp(t, /*allowNeg*/ false));
-      }
-    }else if(lv==='med'){
-      const t = clamp(chooseDp(),1,3);
-      list.push(taskDp(t, /*allowNeg*/ true)); // negatives allowed at medium
-    }else if(lv==='hard'){
-      if(r<0.4){
-        const t = chooseDp();
+  function prBuild(){
+    const lv=id('prLevel').value;
+    const count = clamp(parseInt(id('prCount').value||8),4,16);
+    const minDp = clamp(parseInt(id('prMinDp').value||0),0,6);
+    const maxDp = clamp(parseInt(id('prMaxDp').value||3),minDp,6);
+    const maxDigits = clamp(parseInt(id('prMaxDigits').value||8),3,11);
+
+    const list=[];
+    function taskPlace(x,unit,label){
+      return {type:'unit', prompt:`Round ${x.toLocaleString()} to ${label}`, x, unit, label,
+              ans: roundHalfUpToUnit(x,unit), fmt:fmtToUnit(roundHalfUpToUnit(x,unit),unit)};
+    }
+    function taskDp(targetDp, allowNeg){
+      const {x, display} = randNumForTargetDp(targetDp, maxDigits, allowNeg);
+      const u = unitFromDp(targetDp);
+      return {type:'unit', prompt:`Round ${display} to ${targetDp}\u202Fdp`, x, unit:u, label:`${targetDp}\u202Fdp`,
+              ans: roundHalfUpToUnit(x,u), fmt:fmtToUnit(roundHalfUpToUnit(x,u),u)};
+    }
+    function taskSig(x,n){
+      const ans=roundToSig(x,n);
+      return {type:'sig', prompt:`Round ${x} to ${n} s.f.`, x, n, ans, fmt:ans.toPrecision(n)};
+    }
+    function taskSci(m,e,n){ const r=sciRound(m,e,n); return {type:'sci', prompt:`Round ${m}×10^${e} to ${n} s.f.: give mantissa & exponent`, m,e,n, ans:r}; }
+    function taskBounds(r,u,label){ const lb=r-u/2, ub=r+u/2; return {type:'bnd', prompt:`Reported ${fmtToUnit(r,u)} (${label}). Give [lower, upper).`, r,u,label, lb, ub}; }
+
+    function chooseDp(){ return Math.floor(Math.random()*(maxDp-minDp+1))+minDp; }
+    function randDecimalForSig(maxDpLocal){
+      return +((Math.random()*9.9e6-1e5).toFixed(Math.min(4, maxDpLocal)));
+    }
+
+    for(let k=0;k<count;k++){
+      const r = Math.random();
+      if(lv==='easy'){
+        if(r<0.5){
+          const x = randIntDigitsUpTo(Math.min(7,maxDigits));
+          const unit = Math.random()<0.5?10:100;
+          list.push(taskPlace(x,unit, unit===10?'nearest 10':'nearest 100'));
+        }else{
+          const t = Math.min(2, maxDp);
+          list.push(taskDp(t, /*allowNeg*/ false));
+        }
+      }else if(lv==='med'){
+        const t = clamp(chooseDp(),1,3);
         list.push(taskDp(t, /*allowNeg*/ true));
-      }else if(r<0.75){
-        const n = [2,3,4][Math.floor(Math.random()*3)];
-        const x = randDecimalForSig(maxDp);
-        list.push(taskSig(x,n));
-      }else{
-        const unit = 10**[1,2,3,4][Math.floor(Math.random()*4)];
-        const x = randIntDigitsUpTo(maxDigits);
-        list.push(taskPlace(x,unit, `nearest ${unit.toLocaleString()}`));
-      }
-    }else{ // expert
-      if(r<0.33){
-        const n=[2,3,4][Math.floor(Math.random()*3)]; const e = Math.floor(Math.random()*11)-5; const m = +( (Math.random()*9+1).toFixed(Math.min(4,maxDp)) );
-        list.push(taskSci(m,e,n));
-      }else if(r<0.66){
-        const t = chooseDp();
-        list.push(taskDp(t, /*allowNeg*/ true));
-      }else{
-        const unit = 10**[1,2,3,4,5,6][Math.floor(Math.random()*6)];
-        const r0 = randIntDigitsUpTo(maxDigits);
-        const rr=roundHalfUpToUnit(r0,unit);
-        list.push(taskBounds(rr,unit, unit>=1?`nearest ${unit.toLocaleString()}`:`${decPlacesFromUnit(unit)} dp`));
+      }else if(lv==='hard'){
+        if(r<0.4){
+          const t = chooseDp();
+          list.push(taskDp(t, /*allowNeg*/ true));
+        }else if(r<0.75){
+          const n = [2,3,4][Math.floor(Math.random()*3)];
+          const x = randDecimalForSig(maxDp);
+          list.push(taskSig(x,n));
+        }else{
+          const unit = 10**[1,2,3,4][Math.floor(Math.random()*4)];
+          const x = randIntDigitsUpTo(maxDigits);
+          list.push(taskPlace(x,unit, `nearest ${unit.toLocaleString()}`));
+        }
+      }else{ // expert
+        if(r<0.33){
+          const n=[2,3,4][Math.floor(Math.random()*3)]; const e = Math.floor(Math.random()*11)-5; const m = +( (Math.random()*9+1).toFixed(Math.min(4,maxDp)) );
+          list.push(taskSci(m,e,n));
+        }else if(r<0.66){
+          const t = chooseDp();
+          list.push(taskDp(t, /*allowNeg*/ true));
+        }else{
+          const unit = 10**[1,2,3,4,5,6][Math.floor(Math.random()*6)];
+          const r0 = randIntDigitsUpTo(maxDigits);
+          const rr=roundHalfUpToUnit(r0,unit);
+          list.push(taskBounds(rr,unit, unit>=1?`nearest ${unit.toLocaleString()}`:`${decPlacesFromUnit(unit)} dp`));
+        }
       }
     }
+
+    prState.items=list;
+    const box=id('prList'); box.innerHTML='';
+    list.forEach((o,idx)=>{
+      const row=document.createElement('div'); row.className='card p-4';
+      if(o.type==='unit' || o.type==='sig'){
+        row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
+          <div class="text-xl mt-1">${o.prompt} = <input class="prin border rounded px-2 py-1 w-48" placeholder="answer"></div>`;
+      }else if(o.type==='sci'){
+        row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
+          <div class="text-xl mt-1">${o.prompt}<br/>mantissa: <input class="prisci-m border rounded px-2 py-1 w-24" placeholder="a">, exponent: <input class="prisci-e border rounded px-2 py-1 w-24" placeholder="n"></div>`;
+      }else{
+        row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
+          <div class="mt-1">${o.prompt}</div>
+          <div class="mt-1">Lower: <input class="prb-l border rounded px-2 py-1 w-32">, Upper: <input class="prb-u border rounded px-2 py-1 w-32"></div>`;
+      }
+      box.appendChild(row);
+    });
   }
+  id('prNew').addEventListener('click',prBuild); prBuild();
 
-  prState.items=list;
-  const box=id('prList'); box.innerHTML='';
-  list.forEach((o,idx)=>{
-    const row=document.createElement('div'); row.className='card p-4';
-    if(o.type==='unit' || o.type==='sig'){
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
-        <div class="text-xl mt-1">${o.prompt} = <input class="prin border rounded px-2 py-1 w-48" placeholder="answer"></div>`;
-    }else if(o.type==='sci'){
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
-        <div class="text-xl mt-1">${o.prompt}<br/>mantissa: <input class="prisci-m border rounded px-2 py-1 w-24" placeholder="a">, exponent: <input class="prisci-e border rounded px-2 py-1 w-24" placeholder="n"></div>`;
-    }else{
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
-        <div class="mt-1">${o.prompt}</div>
-        <div class="mt-1">Lower: <input class="prb-l border rounded px-2 py-1 w-32">, Upper: <input class="prb-u border rounded px-2 py-1 w-32"></div>`;
-    }
-    box.appendChild(row);
+  id('prCheck').addEventListener('click',()=>{
+    const cards=[...id('prList').querySelectorAll('.card')];
+    let ok=0;
+    cards.forEach((row,idx)=>{
+      const item=prState.items[idx];
+      if(item.type==='unit'){
+        const v = Number(row.querySelector('.prin').value.replace(/,/g,'')); const want = item.ans;
+        const good = Math.abs(v-want)<1e-10; row.querySelector('.prin').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
+      }else if(item.type==='sig'){
+        const v = Number(row.querySelector('.prin').value); const want = item.ans;
+        const good = Math.abs(v-want)<1e-10; row.querySelector('.prin').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
+      }else if(item.type==='sci'){
+        const m=Number(row.querySelector('.prisci-m').value); const e=Number(row.querySelector('.prisci-e').value);
+        const good = Math.abs(m-item.ans.m)<1e-10 && e===item.ans.e;
+        row.querySelector('.prisci-m').style.borderColor=good?'#22c55e':'#ef4444';
+        row.querySelector('.prisci-e').style.borderColor=good?'#22c55e':'#ef4444';
+        if(good) ok++;
+      }else{
+        const lb=Number(row.querySelector('.prb-l').value); const ub=Number(row.querySelector('.prb-u').value);
+        const good = Math.abs(lb-item.lb)<1e-10 && Math.abs(ub-item.ub)<1e-10;
+        row.querySelector('.prb-l').style.borderColor=good?'#22c55e':'#ef4444';
+        row.querySelector('.prb-u').style.borderColor=good?'#22c55e':'#ef4444';
+        if(good) ok++;
+      }
+    });
+    id('prFb').textContent = ok===prState.items.length? '✅ All correct!' : `Score: ${ok}/${prState.items.length}`;
+    if(ok===prState.items.length) confetti();
   });
-}
 
-id('prNew').addEventListener('click',prBuild); prBuild();
-
-id('prCheck').addEventListener('click',()=>{
-  const cards=[...id('prList').querySelectorAll('.card')];
-  let ok=0;
-  cards.forEach((row,idx)=>{
-    const item=prState.items[idx];
-    if(item.type==='unit'){
-      const v = Number(row.querySelector('.prin').value.replace(/,/g,'')); const want = item.ans;
-      const good = Math.abs(v-want)<1e-10; row.querySelector('.prin').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
-    }else if(item.type==='sig'){
-      const v = Number(row.querySelector('.prin').value); const want = item.ans;
-      const good = Math.abs(v-want)<1e-10; row.querySelector('.prin').style.borderColor=good?'#22c55e':'#ef4444'; if(good) ok++;
-    }else if(item.type==='sci'){
-      const m=Number(row.querySelector('.prisci-m').value); const e=Number(row.querySelector('.prisci-e').value);
-      const good = Math.abs(m-item.ans.m)<1e-10 && e===item.ans.e;
-      row.querySelector('.prisci-m').style.borderColor=good?'#22c55e':'#ef4444';
-      row.querySelector('.prisci-e').style.borderColor=good?'#22c55e':'#ef4444';
-      if(good) ok++;
-    }else{
-      const lb=Number(row.querySelector('.prb-l').value); const ub=Number(row.querySelector('.prb-u').value);
-      const good = Math.abs(lb-item.lb)<1e-10 && Math.abs(ub-item.ub)<1e-10;
-      row.querySelector('.prb-l').style.borderColor=good?'#22c55e':'#ef4444';
-      row.querySelector('.prb-u').style.borderColor=good?'#22c55e':'#ef4444';
-      if(good) ok++;
-    }
+  id('prExportCSV').addEventListener('click',()=>{
+    const rows=[['type','prompt','answer']]; prState.items.forEach(o=>{
+      if(o.type==='unit' || o.type==='sig'){ rows.push([o.type,o.prompt,o.fmt||o.ans]); }
+      else if(o.type==='sci'){ rows.push([o.type,o.prompt, `${o.ans.m}×10^${o.ans.e}`]); }
+      else { rows.push([o.type,o.prompt, `[${o.lb}, ${o.ub})`]); }
+    });
+    downloadCSV(`${deckTitle}_practice.csv`, rows);
   });
-  id('prFb').textContent = ok===prState.items.length? '✅ All correct!' : `Score: ${ok}/${prState.items.length}`;
-  if(ok===prState.items.length) confetti();
-});
+  id('prExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_practice.json`, prState.items));
 
-id('prExportCSV').addEventListener('click',()=>{
-  const rows=[['type','prompt','answer']]; prState.items.forEach(o=>{
-    if(o.type==='unit' || o.type==='sig'){ rows.push([o.type,o.prompt,o.fmt||o.ans]); }
-    else if(o.type==='sci'){ rows.push([o.type,o.prompt, `${o.ans.m}×10^${o.ans.e}`]); }
-    else { rows.push([o.type,o.prompt, `[${o.lb}, ${o.ub})`]); }
-  });
-  downloadCSV(`${deckTitle}_practice.csv`, rows);
-});
-id('prExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_practice.json`, prState.items));
-
-  /* ------------------------- Significant Figures ------------------------- */
+  /* ------------------------- Sig. Figures ------------------------- */
   const sigCState={items:[]}, sigRState={items:[]};
   function genSigCount(){
     const pool=['0.00340','1200','1200.','5.060','0.0702','30007','2.90','0.0005','40','40.0','3.141590','0.01020','987000'];
@@ -1244,18 +1232,18 @@ id('prExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_pract
   function realNew(){
     const count = clamp(parseInt(id('realCount').value||6),4,12);
     const list=[];
-    // Currency estimation (market purchase)
+    // Currency estimation
     for(let k=0;k<Math.ceil(count/3);k++){
       const price = +( (Math.random()*90+10).toFixed(2) );
       const qty = Math.floor(Math.random()*7)+4;
       list.push({type:'est', prompt:`Estimate total for ${qty} items at QAR ${price} each (round to nearest riyal first).`, ans: Math.round(price)*qty });
     }
-    // Distance rounding
+    // Distance with extra decimals
     for(let k=0;k<Math.ceil(count/3);k++){
-      const dist = +( (Math.random()*180+5).toFixed(3) );
+      const dist = +( (Math.random()*180+5).toFixed(3) ); // 3 dp so 1 dp has decision digit
       list.push({type:'unit', prompt:`Round the driving distance ${dist} km to 1 dp.`, unit:0.1, ans: roundHalfUpToUnit(dist,0.1)});
     }
-    // Event attendance / populations
+    // Attendance/Populations
     for(let k=0;k<Math.ceil(count/3);k++){
       const pop = Math.floor(Math.random()*9e6)+1e6;
       list.push({type:'unit', prompt:`Round ${pop.toLocaleString()} to the nearest hundred thousand.`, unit:100000, ans: roundHalfUpToUnit(pop,100000)});
@@ -1294,15 +1282,39 @@ id('prExportJSON').addEventListener('click',()=>downloadJSON(`${deckTitle}_pract
       ans = roundHalfUpToUnit(x,unit);
       prompt = `Round ${x} to the nearest 10`;
     }else if(lv==='med'){
-      const dp=1+Math.floor(Math.random()*3); const x = +( (Math.random()*200-100).toFixed(dp) );
-      ans = roundToDP(x,dp); prompt=`Round ${x} to ${dp} dp`;
+      const dp=1+Math.floor(Math.random()*3);
+      const extra = 1 + Math.floor(Math.random()*2);
+      const s = (Math.random()*200 - 100).toFixed(dp + extra);
+      const x = Number(s);
+      ans = roundToDP(x,dp); prompt=`Round ${s} to ${dp} dp`;
     }else if(lv==='hard'){
-      if(r<0.5){ const x=+( (Math.random()*9000-3000).toFixed(3) ); const n=[2,3,4][Math.floor(Math.random()*3)]; ans=roundToSig(x,n); prompt=`Round ${x} to ${n} s.f.`; }
-      else { const unit=[0.01,0.1,1,10,100][Math.floor(Math.random()*5)]; const x=+( (Math.random()*2000-1000).toFixed(unit<1?2:0) ); ans=roundHalfUpToUnit(x,unit); prompt=`Round ${x} to ${unit>=1? 'nearest '+unit : decPlacesFromUnit(unit)+' dp'}`; }
+      if(r<0.5){
+        const dp=3; const extra=1+Math.floor(Math.random()*2);
+        const s=(Math.random()*9000-3000).toFixed(dp+extra);
+        const x=Number(s); const n=[2,3,4][Math.floor(Math.random()*3)];
+        ans=roundToSig(x,n); prompt=`Round ${s} to ${n} s.f.`;
+      }else{
+        const unit=[0.01,0.1,1,10,100][Math.floor(Math.random()*5)];
+        const dp=decPlacesFromUnit(unit); const extra = unit<1 ? 1 : 0;
+        const s=(Math.random()*2000-1000).toFixed(dp+extra);
+        const x=Number(s);
+        ans=roundHalfUpToUnit(x,unit); prompt=`Round ${s} to ${unit>=1? 'nearest '+unit : dp+' dp'}`;
+      }
     }else{ // expert
-      if(r<0.33){ const e=Math.floor(Math.random()*11)-5; const m=+( (Math.random()*9+1).toFixed(4) ); const n=[2,3,4][Math.floor(Math.random()*3)]; const rr=sciRound(m,e,n); ans=rr.m*10**rr.e; prompt=`Round ${m}×10^${e} to ${n} s.f. (enter numeric value)`; }
-      else if(r<0.66){ const unit=[0.001,0.01,0.1,1,10,100][Math.floor(Math.random()*6)]; const r0=+( (Math.random()*1000-500).toFixed(unit<1?3:0) ); const rr=roundHalfUpToUnit(r0,unit); const lb=rr-unit/2; ans=lb; prompt=`Reported ${fmtToUnit(rr,unit)} (${unit>=1?'nearest '+unit: decPlacesFromUnit(unit)+' dp'}). Enter the <lower bound>.`; }
-      else { const x=+( (Math.random()*9000-1000).toFixed(4) ); const n=[2,3,4][Math.floor(Math.random()*3)]; ans=roundToSig(x,n); prompt=`Round ${x} to ${n} s.f.`; }
+      if(r<0.33){
+        const e=Math.floor(Math.random()*11)-5; const m=+( (Math.random()*9+1).toFixed(4) );
+        const n=[2,3,4][Math.floor(Math.random()*3)]; const rr=sciRound(m,e,n);
+        ans=rr.m*10**rr.e; prompt=`Round ${m}×10^${e} to ${n} s.f. (enter numeric value)`;
+      }else if(r<0.66){
+        const unit=[0.001,0.01,0.1,1,10,100][Math.floor(Math.random()*6)];
+        const r0=+( (Math.random()*1000-500).toFixed(unit<1?3:0) ); const rr=roundHalfUpToUnit(r0,unit); const lb=rr-unit/2;
+        ans=lb; prompt=`Reported ${fmtToUnit(rr,unit)} (${unit>=1?'nearest '+unit: decPlacesFromUnit(unit)+' dp'}). Enter the <lower bound>.`;
+      }else{
+        const dp=4; const extra=1+Math.floor(Math.random()*2);
+        const s=(Math.random()*9000-1000).toFixed(dp+extra);
+        const x=Number(s); const n=[2,3,4][Math.floor(Math.random()*3)];
+        ans=roundToSig(x,n); prompt=`Round ${s} to ${n} s.f.`;
+      }
     }
     chState.cur={prompt,ans}; id('chText').textContent=prompt; id('chAns').value=''; id('chFb').textContent=''; id('chHintBox').textContent=''; renderMath(id('challengeSlide'));
   }
