@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G7 • Unit 1 • Lesson 3 — Prime Factorization Toolkit (v2)</title>
+<title>G7 • Unit 1 • Lesson 3 — Prime Factorization Toolkit (Student‑Centered)</title>
 
 <!-- Fonts & Tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,13 +15,35 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script>
+  // KaTeX autorender bootstrap
+  window.addEventListener('DOMContentLoaded', () => {
+    const run = (root = document.body) => {
+      if (!window.renderMathInElement) return;
+      window.renderMathInElement(root, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '\\[', right: '\\]', display: true },
+          { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+      });
+    };
+    if (window.renderMathInElement) run();
+    else {
+      const t = setInterval(() => { if (window.renderMathInElement) { clearInterval(t); run(); } }, 25);
+      setTimeout(() => clearInterval(t), 6000);
+    }
+    window._rerenderMath = run;
+  });
+</script>
 
 <style>
   :root{--maroon:#6C1D45;--gold:#C7A34F;--dark:#2C2C2E;--light:#F5F5F5;--accent:#E8D5B7}
   html,body{height:100%;background:#2d3748;color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
   #deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
   #slides{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
-  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
+  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
   .slide.active{opacity:1;transform:none;pointer-events:auto}
   .bg-maroon{background-color:var(--maroon)} .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
   .banner{width:100%;height:120px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
@@ -39,42 +61,8 @@
   #counter{color:#fff;font-weight:700;min-width:84px;text-align:center}
   #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:30;transition:width .35s ease}
   #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
-
-  /* Part Navigator */
-  #partNav{position:fixed;top:18px;left:18px;z-index:35;display:flex;gap:.4rem;background:rgba(255,255,255,.8);padding:.35rem .35rem;border-radius:999px;border:2px solid var(--gold);backdrop-filter:blur(4px)}
-  #partNav button{font-weight:800}
-
-  /* Global student toolbar */
-  #globalBar{
-    position:fixed; top:18px; right:18px; z-index:45; display:flex; gap:.5rem;
-    background:rgba(255,255,255,.92); border:2px solid var(--gold); border-radius:999px;
-    padding:.35rem .55rem; align-items:center; backdrop-filter:blur(6px)
-  }
-  #globalBar .tog{display:inline-flex; align-items:center; gap:.35rem; padding:.3rem .6rem; border:1px solid #e5e7eb; border-radius:999px; background:#fff; cursor:pointer; font-weight:700}
-  #globalBar .tog.active{border-color:#22c55e; box-shadow:0 0 0 2px rgba(34,197,94,.15)}
-  #globalBar input[type="text"]{height:30px; padding:.2rem .5rem; border:1px solid #e5e7eb; border-radius:8px; width:110px}
-  #globalBar .btnMini{padding:.35rem .6rem; border-radius:999px; border:1px solid #e5e7eb; background:#fff; font-weight:800; cursor:pointer}
-  #globalBar .btnMini:hover{filter:brightness(.98)}
-  .inlineNote{display:inline-block; background:#eef2ff; border:1px dashed #c7d2fe; padding:.15rem .35rem; border-radius:8px; font-size:.85rem}
-
-  /* Clarify / HOT / Qatar connect cards */
-  .clarify{
-    width:min(100%, 980px); margin-top:.75rem; text-align:left; background:#fffef7; border:1px solid #ffe69c; border-radius:12px;
-    padding:.75rem 1rem; box-shadow:0 4px 10px rgba(0,0,0,.04)
-  }
-  .clarify summary{font-weight:800; color:var(--maroon); cursor:pointer}
-  .clarify .mini{display:grid; grid-template-columns: 1fr; gap:.35rem; margin-top:.4rem; font-size:.95rem}
-  .clarify .mini .tag{display:inline-block; font-weight:700; color:#374151}
-
-  .hotBox{width:min(100%,980px); margin-top:.6rem; background:#fafaff; border:1px solid #dbeafe; border-radius:12px; padding:.75rem 1rem; text-align:left}
-  .hotBox h4{margin:0 0 .25rem 0; color:#1d4ed8; font-weight:800}
-  .hotBox .q{padding:.4rem .5rem; border-left:4px solid #93c5fd; background:#fff}
-
-  .qatCard{width:min(100%,980px); margin-top:.6rem; background:#f8faf8; border:1px solid #d1fae5; border-radius:12px; padding:.75rem 1rem; text-align:left}
-  .qatCard h4{margin:0 0 .25rem 0; color:#065f46; font-weight:800}
-  .qatCard .q{padding:.4rem .5rem; border-left:4px solid #10b981; background:#fff}
-
   .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
   .workline{padding:.25rem .5rem;border-left:4px solid var(--gold);margin:.3rem 0;background:#fff}
 
   /* Factor Tree canvas */
@@ -82,6 +70,42 @@
   canvas.tree{width:100%;height:340px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
 
   .confetti{position:fixed;pointer-events:none;z-index:50}
+
+  /* Part Navigator */
+  #partNav{position:fixed;top:18px;left:18px;z-index:35;display:flex;gap:.4rem;background:rgba(255,255,255,.8);padding:.35rem .35rem;border-radius:999px;border:2px solid var(--gold);backdrop-filter:blur(4px)}
+  #partNav button{font-weight:800}
+
+  /* ---------- Student-Centered controls ---------- */
+  #globalBar{
+    position:fixed; top:18px; left:220px; z-index:45; display:flex; gap:.5rem;
+    background:rgba(255,255,255,.92); border:2px solid var(--gold); border-radius:999px;
+    padding:.35rem .55rem; align-items:center; backdrop-filter:blur(6px)
+  }
+  #globalBar .tog{display:inline-flex; align-items:center; gap:.35rem; padding:.3rem .6rem; border:1px solid #e5e7eb; border-radius:999px; background:#fff; cursor:pointer; font-weight:700}
+  #globalBar .tog.active{border-color:#22c55e; box-shadow:0 0 0 2px rgba(34,197,94,.15)}
+  #globalBar input[type="text"]{height:30px; padding:.2rem .5rem; border:1px solid #e5e7eb; border-radius:8px; width:112px}
+  #globalBar .btnMini{padding:.35rem .6rem; border-radius:999px; border:1px solid #e5e7eb; background:#fff; font-weight:800; cursor:pointer}
+  #globalBar .btnMini:hover{filter:brightness(.98)}
+  .clarify{
+    width:min(100%, 980px); margin-top:.75rem; text-align:left; background:#fffef7; border:1px solid #ffe69c; border-radius:12px;
+    padding:.75rem 1rem; box-shadow:0 4px 10px rgba(0,0,0,.04)
+  }
+  .clarify summary{font-weight:800; color:var(--maroon); cursor:pointer}
+  .clarify .mini{
+    display:grid; grid-template-columns: 1fr; gap:.35rem; margin-top:.4rem; font-size:.95rem
+  }
+  .clarify .mini .tag{display:inline-block; font-weight:700; color:#374151}
+  .hotBox{
+    width:min(100%,980px); margin-top:.6rem; background:#fafaff; border:1px solid #dbeafe; border-radius:12px; padding:.75rem 1rem; text-align:left
+  }
+  .hotBox h4{margin:0 0 .25rem 0; color:#1d4ed8; font-weight:800}
+  .hotBox .q{padding:.4rem .5rem; border-left:4px solid #93c5fd; background:#fff}
+  .qatCard{
+    width:min(100%,980px); margin-top:.6rem; background:#f8faf8; border:1px solid #d1fae5; border-radius:12px; padding:.75rem 1rem; text-align:left
+  }
+  .qatCard h4{margin:0 0 .25rem 0; color:#065f46; font-weight:800}
+  .qatCard .q{padding:.4rem .5rem; border-left:4px solid #10b981; background:#fff}
+  .inlineNote{display:inline-block; background:#eef2ff; border:1px dashed #c7d2fe; padding:.15rem .35rem; border-radius:8px; font-size:.85rem}
 
   /* Worksheet modal */
   #wsModal{position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; align-items:center; justify-content:center; z-index:60}
@@ -110,20 +134,27 @@
           <p class="mt-2 text-lg">Qatar Leadership Academy — Grade 7</p>
         </div>
       </div>
+      <div class="clarify mt-5">
+        <summary>Lesson Map: From factors → primes → exponents → GCF/LCM → applications</summary>
+        <div class="mini text-left text-sm md:text-base">
+          <div><span class="tag">Goal</span> Build number sense to choose the <b>right tool</b>: divisibility, factor trees, exponents, Euclid, and LCM.</div>
+          <div><span class="tag">Success checks</span> You can justify “why” your method works and connect to a real context in Qatar.</div>
+        </div>
+      </div>
       <div class="absolute bottom-6 text-sm text-gray-100">Aligned to AERO 7.NS foundations &amp; 7.EE.3 applications. Member of Qatar Foundation.</div>
     </section>
 
     <!-- ──────────────────────────────── PART 1 ──────────────────────────────── -->
     <!-- 1 • Part 1: LO & Keywords -->
-    <section class="slide" id="p1IntroSlide" aria-label="Part 1 Intro">
+    <section class="slide" id="p1IntroSlide">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Part 1 — Primes, Factors &amp; Multiples</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes (P1)</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Distinguish and find <strong>factors</strong> and <strong>multiples</strong> of a number.</li>
-            <li>Use quick <strong>divisibility rules</strong> (2, 3, 5, 7) & a √n prime test.</li>
-            <li>Classify numbers as <strong>prime</strong> or <strong>composite</strong>; recall common primes ≤ 100.</li>
+            <li>Distinguish <b>factors</b> vs <b>multiples</b>.</li>
+            <li>Use <b>divisibility rules</b> (2,3,5,7) and the <b>√n prime test</b>.</li>
+            <li>Classify numbers as <b>prime</b> or <b>composite</b>; recall primes ≤ 100.</li>
           </ul>
         </div>
         <div class="card p-5">
@@ -139,16 +170,14 @@
           <p class="text-xs text-gray-500 mt-3">Click a keyword to view a quick definition.</p>
         </div>
       </div>
-
-      <!-- Clarify & Plan -->
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
+      <div class="clarify">
+        <summary>Clarify & Plan</summary>
         <div class="mini">
-          <div><span class="tag">Clarify</span> <b>Factors</b> divide exactly; <b>multiples</b> are skip‑counts. <b>Prime</b> = exactly two positive factors (1 and itself). 1 is neither prime nor composite.</div>
-          <div><span class="tag">Plan</span> Apply rules (2,3,5,7). If none apply, test primes up to \\(\\sqrt{n}\\).</div>
-          <div><span class="tag">Why it works</span> If \\(n=ab\\) and \\(a>\\sqrt{n}\\), then \\(b<\\sqrt{n}\\). You only need to test up to \\(\\sqrt{n}\\).</div>
+          <div><span class="tag">Clarify</span> Factors divide exactly; multiples are equal jumps (skip‑count). <b>Prime</b>=two positive factors: 1 and itself. (1 is neither.)</div>
+          <div><span class="tag">Plan</span> If unsure, try rules (2,3,5,7) then test primes ≤ \\(\\sqrt{n}\\).</div>
+          <div><span class="tag">Why it works</span> If \\(n=ab\\) with \\(a>\\sqrt{n}\\), then \\(b<\\sqrt{n}\\). Only need to test up to \\(\\sqrt{n}\\).</div>
         </div>
-      </details>
+      </div>
     </section>
 
     <!-- 2 • Warm‑Up -->
@@ -170,13 +199,12 @@
           <div class="text-2xl">\( 17 \) is prime; \( 18=2\cdot 3^2 \) is composite.</div>
         </div>
       </div>
-
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
+      <div class="clarify">
+        <summary>Clarify & Plan</summary>
         <div class="mini">
-          <div><span class="tag">Tip</span> Use factor <em>pairs</em> to avoid missing factors—search up to \\(\\sqrt{n}\\).</div>
+          <div><span class="tag">Try</span> Make your own: <input id="warmOwn" class="border rounded px-2 py-1 w-28" placeholder="e.g., 30"> is a factor of… <span id="warmFb" class="inlineNote"></span></div>
         </div>
-      </details>
+      </div>
     </section>
 
     <!-- 3 • Explain: Factors, Multiples & Divisibility -->
@@ -205,38 +233,28 @@
           </ul>
           <div class="mt-3">
             <div class="text-sm mb-1">Try it:</div>
-            <input id="divTry" class="border rounded px-2 py-1 w-40" placeholder="e.g., 84" aria-label="Enter number to test divisibility">
+            <input id="divTry" class="border rounded px-2 py-1 w-40" placeholder="e.g., 84">
             <button id="divCheck" class="btn">Check rules</button>
-            <div id="divFb" class="mt-2 text-sm" aria-live="polite"></div>
+            <div id="divFb" class="mt-2 text-sm"></div>
           </div>
         </div>
       </div>
-
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
+      <div class="clarify">
+        <summary>Clarify & Plan</summary>
         <div class="mini">
-          <div><span class="tag">Clarify</span> The 7‑rule is a shortcut preserving divisibility (modular reasoning).</div>
-          <div><span class="tag">Misconception</span> “Not divisible by 2,3,5,7 ⇒ prime.” Not always (e.g., \(121=11^2\)).</div>
+          <div><span class="tag">Plan</span> Start with easy checks (2, 5), then 3, then 7; if none apply, try primes ≤ \( \sqrt{n} \).</div>
+          <div><span class="tag">Misconception</span> “If not divisible by 2,3,5,7 it must be prime.” False (e.g., \(121=11^2\)).</div>
         </div>
-      </details>
-
-      <button class="btn mt-3" data-hot="pc">Challenge / HOT</button>
-      <div class="hotBox" id="hot_pc" style="display:none"></div>
+      </div>
     </section>
 
     <!-- 4 • Prime list ≤ 100 -->
     <section class="slide" id="primeListSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Common Prime Numbers (≤ 100)</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
-        <div id="primeGrid" class="grid grid-cols-10 gap-2 text-lg" aria-label="Prime grid up to 100"></div>
+        <div id="primeGrid" class="grid grid-cols-10 gap-2 text-lg"></div>
         <div class="mt-3 hint text-sm">To test if \(n\) is prime, try dividing by primes ≤ \( \sqrt{n} \): \(2,3,5,7\) (and \(11\) for larger \(n\)).</div>
       </div>
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
-        <div class="mini">
-          <div><span class="tag">Plan</span> Use this as your “palette” when building factor trees.</div>
-        </div>
-      </details>
     </section>
 
     <!-- 5 • Classify: Prime or Composite -->
@@ -246,30 +264,23 @@
         <div class="text-sm text-gray-600 mb-2">Use divisibility (2,3,5,7) and the prime list. Remember: 1 is <em>neither</em> prime nor composite.</div>
         <div class="flex items-center gap-3 mb-2">
           <span>Level:</span>
-          <select id="pcLevel" class="border rounded px-2 py-1" aria-label="Prime Composite level">
+          <select id="pcLevel" class="border rounded px-2 py-1">
             <option value="easy" selected>easy (2–40)</option>
             <option value="med">medium (2–100)</option>
             <option value="hard">hard (2–200)</option>
           </select>
           <button id="pcNew" class="btn">New set</button>
           <button id="pcCheck" class="btn maroon">Check</button>
-          <button id="pcExportCSV" class="btn">Export CSV</button>
-          <button id="pcExportJSON" class="btn">Export JSON</button>
         </div>
         <div id="pcList" class="grid md:grid-cols-4 gap-2"></div>
-        <div id="pcFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
+        <div id="pcFb" class="mt-2 h-6 font-semibold"></div>
       </div>
-
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
-        <div class="mini">
-          <div><span class="tag">Plan</span> Test primes ≤ \( \sqrt{n} \). Use the grid, not guesswork.</div>
-          <div><span class="tag">Try</span> Your own number: <input id="pcOwn" class="border rounded px-2 py-1 w-28" placeholder="e.g., 119"> <button id="pcOwnBtn" class="btn">Classify</button> <span id="pcOwnFb" class="inlineNote"></span></div>
-        </div>
-      </details>
-
-      <button class="btn mt-3" data-hot="pc_only">Challenge / HOT</button>
-      <div class="hotBox" id="hot_pc_only" style="display:none"></div>
+      <div class="clarify"><summary>Clarify & Plan</summary><div class="mini">
+        <div><span class="tag">Plan</span> Test primes ≤ \( \sqrt{n} \). Use the table as your shortlist.</div>
+        <div><span class="tag">Create</span> Classify your own: <input id="pcOwn" class="border rounded px-2 py-1 w-28" placeholder="e.g., 119"> <button id="pcOwnBtn" class="btn">Classify</button> <span id="pcOwnFb" class="inlineNote"></span></div>
+      </div></div>
+      <button class="btn mt-2" id="pcHotBtn">Challenge / HOT</button>
+      <div class="hotBox" id="pcHot" style="display:none"></div>
     </section>
 
     <!-- 6 • Worked example: Factors & Multiples -->
@@ -280,14 +291,10 @@
         <div class="mt-2"><button id="fmNextEx" class="btn">Another example</button></div>
         <div class="hint mt-3 text-sm">Strategy: test small divisors up to \( \sqrt{n} \); list factor pairs. Multiples are \(n,2n,3n,\dots\)</div>
       </div>
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
-        <div class="mini">
-          <div><span class="tag">Pitfall</span> Don’t stop after finding a single factor—write its <b>pair</b>.</div>
-        </div>
-      </details>
-      <button class="btn mt-3" data-hot="fm">Challenge / HOT</button>
-      <div class="hotBox" id="hot_fm" style="display:none"></div>
+      <div class="clarify"><summary>Clarify & Plan</summary><div class="mini">
+        <div><span class="tag">Clarify</span> A <b>factor</b> fits exactly; a <b>multiple</b> is repeated addition/multiplication.</div>
+        <div><span class="tag">Check</span> Multiply factor pairs to verify.</div>
+      </div></div>
     </section>
 
     <!-- 7 • Activity: Pick Factors & Multiples -->
@@ -295,15 +302,13 @@
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Pick the Factors &amp; Multiples</h2>
       <div class="flex items-center gap-3 mb-2">
         <span>Level:</span>
-        <select id="fmLevel" class="border rounded px-2 py-1" aria-label="Factors Multiples level">
+        <select id="fmLevel" class="border rounded px-2 py-1">
           <option value="easy" selected>easy (small targets ≤ 30)</option>
           <option value="med">medium (targets ≤ 60)</option>
           <option value="hard">hard (targets ≤ 100)</option>
         </select>
         <button id="fmNew" class="btn">New set</button>
         <button id="fmCheck" class="btn maroon">Check</button>
-        <button id="fmExportCSV" class="btn">Export CSV</button>
-        <button id="fmExportJSON" class="btn">Export JSON</button>
       </div>
       <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
         <div class="card p-5">
@@ -317,14 +322,15 @@
           <div id="mChoices" class="grid grid-cols-4 gap-2"></div>
         </div>
       </div>
-      <div id="fmFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
-
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
-        <div class="mini">
-          <div><span class="tag">Clarify</span> Even → divisible by 2; ends in 0/5 → divisible by 5; digit sum multiple of 3 → divisible by 3; use the 7‑rule as needed.</div>
-        </div>
-      </details>
+      <div id="fmFb" class="mt-2 h-6 font-semibold"></div>
+      <div class="clarify"><summary>Clarify & Plan</summary><div class="mini">
+        <div><span class="tag">Plan</span> For factors, search pairs up to \(\\sqrt{n}\\). For multiples, generate table jumps.</div>
+        <div><span class="tag">Pitfall</span> Near misses: numbers “close to” a multiple aren’t multiples.</div>
+      </div></div>
+      <button class="btn mt-2" id="fmHotBtn">Challenge / HOT</button>
+      <div class="hotBox" id="fmHot" style="display:none"></div>
+      <div class="qatCard" id="p1Qatar1"></div>
+      <div class="qatCard" id="p1Qatar2"></div>
     </section>
 
     <!-- 8 • Part 1: Real‑Life mini‑tasks -->
@@ -332,21 +338,17 @@
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 1 Real‑Life Mini‑Tasks (Factors &amp; Multiples)</h2>
       <div class="flex items-center gap-3 mb-2">
         <span>Level:</span>
-        <select id="p1RealLevel" class="border rounded px-2 py-1" aria-label="P1 real level">
+        <select id="p1RealLevel" class="border rounded px-2 py-1">
           <option value="easy" selected>easy</option>
           <option value="med">medium</option>
           <option value="hard">hard</option>
         </select>
         <button id="p1RealNew" class="btn">New set</button>
         <button id="p1RealCheck" class="btn maroon">Check</button>
-        <button id="p1RealExportCSV" class="btn">Export CSV</button>
-        <button id="p1RealExportJSON" class="btn">Export JSON</button>
       </div>
       <div id="p1RealList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
       <div class="hint mt-3 text-sm">Enter <b>1</b> for “yes” and <b>0</b> for “no” when asked a yes/no divisibility or primality question.</div>
-      <div id="p1RealFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
-
-      <div class="qatCard" id="qat_p1"></div>
+      <div id="p1RealFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
     <!-- ──────────────────────────────── PART 2 ──────────────────────────────── -->
@@ -359,7 +361,7 @@
           <ul class="list-disc list-inside space-y-1 text-lg">
             <li>Construct <strong>factor trees</strong> or <strong>division tables</strong> to prime‑factorize a number.</li>
             <li>Write the factorization in <strong>exponent form</strong> and verify it multiplies back.</li>
-            <li>Recognize uniqueness of prime factorization (informal <strong>FTA</strong> idea).</li>
+            <li>Recognize uniqueness of prime factorization (informal <strong>FTA</strong>).</li>
           </ul>
         </div>
         <div class="card p-5">
@@ -373,14 +375,13 @@
           </div>
         </div>
       </div>
-
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
+      <div class="clarify">
+        <summary>Clarify & Plan</summary>
         <div class="mini">
-          <div><span class="tag">Bridge</span> From factors to <b>prime</b> factors: a canonical (unique) “DNA” for each number.</div>
-          <div><span class="tag">Why unique</span> This is the informal Fundamental Theorem of Arithmetic (FTA).</div>
+          <div><span class="tag">Clarify</span> Order doesn’t matter; leaves must be prime.</div>
+          <div><span class="tag">Why unique</span> Fundamental Theorem of Arithmetic: one unique prime product for each integer ≥ 2 (up to order).</div>
         </div>
-      </details>
+      </div>
     </section>
 
     <!-- 10 • Factor Tree / Table -->
@@ -397,7 +398,7 @@
           <option value="hard">hard (≤ 2000)</option>
         </select>
         <button id="treeNewNum" class="btn">New number</button>
-        <label class="chip">Number: <input id="treeN" class="border rounded px-2 py-1 w-28" value="180" aria-label="Tree number"/></label>
+        <label class="chip">Number: <input id="treeN" class="border rounded px-2 py-1 w-28" value="180"/></label>
         <button id="treeReset" class="btn">Reset</button>
         <button id="treeAuto" class="btn">Auto‑split</button>
       </div>
@@ -409,23 +410,18 @@
       </div>
       <div class="mt-3 flex flex-wrap items-center gap-2 text-sm">
         <div>Leaves: <span id="leafChips" class="inline-flex flex-wrap gap-2"></span></div>
-        <label class="chip">Leaf ID: <input id="leafId" class="border rounded px-2 py-1 w-20" placeholder="id" aria-label="Leaf id"></label>
-        <label class="chip">Split as <input id="splitA" class="border rounded px-2 py-1 w-16" placeholder="a" aria-label="Split a"> × <input id="splitB" class="border rounded px-2 py-1 w-16" placeholder="b" aria-label="Split b"></label>
+        <label class="chip">Leaf ID: <input id="leafId" class="border rounded px-2 py-1 w-20" placeholder="id"></label>
+        <label class="chip">Split as <input id="splitA" class="border rounded px-2 py-1 w-16" placeholder="a"> × <input id="splitB" class="border rounded px-2 py-1 w-16" placeholder="b"></label>
         <button id="treeSplit" class="btn">Split</button>
-        <button id="treeExportCSV" class="btn">Export CSV</button>
-        <button id="treeExportJSON" class="btn">Export JSON</button>
       </div>
       <div class="mt-2 text-lg">Prime factorization: <b id="treeOut"></b></div>
-      <div id="treeFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
-
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
-        <div class="mini">
-          <div><span class="tag">Plan</span> Split by smallest prime divisor; stop when leaves are prime. Multiply leaves to verify.</div>
-        </div>
-      </details>
-      <button class="btn mt-3" data-hot="pf">Challenge / HOT</button>
-      <div class="hotBox" id="hot_pf" style="display:none"></div>
+      <div id="treeFb" class="mt-2 h-6 font-semibold"></div>
+      <div class="clarify"><summary>Clarify & Plan</summary><div class="mini">
+        <div><span class="tag">Plan</span> Split by a smallest prime divisor; keep going until all leaves are prime.</div>
+        <div><span class="tag">Check</span> Multiply leaves back to confirm original number.</div>
+      </div></div>
+      <button class="btn mt-2" id="pfHotBtn">Challenge / HOT</button>
+      <div class="hotBox" id="pfHot" style="display:none"></div>
     </section>
 
     <!-- 11 • Prime Factorization (Exponent Form) -->
@@ -441,22 +437,14 @@
           </select>
           <button id="pfNew" class="btn">New set</button>
           <button id="pfCheck" class="btn maroon">Check</button>
-          <button id="pfExportCSV" class="btn">Export CSV</button>
-          <button id="pfExportJSON" class="btn">Export JSON</button>
         </div>
         <div id="pfList" class="grid md:grid-cols-2 gap-3"></div>
-        <div id="pfFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
+        <div id="pfFb" class="mt-2 h-6 font-semibold"></div>
       </div>
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
-        <div class="mini">
-          <div><span class="tag">Clarify</span> Exponent counts repeats of a prime: \\(180=2^2\\cdot3^2\\cdot5\\).</div>
-        </div>
-      </details>
-      <button class="btn mt-3" data-hot="pfexp">Challenge / HOT</button>
-      <div class="hotBox" id="hot_pfexp" style="display:none"></div>
-
-      <div class="qatCard" id="qat_p2"></div>
+      <div class="clarify"><summary>Clarify & Plan</summary><div class="mini">
+        <div><span class="tag">Clarify</span> The exponent counts repeats of a prime. Example: \(180=2^2\cdot3^2\cdot5\).</div>
+        <div><span class="tag">Verify</span> Expand primes mentally to double‑check.</div>
+      </div></div>
     </section>
 
     <!-- 12 • Part 2: Real‑Life mini‑tasks -->
@@ -471,18 +459,17 @@
         </select>
         <button id="p2RealNew" class="btn">New set</button>
         <button id="p2RealCheck" class="btn maroon">Check</button>
-        <button id="p2RealExportCSV" class="btn">Export CSV</button>
-        <button id="p2RealExportJSON" class="btn">Export JSON</button>
       </div>
       <div class="card p-4 w-full max-w-5xl text-left">
         <ul class="list-disc list-inside text-sm text-gray-600">
-          <li><b>Factor layouts:</b> number of positive factors equals the number of ways to make equal groups (including 1 and itself).</li>
+          <li><b>Factor layouts:</b> number of positive factors equals ways to form equal groups.</li>
           <li><b>Power of 2:</b> how many times you can keep halving before odd.</li>
           <li><b>Square tiles:</b> largest square factor gives the biggest square side for a given area.</li>
         </ul>
       </div>
       <div id="p2RealList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl mt-2"></div>
-      <div id="p2RealFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
+      <div id="p2RealFb" class="mt-2 h-6 font-semibold"></div>
+      <div class="qatCard" id="p2Qatar1"></div>
     </section>
 
     <!-- ──────────────────────────────── PART 3 ──────────────────────────────── -->
@@ -508,14 +495,10 @@
           </div>
         </div>
       </div>
-
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
-        <div class="mini">
-          <div><span class="tag">Bridge</span> From exponents to operators: <b>GCF</b>=min exponents, <b>LCM</b>=max exponents.</div>
-          <div><span class="tag">Identity</span> Two numbers satisfy \(ab=\gcf(a,b)\cdot\operatorname{lcm}(a,b)\).</div>
-        </div>
-      </details>
+      <div class="clarify"><summary>Clarify & Plan</summary><div class="mini">
+        <div><span class="tag">Bridge</span> With prime exponents: <b>GCF</b>=min exponents, <b>LCM</b>=max exponents.</div>
+        <div><span class="tag">Check</span> For two numbers: \(ab=\gcf(a,b)\cdot\operatorname{lcm}(a,b)\).</div>
+      </div></div>
     </section>
 
     <!-- 14 • Worked Examples: GCF/LCM -->
@@ -533,10 +516,7 @@
           <button id="gclPrimeNext" class="btn mt-2">Another example</button>
         </div>
       </div>
-      <div class="hint mt-3 text-sm">For two numbers \(a,b\): \(ab=\mathrm{GCF}(a,b)\cdot \mathrm{LCM}(a,b)\). Small numbers → listing is fine; bigger numbers → use primes.</div>
-
-      <button class="btn mt-3" data-hot="gcl">Challenge / HOT</button>
-      <div class="hotBox" id="hot_gcl" style="display:none"></div>
+      <div class="hint mt-3 text-sm">Small numbers → listing is fine; bigger numbers → use primes or Euclid.</div>
     </section>
 
     <!-- 15 • Explorer: GCF & LCM -->
@@ -556,13 +536,11 @@
       </div>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div class="flex flex-wrap items-center gap-2 text-sm">
-          <label class="chip">a = <input id="gA" class="border rounded px-2 py-1 w-20" value="24" aria-label="gA"></label>
-          <label class="chip">b = <input id="gB" class="border rounded px-2 py-1 w-20" value="36" aria-label="gB"></label>
-          <label class="chip">c = <input id="gC" class="border rounded px-2 py-1 w-20" value="" aria-label="gC (optional)"></label>
+          <label class="chip">a = <input id="gA" class="border rounded px-2 py-1 w-20" value="24"></label>
+          <label class="chip">b = <input id="gB" class="border rounded px-2 py-1 w-20" value="36"></label>
+          <label class="chip">c = <input id="gC" class="border rounded px-2 py-1 w-20" value=""></label>
           <button id="gRun" class="btn maroon">Compute</button>
           <button id="gRand" class="btn">Randomize</button>
-          <button id="gExportCSV" class="btn">Export CSV</button>
-          <button id="gExportJSON" class="btn">Export JSON</button>
         </div>
         <div class="grid md:grid-cols-2 gap-4 mt-3">
           <div class="card p-4">
@@ -575,9 +553,13 @@
           </div>
         </div>
       </div>
-      <div class="hint mt-3 text-sm">Tip: For easy level, list a few multiples. For medium/hard, use prime exponents for speed.</div>
-
-      <div class="qatCard" id="qat_p3"></div>
+      <div class="clarify"><summary>Clarify & Plan</summary><div class="mini">
+        <div><span class="tag">Plan</span> Pick method by size: listing for small; exponents/Euclid for larger.</div>
+        <div><span class="tag">Why</span> Common factors are shared primes (minimum repeats); common multiples use maximum repeats.</div>
+      </div></div>
+      <button class="btn mt-2" id="gclHotBtn">Challenge / HOT</button>
+      <div class="hotBox" id="gclHot" style="display:none"></div>
+      <div class="qatCard" id="p3Qatar1"></div>
     </section>
 
     <!-- 16 • Practice: GCF & LCM -->
@@ -592,30 +574,9 @@
         </select>
         <button id="glNew" class="btn">New set</button>
         <button id="glCheck" class="btn maroon">Check</button>
-        <button id="glExportCSV" class="btn">Export CSV</button>
-        <button id="glExportJSON" class="btn">Export JSON</button>
       </div>
       <div id="glList" class="w-full max-w-5xl grid md:grid-cols-2 gap-3"></div>
-      <div id="glFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
-    </section>
-
-    <!-- 17 • Part 3: Real‑Life tasks -->
-    <section class="slide" id="p3RealSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part 3 Real‑Life Tasks (HCF &amp; LCM)</h2>
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="p3RealLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="p3RealNew" class="btn">New set</button>
-        <button id="p3RealCheck" class="btn maroon">Check</button>
-        <button id="p3RealExportCSV" class="btn">Export CSV</button>
-        <button id="p3RealExportJSON" class="btn">Export JSON</button>
-      </div>
-      <div id="p3RealList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
-      <div id="p3RealFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
+      <div id="glFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
     <!-- ──────────────────────────────── PART 4 ──────────────────────────────── -->
@@ -641,13 +602,9 @@
           </div>
         </div>
       </div>
-
-      <details class="clarify" open>
-        <summary>Clarify &amp; Plan</summary>
-        <div class="mini">
-          <div><span class="tag">Bridge</span> We now blend all tools: primes → exponents → GCF/LCM → fraction work → integrated tasks.</div>
-        </div>
-      </details>
+      <div class="clarify"><summary>Clarify & Plan</summary><div class="mini">
+        <div><span class="tag">Bridge</span> We now blend: primes → exponents → GCF/LCM → fractions/applications.</div>
+      </div></div>
     </section>
 
     <!-- 19 • Solved Applications -->
@@ -665,9 +622,6 @@
           <button id="appLCDNext" class="btn mt-2">Another example</button>
         </div>
       </div>
-
-      <button class="btn mt-3" data-hot="app">Challenge / HOT</button>
-      <div class="hotBox" id="hot_app" style="display:none"></div>
     </section>
 
     <!-- 20 • Applications Practice -->
@@ -682,13 +636,10 @@
         </select>
         <button id="appNew" class="btn">New set</button>
         <button id="appCheck" class="btn maroon">Check</button>
-        <button id="appExportCSV" class="btn">Export CSV</button>
-        <button id="appExportJSON" class="btn">Export JSON</button>
       </div>
       <div id="appList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
-      <div id="appFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
-
-      <div class="qatCard" id="qat_p4"></div>
+      <div id="appFb" class="mt-2 h-6 font-semibold"></div>
+      <div class="qatCard" id="p4Qatar1"></div>
     </section>
 
     <!-- 21 • Challenge -->
@@ -703,14 +654,12 @@
         </select>
         <button id="chNew" class="btn">New set</button>
         <button id="chCheck" class="btn maroon">Check</button>
-        <button id="chExportCSV" class="btn">Export CSV</button>
-        <button id="chExportJSON" class="btn">Export JSON</button>
       </div>
       <div class="grid md:grid-cols-2 gap-6 w-full max-w-5xl text-left">
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon mb-1">Mystery Number</h3>
           <div id="mystPrompt" class="text-lg mb-2"></div>
-          <div>Answer: <input id="mystAns" class="border rounded px-2 py-1 w-40" placeholder="enter number" aria-label="Mystery number answer"></div>
+          <div>Answer: <input id="mystAns" class="border rounded px-2 py-1 w-40" placeholder="enter number"></div>
         </div>
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon mb-1">Given GCF &amp; LCM</h3>
@@ -719,7 +668,7 @@
           <div class="mt-1">a = <input id="gcA" class="border rounded px-2 py-1 w-24">, b = <input id="gcB" class="border rounded px-2 py-1 w-24"></div>
         </div>
       </div>
-      <div id="chFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
+      <div id="chFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
     <!-- 22 • Error Analysis -->
@@ -745,10 +694,8 @@
         </div>
         <div class="mt-2 flex gap-2">
           <button id="errCheck" class="btn maroon">Check</button>
-          <button id="errExportCSV" class="btn">Export CSV</button>
-          <button id="errExportJSON" class="btn">Export JSON</button>
         </div>
-        <div id="errFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
+        <div id="errFb" class="mt-2 h-6 font-semibold"></div>
         <div id="errRevealBox" class="mt-2 text-sm"></div>
       </div>
     </section>
@@ -768,14 +715,12 @@
         </div>
         <div class="mt-3 text-2xl">Task: <span id="mixQ" class="font-extrabold"></span></div>
         <div class="mt-2">
-          <input id="mixAns" class="border rounded px-3 py-2 w-72" placeholder="e.g., 2^3·3^2·5; GCF=6, LCM=90; prime; 1,2,3,6" aria-label="Mixed answer">
+          <input id="mixAns" class="border rounded px-3 py-2 w-72" placeholder="e.g., 2^3·3^2·5; GCF=6, LCM=90; prime; 1,2,3,6">
           <button id="mixCheck" class="btn maroon">Check</button>
           <button id="mixHint" class="btn">Hint</button>
-          <button id="mixExportCSV" class="btn">Export CSV</button>
-          <button id="mixExportJSON" class="btn">Export JSON</button>
         </div>
         <div id="mixHintBox" class="mt-3 text-sm"></div>
-        <div id="mixFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
+        <div id="mixFb" class="mt-2 h-6 font-semibold"></div>
       </div>
     </section>
 
@@ -791,11 +736,9 @@
         </select>
         <button id="capNew" class="btn">New set</button>
         <button id="capCheck" class="btn maroon">Check</button>
-        <button id="capExportCSV" class="btn">Export CSV</button>
-        <button id="capExportJSON" class="btn">Export JSON</button>
       </div>
       <div id="capList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
-      <div id="capFb" class="mt-2 h-6 font-semibold" aria-live="polite"></div>
+      <div id="capFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
     <!-- 25 • Exit Ticket -->
@@ -812,7 +755,7 @@
         </div>
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon">Up Next</h3>
-          <p>We will connect factorization to efficient fraction arithmetic and BEDMAS work in expressions.</p>
+          <p>We will connect factorization to efficient fraction arithmetic and order of operations in expressions.</p>
         </div>
       </div>
       <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[110px] banner rounded-md" style="background-image:url('../assets/qla_banner.png')"></div>
@@ -838,29 +781,23 @@
   <button id="navP4" class="btn">Part&nbsp;4</button>
 </div>
 
-<!-- Global Student/Teacher Toolbar -->
-<div id="globalBar" aria-label="Student Teacher toolbar">
+<!-- Global Student Toolbar -->
+<div id="globalBar" aria-label="Student/Teacher controls">
   <span class="tog" id="togStudent">Student</span>
   <span class="tog" id="togTeacher">Teacher</span>
   <span class="tog active" id="togQatar">Qatar mode</span>
   <span class="tog active" id="togScaf">Scaffolds</span>
   <span class="tog" id="togAuto">Auto‑level</span>
   <span class="inlineNote" title="Reproducible sets">Seed</span>
-  <input type="text" id="seedBox" placeholder="e.g., 7NS-3" aria-label="seed">
+  <input type="text" id="seedBox" placeholder="e.g., 7NS-3">
   <button class="btnMini" id="seedApply">Apply</button>
   <button class="btnMini" id="btnWS">Worksheet</button>
 </div>
 
-<!-- Glossary popover -->
-<div id="pop" role="dialog" aria-modal="true" aria-live="polite" style="display:none; position:fixed; inset:auto auto 20px 20px; max-width:min(560px,90vw); background:#fff;border:2px solid var(--gold);border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.25);padding:14px 16px;z-index:40;text-align:left">
-  <span class="close" title="Close" style="float:right;color:#666;cursor:pointer;font-weight:800">✕</span>
-  <div id="popBody"></div>
-</div>
-
-<!-- Worksheet Modal -->
+<!-- Worksheet modal -->
 <div id="wsModal">
-  <div id="wsPanel" role="dialog" aria-modal="true">
-    <div id="wsClose" title="Close">✕</div>
+  <div id="wsPanel">
+    <div id="wsClose">✕</div>
     <h3>Worksheet Builder</h3>
     <label>Activity</label>
     <select id="wsType">
@@ -882,40 +819,30 @@
   </div>
 </div>
 
+<!-- Glossary popover -->
+<div id="pop" role="dialog" aria-modal="true" aria-live="polite" style="display:none; position:fixed; inset:auto auto 20px 20px; max-width:min(560px,90vw); background:#fff; border:2px solid var(--gold); border-radius:12px; box-shadow:0 12px 28px rgba(0,0,0,.25); padding:14px 16px; z-index:40; text-align:left">
+  <span class="close" title="Close" style="float:right;color:#666;cursor:pointer;font-weight:800">✕</span>
+  <div id="popBody"></div>
+</div>
+
 <script>
-/* ---------- Core shell, helpers, and all activities (v2) ---------- */
-document.addEventListener('DOMContentLoaded', () => {
-
-  /* ---------- KaTeX auto-render ---------- */
-  const runKaTeX = (root = document.body) => {
-    if (!window.renderMathInElement) return;
-    window.renderMathInElement(root, {
-      delimiters: [
-        { left: '$$', right: '$$', display: true },
-        { left: '\\[', right: '\\]', display: true },
-        { left: '\\(', right: '\\)', display: false }
-      ],
-      throwOnError: false
-    });
-  };
-  if (window.renderMathInElement) runKaTeX();
-  else {
-    const t = setInterval(() => { if (window.renderMathInElement) { clearInterval(t); runKaTeX(); } }, 25);
-    setTimeout(() => clearInterval(t), 6000);
-  }
-  window._rerenderMath = runKaTeX;
-
-  /* ---------- Slides navigation ---------- */
+/* -----------------------------------------------------------------------
+   Full Student‑Centered Deck Logic
+   ----------------------------------------------------------------------- */
+(function(){
+  /* ---------- Shell ---------- */
   const slides=[...document.querySelectorAll('.slide')];
-  const prev=byId('prev'), next=byId('next'), counter=byId('counter'), progress=byId('progress'), fsBtn=byId('fs');
+  const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
+  const deckTitle='G7_U1_L3_Prime_Toolkit_Rewritten';
   let i=0;
+
   function show(k){
     i=(k+slides.length)%slides.length;
     slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
     counter.textContent=(i+1)+' / '+slides.length;
     progress.style.width=((i+1)/slides.length*100)+'%';
     if(slides[i].id==='treeSlide') drawTree();
-    runKaTeX(slides[i]);
+    renderMath(slides[i]);
   }
   prev.addEventListener('click',()=>show(i-1));
   next.addEventListener('click',()=>show(i+1));
@@ -925,7 +852,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(e.key.toLowerCase()==='f') toggleFS();
   });
   function toggleFS(){
-    const el=byId('slides');
+    const el=id('slides');
     if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);}
     else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(el);}
   }
@@ -937,24 +864,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const targetId=partStarts[idx]; const node=document.getElementById(targetId);
     if(!node) return; const pos=slides.findIndex(s=>s.id===targetId); if(pos>=0) show(pos);
   }
-  byId('navP1').addEventListener('click',()=>goPart(0));
-  byId('navP2').addEventListener('click',()=>goPart(1));
-  byId('navP3').addEventListener('click',()=>goPart(2));
-  byId('navP4').addEventListener('click',()=>goPart(3));
+  id('navP1').addEventListener('click',()=>goPart(0));
+  id('navP2').addEventListener('click',()=>goPart(1));
+  id('navP3').addEventListener('click',()=>goPart(2));
+  id('navP4').addEventListener('click',()=>goPart(3));
 
-  /* ---------- Helpers ---------- */
-  function byId(x){return document.getElementById(x)}
-  function msg(el,s){ if(el) el.textContent=s }
-  function downloadJSON(filename, data){
-    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    const url=URL.createObjectURL(blob); const a=document.createElement('a');
-    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  }
-  function downloadCSV(filename, rows){
-    const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
-    const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
-    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  }
+  function id(x){return document.getElementById(x)}
+  function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
   function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
     for(let k=0;k<18;k++){
       const d=document.createElement('div'); d.className='confetti';
@@ -966,6 +882,60 @@ document.addEventListener('DOMContentLoaded', () => {
                 {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
     }
   }
+  function msg(el,s){ if(el) el.textContent=s }
+
+  /* ---------- Glossary ---------- */
+  const POP=id('pop'), POP_BODY=id('popBody');
+  const GLOS={
+    factor:'<strong>Factor</strong>: a whole number that divides another exactly.',
+    multiple:'<strong>Multiple</strong>: product of a number with an integer (e.g., multiples of 6: 6,12,18,...).',
+    prime:'<strong>Prime</strong>: integer ≥2 with exactly two positive factors: 1 and itself.',
+    composite:'<strong>Composite</strong>: integer ≥2 with more than two positive factors.',
+    pfe:'<strong>Prime factorization</strong>: writing a number as a product of primes using exponents.',
+    exp:'<strong>Exponent</strong>: the power showing repeated multiplication, e.g., \\(2^3=2\\cdot2\\cdot2\\).',
+    hcf:'<strong>HCF/GCF</strong>: greatest common factor among given numbers.',
+    lcm:'<strong>LCM</strong>: least common multiple common to given numbers.',
+    divrule:'<strong>Divisibility</strong>: shortcuts to test if a number is divisible by 2,3,5,7 without long division.',
+    prtest:'<strong>Prime test</strong>: try dividing by primes up to \\(\\sqrt{n}\\).',
+    tree:'<strong>Factor tree</strong>: split a composite into factors repeatedly until leaves are prime.',
+    table:'<strong>Division table</strong>: keep dividing by small primes in rows until 1 remains.',
+    fta:'<strong>FTA</strong>: every integer \\(\\ge2\\) has a unique prime factorization (up to factor order).',
+    euclid:'<strong>Euclidean algorithm</strong>: repeatedly apply remainders to find the GCF.',
+    lcd:'<strong>LCD</strong>: least common denominator (LCM of denominators).',
+    simp:'<strong>Simplify</strong>: divide numerator & denominator by the fraction’s GCF.',
+    err:'<strong>Error analysis</strong>: identify and correct the type of mistake.',
+    strategy:'<strong>Strategy</strong>: pick a method that fits the size & structure of numbers.'
+  };
+  function showPop(html){ POP_BODY.innerHTML=html; POP.style.display='block'; }
+  POP.querySelector('.close').addEventListener('click',()=>POP.style.display='none');
+  document.addEventListener('click',e=>{
+    const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]) showPop(GLOS[key]);}
+  });
+
+  /* ---------- Seeded RNG & toolbar ---------- */
+  const origRandom = Math.random;
+  function cyrb128(str){ let h1=1779033703,h2=3144134277,h3=1013904242,h4=2773480762; for(let i=0;i<str.length;i++){ let k=str.charCodeAt(i); h1=h2^Math.imul(h1^k,597399067); h2=h3^Math.imul(h2^k,2869860233); h3=h4^Math.imul(h3^k,951274213); h4=h1^Math.imul(h4^k,2716044179) } h1=Math.imul(h3^(h1>>>18),597399067); h2=Math.imul(h4^(h2>>>22),2869860233); h3=Math.imul(h1^(h3>>>17),951274213); h4=Math.imul(h2^(h4>>>19),2716044179); return [(h1^h2^h3^h4)>>>0,(h2^h1)>>>0,(h3^h1)>>>0,(h4^h1)>>>0]}
+  function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296 } }
+  let seeded=null;
+  function setGlobalSeed(s){
+    if(!s){ Math.random = origRandom; seeded=null; return; }
+    const st = cyrb128(String(s)); seeded = mulberry32(st[0]); Math.random = ()=>seeded();
+  }
+  function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+  function choice(A){ return A[Math.floor(Math.random()*A.length)] }
+
+  const STATE = { teacher:false, qatar:true, scaffold:true, autolvl:false, streak:0 };
+  const $ = (x)=>document.getElementById(x);
+  function setTog(el, on){ el.classList.toggle('active', !!on) }
+  setTog($('togStudent'), !STATE.teacher); setTog($('togTeacher'), STATE.teacher);
+
+  $('togStudent').onclick = ()=>{ STATE.teacher=false; setTog($('togStudent'),true); setTog($('togTeacher'),false); refreshVisibility(); };
+  $('togTeacher').onclick = ()=>{ STATE.teacher=true; setTog($('togTeacher'),true); setTog($('togStudent'),false); refreshVisibility(); };
+  $('togQatar').onclick = ()=>{ STATE.qatar=!STATE.qatar; setTog($('togQatar'), STATE.qatar); refreshVisibility(); };
+  $('togScaf').onclick = ()=>{ STATE.scaffold=!STATE.scaffold; setTog($('togScaf'), STATE.scaffold); document.querySelectorAll('.clarify').forEach(el=>el.style.display=STATE.scaffold?'block':'none'); };
+  $('togAuto').onclick = ()=>{ STATE.autolvl=!STATE.autolvl; setTog($('togAuto'), STATE.autolvl); };
+  $('seedApply').onclick = ()=>{ const s=$('seedBox').value.trim(); setGlobalSeed(s||null); toast(`Seed ${s?('set to "'+s+'"'):'cleared'}. Regenerate a set to apply.`) };
+
   function toast(msg){
     const d=document.createElement('div');
     d.style.position='fixed'; d.style.bottom='18px'; d.style.left='50%'; d.style.transform='translateX(-50%)';
@@ -973,8 +943,12 @@ document.addEventListener('DOMContentLoaded', () => {
     d.style.boxShadow='0 8px 20px rgba(0,0,0,.35)'; d.style.zIndex='70'; d.textContent=msg;
     document.body.appendChild(d); setTimeout(()=>{ d.style.opacity='0'; d.style.transition='opacity .5s'; setTimeout(()=>d.remove(),500); }, 1200);
   }
+  function refreshVisibility(){
+    document.querySelectorAll('[data-key="sc-ans"]').forEach(el=>{ el.style.display = STATE.teacher? 'block':'none'; });
+    document.querySelectorAll('.qatCard').forEach(el=>{ el.style.display = STATE.qatar? 'block':'none'; });
+  }
 
-  /* ---------- Math utilities ---------- */
+  /* ---------- Math utils ---------- */
   function isPrime(n){ n=Math.floor(n); if(n<2) return false; if(n%2===0) return n===2; for(let p=3;p*p<=n;p+=2) if(n%p===0) return false; return true; }
   function primesUpTo(N){ const arr=[]; for(let x=2;x<=N;x++) if(isPrime(x)) arr.push(x); return arr; }
   function factors(n){ n=Math.abs(Math.floor(n)); const list=[]; for(let d=1; d*d<=n; d++) if(n%d===0){ list.push(d); if(d*d!==n) list.push(n/d); } return list.sort((a,b)=>a-b); }
@@ -983,7 +957,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const lcm2=(a,b)=> Math.abs(a*b)/gcd(a,b);
   function gcdArr(arr){ return arr.reduce((g,x)=>gcd(g,x)); }
   function lcmArr(arr){ return arr.reduce((L,x)=>lcm2(L,x)); }
-  function primeFactorMap(n){ n=Math.abs(Math.floor(n)); const m=new Map(); let x=n; let p=2; while(p*p<=x){ while(x%p===0){ m.set(p,(m.get(p)||0)+1); x/=p; } p=(p===2)?3:p+2; } if(x>1) m.set(x,(m.get(x)||0)+1); return m; }
+  function primeFactorMap(n){
+    n=Math.abs(Math.floor(n));
+    const m=new Map(); let x=n; let p=2;
+    while(p*p<=x){ while(x%p===0){ m.set(p,(m.get(p)||0)+1); x/=p; } p=(p===2)?3:p+2; }
+    if(x>1) m.set(x,(m.get(x)||0)+1);
+    return m;
+  }
   function mapToObj(m){ const o={}; m.forEach((v,k)=>o[k]=v); return o; }
   function fmtExp(obj){ const keys=Object.keys(obj).filter(k=>obj[k]>0).map(Number).sort((a,b)=>a-b);
     if(keys.length===0) return '1';
@@ -1004,87 +984,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function v_p(n,p){ let e=0; while(n%p===0){e++; n/=p} return e; }
   function largestSquareSide(n){ const m=primeFactorMap(n); let side=1; m.forEach((e,p)=>{ side*=Math.pow(p, Math.floor(e/2)); }); return side; }
 
-  /* ---------- Seeded RNG ---------- */
-  const origRandom = Math.random;
-  function cyrb128(str){ let h1=1779033703,h2=3144134277,h3=1013904242,h4=2773480762; for(let i=0;i<str.length;i++){ let k=str.charCodeAt(i); h1=h2^Math.imul(h1^k,597399067); h2=h3^Math.imul(h2^k,2869860233); h3=h4^Math.imul(h3^k,951274213); h4=h1^Math.imul(h4^k,2716044179) } h1=Math.imul(h3^(h1>>>18),597399067); h2=Math.imul(h4^(h2>>>22),2869860233); h3=Math.imul(h1^(h3>>>17),951274213); h4=Math.imul(h2^(h4>>>19),2716044179); return [(h1^h2^h3^h4)>>>0,(h2^h1)>>>0,(h3^h1)>>>0,(h4^h1)>>>0]}
-  function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296 } }
-  let seeded=null;
-  function setGlobalSeed(s){
-    if(!s){ Math.random = origRandom; seeded=null; return; }
-    const st = cyrb128(String(s)); seeded = mulberry32(st[0]); Math.random = ()=>seeded();
-  }
-  function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
-  function choice(A){ return A[Math.floor(Math.random()*A.length)] }
-
-  /* ---------- Glossary ---------- */
-  const POP=byId('pop'), POP_BODY=byId('popBody');
-  const GLOS={
-    factor:'<strong>Factor</strong>: a whole number that divides another exactly.',
-    multiple:'<strong>Multiple</strong>: product of a number with an integer (e.g., multiples of 6: 6,12,18,...).',
-    prime:'<strong>Prime</strong>: integer ≥2 with exactly two positive factors: 1 and itself.',
-    composite:'<strong>Composite</strong>: integer ≥2 with more than two positive factors.',
-    pfe:'<strong>Prime factorization</strong>: writing a number as a product of primes using exponents.',
-    exp:'<strong>Exponent</strong>: repeated multiplication, e.g., \\(2^3=2\\cdot2\\cdot2\\).',
-    hcf:'<strong>HCF/GCF</strong>: greatest common factor among given numbers.',
-    lcm:'<strong>LCM</strong>: least common multiple common to given numbers.',
-    divrule:'<strong>Divisibility</strong>: shortcuts to test 2,3,5,7 without long division.',
-    prtest:'<strong>Prime test</strong>: try dividing by primes up to \\(\\sqrt{n}\\).',
-    tree:'<strong>Factor tree</strong>: split a composite into factors until leaves are prime.',
-    table:'<strong>Division table</strong>: repeatedly divide by small primes until 1 remains.',
-    fta:'<strong>FTA</strong>: every integer \\(\\ge2\\) has a unique prime factorization (up to order).',
-    euclid:'<strong>Euclidean algorithm</strong>: remainder steps to get the GCF.',
-    lcd:'<strong>LCD</strong>: least common denominator (LCM of denominators).',
-    simp:'<strong>Simplify</strong>: divide numerator & denominator by the fraction’s GCF.',
-    err:'<strong>Error analysis</strong>: identify and correct the mistake.',
-    strategy:'<strong>Strategy</strong>: pick a method that fits the size & structure of numbers.'
-  };
-  function showPop(html, anchor){
-    POP_BODY.innerHTML=html; POP.style.display='block';
-    const r=anchor?anchor.getBoundingClientRect():{left:20,top:window.innerHeight-120};
-    POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px';
-    POP.style.bottom=(window.innerHeight - r.top + 10)+'px';
-  }
-  POP.querySelector('.close').addEventListener('click',()=>POP.style.display='none');
-  document.addEventListener('click',e=>{
-    const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]) showPop(GLOS[key], el);}
-  });
-
-  /* ---------- Global Toolbar ---------- */
-  const STATE = { teacher:false, qatar:true, scaffold:true, autolvl:false, streak:0 };
-  function setTog(el, on){ el.classList.toggle('active', !!on) }
-  setTog(byId('togStudent'), !STATE.teacher);
-  setTog(byId('togTeacher'), STATE.teacher);
-  setTog(byId('togQatar'), STATE.qatar);
-  setTog(byId('togScaf'), STATE.scaffold);
-  setTog(byId('togAuto'), STATE.autolvl);
-
-  byId('togStudent').onclick = ()=>{ STATE.teacher=false; setTog(byId('togStudent'),true); setTog(byId('togTeacher'),false); refreshVisibility(); };
-  byId('togTeacher').onclick = ()=>{ STATE.teacher=true; setTog(byId('togTeacher'),true); setTog(byId('togStudent'),false); refreshVisibility(); };
-  byId('togQatar').onclick = ()=>{ STATE.qatar=!STATE.qatar; setTog(byId('togQatar'), STATE.qatar); refreshVisibility(); };
-  byId('togScaf').onclick = ()=>{ STATE.scaffold=!STATE.scaffold; setTog(byId('togScaf'), STATE.scaffold); document.querySelectorAll('.clarify').forEach(el=>el.style.display=STATE.scaffold?'block':'none'); };
-  byId('togAuto').onclick = ()=>{ STATE.autolvl=!STATE.autolvl; setTog(byId('togAuto'), STATE.autolvl); };
-
-  byId('seedApply').onclick = ()=>{
-    const s = byId('seedBox').value.trim();
-    setGlobalSeed(s || null);
-    toast(`Seed ${s?('set to "'+s+'"'):'cleared'}. Regenerate any set to use it.`);
-  };
-
-  function refreshVisibility(){
-    document.querySelectorAll('[data-key="sc-ans"]').forEach(el=>{ el.style.display = STATE.teacher? 'block':'none'; });
-    document.querySelectorAll('.qatCard').forEach(el=>{ el.style.display = STATE.qatar? 'block':'none'; });
-  }
-  refreshVisibility();
-
-  /* ---------- Divisibility Try-it ---------- */
-  byId('divCheck').addEventListener('click',()=>{
-    const s=byId('divTry').value.trim(); const n=Number(s);
-    if(!s || !Number.isFinite(n)){ byId('divFb').textContent='Enter a whole number.'; return; }
-    const r2 = (n%2===0),
-          r3 = (String(Math.abs(n)).split('').map(Number).reduce((a,b)=>a+b,0)%3===0),
-          r5= ([0,5].includes(Math.abs(n)%10)),
-          r7= checkDiv7(n);
-    byId('divFb').innerHTML = `Divisible by 2: <b>${r2?'Yes':'No'}</b> • 3: <b>${r3?'Yes':'No'}</b> • 5: <b>${r5?'Yes':'No'}</b> • 7: <b>${r7?'Yes':'No'}</b>`;
+  /* ---------- Part 1 logic ---------- */
+  id('divCheck').addEventListener('click',()=>{
+    const s=id('divTry').value.trim(); const n=Number(s);
+    if(!s || !Number.isFinite(n)){ id('divFb').textContent='Enter a whole number.'; return; }
+    const r2 = (n%2===0), r3 = (String(Math.abs(n)).split('').map(Number).reduce((a,b)=>a+b,0)%3===0), r5= ([0,5].includes(Math.abs(n)%10)), r7=checkDiv7(n);
+    id('divFb').innerHTML = `Divisible by 2: <b>${r2?'Yes':'No'}</b> • 3: <b>${r3?'Yes':'No'}</b> • 5: <b>${r5?'Yes':'No'}</b> • 7: <b>${r7?'Yes':'No'}</b>`;
   });
   function checkDiv7(n){
     let x=Math.abs(n);
@@ -1094,10 +999,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return [0,7,14,21,28,35,42,49,56,63,70].includes(Math.abs(x));
   }
 
-  /* ---------- Prime grid ≤ 100 ---------- */
   (function renderPrimeGrid(){
     const primes=primesUpTo(100);
-    const grid=byId('primeGrid'); grid.innerHTML='';
+    const grid=id('primeGrid'); grid.innerHTML='';
     primes.forEach(p=>{
       const cell=document.createElement('div');
       cell.className='px-2 py-1 rounded border text-center'; cell.textContent=p;
@@ -1105,79 +1009,74 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
-  /* ---------- PC: prime/composite ---------- */
+  // Warm-up own example
+  const warmOwn = id('warmOwn'); if(warmOwn){
+    warmOwn.addEventListener('input', ()=>{
+      const n = Math.floor(Number(warmOwn.value)); const fb=id('warmFb');
+      if(!Number.isFinite(n) || n<=0){ fb.textContent=''; return; }
+      const m = n*rand(2,9);
+      fb.textContent = `${n} is a factor of ${m}; multiples: ${[1,2,3,4].map(k=>k*n).join(', ')}`;
+    });
+  }
+
+  /* Prime/composite generator */
   const pcState={set:[]};
-  function pcRange(level){ return level==='easy'?[2,40]: level==='med'?[2,100]:[2,200] }
+  function pcRange(level){ if(level==='easy') return [2,40]; if(level==='med') return [2,100]; return [2,200]; }
   function pcNew(){
-    const level=byId('pcLevel').value;
+    const level=id('pcLevel').value;
     const [a,b]=pcRange(level);
     const nums=new Set();
-    while(nums.size<8){ nums.add(rand(a,b)); }
+    while(nums.size<8){ nums.add(Math.floor(Math.random()*(b-a+1))+a); }
     pcState.set=[...nums].sort((x,y)=>x-y).map(n=>({n,prime:isPrime(n)}));
-    const box=byId('pcList'); box.innerHTML='';
+    const box=id('pcList'); box.innerHTML='';
     pcState.set.forEach((o,idx)=>{
       const row=document.createElement('div'); row.className='card p-3 flex items-center justify-between';
-      row.innerHTML=`<div class="text-xl">\$begin:math:text$ ${o.n} \\$end:math:text$</div>
+      row.innerHTML=`<div class="text-xl">\\( ${o.n} \\)</div>
         <div class="flex gap-2">
           <label class="pill"><input type="radio" name="pc_${idx}" value="P" class="mr-1">Prime</label>
           <label class="pill"><input type="radio" name="pc_${idx}" value="C" class="mr-1">Composite</label>
         </div>`;
       box.appendChild(row);
     });
-    runKaTeX(byId('pcSlide'));
+    renderMath(id('pcSlide'));
   }
   function pcCheck(){
     let ok=0;
     pcState.set.forEach((o,idx)=>{
       const sel=[...document.getElementsByName('pc_'+idx)].find(x=>x.checked)?.value||'';
       const want=o.prime?'P':'C';
-      const row=byId('pcList').children[idx];
+      const row=id('pcList').children[idx];
       if(sel===want){ row.style.borderColor='#22c55e'; ok++; } else row.style.borderColor='#ef4444';
     });
-    byId('pcFb').textContent= ok===pcState.set.length? '✅ All correct!' : 'Score: '+ok+'/'+pcState.set.length;
-    if(ok===pcState.set.length) confetti();
+    id('pcFb').textContent= ok===pcState.set.length? '✅ All correct!' : 'Score: '+ok+'/'+pcState.set.length;
+    if(ok===pcState.set.length){ confetti(); streakBump(); }
   }
-  byId('pcNew').addEventListener('click',pcNew); pcNew();
-  byId('pcCheck').addEventListener('click',pcCheck);
-  byId('pcExportCSV').addEventListener('click',()=>{
-    const rows=[['number','isPrime','userChoice']];
-    pcState.set.forEach((o,idx)=>{
-      const sel=[...document.getElementsByName('pc_'+idx)].find(x=>x.checked)?.value||'';
-      rows.push([o.n,o.prime?'Prime':'Composite', sel==='P'?'Prime':sel==='C'?'Composite':'']);
-    });
-    downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_prime_composite.csv`, rows);
+  id('pcNew').addEventListener('click',pcNew); pcNew();
+  id('pcCheck').addEventListener('click',pcCheck);
+  id('pcOwnBtn')?.addEventListener('click',()=>{
+    const s=id('pcOwn').value.trim(); const n=Number(s); const fb=id('pcOwnFb');
+    if(!Number.isFinite(n) || n<1) { fb.textContent='Enter a positive integer.'; return; }
+    fb.textContent = (n===1)? 'neither (1)' : isPrime(n)? 'prime' : 'composite';
   });
-  byId('pcExportJSON').addEventListener('click',()=>{
-    const data=pcState.set.map((o,idx)=>({number:o.n, isPrime:o.prime, user:[...document.getElementsByName('pc_'+idx)].find(x=>x.checked)?.value||''}));
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_prime_composite.json`, data);
-  });
-  // classify own number
-  const pcOwnBtn = byId('pcOwnBtn'); if(pcOwnBtn){
-    pcOwnBtn.addEventListener('click', ()=>{
-      const s = byId('pcOwn').value.trim(); const n = Number(s); const fb = byId('pcOwnFb');
-      if(!Number.isFinite(n) || n<1) { fb.textContent = 'Enter a positive integer.'; return; }
-      fb.textContent = isPrime(n)? 'prime ✅' : (n===1? 'neither (1) ⚠️' : 'composite ✅');
-    });
-  }
 
-  /* ---------- Worked example: F/M ---------- */
+  /* Worked example factors/multiples */
   function fmExampleRun(){
     const n=[12,18,24,30][rand(0,3)];
     const m=[3,4,5,6][rand(0,3)];
     const F=factors(n).join(', ');
     const M=multiples(m,60).join(', ');
-    byId('fmExample').innerHTML = `
-      <div class="workline">Find all factors of \$begin:math:text$${n}\\$end:math:text$: try divisors up to \$begin:math:text$\\\\sqrt{${n}}\\$end:math:text$. Pairs → <b>${F}</b>.</div>
-      <div class="workline">List multiples of \$begin:math:text$${m}\\$end:math:text$ up to 60: <b>${M}</b>.</div>`;
-    runKaTeX(byId('fmExplainSlide'));
+    id('fmExample').innerHTML = `
+      <div class="workline">Find all factors of \\(${n}\\): try divisors up to \\(\\sqrt{${n}}\\). Pairs → <b>${F}</b>.</div>
+      <div class="workline">List multiples of \\(${m}\\) up to 60: <b>${M}</b>.</div>`;
+    renderMath(id('fmExplainSlide'));
   }
-  byId('fmNextEx').addEventListener('click',fmExampleRun); fmExampleRun();
+  id('fmNextEx').addEventListener('click',fmExampleRun); fmExampleRun();
 
-  /* ---------- Pick F/M ---------- */
+  /* Pick factors & multiples */
   const fmState={FT:0,MT:0,Fset:[],Mset:[]};
-  function fmRanges(level){ return level==='easy'? {fMax:30,mBaseMax:10} : level==='med'? {fMax:60,mBaseMax:12} : {fMax:100,mBaseMax:15} }
+  function fmRanges(level){ if(level==='easy') return {fMax:30,mBaseMax:10}; if(level==='med') return {fMax:60,mBaseMax:12}; return {fMax:100,mBaseMax:15}; }
   function fmNew(){
-    const level=byId('fmLevel').value;
+    const level=id('fmLevel').value;
     const {fMax,mBaseMax}=fmRanges(level);
     const FT=rand(10,fMax), MT=rand(2,Math.min(mBaseMax,12));
     const Fcorrect=factors(FT);
@@ -1187,136 +1086,61 @@ document.addEventListener('DOMContentLoaded', () => {
     const Mchoices=new Set(Mcorrect);
     while(Mchoices.size<12){ const x=rand(2,100); if(!Mcorrect.includes(x)) Mchoices.add(x); else if(Math.random()<0.4) Mchoices.add(x+1); }
     fmState.FT=FT; fmState.MT=MT; fmState.Fset=[...Fchoices].sort((a,b)=>a-b); fmState.Mset=[...Mchoices].sort((a,b)=>a-b);
-    byId('fTarget').innerHTML=`Pick all factors of \$begin:math:text$ ${FT} \\$end:math:text$.`; byId('mTarget').innerHTML=`Pick all multiples of \$begin:math:text$ ${MT} \\$end:math:text$ under 100.`;
-    const Fbox=byId('fChoices'); Fbox.innerHTML=''; fmState.Fset.forEach(v=>{
+    id('fTarget').innerHTML=`Pick all factors of \\( ${FT} \\).`; id('mTarget').innerHTML=`Pick all multiples of \\( ${MT} \\) under 100.`;
+    const Fbox=id('fChoices'); Fbox.innerHTML=''; fmState.Fset.forEach(v=>{
       const lab=document.createElement('label'); lab.className='pill';
       lab.innerHTML=`<input type="checkbox" value="${v}" class="mr-1">${v}`; Fbox.appendChild(lab);
     });
-    const Mbox=byId('mChoices'); Mbox.innerHTML=''; fmState.Mset.forEach(v=>{
+    const Mbox=id('mChoices'); Mbox.innerHTML=''; fmState.Mset.forEach(v=>{
       const lab=document.createElement('label'); lab.className='pill';
       lab.innerHTML=`<input type="checkbox" value="${v}" class="mr-1">${v}`; Mbox.appendChild(lab);
     });
-    runKaTeX(byId('fmSlide'));
+    renderMath(id('fmSlide'));
   }
   function fmCheck(){
-    const Fsel=[...byId('fChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
-    const Msel=[...byId('mChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
+    const Fsel=[...id('fChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
+    const Msel=[...id('mChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
     const Fwant=new Set(factors(fmState.FT));
     const Mwant=new Set(multiples(fmState.MT,100));
     let goodF=true, goodM=true;
-    [...byId('fChoices').children].forEach(l=>{
+    [...id('fChoices').children].forEach(l=>{
       const v=+l.querySelector('input').value;
-      const ok=Fwant.has(v);
-      const chosen=Fsel.includes(v);
+      const ok=Fwant.has(v); const chosen=Fsel.includes(v);
       l.style.borderColor = ( (chosen&&ok) || (!chosen&&!ok) )? '#22c55e':'#ef4444';
       if(l.style.borderColor==='#ef4444') goodF=false;
     });
-    [...byId('mChoices').children].forEach(l=>{
+    [...id('mChoices').children].forEach(l=>{
       const v=+l.querySelector('input').value;
-      const ok=Mwant.has(v);
-      const chosen=Msel.includes(v);
+      const ok=Mwant.has(v); const chosen=Msel.includes(v);
       l.style.borderColor = ( (chosen&&ok) || (!chosen&&!ok) )? '#22c55e':'#ef4444';
       if(l.style.borderColor==='#ef4444') goodM=false;
     });
-    byId('fmFb').textContent = (goodF&&goodM)? '✅ Excellent selections!' : 'Some selections need revision (red).';
-    if(goodF&&goodM) confetti();
+    id('fmFb').textContent = (goodF&&goodM)? '✅ Excellent selections!' : 'Some selections need revision (red).';
+    if(goodF&&goodM){ confetti(); streakBump(); }
   }
-  byId('fmNew').addEventListener('click',fmNew); fmNew();
-  byId('fmCheck').addEventListener('click',fmCheck);
-  byId('fmExportCSV').addEventListener('click',()=>{
-    const Fsel=[...byId('fChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
-    const Msel=[...byId('mChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
-    const rows=[['task','target','choices','correct','user'],
-      ['factors', fmState.FT, fmState.Fset.join(' '), factors(fmState.FT).join(' '), Fsel.join(' ')],
-      ['multiples', fmState.MT, fmState.Mset.join(' '), multiples(fmState.MT,100).join(' '), Msel.join(' ')]];
-    downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_factors_multiples.csv`, rows);
-  });
-  byId('fmExportJSON').addEventListener('click',()=>{
-    const Fsel=[...byId('fChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
-    const Msel=[...byId('mChoices').querySelectorAll('input[type="checkbox"]')].filter(x=>x.checked).map(x=>+x.value);
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_factors_multiples.json`, {
-      factors:{target:fmState.FT, choices:fmState.Fset, correct:factors(fmState.FT), user:Fsel},
-      multiples:{target:fmState.MT, choices:fmState.Mset, correct:multiples(fmState.MT,100), user:Msel}
-    });
-  });
+  id('fmNew').addEventListener('click',fmNew); fmNew();
+  id('fmCheck').addEventListener('click',fmCheck);
 
-  /* ---------- Part 1 Real ---------- */
-  const p1RealState={items:[]};
-  function p1Scale(lv,a,b){ return lv==='easy'? rand(Math.floor(a/2), Math.floor(b/2)) : lv==='med'? rand(a,b) : rand(b, b*2); }
-  function p1RealNew(){
-    const lv=byId('p1RealLevel').value; p1RealState.items=[]; const box=byId('p1RealList'); box.innerHTML='';
-    // 1) Packaging
-    (function(){
-      const boxes=rand(3,10), per=rand(4,12), P=boxes*per;
-      const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Packaging</div>
-        <div class="mt-1">You have <b>${P}</b> cupcakes and pack exactly <b>${per}</b> per box. How many boxes?</div>
-        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
-      box.appendChild(row);
-      p1RealState.items.push({ans:P/per});
-    })();
-    // 2) Multiples (k-th event)
-    (function(){
-      const M=p1Scale(lv,4,12), k=rand(6,12);
-      const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Timing</div>
-        <div class="mt-1">A buzzer sounds every <b>${M}</b> minutes. After how many minutes will the <b>${k}</b>th buzz occur?</div>
-        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> min</div>`;
-      box.appendChild(row);
-      p1RealState.items.push({ans:M*k});
-    })();
-    // 3) Divisibility by 3 (enter 1 yes / 0 no)
-    (function(){
-      let N=p1Scale(lv,120,540);
-      if(Math.random()<0.5){ const r= N%3; N+= (3-r)%3; } else { const r= N%3; if(r===0) N+=1; }
-      const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Divisibility</div>
-        <div class="mt-1">Is <b>${N}</b> divisible by 3? Enter <b>1</b> for yes, <b>0</b> for no.</div>
-        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
-      box.appendChild(row);
-      p1RealState.items.push({ans: (N%3===0)?1:0});
-    })();
-    // 4) Next prime after A
-    (function(){
-      let A=p1Scale(lv,20,90);
-      const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Security Key</div>
-        <div class="mt-1">Find the <b>next prime</b> after <b>${A}</b>.</div>
-        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
-      box.appendChild(row);
-      let x=A+1; while(!isPrime(x)) x++;
-      p1RealState.items.push({ans:x});
-    })();
-
-    // Qatar connect card
-    const q1=byId('qat_p1');
-    q1.innerHTML = `<h4>Qatar Connect — Souq Waqif & Doha Metro</h4>
-      <div class="q">A vendor packs <b>${choice([6,8,10,12])}</b> dates per gift box; you have <b>${rand(60,180)}</b> dates. How many boxes?  
-      Two Metro lines pause every <b>${choice([6,8,10,12])}</b> and <b>${choice([9,12,15])}</b> minutes at Msheireb. When do they pause together for the first time?</div>
-      <div data-key="sc-ans" style="display:none; margin-top:.35rem"><b>Model:</b> Boxes = total ÷ per‑box. First together = LCM of the intervals.</div>`;
-    refreshVisibility();
+  /* Qatar connect cards (P1) */
+  function setQatarP1(){
+    const c1=id('p1Qatar1'), c2=id('p1Qatar2');
+    const per = choice([6,8,10,12]); const boxes = rand(4,12); const total=per*boxes;
+    c1.innerHTML = `<h4>Qatar Connect — Souq Waqif Packaging</h4><div class="q">
+      A vendor packs <b>${per}</b> dates into each gift box. You have <b>${total}</b> dates. How many boxes can you fill exactly?
+      What if you had ${total+rand(1,per-1)} dates?</div>
+      <div data-key="sc-ans" style="display:none; margin-top:.35rem"><b>Model/Answer:</b> Exactly ${boxes} boxes; with a non‑multiple, one box is incomplete.</div>`;
+    const a=choice([6,8,10,12]), b=choice([9,12,15]); const k=rand(5,10);
+    c2.innerHTML = `<h4>Qatar Connect — Doha Metro Timing (Msheireb)</h4><div class="q">
+      One line pauses every <b>${a}</b> min and another every <b>${b}</b> min at Msheireb. After how many minutes will they pause together first?
+      After ${k} events on the first line, how long has it been?</div>
+      <div data-key="sc-ans" style="display:none; margin-top:.35rem"><b>Model/Answer:</b> LCM(${a},${b})=${lcm2(a,b)} min; ${k} events → ${k*a} min.</div>`;
+    refreshVisibility(); renderMath(c1); renderMath(c2);
   }
-  byId('p1RealNew').addEventListener('click',p1RealNew); p1RealNew();
-  byId('p1RealCheck').addEventListener('click',()=>{
-    let ok=0; [...byId('p1RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
-      const got=Number(el.value); const want=p1RealState.items[idx].ans;
-      if(Math.abs(got-want)<1e-10){ ok++; el.style.borderColor='#22c55e'} else el.style.borderColor='#ef4444';
-    });
-    msg(byId('p1RealFb'), ok===p1RealState.items.length? '✅ Excellent!' : 'Score: '+ok+'/'+p1RealState.items.length);
-    if(ok===p1RealState.items.length) confetti();
-  });
-  byId('p1RealExportCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer','user']]; [...byId('p1RealList').children].forEach((row,idx)=>{
-      rows.push([row.innerText.replace(/\s+/g,' ').trim(), p1RealState.items[idx].ans, row.querySelector('.rin').value||'']);
-    }); downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_P1_real_world.csv`, rows);
-  });
-  byId('p1RealExportJSON').addEventListener('click',()=>{
-    const data=[...byId('p1RealList').children].map((row,idx)=>({prompt:row.innerText.replace(/\s+/g,' ').trim(), answer:p1RealState.items[idx].ans, user:row.querySelector('.rin').value||''}));
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_P1_real_world.json`, data);
-  });
+  setQatarP1();
 
-  /* ---------- Factor Tree/Table ---------- */
-  const treeCanvas=byId('treeCanvas');
+  /* ---------- Part 2 logic ---------- */
+  // Factor tree
+  const treeCanvas=id('treeCanvas');
   const treeState={ nodes:new Map(), root:null, nextId:1, steps:[] };
   function newNode(val){ const idv=treeState.nextId++; const node={id:idv,val,left:null,right:null}; treeState.nodes.set(idv,node); return idv; }
   function treeBuild(n){
@@ -1325,10 +1149,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   function currentLeaves(){ return [...treeState.nodes.values()].filter(nd=>!nd.left && !nd.right); }
   function renderLeaves(){
-    const box=byId('leafChips'); box.innerHTML='';
+    const box=id('leafChips'); box.innerHTML='';
     currentLeaves().forEach(nd=>{
       const sp=document.createElement('span'); sp.className='pill'; sp.textContent=`${nd.id}: ${nd.val}`;
-      sp.addEventListener('click',()=>{ byId('leafId').value=nd.id; });
+      sp.addEventListener('click',()=>{ id('leafId').value=nd.id; });
       box.appendChild(sp);
     });
   }
@@ -1353,7 +1177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if(currentLeaves().every(nd=>isPrime(nd.val))) confetti();
   }
-  function treeMsg(s){ byId('treeFb').textContent=s; }
+  function treeMsg(s){ id('treeFb').textContent=s; }
   function computePositions(){
     const pos=new Map();
     const W=treeCanvas.clientWidth, H=treeCanvas.clientHeight;
@@ -1418,45 +1242,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const allPrime=leaves.every(nd=>isPrime(nd.val));
     const prod = leaves.reduce((a,nd)=>a*nd.val,1);
     const exp = mapToObj(primeFactorMap(prod));
-    byId('treeOut').innerHTML = allPrime? `\$begin:math:text$ ${fmtExp(exp)} \\$end:math:text$` : '(in progress)';
-    runKaTeX(byId('treeSlide'));
+    id('treeOut').innerHTML = allPrime? `\\( ${fmtExp(exp)} \\)` : '(in progress)';
+    renderMath(id('treeSlide'));
   }
   function renderTable(){
-    const rows=byId('tableRows'); rows.innerHTML='';
+    const rows=id('tableRows'); rows.innerHTML='';
     treeState.steps.forEach((s,idx)=>{
-      const div=document.createElement('div'); div.className='workline'; div.innerHTML=`${idx+1}) \$begin:math:text$ ${s} \\$end:math:text$`; rows.appendChild(div);
+      const div=document.createElement('div'); div.className='workline'; div.innerHTML=`${idx+1}) \\( ${s} \\)`; rows.appendChild(div);
     });
-    runKaTeX(byId('treeSlide'));
+    renderMath(id('treeSlide'));
   }
-  byId('treeSplit').addEventListener('click',()=>{ splitNodeById(byId('leafId').value, byId('splitA').value, byId('splitB').value); });
-  byId('treeAuto').addEventListener('click',autoSplit);
-  byId('treeReset').addEventListener('click',()=>treeBuild(Number(byId('treeN').value||180)));
-  byId('treeNewNum').addEventListener('click',()=>{
-    const lv=byId('treeLevel').value;
+  id('treeSplit').addEventListener('click',()=>{ splitNodeById(id('leafId').value, id('splitA').value, id('splitB').value); });
+  id('treeAuto').addEventListener('click',autoSplit);
+  id('treeReset').addEventListener('click',()=>treeBuild(Number(id('treeN').value||180)));
+  id('treeNewNum').addEventListener('click',()=>{
+    const lv=id('treeLevel').value;
     const n = (lv==='easy')? rand(60,200) : (lv==='med'? rand(120,600) : rand(200,2000));
-    byId('treeN').value=n; treeBuild(n);
+    id('treeN').value=n; treeBuild(n);
   });
-  byId('treeExportCSV').addEventListener('click',()=>{
-    const rows=[['root','steps','leaves','final_exp']];
-    const leaves=currentLeaves(); const prod=leaves.reduce((a,nd)=>a*nd.val,1); const exp=mapToObj(primeFactorMap(prod));
-    rows.push([treeState.nodes.get(treeState.root).val, treeState.steps.join(' | '), leaves.map(nd=>nd.val).join(' '), fmtExp(exp)]);
-    downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_factor_tree.csv`, rows);
-  });
-  byId('treeExportJSON').addEventListener('click',()=>{
-    const leaves=currentLeaves(); const prod=leaves.reduce((a,nd)=>a*nd.val,1); const exp=mapToObj(primeFactorMap(prod));
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_factor_tree.json`, {root:treeState.nodes.get(treeState.root).val, steps:treeState.steps, leaves:leaves.map(nd=>({id:nd.id,val:nd.val})), finalExp:exp});
-  });
-  byId('viewTree').addEventListener('click',()=>{ byId('viewTree').classList.add('active'); byId('viewTable').classList.remove('active'); byId('treeView').classList.remove('hidden'); byId('tableView').classList.add('hidden'); drawTree(); });
-  byId('viewTable').addEventListener('click',()=>{ byId('viewTable').classList.add('active'); byId('viewTree').classList.remove('active'); byId('tableView').classList.remove('hidden'); byId('treeView').classList.add('hidden'); renderTable(); });
+  id('viewTree').addEventListener('click',()=>{ id('viewTree').classList.add('active'); id('viewTable').classList.remove('active'); id('treeView').classList.remove('hidden'); id('tableView').classList.add('hidden'); drawTree(); });
+  id('viewTable').addEventListener('click',()=>{ id('viewTable').classList.add('active'); id('viewTree').classList.remove('active'); id('tableView').classList.remove('hidden'); id('treeView').classList.add('hidden'); renderTable(); });
   treeBuild(180);
 
-  /* ---------- PF Exponent Form ---------- */
+  /* PF exponent drill */
   const pfState={set:[], primes:[]};
-  function pfPrimeList(level){ return level==='easy'?[2,3,5,7,11,13] : level==='med'?[2,3,5,7,11,13,17] : [2,3,5,7,11,13,17,19] }
-  function pfRange(level){ return level==='easy'?[40,200] : level==='med'?[80,600] : [120,2000] }
+  function pfPrimeList(level){ if(level==='easy') return [2,3,5,7,11,13]; if(level==='med') return [2,3,5,7,11,13,17]; return [2,3,5,7,11,13,17,19]; }
+  function pfRange(level){ if(level==='easy') return [40,200]; if(level==='med') return [80,600]; return [120,2000]; }
   function pfBuildN(exps){ return pfState.primes.reduce((acc,p)=>acc*Math.pow(p,exps[p]||0),1) }
   function pfNew(){
-    const level=byId('pfLevel').value;
+    const level=id('pfLevel').value;
     pfState.primes=pfPrimeList(level);
     const [lo,hi]=pfRange(level);
     const list=[];
@@ -1471,160 +1285,99 @@ document.addEventListener('DOMContentLoaded', () => {
       if(n>=lo && n<=hi) list.push({n,exps});
     }
     pfState.set=list;
-    const box=byId('pfList'); box.innerHTML='';
+    const box=id('pfList'); box.innerHTML='';
     pfState.set.forEach((o,idx)=>{
-      const primesRow=pfState.primes.map(p=>`<label class="chip">${p}: <input class="pfexp border rounded px-2 py-1 w-16" id="pf_${idx}_${p}" placeholder="exp" aria-label="exp ${p}"></label>`).join('');
+      const primesRow=pfState.primes.map(p=>`<label class="chip">${p}: <input class="pfexp border rounded px-2 py-1 w-16" id="pf_${idx}_${p}" placeholder="exp"></label>`).join('');
       const row=document.createElement('div'); row.className='card p-4';
       row.innerHTML=`<div class="text-xl mb-1">\\( ${o.n} = ${pfState.primes.map(p=>`${p}^{\\square}`).join('\\cdot ')} \\)</div>
         <div class="flex flex-wrap gap-2 text-sm">${primesRow}</div>`;
       box.appendChild(row);
     });
-    runKaTeX(byId('pfSlide'));
+    renderMath(id('pfSlide'));
   }
   function pfCheck(){
     let total=0,ok=0;
     pfState.set.forEach((o,idx)=>{
       total++; let good=true;
       pfState.primes.forEach(p=>{
-        const inp=byId(`pf_${idx}_${p}`); const g=Number(inp.value||0); const want=o.exps[p]||0;
+        const inp=id(`pf_${idx}_${p}`); const g=Number(inp.value||0); const want=o.exps[p]||0;
         if(g===want){ inp.style.borderColor='#22c55e'; } else { inp.style.borderColor='#ef4444'; good=false; }
       });
       if(good) ok++;
     });
-    byId('pfFb').textContent= ok===total ? '✅ All correct!' : 'Score: '+ok+'/'+total; if(ok===total) confetti();
+    id('pfFb').textContent= ok===total ? '✅ All correct!' : 'Score: '+ok+'/'+total; if(ok===total){ confetti(); streakBump(); }
   }
-  byId('pfNew').addEventListener('click',pfNew); byId('pfCheck').addEventListener('click',pfCheck); pfNew();
-  byId('pfExportCSV').addEventListener('click',()=>{
-    const rows=[['n',...pfState.primes.map(p=>`exp_${p}`), ...pfState.primes.map(p=>`user_${p}`)]];
-    pfState.set.forEach((o,idx)=>{
-      const want=pfState.primes.map(p=>o.exps[p]||0);
-      const got=pfState.primes.map(p=>Number((byId(`pf_${idx}_${p}`).value||0)));
-      rows.push([o.n, ...want, ...got]);
-    });
-    downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_prime_factorization.csv`, rows);
-  });
-  byId('pfExportJSON').addEventListener('click',()=>{
-    const data=pfState.set.map((o,idx)=>({n:o.n, want:o.exps, got:Object.fromEntries(pfState.primes.map(p=>[p,Number((byId(`pf_${idx}_${p}`).value||0))]))}));
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_prime_factorization.json`, data);
-  });
+  id('pfNew').addEventListener('click',pfNew); id('pfCheck').addEventListener('click',pfCheck);
+  pfNew();
 
-  // Qatar card P2
-  const q2 = byId('qat_p2');
-  q2.innerHTML = `<h4>Qatar Connect — Flag Mosaic</h4>
-      <div class="q">Design a square maroon‑and‑white mosaic of <b>${choice([180,198,220,252,300,396])}</b> tiles² without cutting tiles. What’s the <b>largest</b> possible square side length?</div>
-      <div data-key="sc-ans" style="display:none; margin-top:.35rem"><b>Model:</b> Side length = product of primes to \$begin:math:text$\\\\lfloor e/2\\\\rfloor\\$end:math:text$ in the factorization (largest square factor).</div>`;
-  refreshVisibility();
-
-  /* ---------- Part 2 Real ---------- */
-  const p2RealState={items:[]};
-  function p2PickN(lv){ return lv==='easy'? rand(60,180) : lv==='med'? rand(150,600) : rand(300,1800) }
-  function p2RealNew(){
-    const lv=byId('p2RealLevel').value; p2RealState.items=[]; const box=byId('p2RealList'); box.innerHTML='';
-    // 1) Divisor count
-    (function(){
-      const N=p2PickN(lv);
-      const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Layouts</div>
-        <div class="mt-1">A banner has area <b>${N}</b> units². How many <b>positive factors</b> does ${N} have?</div>
-        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
-      box.appendChild(row); p2RealState.items.push({ans:divCount(N)});
-    })();
-    // 2) Highest power of 2
-    (function(){
-      let N=p2PickN(lv);
-      const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Halving Stacks</div>
-        <div class="mt-1">You can split <b>${N}</b> items into two equal stacks repeatedly until odd. How many times can you halve?</div>
-        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
-      box.appendChild(row); p2RealState.items.push({ans:v_p(N,2)});
-    })();
-    // 3) Largest square tile side
-    (function(){
-      const N=p2PickN(lv);
-      const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Square Tiles</div>
-        <div class="mt-1">A square art panel of side <i>s</i> tiles must cover area <b>${N}</b> tiles² without cutting. What is the <b>largest</b> possible <i>s</i>?</div>
-        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> tiles</div>`;
-      box.appendChild(row); p2RealState.items.push({ans:largestSquareSide(N)});
-    })();
+  // Qatar — flag mosaic (Part 2)
+  function setQatarP2(){
+    const area=choice([180,198,220,252,300,396]); const s = largestSquareSide(area);
+    id('p2Qatar1').innerHTML = `<h4>Qatar Connect — Flag Mosaic</h4><div class="q">
+      Design a square maroon‑and‑white mosaic of <b>${area}</b> tiles² without cutting tiles.
+      What’s the <b>largest</b> possible square side?</div>
+      <div data-key="sc-ans" style="display:none; margin-top:.35rem"><b>Model/Answer:</b> Side = ${s} (from prime exponents: floor halves).</div>`;
+    refreshVisibility(); renderMath(id('p2Qatar1'));
   }
-  byId('p2RealNew').addEventListener('click',p2RealNew); p2RealNew();
-  byId('p2RealCheck').addEventListener('click',()=>{
-    let ok=0; [...byId('p2RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
-      const got=Number(el.value); const want=p2RealState.items[idx].ans;
-      if(Math.abs(got-want)<1e-10){ ok++; el.style.borderColor='#22c55e'} else el.style.borderColor='#ef4444';
-    });
-    msg(byId('p2RealFb'), ok===p2RealState.items.length? '✅ Good use of exponents!' : 'Score: '+ok+'/'+p2RealState.items.length);
-    if(ok===p2RealState.items.length) confetti();
-  });
-  byId('p2RealExportCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer','user']]; [...byId('p2RealList').children].forEach((row,idx)=>{
-      rows.push([row.innerText.replace(/\s+/g,' ').trim(), p2RealState.items[idx].ans, row.querySelector('.rin').value||'']);
-    }); downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_P2_real_world.csv`, rows);
-  });
-  byId('p2RealExportJSON').addEventListener('click',()=>{
-    const data=[...byId('p2RealList').children].map((row,idx)=>({prompt:row.innerText.replace(/\s+/g,' ').trim(), answer:p2RealState.items[idx].ans, user:row.querySelector('.rin').value||''}));
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_P2_real_world.json`, data);
-  });
+  setQatarP2();
 
-  /* ---------- Worked Examples GCF/LCM ---------- */
+  /* ---------- Part 3 logic ---------- */
   function listGCLExample(){
     const a=rand(12,40), b=rand(12,40);
     const La=multiples(a,200), Lb=multiples(b,200);
     const LCM= La.find(x=>Lb.includes(x));
     const GCF=gcd(a,b);
-    byId('gclListEx').innerHTML = `
-      <div class="workline">Multiples of \$begin:math:text$${a}\\$end:math:text$: ${La.slice(0,10).join(', ')} ...</div>
-      <div class="workline">Multiples of \$begin:math:text$${b}\\$end:math:text$: ${Lb.slice(0,10).join(', ')} ...</div>
+    id('gclListEx').innerHTML = `
+      <div class="workline">Multiples of \\(${a}\\): ${La.slice(0,10).join(', ')} ...</div>
+      <div class="workline">Multiples of \\(${b}\\): ${Lb.slice(0,10).join(', ')} ...</div>
       <div class="workline"><b>LCM</b> = first common multiple = <b>${LCM}</b>; <b>GCF</b> (by factors) = <b>${GCF}</b>.</div>`;
-    runKaTeX(byId('gclExplainSlide'));
+    renderMath(id('gclExplainSlide'));
   }
   function primeGCLExample(){
     const a=rand(20,60), b=rand(30,80);
     const A=mapToObj(primeFactorMap(a)), B=mapToObj(primeFactorMap(b));
     const {gExp,lExp,gVal,lVal}=gcfLCMByPrimes([a,b]);
-    byId('gclPrimeEx').innerHTML = `
-      <div class="workline">\$begin:math:text$ ${a} = ${fmtExp(A)} \\$end:math:text$, \$begin:math:text$ ${b} = ${fmtExp(B)} \\$end:math:text$</div>
-      <div class="workline">\$begin:math:text$ \\\\mathrm{GCF} = ${fmtExp(gExp)} = ${gVal} \\$end:math:text$; \$begin:math:text$ \\\\mathrm{LCM} = ${fmtExp(lExp)} = ${lVal} \\$end:math:text$</div>`;
-    runKaTeX(byId('gclExplainSlide'));
+    id('gclPrimeEx').innerHTML = `
+      <div class="workline">\\( ${a} = ${fmtExp(A)} \\), \\( ${b} = ${fmtExp(B)} \\)</div>
+      <div class="workline">\\( \\mathrm{GCF} = ${fmtExp(gExp)} = ${gVal} \\); \\( \\mathrm{LCM} = ${fmtExp(lExp)} = ${lVal} \\)</div>`;
+    renderMath(id('gclExplainSlide'));
   }
-  byId('gclListNext').addEventListener('click',listGCLExample); listGCLExample();
-  byId('gclPrimeNext').addEventListener('click',primeGCLExample); primeGCLExample();
+  id('gclListNext').addEventListener('click',listGCLExample); listGCLExample();
+  id('gclPrimeNext').addEventListener('click',primeGCLExample); primeGCLExample();
 
-  /* ---------- GCF/LCM Explorer ---------- */
-  const modePills={list:byId('mList'), prime:byId('mPrime'), euclid:byId('mEuclid')};
+  const modePills={list:id('mList'), prime:id('mPrime'), euclid:id('mEuclid')};
   Object.values(modePills).forEach(p=>p.addEventListener('click',()=>{ Object.values(modePills).forEach(x=>x.classList.remove('active')); p.classList.add('active'); updateMethodTitle(); }));
   function updateMethodTitle(){
     const t = modePills.list.classList.contains('active')? 'Listing Trace' :
               modePills.prime.classList.contains('active')? 'Prime Exponents Trace' : 'Euclidean Algorithm Trace';
-    byId('methodTitle').textContent=t;
+    id('methodTitle').textContent=t;
   }
   function gRand(){
-    const lv=byId('gclLevel').value;
-    byId('gA').value = (lv==='easy')? rand(6,40) : (lv==='med'? rand(10,120) : rand(10,200));
-    byId('gB').value = (lv==='easy')? rand(6,40) : (lv==='med'? rand(10,120) : rand(10,200));
-    byId('gC').value = (lv==='hard')? rand(10,200) : '';
+    const lv=id('gclLevel').value;
+    id('gA').value = (lv==='easy')? rand(6,40) : (lv==='med'? rand(10,120) : rand(10,200));
+    id('gB').value = (lv==='easy')? rand(6,40) : (lv==='med'? rand(10,120) : rand(10,200));
+    id('gC').value = (lv==='hard')? rand(10,200) : '';
   }
-  byId('gRand').addEventListener('click',()=>{ gRand(); gRun(); }); gRand();
+  id('gRand').addEventListener('click',()=>{ gRand(); gRun(); }); gRand();
   function gRun(){
-    const a=+byId('gA').value||0, b=+byId('gB').value||0, c=+byId('gC').value||0;
+    const a=+id('gA').value||0, b=+id('gB').value||0, c=+id('gC').value||0;
     const arr=[a,b, ...(c? [c]: [])].filter(x=>x>0);
-    if(arr.length<2){ byId('gMethodOut').innerHTML='Enter at least two positive integers.'; byId('gGCF').textContent='—'; byId('gLCM').textContent='—'; return; }
+    if(arr.length<2){ id('gMethodOut').innerHTML='Enter at least two positive integers.'; id('gGCF').textContent='—'; id('gLCM').textContent='—'; return; }
     const mode = modePills.list.classList.contains('active')? 'list' : modePills.prime.classList.contains('active')? 'prime' : 'euclid';
     if(mode==='list'){
       const Ls = arr.map(n=>multiples(n,400));
       let common=Ls[0].filter(x=>Ls.slice(1).every(L=>L.includes(x)))[0];
       if(!common) common = lcmArr(arr);
       const g = gcdArr(arr);
-      byId('gMethodOut').innerHTML = Ls.map((L,idx)=>`<div class="workline">Multiples of \$begin:math:text$${arr[idx]}\\$end:math:text$: ${L.slice(0,12).join(', ')} ...</div>`).join('')
+      id('gMethodOut').innerHTML = Ls.map((L,idx)=>`<div class="workline">Multiples of \\( ${arr[idx]} \\): ${L.slice(0,12).join(', ')} ...</div>`).join('')
         + `<div class="workline"><b>LCM</b> = first common multiple ≈ <b>${common}</b></div>`
         + `<div class="workline"><b>GCF</b> (by factors) = <b>${g}</b></div>`;
-      byId('gGCF').textContent=g; byId('gLCM').textContent=common;
+      id('gGCF').textContent=g; id('gLCM').textContent=common;
     } else if(mode==='prime'){
       const {gExp,lExp,gVal,lVal}=gcfLCMByPrimes(arr);
-      const factLines = arr.map(n=>`<div class="workline">\$begin:math:text$ ${n} = ${fmtExp(mapToObj(primeFactorMap(n)))} \\$end:math:text$</div>`).join('');
-      byId('gMethodOut').innerHTML = factLines + `<div class="workline">\$begin:math:text$ \\\\mathrm{GCF} = ${fmtExp(gExp)} = ${gVal} \\$end:math:text$; \$begin:math:text$ \\\\mathrm{LCM} = ${fmtExp(lExp)} = ${lVal} \\$end:math:text$</div>`;
-      byId('gGCF').textContent=gVal; byId('gLCM').textContent=lVal;
+      const factLines = arr.map(n=>`<div class="workline">\\( ${n} = ${fmtExp(mapToObj(primeFactorMap(n)))} \\)</div>`).join('');
+      id('gMethodOut').innerHTML = factLines + `<div class="workline">\\( \\mathrm{GCF} = ${fmtExp(gExp)} = ${gVal} \\); \\( \\mathrm{LCM} = ${fmtExp(lExp)} = ${lVal} \\)</div>`;
+      id('gGCF').textContent=gVal; id('gLCM').textContent=lVal;
     } else {
       let trace='';
       function euclid(a,b){
@@ -1637,34 +1390,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const res=euclid(g,arr[k]); g=res.g; EuLines.push(...res.trace);
       }
       const L=lcmArr(arr);
-      trace = EuLines.map((t,idx)=>`<div class="workline">${idx+1}) \$begin:math:text$ ${t} \\$end:math:text$</div>`).join('');
-      byId('gMethodOut').innerHTML=trace;
-      byId('gGCF').textContent=g; byId('gLCM').textContent=L;
+      trace = EuLines.map((t,idx)=>`<div class="workline">${idx+1}) \\( ${t} \\)</div>`).join('');
+      id('gMethodOut').innerHTML=trace;
+      id('gGCF').textContent=g; id('gLCM').textContent=L;
     }
-    runKaTeX(byId('gclSlide'));
+    renderMath(id('gclSlide'));
   }
-  byId('gRun').addEventListener('click',gRun); gRun();
+  id('gRun').addEventListener('click',gRun); gRun();
 
-  byId('gExportCSV').addEventListener('click',()=>{
-    downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_gcf_lcm_explorer.csv`, [['a','b','c','GCF','LCM'], [byId('gA').value,byId('gB').value,byId('gC').value||'', byId('gGCF').textContent, byId('gLCM').textContent]]);
-  });
-  byId('gExportJSON').addEventListener('click',()=>{
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_gcf_lcm_explorer.json`, {a:byId('gA').value,b:byId('gB').value,c:byId('gC').value||null,gcf:byId('gGCF').textContent,lcm:byId('gLCM').textContent});
-  });
+  // Qatar — EC shuttle + pillars
+  function setQatarP3(){
+    const A=choice([6,8,9,10,12]), B=choice([12,14,15,18]);
+    id('p3Qatar1').innerHTML = `<h4>Qatar Connect — Education City Loops</h4><div class="q">
+      “A” loop bus every <b>${A}</b> min; “B” loop every <b>${B}</b> min. When together again?
+      Also, you place equal‑height QR stickers on columns of ${A} and ${B} pillars. What is the <b>largest</b> sticker height (cm) so both
+      columns fit an integer number of stickers?</div>
+      <div data-key="sc-ans" style="display:none; margin-top:.35rem"><b>Model/Answer:</b> LCM=${lcm2(A,B)} min; height=GCF=${gcd(A,B)} cm.</div>`;
+    refreshVisibility(); renderMath(id('p3Qatar1'));
+  }
+  setQatarP3();
 
-  // Qatar card Part 3
-  const q3 = byId('qat_p3');
-  q3.innerHTML = `<h4>Qatar Connect — Education City Shuttles</h4>
-      <div class="q">EC “A” loop bus arrives every <b>${choice([6,8,9,10,12])}</b> min; “B” loop every <b>${choice([12,14,15,18])}</b> min. When together again?  
-      You’re placing equal‑size QR code stickers on two columns of \$begin:math:text$A\\$end:math:text$ and \$begin:math:text$B\\$end:math:text$ pillars—what’s the <b>largest</b> sticker height in cm so both columns divide evenly?</div>
-      <div data-key="sc-ans" style="display:none; margin-top:.35rem"><b>Model:</b> Together = LCM; largest equal unit for both = GCF.</div>`;
-  refreshVisibility();
-
-  /* ---------- Practice GCF/LCM ---------- */
+  /* Practice GCF/LCM */
   const glState={items:[]};
   function glNew(){
-    const lv=byId('glLevel').value;
-    const box=byId('glList'); box.innerHTML=''; glState.items=[];
+    const lv=id('glLevel').value;
+    const box=id('glList'); box.innerHTML=''; glState.items=[];
     for(let k=0;k<4;k++){
       const isHard = (lv==='hard' && Math.random()<0.5);
       const a = (lv==='easy')? rand(6,40) : (lv==='med'? rand(8,120) : rand(10,200));
@@ -1672,16 +1422,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const c = isHard? rand(10,200) : null;
       const row=document.createElement('div'); row.className='card p-4';
       row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${k+1}</div>
-        <div class="text-xl mt-1">\$begin:math:text$ a=${a},\\\\; b=${b} ${c? ',\\\\; c='+c:''} \\$end:math:text$</div>
-        <div class="mt-2">GCF = <input class="gcin border rounded px-2 py-1 w-28" aria-label="GCF input"> &nbsp; LCM = <input class="lcmin border rounded px-2 py-1 w-28" aria-label="LCM input"></div>`;
+        <div class="text-xl mt-1">\\( a=${a},\\; b=${b} ${c? ',\\; c='+c:''} \\)</div>
+        <div class="mt-2">GCF = <input class="gcin border rounded px-2 py-1 w-28"> &nbsp; LCM = <input class="lcmin border rounded px-2 py-1 w-28"></div>`;
       box.appendChild(row);
       glState.items.push({a,b,c});
     }
-    runKaTeX(byId('glPractice'));
+    renderMath(id('glPractice'));
   }
-  byId('glNew').addEventListener('click',glNew); glNew();
-  byId('glCheck').addEventListener('click',()=>{
-    let total=0,ok=0; [...byId('glList').children].forEach((row,idx)=>{
+  id('glNew').addEventListener('click',glNew); glNew();
+  id('glCheck').addEventListener('click',()=>{
+    let total=0,ok=0; [...id('glList').children].forEach((row,idx)=>{
       total++; const {a,b,c}=glState.items[idx];
       const arr=[a,b, ...(c?[c]:[])]; const {gVal,lVal}=gcfLCMByPrimes(arr);
       const gIn=row.querySelector('.gcin'), lIn=row.querySelector('.lcmin'); let good=true;
@@ -1689,57 +1439,41 @@ document.addEventListener('DOMContentLoaded', () => {
       if(Number(lIn.value)==lVal){ lIn.style.borderColor='#22c55e'; } else { lIn.style.borderColor='#ef4444'; good=false; }
       if(good) ok++;
     });
-    byId('glFb').textContent= ok===total? '✅ All correct!' : 'Score: '+ok+'/'+total; if(ok===total) confetti();
-  });
-  byId('glExportCSV').addEventListener('click',()=>{
-    const rows=[['a','b','c','GCF','LCM','user_GCF','user_LCM']];
-    [...byId('glList').children].forEach((row,idx)=>{
-      const {a,b,c}=glState.items[idx]; const arr=[a,b, ...(c?[c]:[])]; const {gVal,lVal}=gcfLCMByPrimes(arr);
-      rows.push([a,b,c||'',gVal,lVal,row.querySelector('.gcin').value||'', row.querySelector('.lcmin').value||'']);
-    });
-    downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_gcf_lcm_practice.csv`, rows);
-  });
-  byId('glExportJSON').addEventListener('click',()=>{
-    const data=[...byId('glList').children].map((row,idx)=>{
-      const {a,b,c}=glState.items[idx]; const arr=[a,b, ...(c?[c]:[])]; const {gVal,lVal}=gcfLCMByPrimes(arr);
-      return {a,b,c, correct:{gcf:gVal,lcm:lVal}, user:{gcf:row.querySelector('.gcin').value||'', lcm:row.querySelector('.lcmin').value||''}};
-    });
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_gcf_lcm_practice.json`, data);
+    id('glFb').textContent= ok===total? '✅ All correct!' : 'Score: '+ok+'/'+total; if(ok===total){ confetti(); streakBump(); }
   });
 
-  /* ---------- Applications examples ---------- */
+  /* ---------- Part 4 logic ---------- */
   function appSimpEx(){
     const d=[6,8,9,10,12,14][rand(0,5)]; const n=rand(1,3*d-1);
     const g=gcd(n,d), N=n/g, D=d/g;
-    byId('appSimpEx').innerHTML = `
-      <div class="workline">Simplify \$begin:math:text$\\\\tfrac{${n}}{${d}}\\$end:math:text$. GCF\$begin:math:text$( ${n}, ${d})=${g}\\$end:math:text$.</div>
-      <div class="workline">Divide top & bottom by ${g}: \$begin:math:text$\\\\tfrac{${n}}{${d}}=\\\\tfrac{${N}}{${D}}\\$end:math:text$.</div>`;
-    runKaTeX(byId('appExplainSlide'));
+    id('appSimpEx').innerHTML = `
+      <div class="workline">Simplify \\(\\tfrac{${n}}{${d}}\\). GCF\\(( ${n}, ${d})=${g}\\).</div>
+      <div class="workline">Divide top & bottom by ${g}: \\(\\tfrac{${n}}{${d}}=\\tfrac{${N}}{${D}}\\).</div>`;
+    renderMath(id('appExplainSlide'));
   }
   function appLCDEx(){
     const d1=[3,4,5,6,8][rand(0,4)], d2=[4,5,6,7,8,10][rand(0,5)];
     const a=rand(1,d1-1), b=rand(1,d2-1); const L=lcm2(d1,d2);
     const A=a*(L/d1), B=b*(L/d2);
-    byId('appLCDEx').innerHTML = `
-      <div class="workline">Find LCD for \$begin:math:text$\\\\tfrac{${a}}{${d1}}\\$end:math:text$ and \$begin:math:text$\\\\tfrac{${b}}{${d2}}\\$end:math:text$: LCM\$begin:math:text$(${d1},${d2})=${L}\\$end:math:text$.</div>
-      <div class="workline">Equivalents: \$begin:math:text$\\\\tfrac{${a}}{${d1}}=\\\\tfrac{${A}}{${L}}\\$end:math:text$, \$begin:math:text$\\\\tfrac{${b}}{${d2}}=\\\\tfrac{${B}}{${L}}\\$end:math:text$.</div>`;
-    runKaTeX(byId('appExplainSlide'));
+    id('appLCDEx').innerHTML = `
+      <div class="workline">Find LCD for \\(\\tfrac{${a}}{${d1}}\\) and \\(\\tfrac{${b}}{${d2}}\\): LCM\\((${d1},${d2})=${L}\\).</div>
+      <div class="workline">Equivalents: \\(\\tfrac{${a}}{${d1}}=\\tfrac{${A}}{${L}}\\), \\(\\tfrac{${b}}{${d2}}=\\tfrac{${B}}{${L}}\\).</div>`;
+    renderMath(id('appExplainSlide'));
   }
-  byId('appSimpNext').addEventListener('click',appSimpEx); appSimpEx();
-  byId('appLCDNext').addEventListener('click',appLCDEx); appLCDEx();
+  id('appSimpNext').addEventListener('click',appSimpEx); appSimpEx();
+  id('appLCDNext').addEventListener('click',appLCDEx); appLCDEx();
 
-  /* ---------- Applications Practice ---------- */
   const appState={items:[]};
   function appNew(){
-    const lv=byId('appLevel').value; appState.items=[]; const box=byId('appList'); box.innerHTML='';
+    const lv=id('appLevel').value; appState.items=[]; const box=id('appList'); box.innerHTML='';
     // Simplify (2)
     for(let k=0;k<2;k++){
       const maxD = (lv==='easy')? 12 : (lv==='med'? 20 : 30);
       const d=rand(6,maxD), n=rand(1,3*d-1);
       const row=document.createElement('div'); row.className='card p-4';
       row.innerHTML=`<div class="text-left font-semibold text-maroon">Simplify</div>
-        <div class="text-xl mt-1">\$begin:math:text$ \\\\frac{${n}}{${d}} = \\$end:math:text$</div>
-        <div class="mt-2">Answer: <input class="sfNum border rounded px-2 py-1 w-24" placeholder="num" aria-label="simp num"> / <input class="sfDen border rounded px-2 py-1 w-24" placeholder="den" aria-label="simp den"></div>`;
+        <div class="text-xl mt-1">\\( \\frac{${n}}{${d}} = \\)</div>
+        <div class="mt-2">Answer: <input class="sfNum border rounded px-2 py-1 w-24" placeholder="num"> / <input class="sfDen border rounded px-2 py-1 w-24" placeholder="den"></div>`;
       box.appendChild(row); appState.items.push({type:'simplify',n,d});
     }
     // LCD (2)
@@ -1750,17 +1484,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const a=rand(1,d1-1), b=rand(1,d2-1); const L=lcm2(d1,d2);
       const row=document.createElement('div'); row.className='card p-4';
       row.innerHTML=`<div class="text-left font-semibold text-maroon">Common Denominator</div>
-        <div class="text-xl mt-1">\$begin:math:text$ \\\\frac{${a}}{${d1}} \\\\text{ and } \\\\frac{${b}}{${d2}} \\$end:math:text$</div>
-        <div class="mt-2">LCM = <input class="lcd border rounded px-2 py-1 w-24" aria-label="lcd">
-          &nbsp; \$begin:math:text$ \\\\frac{${a}}{${d1}}= \\$end:math:text$<input class="eqA border rounded px-2 py-1 w-24" aria-label="eqA">/ <input class="edA border rounded px-2 py-1 w-24" aria-label="edA">,
-          \$begin:math:text$ \\\\frac{${b}}{${d2}}= \\$end:math:text$<input class="eqB border rounded px-2 py-1 w-24" aria-label="eqB">/ <input class="edB border rounded px-2 py-1 w-24" aria-label="edB"></div>`;
+        <div class="text-xl mt-1">\\( \\frac{${a}}{${d1}} \\text{ and } \\frac{${b}}{${d2}} \\)</div>
+        <div class="mt-2">LCM = <input class="lcd border rounded px-2 py-1 w-24">
+          &nbsp; \\( \\frac{${a}}{${d1}}= \\)<input class="eqA border rounded px-2 py-1 w-24">/ <input class="edA border rounded px-2 py-1 w-24">,
+          \\( \\frac{${b}}{${d2}}= \\)<input class="eqB border rounded px-2 py-1 w-24">/ <input class="edB border rounded px-2 py-1 w-24"></div>`;
       box.appendChild(row); appState.items.push({type:'lcd',a,d1,b,d2});
     }
-    runKaTeX(byId('appSlide'));
+    renderMath(id('appSlide'));
   }
-  byId('appNew').addEventListener('click',appNew); appNew();
-  byId('appCheck').addEventListener('click',()=>{
-    let total=0,ok=0; const cards=[...byId('appList').children];
+  id('appNew').addEventListener('click',appNew); appNew();
+  id('appCheck').addEventListener('click',()=>{
+    let total=0,ok=0; const cards=[...id('appList').children];
     cards.forEach((row,idx)=>{
       total++; const it=appState.items[idx]; let good=true;
       if(it.type==='simplify'){
@@ -1777,80 +1511,196 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if(good) ok++;
     });
-    byId('appFb').textContent= ok===total? '✅ Nice work!' : 'Score: '+ok+'/'+total; if(ok===total) confetti();
+    id('appFb').textContent= ok===total? '✅ Nice work!' : 'Score: '+ok+'/'+total; if(ok===total){ confetti(); streakBump(); }
   });
-  byId('appExportCSV').addEventListener('click',()=>{
-    const rows=[['type','prompt','correct','user']];
-    [...byId('appList').children].forEach((row,idx)=>{
-      const it=appState.items[idx];
-      if(it.type==='simplify'){
-        const g=gcd(it.n,it.d), N=it.n/g, D=it.d/g;
-        rows.push(['simplify', `${it.n}/${it.d}`, `${N}/${D}`, `${row.querySelector('.sfNum').value||''}/${row.querySelector('.sfDen').value||''}`]);
+
+  // Qatar — stadium snack boxes (Part 4)
+  function setQatarP4(){
+    const n=rand(24,60), d=choice([36,42,48,54,60]), g=gcd(n,d);
+    id('p4Qatar1').innerHTML = `<h4>Qatar Connect — Stadium Snack Boxes</h4><div class="q">
+      Simplify \\(\\frac{${n}}{${d}}\\) to plan boxes at a match. Name the factor you divided by.</div>
+      <div data-key="sc-ans" style="display:none; margin-top:.35rem"><b>Model/Answer:</b> GCF=${g}; ${n}/${d} → ${n/g}/${d/g}.</div>`;
+    refreshVisibility(); renderMath(id('p4Qatar1'));
+  }
+  setQatarP4();
+
+  /* Challenge & HOT banks */
+  function setHot(btnId, boxId, makers){
+    const btn=id(btnId), box=id(boxId);
+    if(!btn||!box) return;
+    btn.addEventListener('click', ()=>{
+      const mk = choice(makers);
+      const {q,a} = mk();
+      box.innerHTML = `<h4>Higher‑Order Task</h4><div class="q">${q}</div>
+                       <div data-key="sc-ans" style="display:none; margin-top:.4rem"><b>One sample approach:</b> ${a}</div>`;
+      box.style.display='block';
+      refreshVisibility(); renderMath(box);
+    });
+  }
+  setHot('pcHotBtn','pcHot',[
+    ()=>({q:`Find a composite number between 90 and 120 with <b>exactly 3 distinct prime factors</b>. Show a factorization.`, a:`e.g., 105 = 3·5·7`}),
+    ()=>{ let n=rand(50,100); while(!isPrime(n-2)||!isPrime(n)) n=rand(50,100); return {q:`Find two <b>consecutive odd</b> primes around ${n}.`,a:`${n-2} and ${n}`}},
+    ()=>({q:`Construct \\(N\\) with \\(\\tau(N)=8\\). Give two different \\(N\\).`, a:`24 = 2^3·3 and 54 = 2·3^3.`})
+  ]);
+  setHot('fmHotBtn','fmHot',[
+    ()=>({q:`Choose a target \\(T\\) so it has <b>exactly six</b> factors. List them.`, a:`Any \\(p^5\\) or \\(p^2 q\\) with distinct primes p,q.`}),
+    ()=>({q:`Pick five multiples of \\(18\\) whose sum is also a multiple of \\(18\\). Explain.`, a:`Sum of multiples of 18 is a multiple of 18.`})
+  ]);
+  setHot('pfHotBtn','pfHot',[
+    ()=>{ let n=rand(200,400); const o=mapToObj(primeFactorMap(n)); return {q:`Prime‑factorize \\(${n}\\) and justify each split.`, a:`${fmtExp(o)}`} },
+    ()=>({q:`Draw two different factor trees for 180 and compare.`, a:`Both end at 2^2·3^2·5 (FTA uniqueness).`})
+  ]);
+  setHot('gclHotBtn','gclHot',[
+    ()=>{ const a=rand(40,80), b=rand(60,120); const g=gcd(a,b), L=lcm2(a,b); return {q:`Given product ${a*b} and \\(\\gcf=${g}\\), find \\(\\operatorname{lcm}\\).`, a:`LCM = (a·b)/GCF = ${(a*b)}/${g} = ${L}.`}; },
+    ()=>({q:`True/False with justification: For three numbers, \\(abc=\\gcf(a,b,c)\\cdot\\operatorname{lcm}(a,b,c)\\).`, a:`False in general.`})
+  ]);
+
+  /* Mixed generator */
+  const mixState={cur:null};
+  function mixNew(){
+    const lv=id('mixLevel').value; let task='';
+    const type=rand(0,4);
+    if(type===0){
+      const n=(lv==='easy')? rand(2,40) : (lv==='med'? rand(2,100) : rand(2,200));
+      task=`Classify ${n} as prime or composite.`; mixState.cur={type:'pc',n};
+    } else if(type===1){
+      const n=(lv==='easy')? rand(12,36) : (lv==='med'? rand(20,60) : rand(30,84));
+      task=`List all factors of ${n}.`; mixState.cur={type:'factors',n};
+    } else if(type===2){
+      const n=(lv==='easy')? rand(40,200) : (lv==='med'? rand(80,600) : rand(120,2000));
+      task=`Write ${n} in prime‑exponent form.`; mixState.cur={type:'pfe',n};
+    } else if(type===3){
+      const a=(lv==='easy')? rand(6,40) : (lv==='med'? rand(8,120) : rand(10,200));
+      const b=(lv==='easy')? rand(6,40) : (lv==='med'? rand(8,120) : rand(10,200));
+      task=`Find GCF and LCM of ${a} and ${b}.`; mixState.cur={type:'gcflcm',a,b};
+    } else {
+      const d1=[3,4,5,6,8,9,10][rand(0,6)], d2=[4,5,6,7,8,10,12][rand(0,6)];
+      const a=rand(1,d1-1), b=rand(1,d2-1);
+      task=`Find LCD and equivalents for ${a}/${d1} and ${b}/${d2}.`; mixState.cur={type:'lcd',a,b,d1,d2};
+    }
+    id('mixQ').innerHTML=task; id('mixHintBox').textContent=''; id('mixFb').textContent=''; id('mixAns').value='';
+    renderMath(id('mixSlide'));
+  }
+  id('mixNew').addEventListener('click',mixNew); mixNew();
+  id('mixHint').addEventListener('click',()=>{
+    if(!mixState.cur) return; let msg='';
+    const t=mixState.cur.type;
+    if(t==='pc') msg='Check divisibility by 2,3,5,7 up to √n.';
+    else if(t==='factors') msg='Search factor pairs up to √n.';
+    else if(t==='pfe') msg='Divide by the smallest primes repeatedly.';
+    else if(t==='gcflcm') msg='Use prime exponents: mins→GCF, maxes→LCM.';
+    else if(t==='lcd') msg='LCD is LCM of denominators; scale numerators.';
+    id('mixHintBox').innerHTML=`<div class="hint">${msg}</div>`;
+  });
+  id('mixCheck').addEventListener('click',()=>{
+    if(!mixState.cur) return; const ans=id('mixAns').value.trim(); let ok=false, expect='';
+    const t=mixState.cur.type;
+    if(t==='pc'){
+      const want=isPrime(mixState.cur.n)?'prime':'composite'; ok=ans.toLowerCase().includes(want); expect=want;
+    } else if(t==='factors'){
+      const want=factors(mixState.cur.n).join(','); ok=ans.split(/[\s,]+/).map(x=>+x).filter(Boolean).sort((a,b)=>a-b).join(',')===want; expect=want;
+    } else if(t==='pfe'){
+      const exp=mapToObj(primeFactorMap(mixState.cur.n)); expect=fmtExp(exp); ok = ans.replace(/\s/g,'').includes(Object.keys(exp)[0]||'');
+    } else if(t==='gcflcm'){
+      const {gVal,lVal}=gcfLCMByPrimes([mixState.cur.a,mixState.cur.b]); expect=`GCF=${gVal}, LCM=${lVal}`;
+      const g=ans.match(/gcf\s*=?\s*(\d+)/i)?.[1]||ans.match(/hcf\s*=?\s*(\d+)/i)?.[1]; const l=ans.match(/lcm\s*=?\s*(\d+)/i)?.[1];
+      ok=(Number(g)===gVal && Number(l)===lVal);
+    } else if(t==='lcd'){
+      const L=lcm2(mixState.cur.d1,mixState.cur.d2); const A=mixState.cur.a*(L/mixState.cur.d1), B=mixState.cur.b*(L/mixState.cur.d2);
+      expect=`LCD=${L}; ${A}/${L}; ${B}/${L}`; ok=ans.includes(String(L));
+    }
+    if(ok){ id('mixFb').textContent='✅ Correct! '+expect; id('mixFb').className='mt-2 h-6 font-semibold text-green-700'; confetti(); streakBump(); }
+    else { id('mixFb').textContent='❌ Not quite. Expected '+expect; id('mixFb').className='mt-2 h-6 font-semibold text-red-700'; }
+  });
+
+  /* Capstone */
+  const capState={items:[]};
+  function capPick(lv, a,b){ return (lv==='easy')? rand(a,Math.floor((a+b)/2)) : (lv==='med'? rand(a,b) : rand(Math.floor((a+b)/2), b*2)); }
+  function capNew(){
+    const lv=id('capLevel').value; capState.items=[]; const box=id('capList'); box.innerHTML='';
+    // Item 1: GCF/LCM + simplify fraction
+    (function(){
+      const a=capPick(lv,12,60), b=capPick(lv,20,84);
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Pair Planning</div>
+        <div class="text-sm text-gray-600 mb-1">Compute GCF/LCM of \\(a=${a}, b=${b}\\) and then simplify \\(\\frac{a}{b}\\).</div>
+        <div class="mt-1">GCF = <input class="cap1g border rounded px-2 py-1 w-20"> &nbsp; LCM = <input class="cap1l border rounded px-2 py-1 w-24"></div>
+        <div class="mt-2">\\(\\frac{${a}}{${b}}\\) = <input class="cap1n border rounded px-2 py-1 w-16"> / <input class="cap1d border rounded px-2 py-1 w-16"></div>`;
+      box.appendChild(row); capState.items.push({type:'pair',a,b});
+      renderMath(row);
+    })();
+    // Item 2: Prime or not + number of factors
+    (function(){
+      const N=capPick(lv,40,200);
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Venue Layout</div>
+        <div class="text-sm text-gray-600 mb-1">For \\(N=${N}\\), answer both:</div>
+        <div class="mt-1">Is \\(N\\) prime? (1=yes, 0=no): <input class="cap2p border rounded px-2 py-1 w-16"></div>
+        <div class="mt-2">How many positive factors does \\(N\\) have? <input class="cap2t border rounded px-2 py-1 w-20"></div>`;
+      box.appendChild(row); capState.items.push({type:'primeTau',N});
+      renderMath(row);
+    })();
+  }
+  id('capNew').addEventListener('click',capNew); capNew();
+  id('capCheck').addEventListener('click',()=>{
+    let ok=0, total=0;
+    capState.items.forEach((it,idx)=>{
+      if(it.type==='pair'){
+        total+=2;
+        const {a,b}=it; const {gVal,lVal}=gcfLCMByPrimes([a,b]);
+        const rows=[...id('capList').children];
+        const card=rows[0];
+        const gIn=card.querySelector('.cap1g'), lIn=card.querySelector('.cap1l');
+        const nIn=card.querySelector('.cap1n'), dIn=card.querySelector('.cap1d');
+        if(Number(gIn.value)==gVal){ ok++; gIn.style.borderColor='#22c55e' } else gIn.style.borderColor='#ef4444';
+        if(Number(lIn.value)==lVal){ ok++; lIn.style.borderColor='#22c55e' } else lIn.style.borderColor='#ef4444';
+        const g=gcd(a,b), N=a/g, D=b/g;
+        if(Number(nIn.value)==N && Number(dIn.value)==D){ nIn.style.borderColor=dIn.style.borderColor='#22c55e' } else { nIn.style.borderColor=dIn.style.borderColor='#ef4444' }
       } else {
-        const L=lcm2(it.d1,it.d2); const A=it.a*(L/it.d1), B=it.b*(L/it.d2);
-        rows.push(['lcd', `${it.a}/${it.d1} & ${it.b}/${it.d2}`, `LCM=${L}; ${A}/${L}; ${B}/${L}`,
-          `LCM=${row.querySelector('.lcd').value||''}; ${row.querySelector('.eqA').value||''}/${row.querySelector('.edA').value||''}; ${row.querySelector('.eqB').value||''}/${row.querySelector('.edB').value||''}`]);
+        total+=2;
+        const rows=[...id('capList').children];
+        const card=rows[1];
+        const pIn=card.querySelector('.cap2p'), tIn=card.querySelector('.cap2t');
+        const wantP=isPrime(it.N)?1:0, wantT=divCount(it.N);
+        if(Number(pIn.value)==wantP){ ok++; pIn.style.borderColor='#22c55e' } else pIn.style.borderColor='#ef4444';
+        if(Number(tIn.value)==wantT){ ok++; tIn.style.borderColor='#22c55e' } else tIn.style.borderColor='#ef4444';
       }
     });
-    downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_applications.csv`, rows);
-  });
-  byId('appExportJSON').addEventListener('click',()=>{
-    const data=[...byId('appList').children].map((row,idx)=>{
-      const it=appState.items[idx];
-      if(it.type==='simplify'){
-        const g=gcd(it.n,it.d), N=it.n/g, D=it.d/g;
-        return {type:'simplify', prompt:`${it.n}/${it.d}`, correct:{n:N,d:D}, user:{n:row.querySelector('.sfNum').value||'', d:row.querySelector('.sfDen').value||''}};
-      } else {
-        const L=lcm2(it.d1,it.d2); const A=it.a*(L/it.d1), B=it.b*(L/it.d2);
-        return {type:'lcd', prompt:{a:it.a,d1:it.d1,b:it.b,d2:it.d2}, correct:{LCM:L,Aeq:[A,L],Beq:[B,L]},
-                user:{LCM:row.querySelector('.lcd').value||'', Aeq:[row.querySelector('.eqA').value||'', row.querySelector('.edA').value||''], Beq:[row.querySelector('.eqB').value||'', row.querySelector('.edB').value||'']}}; }
-    });
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_applications.json`, data);
+    id('capFb').textContent = (ok===total)? '✅ Capstone: excellent synthesis!' : `Score: ${ok} / ${total}`;
+    if(ok===total) confetti();
   });
 
-  // Qatar card Part 4
-  const q4 = byId('qat_p4');
-  q4.innerHTML = `<h4>Qatar Connect — Stadium Snack Boxes</h4>
-      <div class="q">You’re simplifying \$begin:math:text$\\\\frac{${rand(24,60)}}{${choice([36,42,48,54,60])}}\\$end:math:text$ for box planning at a match. Reduce it and name the factor you divided by.</div>
-      <div data-key="sc-ans" style="display:none; margin-top:.35rem"><b>Model:</b> Divide top & bottom by the GCF of numerator and denominator.</div>`;
-  refreshVisibility();
-
-  /* ---------- Challenge ---------- */
-  const chState={};
+  /* Challenge slide logic */
+  const chState={myst:null, gcg:null};
   function chNew(){
-    const lv=byId('chLevel').value;
-    // Mystery number
-    const p = choice([2,3,5,7]); const e = choice(lv==='easy'?[1,2]: lv==='med'?[2,3]:[3,4]);
-    const q = choice([11,13,17]); const m = p**e * q;
-    byId('mystPrompt').innerHTML = `Find a number between <b>${m}</b> and <b>${m+rand(10,40)}</b> that is <b>divisible by ${p}</b> but <b>not</b> by ${q}.`;
-    chState.myst = {p,q};
+    const lv=id('chLevel').value;
+    // Mystery number: choose constraints
+    const p = choice([2,3,5,7]); const k = (lv==='easy')? rand(2,4) : (lv==='med'? rand(3,5) : rand(4,6));
+    const m = p**k;
+    id('mystPrompt').innerHTML = `Find a number that is <b>divisible by ${p}</b> but <b>not by ${m}</b>, and has <b>exactly ${choice([4,6,8])}</b> positive factors. Explain.`;
+    chState.myst = {p,k};
     // Given GCF & LCM
-    const g = choice([6,8,9,12]); const L = g * choice([10,12,15,18]);
-    byId('gcPairPrompt').innerHTML = `Create numbers $begin:math:text$a,b$end:math:text$ with \$begin:math:text$\\\\gcf(a,b)=${g}\\$end:math:text$ and \$begin:math:text$\\\\operatorname{lcm}(a,b)=${L}\\$end:math:text$.`;
-    chState.gc = {g,L};
-    runKaTeX(byId('challengeSlide'));
+    const g = (lv==='easy')? choice([2,3,4,6]) : (lv==='med'? choice([6,8,9,12]) : choice([12,15,18]));
+    const L = g * choice([12,15,20,24,30]);
+    id('gcPairPrompt').innerHTML = `Create integers \\(a,b\\) with \\(\\gcf(a,b)=${g}\\) and \\(\\operatorname{lcm}(a,b)=${L}\\).`;
+    chState.gcg={g,L};
+    renderMath(id('challengeSlide'));
   }
-  byId('chNew').addEventListener('click',chNew); chNew();
-  byId('chCheck').addEventListener('click',()=>{
-    const ans = Number(byId('mystAns').value||NaN);
-    const ok1 = Number.isFinite(ans) && ans%chState.myst.p===0 && ans%chState.myst.q!==0;
-    const a=Number(byId('gcA').value||NaN), b=Number(byId('gcB').value||NaN);
-    const ok2 = Number.isFinite(a)&&Number.isFinite(b) && gcd(a,b)===chState.gc.g && lcm2(a,b)===chState.gc.L;
-    byId('chFb').textContent = (ok1 && ok2)? '✅ Both tasks satisfied!' : (!ok1 && !ok2? '❌ Both need revision.' : (!ok1? 'Mystery number not valid.' : 'GCF/LCM pair not valid.'));
-    if(ok1 && ok2) confetti();
-  });
-  byId('chExportCSV').addEventListener('click',()=>{
-    downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_challenge.csv`, [['myst_prompt','gc_prompt','myst_ans','gc_a','gc_b'], [byId('mystPrompt').innerText, byId('gcPairPrompt').innerText, byId('mystAns').value||'', byId('gcA').value||'', byId('gcB').value||'']]);
-  });
-  byId('chExportJSON').addEventListener('click',()=>{
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_challenge.json`, {myst_prompt:byId('mystPrompt').innerText, gc_prompt:byId('gcPairPrompt').innerText, myst_ans:byId('mystAns').value||'', gc_a:byId('gcA').value||'', gc_b:byId('gcB').value||''});
+  id('chNew').addEventListener('click',chNew); chNew();
+  id('chCheck').addEventListener('click',()=>{
+    let ok=0;
+    const ans = Number(id('mystAns').value||0); if(ans && ans%chState.myst.p===0 && ans%(chState.myst.p**chState.myst.k)!==0){ ok++; }
+    const a=Number(id('gcA').value||0), b=Number(id('gcB').value||0);
+    if(a>0 && b>0 && gcd(a,b)===chState.gcg.g && lcm2(a,b)===chState.gcg.L){ ok++; }
+    id('chFb').textContent = (ok===2)? '✅ Both challenges met!' : (ok===0? '❌ Neither solved yet—try again.' : 'Almost there—one solved.');
+    if(ok===2){ confetti(); streakBump(); }
   });
 
-  /* ---------- Error Analysis ---------- */
+  /* Error Analysis */
   function errBank(level){
     const easy=[
       {work:'\\( 21 \\) is prime.', correct:'\\( 21=3\\cdot 7 \\), so composite.', key:'A'},
-      {work:'\\( 24=2\\cdot12 \\) (stopped)', correct:'Keep going: \\(12=2\\cdot 6=2\\cdot2\\cdot3\\Rightarrow 24=2^3\\cdot3\\).', key:'B'},
+      {work:'\\( 24=2\\cdot12\\) (stopped)', correct:'Finish: \\(12=2\\cdot 6=2\\cdot2\\cdot3\\Rightarrow 24=2^3\\cdot3\\).', key:'B'},
       {work:'\\( \\mathrm{GCF}(12,18)=12\\cdot18 \\)', correct:'GCF is the greatest <em>factor</em> common to both: it is 6.', key:'C'},
       {work:'\\( \\tfrac{14}{21} = \\tfrac{14}{7} = 2 \\)', correct:'Divide both numerator and denominator: \\(\\tfrac{14}{21}=\\tfrac{2}{3}\\).', key:'D'}
     ];
@@ -1870,230 +1720,123 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const errState={item:null};
   function errNew(){
-    const bank=errBank(byId('errLevel').value); errState.item=bank[rand(0,bank.length-1)];
-    byId('errBox').innerHTML=`Incorrect work:<br/><div class="mt-1 text-maroon">${errState.item.work}</div>`;
-    byId('errFb').textContent=''; byId('errRevealBox').textContent=''; runKaTeX(byId('errSlide'));
+    const bank=errBank(id('errLevel').value); errState.item=bank[rand(0,bank.length-1)];
+    id('errBox').innerHTML=`Incorrect work:<br/><div class="mt-1 text-maroon">${errState.item.work}</div>`;
+    id('errFb').textContent=''; id('errRevealBox').textContent=''; renderMath(id('errSlide'));
   }
-  byId('errNew').addEventListener('click',errNew); errNew();
-  byId('errCheck').addEventListener('click',()=>{
+  id('errNew').addEventListener('click',errNew); errNew();
+  id('errCheck').addEventListener('click',()=>{
     const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    if(!sel){ byId('errFb').textContent='Choose an option.'; return; }
-    if(sel.value===errState.item.key){ byId('errFb').textContent='✅ Correct diagnosis.'; confetti(); }
-    else byId('errFb').textContent='❌ Try again.';
+    if(!sel){ id('errFb').textContent='Choose an option.'; return; }
+    if(sel.value===errState.item.key){ id('errFb').textContent='✅ Correct diagnosis.'; confetti(); streakBump(); }
+    else id('errFb').textContent='❌ Try again.';
   });
-  byId('errReveal').addEventListener('click',()=>{ byId('errRevealBox').innerHTML=`<div class="hint">${errState.item.correct}</div>`; runKaTeX(byId('errSlide')); });
-  byId('errExportCSV').addEventListener('click',()=>{
-    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_error_analysis.csv`, [['incorrect_work','explanation','key','user'], [byId('errBox').innerText.trim(), errState.item.correct, errState.item.key, sel?sel.value:'']]);
-  });
-  byId('errExportJSON').addEventListener('click',()=>{
-    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_error_analysis.json`, {incorrect:byId('errBox').innerText.trim(), correct:errState.item.correct, key:errState.item.key, user: sel?sel.value:''});
-  });
+  id('errReveal').addEventListener('click',()=>{ id('errRevealBox').innerHTML=`<div class="hint">${errState.item.correct}</div>`; renderMath(id('errSlide')); });
 
-  /* ---------- Mixed Review ---------- */
-  const mixState={cur:null};
-  function mixNew(){
-    const lv=byId('mixLevel').value; let task='';
-    function rInt(a,b){return rand(a,b)}
-    const type=rand(0,4);
-    if(type===0){
-      const n=(lv==='easy')? rInt(2,40) : (lv==='med'? rInt(2,100) : rInt(2,200));
-      task=`Classify ${n} as prime or composite.`; mixState.cur={type:'pc',n};
-    } else if(type===1){
-      const n=(lv==='easy')? rInt(12,36) : (lv==='med'? rInt(20,60) : rInt(30,84));
-      task=`List all factors of ${n}.`; mixState.cur={type:'factors',n};
-    } else if(type===2){
-      const n=(lv==='easy')? rInt(40,200) : (lv==='med'? rInt(80,600) : rInt(120,2000));
-      task=`Write ${n} in prime‑exponent form.`; mixState.cur={type:'pfe',n};
-    } else if(type===3){
-      const a=(lv==='easy')? rInt(6,40) : (lv==='med'? rInt(8,120) : rInt(10,200));
-      const b=(lv==='easy')? rInt(6,40) : (lv==='med'? rInt(8,120) : rInt(10,200));
-      task=`Find GCF and LCM of ${a} and ${b}.`; mixState.cur={type:'gcflcm',a,b};
-    } else {
-      const d1=[3,4,5,6,8,9,10][rand(0,6)], d2=[4,5,6,7,8,10,12][rand(0,6)];
-      const a=rand(1,d1-1), b=rand(1,d2-1);
-      task=`Find LCD and equivalents for ${a}/${d1} and ${b}/${d2}.`; mixState.cur={type:'lcd',a,b,d1,d2};
-    }
-    byId('mixQ').innerHTML=task; byId('mixHintBox').textContent=''; byId('mixFb').textContent=''; byId('mixAns').value='';
-    runKaTeX(byId('mixSlide'));
+  /* Auto-level streak logic */
+  function bumpLevel(idSel){
+    const el=$(idSel); if(!el) return;
+    const order=['easy','med','hard']; const k=order.indexOf(el.value);
+    if(k>=0 && k<order.length-1){ el.value = order[k+1]; toast(`Auto‑level: ${idSel} → ${order[k+1]}`); }
   }
-  byId('mixNew').addEventListener('click',mixNew); mixNew();
-  byId('mixHint').addEventListener('click',()=>{
-    if(!mixState.cur) return; let m='';
-    const t=mixState.cur.type;
-    if(t==='pc') m='Check divisibility by 2,3,5,7 up to √n.';
-    else if(t==='factors') m='Search factor pairs up to √n.';
-    else if(t==='pfe') m='Try dividing by the smallest primes repeatedly.';
-    else if(t==='gcflcm') m='Use prime exponents: mins→GCF, maxes→LCM.';
-    else if(t==='lcd') m='LCD is LCM of denominators. Build equivalents to that denominator.';
-    byId('mixHintBox').innerHTML=`<div class="hint">${m}</div>`;
-  });
-  byId('mixCheck').addEventListener('click',()=>{
-    if(!mixState.cur) return; const ans=byId('mixAns').value.trim(); let ok=false, expect='';
-    const t=mixState.cur.type;
-    if(t==='pc'){
-      const want=isPrime(mixState.cur.n)?'prime':'composite'; ok=ans.toLowerCase().includes(want); expect=want;
-    } else if(t==='factors'){
-      const want=factors(mixState.cur.n).join(','); ok=ans.split(/[\s,]+/).map(x=>+x).filter(Boolean).sort((a,b)=>a-b).join(',')===want; expect=want;
-    } else if(t==='pfe'){
-      const exp=mapToObj(primeFactorMap(mixState.cur.n)); expect=fmtExp(exp); ok = ans.replace(/\s/g,'').includes(Object.keys(exp)[0]||'');
-    } else if(t==='gcflcm'){
-      const {gVal,lVal}=gcfLCMByPrimes([mixState.cur.a,mixState.cur.b]); expect=`GCF=${gVal}, LCM=${lVal}`;
-      const g=ans.match(/gcf\s*=?\s*(\d+)/i)?.[1]||ans.match(/hcf\s*=?\s*(\d+)/i)?.[1]; const l=ans.match(/lcm\s*=?\s*(\d+)/i)?.[1];
-      ok=(Number(g)===gVal && Number(l)===lVal);
-    } else if(t==='lcd'){
-      const L=lcm2(mixState.cur.d1,mixState.cur.d2); const A=mixState.cur.a*(L/mixState.cur.d1), B=mixState.cur.b*(L/mixState.cur.d2);
-      expect=`LCD=${L}; ${A}/${L}; ${B}/${L}`; ok=ans.includes(String(L));
-    }
-    if(ok){ byId('mixFb').textContent='✅ Correct! '+expect; byId('mixFb').className='mt-2 h-6 font-semibold text-green-700'; confetti(); }
-    else { byId('mixFb').textContent='❌ Not quite. Expected '+expect; byId('mixFb').className='mt-2 h-6 font-semibold text-red-700'; }
-  });
-  byId('mixExportCSV').addEventListener('click',()=>downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_mixed_current.csv`, [['prompt','user'], [byId('mixQ').textContent, byId('mixAns').value||'']]));
-  byId('mixExportJSON').addEventListener('click',()=>downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_mixed_current.json`, {prompt:byId('mixQ').textContent, user:byId('mixAns').value||''}));
+  const levelIds = ['pcLevel','fmLevel','pfLevel','gclLevel','glLevel','appLevel','p1RealLevel','p2RealLevel','p3RealLevel','chLevel','errLevel','mixLevel','capLevel'];
+  function streakBump(){
+    STATE.streak = Math.min(STATE.streak+1, 3);
+    if(STATE.autolvl && STATE.streak>=2){ levelIds.forEach(bumpLevel); STATE.streak=0; }
+  }
 
-  /* ---------- Capstone ---------- */
-  const capState={items:[]};
-  function capPick(lv, a,b){ return (lv==='easy')? rand(a,Math.floor((a+b)/2)) : (lv==='med'? rand(a,b) : rand(Math.floor((a+b)/2), b*2)); }
-  function capNew(){
-    const lv=byId('capLevel').value; capState.items=[]; const box=byId('capList'); box.innerHTML='';
-    // Item 1: GCF/LCM + simplify fraction
-    (function(){
-      const a=capPick(lv,12,60), b=capPick(lv,20,84);
+  /* Part 1 Real‑Life tasks */
+  const p1RealState={items:[]};
+  function p1Scale(lv,a,b){ return (lv==='easy')? rand(Math.floor(a/2), Math.floor(b/2)) : (lv==='med'? rand(a,b) : rand(b, b*2)); }
+  function p1RealNew(){
+    const lv=id('p1RealLevel').value; p1RealState.items=[]; const box=id('p1RealList'); box.innerHTML='';
+    (function(){ // Packaging
+      const boxes=rand(3,10), per=rand(4,12), P=boxes*per;
       const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Pair Planning</div>
-        <div class="text-sm text-gray-600 mb-1">Compute GCF/LCM of \$begin:math:text$a=${a}, b=${b}\\$end:math:text$ and then simplify \$begin:math:text$\\\\frac{a}{b}\\$end:math:text$.</div>
-        <div class="mt-1">GCF = <input class="cap1g border rounded px-2 py-1 w-20" aria-label="cap gcf"> &nbsp; LCM = <input class="cap1l border rounded px-2 py-1 w-24" aria-label="cap lcm"></div>
-        <div class="mt-2">\$begin:math:text$\\\\frac{${a}}{${b}}\\$end:math:text$ = <input class="cap1n border rounded px-2 py-1 w-16" aria-label="cap n"> / <input class="cap1d border rounded px-2 py-1 w-16" aria-label="cap d"></div>`;
-      box.appendChild(row); capState.items.push({type:'pair',a,b});
-      runKaTeX(row);
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Packaging</div>
+        <div class="mt-1">You have <b>${P}</b> cupcakes and pack exactly <b>${per}</b> per box. How many boxes?</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row);
+      p1RealState.items.push({ans:P/per});
     })();
-    // Item 2: Prime or not + number of factors
-    (function(){
-      const N=capPick(lv,40,200);
+    (function(){ // Multiple timing
+      const M=p1Scale(lv,4,12), k=rand(6,12);
       const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Venue Layout</div>
-        <div class="text-sm text-gray-600 mb-1">For \$begin:math:text$N=${N}\\$end:math:text$, answer both:</div>
-        <div class="mt-1">Is \$begin:math:text$N\\$end:math:text$ prime? (1=yes, 0=no): <input class="cap2p border rounded px-2 py-1 w-16" aria-label="cap prime"></div>
-        <div class="mt-2">How many positive factors does \$begin:math:text$N\\$end:math:text$ have? <input class="cap2t border rounded px-2 py-1 w-20" aria-label="cap tau"></div>`;
-      box.appendChild(row); capState.items.push({type:'primeTau',N});
-      runKaTeX(row);
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Timing</div>
+        <div class="mt-1">A buzzer sounds every <b>${M}</b> minutes. After how many minutes will the <b>${k}</b>th buzz occur?</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> min</div>`;
+      box.appendChild(row);
+      p1RealState.items.push({ans:M*k});
+    })();
+    (function(){ // Divisible by 3?
+      let N=p1Scale(lv,120,540);
+      if(Math.random()<0.5){ const r= N%3; N+= (3-r)%3; } else { const r= N%3; if(r===0) N+=1; }
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Divisibility</div>
+        <div class="mt-1">Is <b>${N}</b> divisible by 3? Enter <b>1</b> for yes, <b>0</b> for no.</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row);
+      p1RealState.items.push({ans: (N%3===0)?1:0});
+    })();
+    (function(){ // Next prime
+      let A=p1Scale(lv,20,90);
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Security Key</div>
+        <div class="mt-1">Find the <b>next prime</b> after <b>${A}</b>.</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row);
+      let x=A+1; while(!isPrime(x)) x++;
+      p1RealState.items.push({ans:x});
     })();
   }
-  byId('capNew').addEventListener('click',capNew); capNew();
-  byId('capCheck').addEventListener('click',()=>{
-    let ok=0, total=0;
-    const cards=[...byId('capList').children];
-    // Pair card
-    {
-      total+=2;
-      const row=cards[0]; const it=capState.items[0]; const {a,b}=it; const {gVal,lVal}=gcfLCMByPrimes([a,b]);
-      const gIn=row.querySelector('.cap1g'), lIn=row.querySelector('.cap1l'), nIn=row.querySelector('.cap1n'), dIn=row.querySelector('.cap1d');
-      if(Number(gIn.value)==gVal){ ok++; gIn.style.borderColor='#22c55e' } else gIn.style.borderColor='#ef4444';
-      if(Number(lIn.value)==lVal){ ok++; lIn.style.borderColor='#22c55e' } else lIn.style.borderColor='#ef4444';
-      const g=gcd(a,b), N=a/g, D=b/g;
-      if(Number(nIn.value)==N && Number(dIn.value)==D){ nIn.style.borderColor=dIn.style.borderColor='#22c55e' } else { nIn.style.borderColor=dIn.style.borderColor='#ef4444' }
-    }
-    // Prime/Tau card
-    {
-      total+=2;
-      const row=cards[1]; const it=capState.items[1]; const {N}=it; const pIn=row.querySelector('.cap2p'), tIn=row.querySelector('.cap2t');
-      const wantP=isPrime(N)?1:0, wantT=divCount(N);
-      if(Number(pIn.value)==wantP){ ok++; pIn.style.borderColor='#22c55e' } else pIn.style.borderColor='#ef4444';
-      if(Number(tIn.value)==wantT){ ok++; tIn.style.borderColor='#22c55e' } else tIn.style.borderColor='#ef4444';
-    }
-    byId('capFb').textContent = (ok===total)? '✅ Capstone: excellent synthesis!' : `Score: ${ok} / ${total}`;
-    if(ok===total) confetti();
-  });
-  byId('capExportCSV').addEventListener('click',()=>{
-    const rows=[['task','prompt','correct','user']];
-    const it0=capState.items[0], it1=capState.items[1];
-    if(it0 && it0.type==='pair'){
-      const {a,b}=it0; const {gVal,lVal}=gcfLCMByPrimes([a,b]); const g=gcd(a,b), N=a/g, D=b/g;
-      rows.push(['pair', `a=${a}, b=${b}`, `GCF=${gVal}; LCM=${lVal}; ${N}/${D}`,
-        `GCF=${byId('capList').children[0].querySelector('.cap1g').value||''}; LCM=${byId('capList').children[0].querySelector('.cap1l').value||''}; ${byId('capList').children[0].querySelector('.cap1n').value||''}/${byId('capList').children[0].querySelector('.cap1d').value||''}`]);
-    }
-    if(it1 && it1.type==='primeTau'){
-      const {N}=it1; const row=byId('capList').children[1];
-      rows.push(['primeTau', `N=${N}`, `prime=${isPrime(N)?1:0}; tau=${divCount(N)}`,
-        `prime=${row.querySelector('.cap2p').value||''}; tau=${row.querySelector('.cap2t').value||''}`]);
-    }
-    downloadCSV(`G7_U1_L3_Prime_Toolkit_v2_P4_capstone.csv`, rows);
-  });
-  byId('capExportJSON').addEventListener('click',()=>{
-    const data=[];
-    const it0=capState.items[0], it1=capState.items[1];
-    if(it0 && it0.type==='pair'){
-      const {a,b}=it0; const {gVal,lVal}=gcfLCMByPrimes([a,b]); const g=gcd(a,b), N=a/g, D=b/g;
-      data.push({type:'pair', a,b, correct:{GCF:gVal,LCM:lVal,simplified:[N,D]},
-                 user:{GCF:byId('capList').children[0].querySelector('.cap1g').value||'', LCM:byId('capList').children[0].querySelector('.cap1l').value||'',
-                       simplified:[byId('capList').children[0].querySelector('.cap1n').value||'', byId('capList').children[0].querySelector('.cap1d').value||'']}});
-    }
-    if(it1 && it1.type==='primeTau'){
-      const {N}=it1; const row=byId('capList').children[1];
-      data.push({type:'primeTau', N, correct:{prime:isPrime(N)?1:0, tau:divCount(N)},
-                 user:{prime:row.querySelector('.cap2p').value||'', tau:row.querySelector('.cap2t').value||''}});
-    }
-    downloadJSON(`G7_U1_L3_Prime_Toolkit_v2_P4_capstone.json`, data);
-  });
-
-  /* ---------- HOT / Challenge banks ---------- */
-  const HOT = {
-    pc: [
-      ()=>({q:`Find a composite number between 90 and 120 with <b>exactly 3 distinct prime factors</b>. Show a factorization.`, a:`e.g., 105 = 3·5·7`}),
-      ()=>{ let n=rand(50,100); while(!isPrime(n-2) || !isPrime(n)){ n=rand(50,100) } return {q:`Find two <b>consecutive odd</b> numbers both prime, around ${n}.`, a:`e.g., ${n-2} and ${n} if both prime.`} },
-      ()=>({q:`Construct a number \$begin:math:text$N\\$end:math:text$ with \$begin:math:text$\\\\tau(N)=8\\$end:math:text$. Give two different such \$begin:math:text$N\\$end:math:text$.`, a:`e.g., 24 = 2^3·3 and 54 = 2·3^3.`})
-    ],
-    pc_only: [
-      ()=>({q:`Give an example of a number that is not divisible by 2,3,5,7 but is <b>not prime</b>.`, a:`121 = 11^2.`}),
-      ()=>({q:`Is 1 prime or composite? Explain using the definition.`, a:`Neither; it has only one positive factor (itself).`})
-    ],
-    fm: [
-      ()=>({q:`Choose \$begin:math:text$T\\$end:math:text$ so that it has <b>exactly six</b> factors. List them.`, a:`Any \$begin:math:text$p^5\\$end:math:text$ or \$begin:math:text$p^2q\\$end:math:text$ with distinct primes p,q.`}),
-      ()=>({q:`Create five multiples of \$begin:math:text$18\\$end:math:text$ whose sum is also a multiple of \$begin:math:text$18\\$end:math:text$. Explain why this always happens.`, a:`Sum of multiples of 18 is a multiple of 18.`})
-    ],
-    pf: [
-      ()=>{ const n=rand(200,400); const m=mapToObj(primeFactorMap(n)); return {q:`Prime‑factorize \$begin:math:text$${n}\\$end:math:text$ and justify each split.`, a:`${fmtExp(m)}`}; },
-      ()=>({q:`Draw two different factor trees for 180 and explain why leaves match.`, a:`FTA → 2^2·3^2·5.`})
-    ],
-    pfexp: [
-      ()=>({q:`Design \$begin:math:text$A,B\\$end:math:text$ so that \$begin:math:text$\\\\gcf(A,B)=2^2\\\\cdot 3\\$end:math:text$ and \$begin:math:text$\\\\operatorname{lcm}(A,B)=2^4\\\\cdot 3^2\\\\cdot 5\\$end:math:text$.`, a:`Let A take minima and B take maxima, e.g., A=2^2·3, B=2^4·3^2·5.`})
-    ],
-    gcl: [
-      ()=>{ const a=rand(40,80), b=rand(60,120); const g=gcd(a,b), L=lcm2(a,b); return {q:`Given a pair with product ${a*b}, and \$begin:math:text$\\\\gcf=${g}\\$end:math:text$, find \$begin:math:text$\\\\operatorname{lcm}\\$end:math:text$.`, a:`LCM = (a·b)/GCF = ${(a*b)}/${g} = ${L}.`}; },
-      ()=>({q:`True or false (justify): For three numbers, \$begin:math:text$abc=\\\\gcf(a,b,c)\\\\cdot\\\\operatorname{lcm}(a,b,c)\\$end:math:text$.`, a:`False in general; the two‑number identity doesn’t extend directly.`})
-    ],
-    app: [
-      ()=>({q:`Invent two denominators with LCD = 60 and show equivalents for \$begin:math:text$\\\\tfrac{3}{\\\\text{first}}\\$end:math:text$ and \$begin:math:text$\\\\tfrac{4}{\\\\text{second}}\\$end:math:text$.`, a:`e.g., 12 and 15 → 15/60 and 16/60.`}),
-      ()=>({q:`A fraction simplifies to \$begin:math:text$\\\\tfrac{5}{12}\\$end:math:text$. Create two unsimplified versions and show the GCF used.`, a:`e.g., 10/24 (÷2) and 35/84 (÷7).`})
-    ]
-  };
-  function addHot(buttonSlideKey, hotBoxId){
-    const btns = document.querySelectorAll(`[data-hot="${buttonSlideKey}"]`);
-    btns.forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const maker = choice(HOT[buttonSlideKey]);
-        const {q,a} = maker();
-        const box = byId(hotBoxId);
-        box.innerHTML = `<h4>Higher‑Order Task</h4><div class="q">${q}</div><div data-key="sc-ans" style="display:none; margin-top:.4rem"><b>One approach:</b> ${a}</div>`;
-        box.style.display='block';
-        if(window._rerenderMath) window._rerenderMath(box);
-        refreshVisibility();
-      });
+  id('p1RealNew').addEventListener('click',p1RealNew); p1RealNew();
+  id('p1RealCheck').addEventListener('click',()=>{
+    let ok=0; [...id('p1RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
+      const got=Number(el.value); const want=p1RealState.items[idx].ans;
+      if(Math.abs(got-want)<1e-10){ ok++; el.style.borderColor='#22c55e'} else el.style.borderColor='#ef4444';
     });
+    msg(id('p1RealFb'), ok===p1RealState.items.length? '✅ Excellent!' : 'Score: '+ok+'/'+p1RealState.items.length);
+    if(ok===p1RealState.items.length){ confetti(); streakBump(); }
+  });
+
+  /* Part 2 Real‑Life */
+  const p2RealState={items:[]};
+  function p2PickN(lv){ if(lv==='easy') return rand(60,180); if(lv==='med') return rand(150,600); return rand(300,1800); }
+  function p2RealNew(){
+    const lv=id('p2RealLevel').value; p2RealState.items=[]; const box=id('p2RealList'); box.innerHTML='';
+    (function(){ const N=p2PickN(lv);
+      const row=document.createElement('div'); row.className='card p-4'; row.innerHTML=`<div class="text-left font-semibold text-maroon">Layouts</div>
+        <div class="mt-1">A banner has area <b>${N}</b> units². How many <b>positive factors</b> does ${N} have?</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row); p2RealState.items.push({ans:divCount(N)});
+    })();
+    (function(){ let N=p2PickN(lv);
+      const row=document.createElement('div'); row.className='card p-4'; row.innerHTML=`<div class="text-left font-semibold text-maroon">Halving Stacks</div>
+        <div class="mt-1">You can split <b>${N}</b> items into two equal stacks repeatedly until odd. How many times?</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"></div>`;
+      box.appendChild(row); p2RealState.items.push({ans:v_p(N,2)});
+    })();
+    (function(){ const N=p2PickN(lv);
+      const row=document.createElement('div'); row.className='card p-4'; row.innerHTML=`<div class="text-left font-semibold text-maroon">Square Tiles</div>
+        <div class="mt-1">A square panel of side <i>s</i> tiles must cover area <b>${N}</b> tiles² without cutting. Largest <i>s</i>?</div>
+        <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> tiles</div>`;
+      box.appendChild(row); p2RealState.items.push({ans:largestSquareSide(N)});
+    })();
   }
-  addHot('pc','hot_pc');
-  addHot('pc_only','hot_pc_only');
-  addHot('fm','hot_fm');
-  addHot('pf','hot_pf');
-  addHot('pfexp','hot_pfexp');
-  addHot('gcl','hot_gcl');
-  addHot('app','hot_app');
+  id('p2RealNew').addEventListener('click',p2RealNew); p2RealNew();
+  id('p2RealCheck').addEventListener('click',()=>{
+    let ok=0; [...id('p2RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
+      const got=Number(el.value); const want=p2RealState.items[idx].ans;
+      if(Math.abs(got-want)<1e-10){ ok++; el.style.borderColor='#22c55e'} else el.style.borderColor='#ef4444';
+    });
+    msg(id('p2RealFb'), ok===p2RealState.items.length? '✅ Good use of exponents!' : 'Score: '+ok+'/'+p2RealState.items.length);
+    if(ok===p2RealState.items.length){ confetti(); streakBump(); }
+  });
 
   /* ---------- Worksheet Builder ---------- */
-  const wsModal = byId('wsModal');
-  byId('btnWS').onclick = ()=>{ wsModal.style.display='flex' };
-  byId('wsClose').onclick = ()=>{ wsModal.style.display='none' };
+  const wsModal=$('wsModal');
+  $('btnWS').onclick = ()=>{ wsModal.style.display='flex' };
+  $('wsClose').onclick = ()=>{ wsModal.style.display='none' };
   function genItem(type, level){
     const L = (lo,hi)=>rand(lo,hi), C=(arr)=>choice(arr);
     if(type==='pc'){
@@ -2117,8 +1860,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const types = ['pc','factors','pfe','gcflcm','lcd']; return genItem(choice(types), level);
     }
   }
-  byId('wsGo').onclick = ()=>{
-    const t = byId('wsType').value, lv=byId('wsLevel').value, n=parseInt(byId('wsCount').value||'10',10), showA=byId('wsAns').checked;
+  $('wsGo').onclick = ()=>{
+    const t = $('wsType').value, lv=$('wsLevel').value, n=parseInt($('wsCount').value||'10',10), showA=$('wsAns').checked;
     const items = Array.from({length:n}, ()=>genItem(t,lv));
     const w = window.open('', '_blank');
     const katexCSS = 'https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css';
@@ -2140,30 +1883,12 @@ document.addEventListener('DOMContentLoaded', () => {
     w.document.close();
   };
 
-  /* ---------- Auto‑level streak watcher ---------- */
-  const fbIds = ['pcFb','fmFb','pfFb','appFb','p1RealFb','p2RealFb','p3RealFb','glFb','capFb','chFb'];
-  setInterval(()=>{
-    const winTexts = ['✅','Excellent','Nice work','Good use','Capstone','All correct'];
-    const hit = fbIds.some(id=>{ const el=byId(id); return el && winTexts.some(w=>el.textContent.includes(w)); });
-    if(hit){
-      STATE.streak = Math.min(STATE.streak+1, 4);
-      if(STATE.autolvl && STATE.streak>=2){
-        // promote levels where present
-        ['pcLevel','fmLevel','pfLevel','gclLevel','glLevel','appLevel','p1RealLevel','p2RealLevel','p3RealLevel','chLevel','errLevel','mixLevel','capLevel'].forEach(lvId=>{
-          const el=byId(lvId); if(!el) return; const order=['easy','med','hard']; const k=order.indexOf(el.value);
-          if(k>=0 && k<order.length-1){ el.value = order[k+1]; }
-        });
-        toast('Auto‑level: difficulty increased');
-        STATE.streak=0;
-      }
-    }
-  }, 1500);
-
-  /* ---------- HOT buttons already wired above ---------- */
-
-  /* ---------- Initial rendering ---------- */
+  /* ---------- Init ---------- */
+  window.addEventListener('resize',()=>{ if(slides[i].id==='treeSlide' && id('treeView') && !id('treeView').classList.contains('hidden')) drawTree(); });
   show(0);
-});
+  refreshVisibility();
+
+})();
 </script>
 </body>
 </html>
