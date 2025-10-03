@@ -1,0 +1,70 @@
+{
+  "name": "QLA Mathematics Portal",
+  "short_name": "QLA Math",
+  "description": "Interactive mathematics lessons for Grade 7 and 8 students at Qatar Leadership Academy",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#6C1D45",
+  "theme_color": "#6C1D45",
+  "orientation": "any",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["education", "mathematics"],
+  "icons": [
+    {
+      "src": "/assets/qla_logo_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/qla_logo_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/screenshot-mobile.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/assets/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Grade 7 Lessons",
+      "short_name": "Grade 7",
+      "description": "Access Grade 7 mathematics lessons",
+      "url": "/?grade=7",
+      "icons": [{ "src": "/assets/grade7-icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Grade 8 Lessons",
+      "short_name": "Grade 8",
+      "description": "Access Grade 8 mathematics lessons",
+      "url": "/?grade=8",
+      "icons": [{ "src": "/assets/grade8-icon.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}
