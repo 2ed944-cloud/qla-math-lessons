@@ -116,9 +116,9 @@
 
     <!-- 0 • Title -->
     <section class="slide active bg-maroon text-white" id="titleSlide">
-      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('../assets/qla_banner.png')" aria-label="QLA Partner Banner"></div>
+      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="QLA Partner Banner"></div>
       <div class="flex items-center gap-8">
-        <img src="../assets/qla_logo.png" alt="QLA Logo" class="h-20 w-auto" onerror="this.style.display='none'"/>
+        <img src="qla_logo.png" alt="QLA Logo" class="h-20 w-auto" onerror="this.style.display='none'"/>
         <div class="text-left">
           <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Comparing & Simplifying Rational Numbers</h1>
           <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Fractions • Decimals • Mixed Numbers • Order & Equivalence</p>
@@ -208,61 +208,208 @@
       
       <div class="student-instruction text-left max-w-5xl mb-3">
         <strong>🎓 Learning Challenge:</strong> 
-        <ul class="list-decimal list-inside ml-4 mt-2">
-          <li>Watch the demonstration of Method 1 with a classmate at the board</li>
-          <li>Practice Method 2 with your partner - take turns explaining each step</li>
-          <li>If you're ready for a challenge, try Method 3 on your own!</li>
-          <li><strong>Question:</strong> Which method do you find easiest? Why?</li>
-        </ul>
+        We will explore three powerful methods to compare fractions. Click through each method, study the explanation and examples carefully. Practice with a classmate, and decide which method works best for you!
       </div>
 
-      <div class="grid md:grid-cols-3 gap-4 w-full max-w-5xl text-left">
-        <div class="card p-4">
-          <h3 class="text-xl font-bold text-maroon mb-2">Method 1: Common Denominator<span class="level-badge level-easy">Easy</span></h3>
-          <div class="text-sm">
-            <p><strong>Example:</strong> Compare \( \frac{3}{4} \) and \( \frac{5}{6} \)</p>
-            <div class="board-area mt-2">
-              <p>LCD = 12</p>
-              <p>\( \frac{3}{4} = \frac{9}{12} \)</p>
-              <p>\( \frac{5}{6} = \frac{10}{12} \)</p>
-              <p>So \( \frac{9}{12} < \frac{10}{12} \)</p>
+      <div class="w-full max-w-5xl">
+        <!-- Method 1 Container -->
+        <div id="method1Container" class="card p-5 mb-4" style="display:block;">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-2xl font-bold text-maroon">Method 1: Common Denominator <span class="level-badge level-easy">Easy</span></h3>
+          </div>
+          
+          <div class="grid md:grid-cols-2 gap-4 text-left">
+            <div>
+              <h4 class="font-bold text-lg mb-2 text-qatar">What is this method?</h4>
+              <p class="mb-3">When fractions have the <strong>same denominator</strong>, we can easily compare them by looking at the numerators. This method converts both fractions to equivalent fractions with a common denominator (usually the LCD).</p>
+              
+              <div class="hint">
+                <strong>Key Idea:</strong> \( \frac{9}{12} \) vs \( \frac{10}{12} \) is easy because we just compare 9 and 10!
+              </div>
+
+              <h4 class="font-bold text-lg mt-3 mb-2 text-qatar">When to use it?</h4>
+              <ul class="list-disc list-inside text-sm space-y-1">
+                <li>When denominators are small</li>
+                <li>When you can easily find the LCD</li>
+                <li>When adding/subtracting fractions later</li>
+              </ul>
             </div>
-            <button class="btn btn-sm" onclick="showMethodSteps(1)">Show Full Steps</button>
+
+            <div>
+              <h4 class="font-bold text-lg mb-2 text-qatar">Example: Compare \( \frac{3}{4} \) and \( \frac{5}{6} \)</h4>
+              <div class="board-area">
+                <p class="font-bold mb-2">Step-by-Step Solution:</p>
+                <ol class="list-decimal list-inside space-y-2">
+                  <li><strong>Find the LCD of 4 and 6</strong>
+                    <br/>Multiples of 4: 4, 8, <span class="text-maroon font-bold">12</span>, 16...
+                    <br/>Multiples of 6: 6, <span class="text-maroon font-bold">12</span>, 18...
+                    <br/>LCD = 12
+                  </li>
+                  <li><strong>Convert \( \frac{3}{4} \) to denominator 12</strong>
+                    <br/>\( \frac{3}{4} = \frac{3 \times 3}{4 \times 3} = \frac{9}{12} \)
+                  </li>
+                  <li><strong>Convert \( \frac{5}{6} \) to denominator 12</strong>
+                    <br/>\( \frac{5}{6} = \frac{5 \times 2}{6 \times 2} = \frac{10}{12} \)
+                  </li>
+                  <li><strong>Compare numerators:</strong>
+                    <br/>9 < 10
+                    <br/>Therefore: \( \frac{9}{12} < \frac{10}{12} \)
+                  </li>
+                  <li><strong>Conclusion:</strong> \( \frac{3}{4} < \frac{5}{6} \) ✓</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 text-center">
+            <button class="btn maroon" onclick="showMethod(2)">Continue to Method 2 →</button>
           </div>
         </div>
 
-        <div class="card p-4">
-          <h3 class="text-xl font-bold text-maroon mb-2">Method 2: Cross-Multiplication<span class="level-badge level-medium">Medium</span></h3>
-          <div class="text-sm">
-            <p><strong>Example:</strong> Compare \( \frac{3}{4} \) and \( \frac{5}{6} \)</p>
-            <div class="board-area mt-2">
-              <p>Cross multiply: \( 3 \times 6 = 18 \)</p>
-              <p>Cross multiply: \( 5 \times 4 = 20 \)</p>
-              <p>Since 18 < 20, we have \( \frac{3}{4} < \frac{5}{6} \)</p>
+        <!-- Method 2 Container -->
+        <div id="method2Container" class="card p-5 mb-4" style="display:none;">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-2xl font-bold text-maroon">Method 2: Cross-Multiplication <span class="level-badge level-medium">Medium</span></h3>
+          </div>
+          
+          <div class="grid md:grid-cols-2 gap-4 text-left">
+            <div>
+              <h4 class="font-bold text-lg mb-2 text-qatar">What is this method?</h4>
+              <p class="mb-3">Cross-multiplication is a quick shortcut! To compare \( \frac{a}{b} \) and \( \frac{c}{d} \), we multiply <strong>diagonally</strong> and compare the products.</p>
+              
+              <div class="hint">
+                <strong>Key Idea:</strong> Multiply: \( a \times d \) and \( c \times b \)
+                <br/>The larger product tells you which fraction is larger!
+                <br/><span class="text-red-600">⚠️ Important: Only works when both denominators are positive!</span>
+              </div>
+
+              <h4 class="font-bold text-lg mt-3 mb-2 text-qatar">When to use it?</h4>
+              <ul class="list-disc list-inside text-sm space-y-1">
+                <li>Quick comparison needed</li>
+                <li>When LCD is hard to find</li>
+                <li>With positive denominators only</li>
+                <li>For multiple choice questions</li>
+              </ul>
             </div>
-            <button class="btn btn-sm" onclick="showMethodSteps(2)">Show Full Steps</button>
+
+            <div>
+              <h4 class="font-bold text-lg mb-2 text-qatar">Example: Compare \( \frac{3}{4} \) and \( \frac{5}{6} \)</h4>
+              <div class="board-area">
+                <p class="font-bold mb-2">Step-by-Step Solution:</p>
+                <ol class="list-decimal list-inside space-y-2">
+                  <li><strong>Write the fractions</strong>
+                    <br/>\( \frac{3}{4} \) ? \( \frac{5}{6} \)
+                  </li>
+                  <li><strong>Cross-multiply LEFT fraction</strong>
+                    <br/>Multiply numerator of left × denominator of right
+                    <br/>\( 3 \times 6 = 18 \)
+                  </li>
+                  <li><strong>Cross-multiply RIGHT fraction</strong>
+                    <br/>Multiply numerator of right × denominator of left
+                    <br/>\( 5 \times 4 = 20 \)
+                  </li>
+                  <li><strong>Compare the products:</strong>
+                    <br/>18 < 20
+                    <br/>Since the LEFT product is smaller, the LEFT fraction is smaller
+                  </li>
+                  <li><strong>Conclusion:</strong> \( \frac{3}{4} < \frac{5}{6} \) ✓</li>
+                </ol>
+                
+                <div class="mt-3 p-2 bg-blue-50 rounded border border-blue-200">
+                  <strong>Visual:</strong> Think of it like this:
+                  <br/>\( \frac{3}{4} \) gives 18 points
+                  <br/>\( \frac{5}{6} \) gives 20 points
+                  <br/>More points = bigger fraction!
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 text-center flex gap-2 justify-center">
+            <button class="btn" onclick="showMethod(1)">← Back to Method 1</button>
+            <button class="btn maroon" onclick="showMethod(3)">Continue to Method 3 →</button>
           </div>
         </div>
 
-        <div class="card p-4">
-          <h3 class="text-xl font-bold text-maroon mb-2">Method 3: Decimal Form<span class="level-badge level-hard">Advanced</span></h3>
-          <div class="text-sm">
-            <p><strong>Example:</strong> Compare \( \frac{3}{4} \) and \( \frac{5}{6} \)</p>
-            <div class="board-area mt-2">
-              <p>\( \frac{3}{4} = 0.75 \)</p>
-              <p>\( \frac{5}{6} \approx 0.833... \)</p>
-              <p>Since 0.75 < 0.833, we have \( \frac{3}{4} < \frac{5}{6} \)</p>
+        <!-- Method 3 Container -->
+        <div id="method3Container" class="card p-5 mb-4" style="display:none;">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-2xl font-bold text-maroon">Method 3: Decimal Conversion <span class="level-badge level-hard">Advanced</span></h3>
+          </div>
+          
+          <div class="grid md:grid-cols-2 gap-4 text-left">
+            <div>
+              <h4 class="font-bold text-lg mb-2 text-qatar">What is this method?</h4>
+              <p class="mb-3">Convert each fraction to its <strong>decimal form</strong> by dividing the numerator by the denominator. Then compare the decimals just like regular numbers!</p>
+              
+              <div class="hint">
+                <strong>Key Idea:</strong> \( \frac{3}{4} = 3 \div 4 = 0.75 \)
+                <br/>Comparing 0.75 and 0.833 is easier than comparing fractions!
+              </div>
+
+              <h4 class="font-bold text-lg mt-3 mb-2 text-qatar">When to use it?</h4>
+              <ul class="list-disc list-inside text-sm space-y-1">
+                <li>When you have a calculator</li>
+                <li>When fractions have large denominators</li>
+                <li>When comparing many fractions at once</li>
+                <li>In real-world contexts (money, measurements)</li>
+              </ul>
+
+              <div class="hint mt-3">
+                <strong>Pro Tip:</strong> Some fractions give repeating decimals like \( \frac{1}{3} = 0.333... \)
+                <br/>Use at least 3 decimal places for accuracy!
+              </div>
             </div>
-            <button class="btn btn-sm" onclick="showMethodSteps(3)">Show Full Steps</button>
+
+            <div>
+              <h4 class="font-bold text-lg mb-2 text-qatar">Example: Compare \( \frac{3}{4} \) and \( \frac{5}{6} \)</h4>
+              <div class="board-area">
+                <p class="font-bold mb-2">Step-by-Step Solution:</p>
+                <ol class="list-decimal list-inside space-y-2">
+                  <li><strong>Convert \( \frac{3}{4} \) to decimal</strong>
+                    <br/>Divide: 3 ÷ 4 = 0.75
+                    <br/>\( \frac{3}{4} = 0.75 \)
+                  </li>
+                  <li><strong>Convert \( \frac{5}{6} \) to decimal</strong>
+                    <br/>Divide: 5 ÷ 6 = 0.8333...
+                    <br/>\( \frac{5}{6} \approx 0.833 \) (rounded to 3 places)
+                  </li>
+                  <li><strong>Compare the decimals:</strong>
+                    <br/>0.75 < 0.833
+                    <br/>The smaller decimal means smaller fraction
+                  </li>
+                  <li><strong>Conclusion:</strong> \( \frac{3}{4} < \frac{5}{6} \) ✓</li>
+                </ol>
+                
+                <div class="mt-3 p-2 bg-green-50 rounded border border-green-200">
+                  <strong>Verification:</strong> All three methods give the same answer!
+                  <br/>✓ Method 1: \( \frac{9}{12} < \frac{10}{12} \)
+                  <br/>✓ Method 2: 18 < 20
+                  <br/>✓ Method 3: 0.75 < 0.833
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 text-center">
+            <button class="btn" onclick="showMethod(2)">← Back to Method 2</button>
+          </div>
+        </div>
+
+        <!-- Discussion Area -->
+        <div id="methodDiscussion" style="display:none;">
+          <div class="interactive-zone">
+            <h4 class="font-bold text-xl mb-2">🎓 Class Discussion Questions:</h4>
+            <ol class="list-decimal list-inside space-y-2 text-left">
+              <li>Which method do you find easiest? Why?</li>
+              <li>When would you choose Method 1 over Method 2?</li>
+              <li>Can you think of a situation where Method 3 would be best?</li>
+              <li>Try this challenge: Compare \( \frac{7}{12} \) and \( \frac{11}{18} \) using your favorite method!</li>
+              <li>What if one fraction is negative? Which methods still work?</li>
+            </ol>
           </div>
         </div>
       </div>
-
-      <div class="interactive-zone max-w-5xl mt-4">
-        <strong>🎓 Student Challenge:</strong> Choose your preferred method and explain to the class why you like it. Which method would you use for comparing \( \frac{7}{12} \) and \( \frac{11}{18} \)?
-      </div>
-
-      <div id="methodSteps" class="answer-reveal max-w-5xl"></div>
     </section>
 
     <!-- 4 • Student-Led Practice: Come to the Board -->
@@ -591,7 +738,7 @@
         </div>
       </div>
 
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[100px] banner rounded-md" style="background-image:url('../assets/qla_banner.png')"></div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[100px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
     </section>
 
   </div>
@@ -757,37 +904,29 @@ function discussWarmup(){
 }
 
 /* ======================= Methods Demonstration ======================= */
-function showMethodSteps(method){
-  const box = document.getElementById('methodSteps');
-  box.classList.add('show');
-  if(method===1){
-    box.innerHTML = `<h4 class="font-bold">Method 1: Common Denominator - Full Steps</h4>
-    <ol class="list-decimal list-inside ml-4">
-      <li>Find LCD of 4 and 6: LCD = 12</li>
-      <li>Convert \\(\\frac{3}{4}\\): multiply by \\(\\frac{3}{3}\\) → \\(\\frac{9}{12}\\)</li>
-      <li>Convert \\(\\frac{5}{6}\\): multiply by \\(\\frac{2}{2}\\) → \\(\\frac{10}{12}\\)</li>
-      <li>Compare numerators: 9 < 10</li>
-      <li>Therefore: \\(\\frac{3}{4} < \\frac{5}{6}\\)</li>
-    </ol>`;
-  } else if(method===2){
-    box.innerHTML = `<h4 class="font-bold">Method 2: Cross-Multiplication - Full Steps</h4>
-    <ol class="list-decimal list-inside ml-4">
-      <li>Multiply 3 × 6 = 18 (left fraction's numerator × right denominator)</li>
-      <li>Multiply 5 × 4 = 20 (right fraction's numerator × left denominator)</li>
-      <li>Compare: 18 < 20</li>
-      <li>Therefore: \\(\\frac{3}{4} < \\frac{5}{6}\\)</li>
-    </ol>
-    <p class="text-sm text-gray-600 mt-2">Note: This works when both denominators are positive!</p>`;
-  } else {
-    box.innerHTML = `<h4 class="font-bold">Method 3: Decimal Conversion - Full Steps</h4>
-    <ol class="list-decimal list-inside ml-4">
-      <li>Convert \\(\\frac{3}{4}\\): 3 ÷ 4 = 0.75</li>
-      <li>Convert \\(\\frac{5}{6}\\): 5 ÷ 6 ≈ 0.8333...</li>
-      <li>Compare decimals: 0.75 < 0.8333</li>
-      <li>Therefore: \\(\\frac{3}{4} < \\frac{5}{6}\\)</li>
-    </ol>`;
+function showMethod(methodNum){
+  // Hide all methods first
+  document.getElementById('method1Container').style.display = 'none';
+  document.getElementById('method2Container').style.display = 'none';
+  document.getElementById('method3Container').style.display = 'none';
+  document.getElementById('methodDiscussion').style.display = 'none';
+  
+  // Show the requested method
+  if(methodNum === 1){
+    document.getElementById('method1Container').style.display = 'block';
+  } else if(methodNum === 2){
+    document.getElementById('method2Container').style.display = 'block';
+  } else if(methodNum === 3){
+    document.getElementById('method3Container').style.display = 'block';
+    // After method 3, show discussion questions
+    document.getElementById('methodDiscussion').style.display = 'block';
   }
-  renderMath(box);
+  
+  // Re-render math
+  renderMath(document.getElementById('methodsSlide'));
+  
+  // Smooth scroll to top of slide
+  document.getElementById('methodsSlide').scrollTop = 0;
 }
 
 /* ======================= Board Work Functions ======================= */
