@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G7 • Comparing & Simplifying Rational Numbers — QLA Enhanced</title>
+<title>G7 • Unit 1 • Comparing & Simplifying Rational Numbers — QLA Enhanced</title>
 
 <!-- Fonts & Tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,959 +11,587 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- KaTeX -->
+<!-- KaTeX (robust auto-render) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const run = (root=document.body) => {
+      if (!window.renderMathInElement) return;
+      window.renderMathInElement(root, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '\\[', right: '\\]', display: true },
+          { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+      });
+    };
+    if (window.renderMathInElement) run();
+    else {
+      const t=setInterval(()=>{ if(window.renderMathInElement){ clearInterval(t); run(); }},25);
+      setTimeout(()=>clearInterval(t),6000);
+    }
+    window._rerenderMath = run;
+  });
+</script>
 
 <style>
-  :root{--maroon:#6C1D45;--gold:#C7A34F;--dark:#2C2C2E;--light:#F5F5F5;--accent:#E8D5B7;--qatar-red:#8D1B3D;--success:#22c55e;--warning:#f59e0b;--error:#ef4444}
-  *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;background:#1e293b;color:#111;font-family:Inter,system-ui,sans-serif}
-  
+  :root{--maroon:#6C1D45;--gold:#C7A34F;--dark:#2C2C2E;--light:#F5F5F5;--accent:#E8D5B7;--qatar:#8D1B3D}
+  html,body{height:100%;background:#2d3748;color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
   #deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
-  #slides{position:relative;width:100%;max-width:1400px;aspect-ratio:16/9;background:#fff;box-shadow:0 20px 50px rgba(0,0,0,.4);overflow:hidden;border-radius:20px}
+  #slides{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
 
-  .slide{position:absolute;inset:0;padding:3%;display:flex;flex-direction:column;opacity:0;transform:translateY(20px) scale(.97);transition:.6s cubic-bezier(.4,0,.2,1);pointer-events:none;overflow-y:auto}
+  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none;overflow-y:auto}
   .slide.active{opacity:1;transform:none;pointer-events:auto}
 
-  .bg-maroon{background:linear-gradient(135deg, var(--maroon) 0%, var(--qatar-red) 100%)}
-  .text-maroon{color:var(--maroon)}
+  .bg-maroon{background-color:var(--maroon)} 
+  .text-maroon{color:var(--maroon)} 
   .text-gold{color:var(--gold)}
-  
-  .banner{width:100%;height:100px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
+  .text-qatar{color:var(--qatar)}
+  .bg-qatar{background-color:var(--qatar)}
+  .banner{width:100%;height:110px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
 
-  .card{border:2px solid #e5e7eb;border-radius:16px;background:#fafafa;transition:.3s}
-  .card:hover{border-color:var(--gold);box-shadow:0 4px 12px rgba(0,0,0,.1)}
-  
-  .chip{display:inline-flex;align-items:center;gap:.4rem;background:rgba(108,29,69,.08);border:1px solid rgba(108,29,69,.2);border-radius:999px;padding:.4rem .85rem;cursor:pointer;transition:.2s;font-size:.95rem}
-  .chip:hover{background:var(--maroon);color:#fff;transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.15)}
-  
-  .btn{padding:.6rem 1.2rem;border-radius:999px;border:2px solid #e5e7eb;background:#fff;font-weight:700;cursor:pointer;transition:.2s;font-size:.95rem}
-  .btn:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.1)}
+  .card{border:1px solid #e5e7eb;border-radius:14px;background:#fafafa;transition:transform .2s,box-shadow .2s}
+  .card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+  .chip{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.05);border-radius:9999px;padding:.35rem .75rem;cursor:pointer;transition:all .2s}
+  .chip:hover{outline:2px solid var(--gold);transform:scale(1.05)}
+  .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700;cursor:pointer;transition:all .2s}
   .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
-  .btn.gold{background:var(--gold);color:#000;border-color:var(--gold)}
+  .btn.qatar{background:var(--qatar);color:#fff;border-color:var(--qatar)}
+  .btn:hover{filter:brightness(0.95);transform:scale(1.02)}
   .btn:disabled{opacity:.5;cursor:not-allowed}
 
-  .badge{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .7rem;border-radius:999px;font-size:.85rem;font-weight:700}
-  .badge.beginner{background:#dbeafe;color:#1e40af}
-  .badge.intermediate{background:#fef3c7;color:#92400e}
-  .badge.advanced{background:#fecaca;color:#991b1b}
-  .badge.mastered{background:#d1fae5;color:#065f46}
+  #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
+  #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700;transition:transform .2s}
+  #controls button:hover{transform:scale(1.06)}
+  #counter{color:#fff;font-weight:700;min-width:84px;text-align:center}
+  #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:30;transition:width .35s ease}
+  #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
 
-  #controls{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.6rem;background:rgba(0,0,0,.7);padding:.5rem .8rem;border-radius:999px;z-index:100;backdrop-filter:blur(10px)}
-  #controls button{width:44px;height:44px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700;transition:.2s}
-  #controls button:hover{transform:scale(1.1);box-shadow:0 4px 12px rgba(255,255,255,.3)}
-  #counter{color:#fff;font-weight:700;min-width:90px;text-align:center;font-size:.95rem}
-  
-  #progress{position:fixed;left:0;top:0;height:6px;width:0;background:linear-gradient(90deg, var(--gold), var(--maroon));z-index:101;transition:width .4s ease;box-shadow:0 2px 8px rgba(199,163,79,.5)}
-  
-  #teacherNotes{position:fixed;right:20px;top:20px;background:rgba(0,0,0,.8);color:#fff;padding:1rem;border-radius:12px;max-width:320px;z-index:99;backdrop-filter:blur(10px);display:none}
-  #teacherNotes.show{display:block}
-  #teacherToggle{position:fixed;right:20px;top:20px;z-index:100;background:var(--maroon);color:#fff;border:none;padding:.5rem 1rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:.85rem}
-
-  #studentProgress{position:fixed;left:20px;top:20px;background:rgba(255,255,255,.95);padding:1rem;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:99;max-width:280px}
-  #studentProgress .progress-bar{height:8px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:.5rem 0}
-  #studentProgress .progress-fill{height:100%;background:linear-gradient(90deg, var(--success), var(--gold));transition:width .5s}
-
-  .hint{background:#fffbeb;border:2px solid #fef3c7;border-radius:12px;padding:.8rem 1rem;border-left:4px solid var(--warning)}
-  .success-msg{background:#f0fdf4;border:2px solid #bbf7d0;border-radius:12px;padding:.8rem 1rem;border-left:4px solid var(--success)}
-  .error-msg{background:#fef2f2;border:2px solid #fecaca;border-radius:12px;padding:.8rem 1rem;border-left:4px solid var(--error)}
-
-  .confetti{position:fixed;pointer-events:none;z-index:200;font-size:2rem}
+  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem;margin:.5rem 0}
+  .student-instruction{background:#ddd6fe;border-left:4px solid #7c3aed;border-radius:10px;padding:.75rem 1rem;margin:.5rem 0;font-weight:600}
+  .student-work{background:#fef3c7;border:2px dashed #f59e0b;border-radius:10px;padding:1rem;margin:.5rem 0;min-height:80px}
+  .confetti{position:fixed;pointer-events:none;z-index:50}
 
   .sortable{list-style:none;padding:0;margin:0}
-  .sortable li{user-select:none;background:#fff;border:2px solid #e5e7eb;border-radius:12px;margin:.5rem 0;padding:.8rem 1rem;cursor:grab;transition:.2s;display:flex;align-items:center;gap:.8rem}
-  .sortable li:hover{border-color:var(--gold);transform:translateX(4px)}
-  .sortable .dragging{opacity:.6;transform:scale(.98);cursor:grabbing}
-  .handle{font-size:1.2rem;color:#9ca3af;cursor:grab}
+  .sortable li{user-select:none;background:#fff;border:1px solid #e5e7eb;border-radius:10px;margin:.3rem 0;padding:.6rem .8rem;cursor:grab;transition:all .2s}
+  .sortable .dragging{opacity:.55;transform:scale(.98)}
+  .sortable li:hover{background:#fafafa;box-shadow:0 2px 8px rgba(0,0,0,.1)}
 
-  input[type="text"], input[type="number"], select{border:2px solid #e5e7eb;border-radius:8px;padding:.5rem .8rem;font-size:.95rem;transition:.2s}
-  input:focus, select:focus{outline:none;border-color:var(--maroon);box-shadow:0 0 0 3px rgba(108,29,69,.1)}
-  input.correct{border-color:var(--success);background:#f0fdf4}
-  input.incorrect{border-color:var(--error);background:#fef2f2}
-
-  .qatar-context{background:linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%);border:2px solid var(--gold);border-radius:12px;padding:1rem;margin:1rem 0}
-  .qatar-icon{font-size:1.5rem;margin-right:.5rem}
-
-  .differentiation-tabs{display:flex;gap:.5rem;margin:1rem 0}
-  .diff-tab{padding:.6rem 1.2rem;border-radius:8px 8px 0 0;border:2px solid #e5e7eb;background:#f9fafb;cursor:pointer;font-weight:600;transition:.2s}
-  .diff-tab.active{background:#fff;border-bottom-color:#fff;color:var(--maroon)}
-  .diff-tab:hover{background:#fff}
-
-  .mastery-level{display:flex;gap:1rem;align-items:center;margin:1rem 0}
-  .mastery-level .level{flex:1;text-align:center;padding:.8rem;border-radius:8px;border:2px solid #e5e7eb;transition:.3s}
-  .mastery-level .level.active{border-color:var(--maroon);background:rgba(108,29,69,.05);transform:scale(1.05)}
-  .mastery-level .level.complete{background:var(--success);color:#fff;border-color:var(--success)}
-
-  @keyframes celebrate{0%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.2) rotate(180deg)}100%{transform:scale(1) rotate(360deg)}}
-  .celebrating{animation:celebrate .6s ease-in-out}
-
-  .peer-check{background:#eff6ff;border:2px dashed #3b82f6;border-radius:12px;padding:1rem;margin:1rem 0}
+  .level-badge{display:inline-block;padding:.25rem .5rem;border-radius:6px;font-size:.75rem;font-weight:700;margin-left:.5rem}
+  .level-easy{background:#dcfce7;color:#166534}
+  .level-medium{background:#fef3c7;color:#92400e}
+  .level-hard{background:#fecaca;color:#991b1b}
   
-  @media(max-width:768px){
-    #slides{aspect-ratio:4/3}
-    .slide{padding:2%;font-size:.9rem}
-    #studentProgress, #teacherNotes{position:static;margin:1rem}
-  }
+  .student-name{display:inline-block;background:var(--gold);color:#fff;padding:.25rem .75rem;border-radius:999px;font-weight:700;margin:.25rem}
+  
+  .popup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center}
+  .popup-overlay.active{display:flex}
+  .popup-content{background:#fff;border-radius:16px;padding:2rem;max-width:600px;max-height:80vh;overflow-y:auto}
+  
+  .board-area{background:#f8f9fa;border:3px solid var(--maroon);border-radius:12px;padding:1.5rem;min-height:200px;margin:1rem 0}
+  
+  .answer-reveal{background:#f0fdf4;border:2px solid #22c55e;border-radius:10px;padding:1rem;margin:.5rem 0;display:none}
+  .answer-reveal.show{display:block}
+
+  #pop{display:none;position:fixed;background:#fff;border:2px solid var(--gold);border-radius:12px;padding:1rem;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:90;max-width:400px}
+  #pop .close{position:absolute;top:8px;right:12px;cursor:pointer;font-size:1.5rem;font-weight:700;color:#666}
+  #pop .close:hover{color:#000}
+
+  .interactive-zone{border:2px dashed #60a5fa;background:#eff6ff;border-radius:12px;padding:1rem;margin:1rem 0}
+  
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+  .pulse{animation:pulse 2s infinite}
+  
+  .qatar-context{border-left:4px solid var(--qatar);padding-left:1rem;margin:1rem 0}
 </style>
 </head>
 <body>
 
-<button id="teacherToggle">👨‍🏫 Teacher Notes</button>
-<div id="teacherNotes"></div>
-
-<div id="studentProgress">
-  <div style="font-weight:700;color:var(--maroon);margin-bottom:.5rem">Your Progress</div>
-  <div class="progress-bar"><div class="progress-fill" id="masterBar" style="width:0%"></div></div>
-  <div style="font-size:.85rem;color:#666;margin-top:.3rem">
-    <span id="masterPercent">0</span>% Complete
-  </div>
-  <div style="margin-top:.8rem;font-size:.85rem">
-    <div>✅ <span id="completeCount">0</span> activities mastered</div>
-    <div>⭐ Streak: <span id="streakDisplay">0</span></div>
-  </div>
-</div>
-
 <div id="deck" aria-live="polite">
   <div id="slides" class="relative">
+    <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
 
-    <!-- 0 • Title & Welcome -->
+    <!-- 0 • Title -->
     <section class="slide active bg-maroon text-white" id="titleSlide">
-      <div style="text-align:center">
-        <h1 style="font-size:3.5rem;font-weight:800;margin-bottom:1rem;text-shadow:2px 2px 4px rgba(0,0,0,.3)">
-           • Welcome • Comparing & Simplifying Rational Numbers
-        </h1>
-        <p class="text-gold" style="font-size:1.8rem;font-weight:600;margin-bottom:1.5rem">
-          Master Fractions • Decimals • Mixed Numbers in Qatar Context
-        </p>
-        <div style="font-size:1.2rem;margin-bottom:2rem">
-          🏛️ Qatar Leadership Academy — Grade 7 Mathematics
-        </div>
-        <div style="background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border-radius:12px;padding:1.5rem;max-width:800px;margin:0 auto">
-          <div style="font-size:1.1rem;margin-bottom:1rem;font-weight:600">🎯 Today's Journey</div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;text-align:center">
-            <div><div style="font-size:2rem">📊</div><div>Explore</div></div>
-            <div><div style="font-size:2rem">🎓</div><div>Practice</div></div>
-            <div><div style="font-size:2rem">🌍</div><div>Apply</div></div>
-            <div><div style="font-size:2rem">🏆</div><div>Master</div></div>
-          </div>
+      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="QLA Partner Banner"></div>
+      <div class="flex items-center gap-8">
+        <img src="qla_logo.png" alt="QLA Logo" class="h-20 w-auto" onerror="this.style.display='none'"/>
+        <div class="text-left">
+          <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Comparing & Simplifying Rational Numbers</h1>
+          <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Fractions • Decimals • Mixed Numbers • Order & Equivalence</p>
+          <p class="mt-2 text-lg">Qatar Leadership Academy — Grade 7 • Enhanced Interactive Edition</p>
         </div>
       </div>
-      <div style="position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);font-size:.9rem;opacity:.9">
-        Aligned to AERO 7.NS.1 & 7.NS.2 | Student-Centered Mastery Learning
-      </div>
+      <div class="absolute bottom-6 text-sm text-gray-100">Aligned to AERO 7.NS.1 & 7.NS.2 | Qatar Context Integrated</div>
     </section>
 
-    <!-- 1 • Learning Goals & Success Criteria (Student-Centered) -->
-    <section class="slide" id="goalsSlide">
-      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1.5rem;text-align:center">
-        📚 What Will You Master Today?
-      </h2>
+    <!-- 1 • Learning Objectives & Success Criteria -->
+    <section class="slide" id="loSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-3">Learning Objectives & Success Criteria</h2>
       
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:1200px;margin:0 auto">
-        <div class="card" style="padding:1.5rem">
-          <h3 style="font-size:1.5rem;font-weight:700;color:var(--maroon);margin-bottom:1rem">
-            🎯 I Can Statements
-          </h3>
-          <div style="space-y:.8rem">
-            <div style="display:flex;gap:.8rem;margin-bottom:.8rem">
-              <input type="checkbox" id="goal1" style="width:20px;height:20px;cursor:pointer">
-              <label for="goal1" style="cursor:pointer">I can <strong>simplify fractions</strong> to their simplest form using GCF</label>
-            </div>
-            <div style="display:flex;gap:.8rem;margin-bottom:.8rem">
-              <input type="checkbox" id="goal2" style="width:20px;height:20px;cursor:pointer">
-              <label for="goal2" style="cursor:pointer">I can <strong>compare rational numbers</strong> using 3 different methods</label>
-            </div>
-            <div style="display:flex;gap:.8rem;margin-bottom:.8rem">
-              <input type="checkbox" id="goal3" style="width:20px;height:20px;cursor:pointer">
-              <label for="goal3" style="cursor:pointer">I can <strong>order fractions</strong> from least to greatest and explain why</label>
-            </div>
-            <div style="display:flex;gap:.8rem;margin-bottom:.8rem">
-              <input type="checkbox" id="goal4" style="width:20px;height:20px;cursor:pointer">
-              <label for="goal4" style="cursor:pointer">I can <strong>apply rational numbers</strong> to solve Qatar real-world problems</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="padding:1.5rem">
-          <h3 style="font-size:1.5rem;font-weight:700;color:var(--maroon);margin-bottom:1rem">
-            🔑 Key Vocabulary (Tap to Learn)
-          </h3>
-          <div style="display:flex;flex-wrap:wrap;gap:.6rem">
-            <span class="chip" data-key="rat">rational number (عدد نسبي)</span>
-            <span class="chip" data-key="eqv">equivalent fractions (كسور متساوية)</span>
-            <span class="chip" data-key="simp">simplest form (أبسط صورة)</span>
-            <span class="chip" data-key="gcf">GCF (ع.م.أ)</span>
-            <span class="chip" data-key="lcd">LCD (م.م.أ)</span>
-            <span class="chip" data-key="cross">cross-multiplication</span>
-            <span class="chip" data-key="mixed">mixed number (عدد كسري)</span>
-            <span class="chip" data-key="qar">QAR (Qatari Riyal)</span>
-          </div>
-          <div class="hint" style="margin-top:1rem;font-size:.9rem">
-            💡 <strong>Learning Tip:</strong> You'll use these concepts to solve problems about Qatar's economy, sports, and daily life!
-          </div>
-        </div>
+      <div class="student-instruction text-left max-w-5xl mb-3">
+        <strong>🤔 Think & Share:</strong> When have you used fractions in your daily life in Qatar? Think about shopping, sharing food, or cooking. Share one example with your partner.
       </div>
 
-      <div class="mastery-level" style="margin-top:1.5rem;max-width:1000px;margin-left:auto;margin-right:auto">
-        <div class="level" data-level="1">
-          <div style="font-size:2rem">🌱</div>
-          <div style="font-weight:700">Level 1: Explore</div>
-          <div style="font-size:.85rem;color:#666">Understand concepts</div>
-        </div>
-        <div class="level" data-level="2">
-          <div style="font-size:2rem">🌿</div>
-          <div style="font-weight:700">Level 2: Practice</div>
-          <div style="font-size:.85rem;color:#666">Build skills</div>
-        </div>
-        <div class="level" data-level="3">
-          <div style="font-size:2rem">🌳</div>
-          <div style="font-weight:700">Level 3: Apply</div>
-          <div style="font-size:.85rem;color:#666">Real-world problems</div>
-        </div>
-        <div class="level" data-level="4">
-          <div style="font-size:2rem">🏆</div>
-          <div style="font-weight:700">Level 4: Master</div>
-          <div style="font-size:.85rem;color:#666">Teach others</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2 • Think-Pair-Share Warm-Up (Qatar Context) -->
-    <section class="slide" id="warmupSlide">
-      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1rem;text-align:center">
-        🤔 Think • 👥 Pair • 💬 Share
-      </h2>
-      
-      <div class="qatar-context" style="max-width:900px;margin:1rem auto">
-        <div style="font-size:1.3rem;font-weight:700;margin-bottom:1rem">
-          🏟️ Scenario: Khalifa International Stadium Seating
-        </div>
-        <div style="font-size:1.1rem;line-height:1.6;margin-bottom:1rem">
-          During a Qatar Stars League match:
-          <ul style="margin-left:2rem;margin-top:.5rem">
-            <li>Section A is <strong>\(\frac{3}{4}\)</strong> full</li>
-            <li>Section B is <strong>\(\frac{7}{10}\)</strong> full</li>
-            <li>Section C is <strong>0.72</strong> full</li>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-2">By the end of this lesson, I can:</h3>
+          <ul class="list-disc list-inside space-y-2 text-lg">
+            <li>✓ Simplify fractions to <b>simplest form</b> using GCF</li>
+            <li>✓ Compare rational numbers using <b>3 different methods</b></li>
+            <li>✓ Order rational numbers from least to greatest</li>
+            <li>✓ Apply these skills to <b>Qatar real-world problems</b></li>
+            <li>✓ Explain my thinking clearly to others</li>
           </ul>
         </div>
-        <div style="background:#fff;border-radius:8px;padding:1rem;margin:1rem 0">
-          <div style="font-weight:700;margin-bottom:.5rem">🤔 THINK (2 minutes)</div>
-          <div style="font-size:.95rem">Which section has the most fans? How can you tell without converting to decimals?</div>
-          <textarea id="thinkBox" style="width:100%;margin-top:.5rem;padding:.5rem;border-radius:6px;border:2px solid #e5e7eb;min-height:60px" placeholder="Write your thoughts..."></textarea>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-          <div style="background:#fff;border-radius:8px;padding:1rem">
-            <div style="font-weight:700;margin-bottom:.5rem">👥 PAIR (3 minutes)</div>
-            <div style="font-size:.9rem">Discuss with your partner. What strategies did you each use?</div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-2">Key Vocabulary (Click to Explore)</h3>
+          <div class="flex flex-wrap gap-2 text-lg">
+            <span class="chip" data-key="rat">rational number</span>
+            <span class="chip" data-key="eqv">equivalent fractions</span>
+            <span class="chip" data-key="simp">simplest form</span>
+            <span class="chip" data-key="gcf">GCF</span>
+            <span class="chip" data-key="lcd">LCD</span>
+            <span class="chip" data-key="cross">cross-multiplication</span>
+            <span class="chip" data-key="mixed">mixed number</span>
           </div>
-          <div style="background:#fff;border-radius:8px;padding:1rem">
-            <div style="font-weight:700;margin-bottom:.5rem">💬 SHARE (3 minutes)</div>
-            <div style="font-size:.9rem">Share your group's best strategy with the class.</div>
-          </div>
-        </div>
-      </div>
-
-      <div style="text-align:center;margin-top:1rem">
-        <button class="btn maroon" onclick="showAnswer()">🔍 Reveal Answer & Strategies</button>
-        <div id="warmupAnswer" style="display:none;margin-top:1rem;max-width:800px;margin-left:auto;margin-right:auto"></div>
-      </div>
-    </section>
-
-    <!-- 3 • Guided Learning: Simplifying (Differentiated) -->
-    <section class="slide" id="simplifyLearnSlide">
-      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1rem;text-align:center">
-        📐 Simplifying Fractions: Your Way
-      </h2>
-
-      <div class="differentiation-tabs">
-        <div class="diff-tab active" data-diff="visual">🎨 Visual Learner</div>
-        <div class="diff-tab" data-diff="steps">📝 Step-by-Step</div>
-        <div class="diff-tab" data-diff="practice">✏️ Try It Now</div>
-      </div>
-
-      <div class="diff-content active" id="diff-visual">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:1100px;margin:0 auto">
-          <div class="card" style="padding:1.5rem">
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">🖼️ Visual Model</h3>
-            <div style="text-align:center">
-              <div style="font-size:1.2rem;margin-bottom:1rem">Simplifying \(\frac{12}{18}\)</div>
-              <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:1rem">
-                <div style="aspect-ratio:1;background:#ef4444;border-radius:4px"></div>
-                <div style="aspect-ratio:1;background:#ef4444;border-radius:4px"></div>
-                <div style="aspect-ratio:1;background:#3b82f6;border-radius:4px"></div>
-                <div style="aspect-ratio:1;background:#3b82f6;border-radius:4px"></div>
-                <div style="aspect-ratio:1;background:#22c55e;border-radius:4px"></div>
-                <div style="aspect-ratio:1;background:#22c55e;border-radius:4px"></div>
-              </div>
-              <div style="font-size:.95rem;color:#666;margin:1rem 0">
-                12 shaded out of 18 total = 6 groups of 2 out of 9 groups of 2
-              </div>
-              <div style="font-size:1.3rem;font-weight:700;color:var(--success)">
-                \(\frac{12}{18} = \frac{12 \div 6}{18 \div 6} = \frac{2}{3}\)
-              </div>
-            </div>
-          </div>
-
-          <div class="card" style="padding:1.5rem">
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">🔢 Factor Tree Method</h3>
-            <div id="factorViz" style="font-size:1.1rem;line-height:1.8">
-              <div><strong>12</strong> = 2 × 2 × 3</div>
-              <div><strong>18</strong> = 2 × 3 × 3</div>
-              <div style="margin:1rem 0;padding:1rem;background:#fffbeb;border-radius:8px">
-                <strong>Common factors:</strong> 2 × 3 = 6<br>
-                <strong>GCF = 6</strong>
-              </div>
-              <div style="font-size:1.2rem;font-weight:700;color:var(--maroon)">
-                \(\frac{12 \div 6}{18 \div 6} = \frac{2}{3}\)
-              </div>
-            </div>
+          <div class="mt-3">
+            <button class="btn maroon" onclick="openVocabQuiz()">Vocabulary Challenge</button>
           </div>
         </div>
       </div>
 
-      <div class="diff-content" id="diff-steps" style="display:none">
-        <div class="card" style="padding:2rem;max-width:900px;margin:0 auto">
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1.5rem;font-size:1.3rem">
-            📋 Step-by-Step Process
-          </h3>
-          <div style="display:grid;gap:1rem">
-            <div style="display:flex;gap:1rem;padding:1rem;background:#f0fdf4;border-radius:8px;border-left:4px solid var(--success)">
-              <div style="font-size:1.5rem;font-weight:700;color:var(--success);min-width:2rem">1</div>
-              <div>
-                <div style="font-weight:700;margin-bottom:.3rem">Find the GCF</div>
-                <div>List factors or use prime factorization to find the Greatest Common Factor</div>
-              </div>
-            </div>
-            <div style="display:flex;gap:1rem;padding:1rem;background:#dbeafe;border-radius:8px;border-left:4px solid #3b82f6">
-              <div style="font-size:1.5rem;font-weight:700;color:#3b82f6;min-width:2rem">2</div>
-              <div>
-                <div style="font-weight:700;margin-bottom:.3rem">Divide Both Parts</div>
-                <div>Divide numerator AND denominator by the GCF</div>
-              </div>
-            </div>
-            <div style="display:flex;gap:1rem;padding:1rem;background:#fef3c7;border-radius:8px;border-left:4px solid var(--warning)">
-              <div style="font-size:1.5rem;font-weight:700;color:var(--warning);min-width:2rem">3</div>
-              <div>
-                <div style="font-weight:700;margin-bottom:.3rem">Check Your Answer</div>
-                <div>The numerator and denominator should have no common factors except 1</div>
-              </div>
-            </div>
-          </div>
-          <div class="hint" style="margin-top:1.5rem">
-            <strong>💡 Pro Tip:</strong> You can simplify in multiple steps! Divide by 2, then 3, then 2 again - it all works!
-          </div>
-        </div>
-      </div>
-
-      <div class="diff-content" id="diff-practice" style="display:none">
-        <div class="card" style="padding:2rem;max-width:900px;margin:0 auto">
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">✏️ Your Turn: Interactive Practice</h3>
-          <div id="simplifyPractice"></div>
-        </div>
+      <div class="interactive-zone max-w-5xl mt-4">
+        <strong>Quick Check:</strong> Turn to your partner and explain what a rational number is in your own words.
       </div>
     </section>
 
-    <!-- 4 • Comparing Methods (Student Discovery) -->
-    <section class="slide" id="compareMethodsSlide">
-      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1rem;text-align:center">
-        ⚖️ Three Ways to Compare - You Choose!
-      </h2>
+    <!-- 2 • Warm-Up: Real Qatar Context -->
+    <section class="slide" id="warmupSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm-Up: Fractions Around Us in Qatar</h2>
+      
+      <div class="student-instruction text-left max-w-5xl">
+        <strong>📝 Your Task:</strong> Look at the three scenarios below. Work with your group to solve each problem. Write your answers in the yellow boxes. Be ready to explain your thinking to the class!
+      </div>
 
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1200px;margin:0 auto">
-        <div class="card" style="padding:1.5rem;cursor:pointer;transition:.3s" onclick="showMethod('lcd')">
-          <div style="text-align:center">
-            <div style="font-size:3rem;margin-bottom:.5rem">1️⃣</div>
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:.8rem">Common Denominator</h3>
-            <div style="font-size:.95rem;line-height:1.6;color:#666">
-              Make denominators the same, then compare numerators
+      <div class="grid md:grid-cols-3 gap-4 w-full max-w-5xl">
+        <div class="card p-4 qatar-context">
+          <h4 class="font-bold text-qatar">🛒 Shopping at Carrefour</h4>
+          <p class="text-sm mt-2">A 2 kg bag of rice costs 15 QAR. You buy \( \frac{3}{4} \) kg. How much do you pay?</p>
+          <div class="student-work mt-2" contenteditable="true" data-answer="11.25"></div>
+        </div>
+        <div class="card p-4 qatar-context">
+          <h4 class="font-bold text-qatar">⚽ Sports Day</h4>
+          <p class="text-sm mt-2">In PE class, \( \frac{5}{8} \) of students chose football, \( \frac{3}{5} \) chose basketball. Which is more popular?</p>
+          <div class="student-work mt-2" contenteditable="true" data-answer="football"></div>
+        </div>
+        <div class="card p-4 qatar-context">
+          <h4 class="font-bold text-qatar">🏗️ Building Project</h4>
+          <p class="text-sm mt-2">A construction project in Lusail is \( \frac{15}{20} \) complete. Simplify this fraction.</p>
+          <div class="student-work mt-2" contenteditable="true" data-answer="3/4"></div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <button class="btn maroon" onclick="checkWarmup()">Check Our Answers</button>
+        <button class="btn" onclick="discussWarmup()">Class Discussion</button>
+      </div>
+      <div id="warmupFb" class="mt-2 font-semibold"></div>
+    </section>
+
+    <!-- 3 • Guided Exploration: Three Methods to Compare -->
+    <section class="slide" id="methodsSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Three Methods to Compare Fractions</h2>
+      
+      <div class="student-instruction text-left max-w-5xl mb-3">
+        <strong>🎓 Learning Challenge:</strong> 
+        <ul class="list-decimal list-inside ml-4 mt-2">
+          <li>Watch the demonstration of Method 1 with a classmate at the board</li>
+          <li>Practice Method 2 with your partner - take turns explaining each step</li>
+          <li>If you're ready for a challenge, try Method 3 on your own!</li>
+          <li><strong>Question:</strong> Which method do you find easiest? Why?</li>
+        </ul>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4 w-full max-w-5xl text-left">
+        <div class="card p-4">
+          <h3 class="text-xl font-bold text-maroon mb-2">Method 1: Common Denominator<span class="level-badge level-easy">Easy</span></h3>
+          <div class="text-sm">
+            <p><strong>Example:</strong> Compare \( \frac{3}{4} \) and \( \frac{5}{6} \)</p>
+            <div class="board-area mt-2">
+              <p>LCD = 12</p>
+              <p>\( \frac{3}{4} = \frac{9}{12} \)</p>
+              <p>\( \frac{5}{6} = \frac{10}{12} \)</p>
+              <p>So \( \frac{9}{12} < \frac{10}{12} \)</p>
             </div>
-            <div style="margin-top:1rem;padding:1rem;background:#f9fafb;border-radius:8px">
-              <div style="font-size:.9rem">\(\frac{3}{4}\) vs \(\frac{5}{6}\)</div>
-              <div style="font-size:.9rem;margin-top:.5rem">\(\frac{9}{12}\) vs \(\frac{10}{12}\)</div>
-            </div>
-            <button class="btn maroon" style="margin-top:1rem">Explore This Method</button>
+            <button class="btn btn-sm" onclick="showMethodSteps(1)">Show Full Steps</button>
           </div>
         </div>
 
-        <div class="card" style="padding:1.5rem;cursor:pointer;transition:.3s" onclick="showMethod('cross')">
-          <div style="text-align:center">
-            <div style="font-size:3rem;margin-bottom:.5rem">2️⃣</div>
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:.8rem">Cross-Multiplication</h3>
-            <div style="font-size:.95rem;line-height:1.6;color:#666">
-              Compare products: \(a \times d\) vs \(b \times c\)
+        <div class="card p-4">
+          <h3 class="text-xl font-bold text-maroon mb-2">Method 2: Cross-Multiplication<span class="level-badge level-medium">Medium</span></h3>
+          <div class="text-sm">
+            <p><strong>Example:</strong> Compare \( \frac{3}{4} \) and \( \frac{5}{6} \)</p>
+            <div class="board-area mt-2">
+              <p>Cross multiply: \( 3 \times 6 = 18 \)</p>
+              <p>Cross multiply: \( 5 \times 4 = 20 \)</p>
+              <p>Since 18 < 20, we have \( \frac{3}{4} < \frac{5}{6} \)</p>
             </div>
-            <div style="margin-top:1rem;padding:1rem;background:#f9fafb;border-radius:8px">
-              <div style="font-size:.9rem">\(\frac{3}{4}\) vs \(\frac{5}{6}\)</div>
-              <div style="font-size:.9rem;margin-top:.5rem">3×6=18 vs 4×5=20</div>
-            </div>
-            <button class="btn maroon" style="margin-top:1rem">Explore This Method</button>
+            <button class="btn btn-sm" onclick="showMethodSteps(2)">Show Full Steps</button>
           </div>
         </div>
 
-        <div class="card" style="padding:1.5rem;cursor:pointer;transition:.3s" onclick="showMethod('decimal')">
-          <div style="text-align:center">
-            <div style="font-size:3rem;margin-bottom:.5rem">3️⃣</div>
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:.8rem">Convert to Decimals</h3>
-            <div style="font-size:.95rem;line-height:1.6;color:#666">
-              Divide and compare decimal values
+        <div class="card p-4">
+          <h3 class="text-xl font-bold text-maroon mb-2">Method 3: Decimal Form<span class="level-badge level-hard">Advanced</span></h3>
+          <div class="text-sm">
+            <p><strong>Example:</strong> Compare \( \frac{3}{4} \) and \( \frac{5}{6} \)</p>
+            <div class="board-area mt-2">
+              <p>\( \frac{3}{4} = 0.75 \)</p>
+              <p>\( \frac{5}{6} \approx 0.833... \)</p>
+              <p>Since 0.75 < 0.833, we have \( \frac{3}{4} < \frac{5}{6} \)</p>
             </div>
-            <div style="margin-top:1rem;padding:1rem;background:#f9fafb;border-radius:8px">
-              <div style="font-size:.9rem">\(\frac{3}{4}\) vs \(\frac{5}{6}\)</div>
-              <div style="font-size:.9rem;margin-top:.5rem">0.75 vs 0.833...</div>
-            </div>
-            <button class="btn maroon" style="margin-top:1rem">Explore This Method</button>
+            <button class="btn btn-sm" onclick="showMethodSteps(3)">Show Full Steps</button>
           </div>
         </div>
       </div>
 
-      <div id="methodDetail" style="display:none;margin-top:2rem;max-width:1000px;margin-left:auto;margin-right:auto"></div>
+      <div class="interactive-zone max-w-5xl mt-4">
+        <strong>🎓 Student Challenge:</strong> Choose your preferred method and explain to the class why you like it. Which method would you use for comparing \( \frac{7}{12} \) and \( \frac{11}{18} \)?
+      </div>
 
-      <div class="peer-check" style="margin-top:1.5rem;max-width:900px;margin-left:auto;margin-right:auto">
-        <div style="font-weight:700;margin-bottom:.5rem">👥 Peer Discussion Prompt:</div>
-        <div>Which method do YOU prefer? Why? When would each method be most useful?</div>
-        <div style="margin-top:.5rem;font-size:.9rem;color:#666">
-          Share with your partner: Explain your favorite method as if teaching a younger student.
+      <div id="methodSteps" class="answer-reveal max-w-5xl"></div>
+    </section>
+
+    <!-- 4 • Student-Led Practice: Come to the Board -->
+    <section class="slide" id="boardSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice: Come to the Board!</h2>
+      
+      <div class="student-instruction text-left max-w-5xl mb-3">
+        <strong>🙋 Volunteer Opportunity:</strong> Four students will be selected to come to the board and solve one problem each. While they work, you should solve all problems in your notebook. Then we'll discuss the solutions together. Who's ready to show their skills?
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4 w-full max-w-5xl">
+        <div class="card p-5">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-bold text-lg">Problem 1: Simplify</h4>
+            <input type="text" id="student1Name" placeholder="Student name" class="border rounded px-2 py-1 text-sm"/>
+          </div>
+          <div class="text-xl mb-2">Simplify: \( \frac{84}{126} \)</div>
+          <div class="board-area" id="board1" contenteditable="true"></div>
+          <button class="btn maroon mt-2" onclick="revealAnswer(1, '2/3')">Show Answer</button>
+          <div id="answer1" class="answer-reveal"></div>
         </div>
+
+        <div class="card p-5">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-bold text-lg">Problem 2: Compare</h4>
+            <input type="text" id="student2Name" placeholder="Student name" class="border rounded px-2 py-1 text-sm"/>
+          </div>
+          <div class="text-xl mb-2">Compare: \( \frac{7}{12} \) __ \( \frac{11}{18} \)</div>
+          <div class="board-area" id="board2" contenteditable="true"></div>
+          <button class="btn maroon mt-2" onclick="revealAnswer(2, '<')">Show Answer</button>
+          <div id="answer2" class="answer-reveal"></div>
+        </div>
+
+        <div class="card p-5">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-bold text-lg">Problem 3: Qatar Context</h4>
+            <input type="text" id="student3Name" placeholder="Student name" class="border rounded px-2 py-1 text-sm"/>
+          </div>
+          <div class="text-md mb-2">At Souq Waqif, mangoes are \( \frac{12}{20} \) off and dates are \( \frac{9}{15} \) off. Which discount is better?</div>
+          <div class="board-area" id="board3" contenteditable="true"></div>
+          <button class="btn maroon mt-2" onclick="revealAnswer(3, 'same')">Show Answer</button>
+          <div id="answer3" class="answer-reveal"></div>
+        </div>
+
+        <div class="card p-5">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-bold text-lg">Problem 4: Mixed Challenge</h4>
+            <input type="text" id="student4Name" placeholder="Student name" class="border rounded px-2 py-1 text-sm"/>
+          </div>
+          <div class="text-xl mb-2">Order: \( \frac{5}{8}, \frac{3}{5}, \frac{7}{10} \)</div>
+          <div class="board-area" id="board4" contenteditable="true"></div>
+          <button class="btn maroon mt-2" onclick="revealAnswer(4, '3/5, 5/8, 7/10')">Show Answer</button>
+          <div id="answer4" class="answer-reveal"></div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <button class="btn qatar" onclick="celebrateStudents()">Celebrate Student Work! 🎉</button>
       </div>
     </section>
 
-    <!-- 5 • Qatar Real-World Problems (Scaffolded) -->
-    <section class="slide" id="qatarProblemsSlide">
-      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1rem;text-align:center">
-        🌍 Math in Qatar: Real-World Applications
-      </h2>
-
-      <div style="text-align:center;margin-bottom:1.5rem">
-        <div class="badge beginner" style="font-size:1rem">Select Your Level</div>
-        <div style="margin-top:.8rem;display:flex;gap:.8rem;justify-content:center">
-          <button class="btn level-btn active" data-level="beginner">🌱 Beginner</button>
-          <button class="btn level-btn" data-level="intermediate">🌿 Intermediate</button>
-          <button class="btn level-btn" data-level="advanced">🌳 Advanced</button>
-        </div>
+    <!-- 5 • Differentiated Practice Stations -->
+    <section class="slide" id="stationsSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice Stations (Differentiated)</h2>
+      
+      <div class="student-instruction text-left max-w-5xl mb-3">
+        <strong>🎯 Choose Your Challenge Level:</strong> Select the level that matches where you are right now. Remember: it's okay to start at any level! You can always move up when you're ready. Growth mindset means challenging yourself at the right level.
       </div>
 
-      <div id="qatar-beginner" class="qatar-level-content">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:1200px;margin:0 auto">
-          <div class="card" style="padding:1.5rem">
-            <div class="qatar-icon">🛍️</div>
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">Souq Waqif Shopping</h3>
-            <div style="font-size:1.05rem;line-height:1.6;margin-bottom:1rem">
-              You have 100 QAR to spend. You spend:
-              <ul style="margin-left:1.5rem;margin-top:.5rem">
-                <li>\(\frac{2}{5}\) on traditional clothes</li>
-                <li>\(\frac{3}{10}\) on spices</li>
-              </ul>
-              <strong>Which cost more?</strong>
-            </div>
-            <div style="background:#f9fafb;padding:1rem;border-radius:8px;margin-bottom:1rem">
-              <div style="font-weight:600;margin-bottom:.5rem">Scaffold:</div>
-              <div style="font-size:.9rem">
-                Hint: Make both fractions have denominator 10
-              </div>
-              <input type="text" id="qatar1" placeholder="clothes or spices?" style="width:100%;margin-top:.5rem">
-            </div>
-            <button class="btn maroon" onclick="checkQatar(1)">Check Answer</button>
-            <div id="feedback1" style="margin-top:.5rem"></div>
-          </div>
-
-          <div class="card" style="padding:1.5rem">
-            <div class="qatar-icon">⚽</div>
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">Aspire Zone Training</h3>
-            <div style="font-size:1.05rem;line-height:1.6;margin-bottom:1rem">
-              Ahmed runs \(\frac{3}{4}\) of the track.<br>
-              Sara runs \(\frac{5}{6}\) of the track.<br>
-              <strong>Who ran farther?</strong>
-            </div>
-            <div style="background:#f9fafb;padding:1rem;border-radius:8px;margin-bottom:1rem">
-              <div style="font-weight:600;margin-bottom:.5rem">Scaffold:</div>
-              <div style="font-size:.9rem">
-                Try: \(\frac{3}{4} = \frac{?}{12}\) and \(\frac{5}{6} = \frac{?}{12}\)
-              </div>
-              <input type="text" id="qatar2" placeholder="Ahmed or Sara?" style="width:100%;margin-top:.5rem">
-            </div>
-            <button class="btn maroon" onclick="checkQatar(2)">Check Answer</button>
-            <div id="feedback2" style="margin-top:.5rem"></div>
-          </div>
-        </div>
+      <div class="flex gap-3 mb-4 justify-center">
+        <button class="btn" onclick="selectStation('emerging')">🌱 Emerging (Level 1)</button>
+        <button class="btn" onclick="selectStation('developing')">📚 Developing (Level 2)</button>
+        <button class="btn" onclick="selectStation('proficient')">⭐ Proficient (Level 3)</button>
+        <button class="btn" onclick="selectStation('advanced')">🚀 Advanced (Level 4)</button>
       </div>
 
-      <div id="qatar-intermediate" class="qatar-level-content" style="display:none">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:1200px;margin:0 auto">
-          <div class="card" style="padding:1.5rem">
-            <div class="qatar-icon">💰</div>
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">Currency Exchange</h3>
-            <div style="font-size:1.05rem;line-height:1.6;margin-bottom:1rem">
-              Three exchange shops in Doha offer these rates for 1 USD:
-              <ul style="margin-left:1.5rem;margin-top:.5rem">
-                <li>Shop A: \(3\frac{2}{3}\) QAR</li>
-                <li>Shop B: 3.64 QAR</li>
-                <li>Shop C: \(\frac{73}{20}\) QAR</li>
-              </ul>
-              <strong>Which shop gives you the MOST QAR per dollar?</strong>
-            </div>
-            <div style="background:#f9fafb;padding:1rem;border-radius:8px;margin-bottom:1rem">
-              <div style="font-weight:600;margin-bottom:.5rem">Strategy:</div>
-              <div style="font-size:.9rem">
-                Convert all to decimals OR use common denominator of 60
-              </div>
-              <input type="text" id="qatar3" placeholder="A, B, or C?" style="width:100%;margin-top:.5rem">
-            </div>
-            <button class="btn maroon" onclick="checkQatar(3)">Check Answer</button>
-            <div id="feedback3" style="margin-top:.5rem"></div>
-          </div>
+      <div id="stationContent" class="w-full max-w-5xl"></div>
+    </section>
 
-          <div class="card" style="padding:1.5rem">
-            <div class="qatar-icon">🏗️</div>
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">Lusail Construction</h3>
-            <div style="font-size:1.05rem;line-height:1.6;margin-bottom:1rem">
-              Three buildings are under construction:
-              <ul style="margin-left:1.5rem;margin-top:.5rem">
-                <li>Tower A: \(\frac{7}{8}\) complete</li>
-                <li>Tower B: 0.82 complete</li>
-                <li>Tower C: \(\frac{17}{20}\) complete</li>
-              </ul>
-              <strong>Order them from LEAST to MOST complete.</strong>
-            </div>
-            <input type="text" id="qatar4" placeholder="e.g., B < C < A" style="width:100%;margin-bottom:.5rem">
-            <button class="btn maroon" onclick="checkQatar(4)">Check Answer</button>
-            <div id="feedback4" style="margin-top:.5rem"></div>
-          </div>
-        </div>
+    <!-- 6 • Qatar Real-World Applications -->
+    <section class="slide" id="qatarSlide">
+      <h2 class="text-3xl font-extrabold text-qatar mb-2">🇶🇦 Qatar Real-World Challenges</h2>
+      
+      <div class="student-instruction text-left max-w-5xl mb-3">
+        <strong>👥 Group Work Time:</strong> Form groups of 3-4 students. Your group will tackle one real-world challenge from Qatar. Work together to find the solution, then choose one person to present your answer and explain your reasoning to the class. Show all your work!
       </div>
 
-      <div id="qatar-advanced" class="qatar-level-content" style="display:none">
-        <div style="max-width:1000px;margin:0 auto">
-          <div class="card" style="padding:2rem">
-            <div class="qatar-icon">📊</div>
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem;font-size:1.4rem">
-              Qatar National Vision 2030 Analysis
-            </h3>
-            <div style="font-size:1.05rem;line-height:1.7;margin-bottom:1.5rem">
-              Qatar's government has completed these percentages of various Vision 2030 pillars:
-            </div>
-            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem">
-              <div style="padding:1rem;background:#f0fdf4;border-radius:8px">
-                <strong>Human Development:</strong> \(\frac{13}{15}\) complete
-              </div>
-              <div style="padding:1rem;background:#dbeafe;border-radius:8px">
-                <strong>Social Development:</strong> 85% complete
-              </div>
-              <div style="padding:1rem;background:#fef3c7;border-radius:8px">
-                <strong>Economic Development:</strong> \(0.88\) complete
-              </div>
-              <div style="padding:1rem;background:#fecaca;border-radius:8px">
-                <strong>Environmental Development:</strong> \(\frac{21}{25}\) complete
-              </div>
-            </div>
-            <div style="background:#fffbeb;padding:1.5rem;border-radius:8px;border:2px dashed var(--warning)">
-              <div style="font-weight:700;margin-bottom:1rem">🎯 Multi-Step Challenge:</div>
-              <ol style="margin-left:1.5rem;line-height:1.8">
-                <li>Rank all four pillars from least to most complete</li>
-                <li>Which two pillars are closest in completion?</li>
-                <li>What is the average completion rate across all pillars? (Express as a simplified fraction)</li>
-              </ol>
-              <textarea id="qatar5" style="width:100%;margin-top:1rem;padding:1rem;border-radius:8px;border:2px solid #e5e7eb;min-height:100px" placeholder="Show your work and explain your reasoning..."></textarea>
-            </div>
-            <button class="btn maroon" style="margin-top:1rem" onclick="checkQatar(5)">Submit for Feedback</button>
-            <div id="feedback5" style="margin-top:1rem"></div>
-          </div>
+      <div class="grid md:grid-cols-2 gap-4 w-full max-w-5xl" id="qatarChallenges"></div>
+
+      <div class="mt-4">
+        <button class="btn maroon" onclick="newQatarChallenges()">New Challenge Set</button>
+        <button class="btn qatar" onclick="checkQatarAnswers()">Check All Groups</button>
+      </div>
+      <div id="qatarFb" class="mt-2 font-semibold"></div>
+    </section>
+
+    <!-- 7 • Interactive Ordering Game -->
+    <section class="slide" id="orderSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Ordering Challenge: Drag & Drop</h2>
+      
+      <div class="student-instruction text-left max-w-5xl mb-3">
+        <strong>🎮 Interactive Challenge:</strong> One student will come to the front to drag and arrange the numbers on the projected screen. The rest of the class: guide your classmate! Tell them where to place each number and explain why. Let's work together to get the correct order from LEAST to GREATEST.
+      </div>
+
+      <div class="card p-5 w-full max-w-4xl text-left">
+        <div class="flex items-center gap-3 mb-3">
+          <button id="orNew" class="btn maroon">New Set</button>
+          <select id="orLevel" class="border rounded px-3 py-2">
+            <option value="easy">Easy (Positive, Similar Denominators)</option>
+            <option value="medium" selected>Medium (Mixed Forms)</option>
+            <option value="hard">Hard (Negatives & Mixed Numbers)</option>
+          </select>
+          <button id="orHint" class="btn">Get Hint</button>
+        </div>
+        <div id="orHintBox" class="hint" style="display:none;"></div>
+        <p class="text-lg mb-2"><strong>Drag to order from LEAST to GREATEST:</strong></p>
+        <ul id="orList" class="sortable"></ul>
+        <div class="mt-3">
+          <button id="orCheck" class="btn qatar">Check Order</button>
+          <button id="orReveal" class="btn">Show Correct Order</button>
+          <div id="orFb" class="mt-2 h-6 font-semibold"></div>
         </div>
       </div>
     </section>
 
-    <!-- 6 • Interactive Practice Station -->
-    <section class="slide" id="practiceStationSlide">
-      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1rem;text-align:center">
-        🎮 Practice Station: Build Your Skills
-      </h2>
+    <!-- 8 • Simplification Station with Scaffolding -->
+    <section class="slide" id="simpSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Simplification Station</h2>
+      
+      <div class="student-instruction text-left max-w-5xl mb-3">
+        <strong>🔍 Guided Practice:</strong> 
+        <ul class="list-disc list-inside ml-4 mt-2">
+          <li>First, watch as we solve one example together as a class</li>
+          <li>Then, try the practice problems independently</li>
+          <li>Think aloud: What steps are you taking to find the GCF?</li>
+          <li>Use the GCF Helper Tool if you need support</li>
+          <li><strong>Challenge:</strong> Can you simplify without using the tool?</li>
+        </ul>
+      </div>
 
-      <div style="max-width:1200px;margin:0 auto">
-        <div style="text-align:center;margin-bottom:1.5rem">
-          <div style="font-size:1.1rem;margin-bottom:.8rem">Choose Your Challenge:</div>
-          <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-            <button class="btn station-btn active" data-station="simplify">📐 Simplify Fractions</button>
-            <button class="btn station-btn" data-station="compare">⚖️ Compare Pairs</button>
-            <button class="btn station-btn" data-station="order">📊 Order Sets</button>
-            <button class="btn station-btn" data-station="mixed">🎯 Mixed Practice</button>
+      <div class="card p-5 w-full max-w-5xl">
+        <div class="flex gap-3 mb-3 flex-wrap">
+          <select id="simpLevel" class="border rounded px-3 py-2">
+            <option value="easy">Level 1: Small Numbers (2-20)</option>
+            <option value="medium" selected>Level 2: Larger Numbers (20-100)</option>
+            <option value="hard">Level 3: Challenge (100-200 & Negatives)</option>
+          </select>
+          <button id="simpNew" class="btn maroon">New Problems</button>
+          <button class="btn" onclick="showGCFHelper()">GCF Helper Tool</button>
+          <label class="flex items-center gap-2">
+            <input type="checkbox" id="showSteps"/> Show working steps
+          </label>
+        </div>
+
+        <div id="gcfHelper" class="hint" style="display:none;">
+          <strong>GCF Quick Finder:</strong>
+          <div class="flex gap-2 items-center mt-2">
+            <input type="number" id="gcfA" placeholder="Number 1" class="border rounded px-2 py-1 w-24"/>
+            <input type="number" id="gcfB" placeholder="Number 2" class="border rounded px-2 py-1 w-24"/>
+            <button class="btn btn-sm" onclick="calculateGCF()">Calculate GCF</button>
+            <span id="gcfResult" class="font-bold"></span>
           </div>
         </div>
 
-        <div id="practice-simplify" class="practice-content">
-          <div class="card" style="padding:2rem">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
-              <h3 style="font-weight:700;color:var(--maroon)">Simplify These Fractions</h3>
-              <div>
-                <button class="btn" onclick="newPracticeSet('simplify')">🔄 New Set</button>
-                <button class="btn gold" onclick="practiceHint('simplify')">💡 Hint</button>
-              </div>
-            </div>
-            <div id="simplifyProblems" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
-            </div>
-            <div style="margin-top:1.5rem;text-align:center">
-              <button class="btn maroon" onclick="checkPractice('simplify')" style="font-size:1.1rem;padding:.8rem 2rem">
-                ✓ Check All Answers
-              </button>
-            </div>
-            <div id="simplifyFeedback" style="margin-top:1rem;text-align:center;font-size:1.1rem;font-weight:700"></div>
-          </div>
-        </div>
-
-        <div id="practice-compare" class="practice-content" style="display:none">
-          <div class="card" style="padding:2rem">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
-              <h3 style="font-weight:700;color:var(--maroon)">Compare These Pairs</h3>
-              <div>
-                <button class="btn" onclick="newPracticeSet('compare')">🔄 New Set</button>
-                <button class="btn gold" onclick="practiceHint('compare')">💡 Hint</button>
-              </div>
-            </div>
-            <div id="compareProblems" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem">
-            </div>
-            <div style="margin-top:1.5rem;text-align:center">
-              <button class="btn maroon" onclick="checkPractice('compare')" style="font-size:1.1rem;padding:.8rem 2rem">
-                ✓ Check All Answers
-              </button>
-            </div>
-            <div id="compareFeedback" style="margin-top:1rem;text-align:center;font-size:1.1rem;font-weight:700"></div>
-          </div>
-        </div>
-
-        <div id="practice-order" class="practice-content" style="display:none">
-          <div class="card" style="padding:2rem">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
-              <h3 style="font-weight:700;color:var(--maroon)">Drag to Order (Least to Greatest)</h3>
-              <button class="btn" onclick="newPracticeSet('order')">🔄 New Set</button>
-            </div>
-            <ul id="orderList" class="sortable" style="max-width:600px;margin:0 auto 1.5rem auto">
-            </ul>
-            <div style="text-align:center">
-              <button class="btn maroon" onclick="checkPractice('order')" style="font-size:1.1rem;padding:.8rem 2rem">
-                ✓ Check Order
-              </button>
-            </div>
-            <div id="orderFeedback" style="margin-top:1rem;text-align:center;font-size:1.1rem;font-weight:700"></div>
-          </div>
-        </div>
-
-        <div id="practice-mixed" class="practice-content" style="display:none">
-          <div class="card" style="padding:2rem;text-align:center">
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">Mixed Challenge</h3>
-            <div style="font-size:1.1rem;margin-bottom:1.5rem">Coming soon - combines all skills!</div>
-          </div>
+        <div id="simpList" class="grid md:grid-cols-3 gap-3 mt-3"></div>
+        
+        <div class="mt-3 flex gap-2">
+          <button id="simpCheck" class="btn qatar">Check My Answers</button>
+          <button id="simpHint" class="btn">Need Help?</button>
+          <div id="simpFb" class="mt-2 h-6 font-semibold ml-3"></div>
         </div>
       </div>
     </section>
 
-    <!-- 7 • Peer Teaching & Assessment -->
-    <section class="slide" id="peerTeachSlide">
-      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1rem;text-align:center">
-        👥 Teach What You've Learned
-      </h2>
-
-      <div style="max-width:1000px;margin:0 auto">
-        <div class="success-msg" style="margin-bottom:1.5rem;text-align:center">
-          <div style="font-size:1.2rem;font-weight:700;margin-bottom:.5rem">
-            🎓 The Best Way to Learn is to Teach!
-          </div>
-          <div>Work with a partner for this activity. Take turns being teacher and student.</div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
-          <div class="card" style="padding:1.5rem">
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">
-              👨‍🏫 When You're the Teacher
-            </h3>
-            <div style="background:#f0fdf4;padding:1rem;border-radius:8px;margin-bottom:1rem">
-              <div style="font-weight:600;margin-bottom:.5rem">Your Task:</div>
-              <ol style="margin-left:1.5rem;line-height:1.7">
-                <li>Pick ONE method (common denominator, cross-multiply, or decimals)</li>
-                <li>Create a practice problem about Qatar</li>
-                <li>Teach your partner your method step-by-step</li>
-                <li>Watch them solve YOUR problem</li>
-              </ol>
-            </div>
-            <div class="hint">
-              <strong>Teacher Checklist:</strong><br>
-              ☐ Explained clearly<br>
-              ☐ Used an example<br>
-              ☐ Answered questions<br>
-              ☐ Gave positive feedback
-            </div>
-          </div>
-
-          <div class="card" style="padding:1.5rem">
-            <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">
-              👨‍🎓 When You're the Student
-            </h3>
-            <div style="background:#dbeafe;padding:1rem;border-radius:8px;margin-bottom:1rem">
-              <div style="font-weight:600;margin-bottom:.5rem">Your Task:</div>
-              <ol style="margin-left:1.5rem;line-height:1.7">
-                <li>Listen carefully to your partner's explanation</li>
-                <li>Ask questions if confused</li>
-                <li>Try to solve their problem</li>
-                <li>Explain YOUR thinking process</li>
-              </ol>
-            </div>
-            <div class="hint">
-              <strong>Student Checklist:</strong><br>
-              ☐ Listened actively<br>
-              ☐ Asked clarifying questions<br>
-              ☐ Attempted the problem<br>
-              ☐ Shared my thinking
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="padding:2rem;margin-top:1.5rem">
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem;text-align:center">
-            📝 Create Your Teaching Problem
-          </h3>
-          <div style="display:grid;gap:1rem">
-            <div>
-              <label style="font-weight:600;display:block;margin-bottom:.5rem">Your Qatar Context:</label>
-              <input type="text" id="peerContext" style="width:100%" placeholder="e.g., Shopping at Villagio Mall...">
-            </div>
-            <div>
-              <label style="font-weight:600;display:block;margin-bottom:.5rem">Your Problem:</label>
-              <textarea id="peerProblem" style="width:100%;min-height:80px" placeholder="Write your comparison or simplification problem..."></textarea>
-            </div>
-            <div>
-              <label style="font-weight:600;display:block;margin-bottom:.5rem">Answer & Method:</label>
-              <textarea id="peerAnswer" style="width:100%;min-height:60px" placeholder="Show how to solve it..."></textarea>
-            </div>
-          </div>
-          <div style="text-align:center;margin-top:1rem">
-            <button class="btn maroon" onclick="savePeerWork()">💾 Save My Teaching Problem</button>
-            <button class="btn gold" onclick="downloadPeerWork()">⬇️ Download for Portfolio</button>
-          </div>
-        </div>
+    <!-- 9 • Comparison Tournament -->
+    <section class="slide" id="tournamentSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">⚔️ Comparison Tournament</h2>
+      
+      <div class="student-instruction text-left max-w-5xl mb-3">
+        <strong>⚔️ Team Competition Time:</strong> Your class is split into two teams. Each team will discuss the problem and submit one answer. Every correct answer = 1 point. First team to 5 points wins! Work together, discuss strategies, and support your teammates!
       </div>
-    </section>
 
-    <!-- 8 • Exit Ticket & Reflection -->
-    <section class="slide" id="exitSlide">
-      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1.5rem;text-align:center">
-        🎯 Exit Ticket: Show What You Know
-      </h2>
-
-      <div style="max-width:900px;margin:0 auto">
-        <div class="card" style="padding:2rem;margin-bottom:1.5rem">
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1.5rem">
-            Quick Assessment (3 questions)
-          </h3>
-          
-          <div style="margin-bottom:2rem">
-            <div style="font-weight:600;margin-bottom:.5rem">1. Simplify: \(\frac{48}{72}\)</div>
-            <div style="display:flex;gap:1rem;align-items:center">
-              <input type="text" id="exit1" style="width:150px" placeholder="numerator">
-              <span>/</span>
-              <input type="text" id="exit2" style="width:150px" placeholder="denominator">
-            </div>
+      <div class="card p-5 w-full max-w-5xl">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <span class="text-xl font-bold">Team Scores:</span>
+            <span class="student-name">Team 1: <span id="team1Score">0</span></span>
+            <span class="student-name bg-qatar">Team 2: <span id="team2Score">0</span></span>
           </div>
+          <select id="tournLevel" class="border rounded px-3 py-2">
+            <option value="easy">Easy Mode</option>
+            <option value="medium" selected>Medium Mode</option>
+            <option value="hard">Challenge Mode</option>
+          </select>
+        </div>
 
-          <div style="margin-bottom:2rem">
-            <div style="font-weight:600;margin-bottom:.5rem">
-              2. Compare: \(\frac{5}{6}\) ___ \(\frac{7}{9}\)
-            </div>
-            <select id="exit3" style="width:200px">
+        <div id="tournamentQuestion" class="board-area text-2xl mb-4"></div>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <h4 class="font-bold mb-2">Team 1 Answer:</h4>
+            <select id="team1Answer" class="border rounded px-3 py-2 w-full text-xl">
               <option value="">Choose...</option>
               <option value="<">&lt;</option>
               <option value=">">&gt;</option>
               <option value="=">=</option>
             </select>
           </div>
-
-          <div style="margin-bottom:2rem">
-            <div style="font-weight:600;margin-bottom:.8rem">
-              3. Real-World: At Al Khor Beach, \(\frac{3}{5}\) of visitors are families and 0.58 are adults only. Which group is larger?
-            </div>
-            <div>
-              <label style="margin-right:1.5rem">
-                <input type="radio" name="exit4" value="families"> Families
-              </label>
-              <label>
-                <input type="radio" name="exit4" value="adults"> Adults Only
-              </label>
-            </div>
+          <div>
+            <h4 class="font-bold mb-2">Team 2 Answer:</h4>
+            <select id="team2Answer" class="border rounded px-3 py-2 w-full text-xl">
+              <option value="">Choose...</option>
+              <option value="<">&lt;</option>
+              <option value=">">&gt;</option>
+              <option value="=">=</option>
+            </select>
           </div>
-
-          <div style="text-align:center">
-            <button class="btn maroon" style="font-size:1.1rem;padding:.8rem 2rem" onclick="checkExit()">
-              ✓ Submit Exit Ticket
-            </button>
-          </div>
-          <div id="exitFeedback" style="margin-top:1.5rem;font-size:1.1rem;text-align:center"></div>
         </div>
 
-        <div class="card" style="padding:2rem">
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">
-            🤔 Self-Reflection
-          </h3>
-          <div style="display:grid;gap:1rem">
+        <div class="mt-4 flex gap-2">
+          <button class="btn qatar" onclick="checkTournament()">Check Answers</button>
+          <button class="btn maroon" onclick="newTournamentQ()">Next Question</button>
+          <button class="btn" onclick="resetTournament()">Reset Tournament</button>
+        </div>
+        <div id="tournFb" class="mt-2 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- 10 • Student Reflection & Self-Assessment -->
+    <section class="slide" id="reflectSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Reflection & Self-Assessment</h2>
+      
+      <div class="student-instruction text-left max-w-5xl mb-3">
+        <strong>💭 Time to Reflect on Your Learning:</strong> Take 3-5 minutes to think about today's lesson individually. Complete the self-assessment and exit ticket honestly - this helps you understand your own learning. Then, pair up with a partner and share your thoughts before we discuss as a whole class.
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 w-full max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-3">Self-Assessment Checklist</h3>
+          <div class="space-y-2">
+            <label class="flex items-start gap-2">
+              <input type="checkbox" class="mt-1"/> 
+              <span>I can simplify fractions by finding the GCF</span>
+            </label>
+            <label class="flex items-start gap-2">
+              <input type="checkbox" class="mt-1"/> 
+              <span>I can compare fractions using at least 2 methods</span>
+            </label>
+            <label class="flex items-start gap-2">
+              <input type="checkbox" class="mt-1"/> 
+              <span>I can order rational numbers correctly</span>
+            </label>
+            <label class="flex items-start gap-2">
+              <input type="checkbox" class="mt-1"/> 
+              <span>I can solve Qatar real-world problems</span>
+            </label>
+            <label class="flex items-start gap-2">
+              <input type="checkbox" class="mt-1"/> 
+              <span>I can explain my thinking to others</span>
+            </label>
+          </div>
+          <div class="mt-4">
+            <label class="block font-bold mb-1">My confidence level (1-10):</label>
+            <input type="range" min="1" max="10" value="5" class="w-full" id="confidenceSlider" oninput="updateConfidence(this.value)"/>
+            <div class="text-center text-2xl font-bold text-maroon"><span id="confidenceVal">5</span>/10</div>
+          </div>
+        </div>
+
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-3">3-2-1 Exit Ticket</h3>
+          <div class="space-y-3">
             <div>
-              <div style="font-weight:600;margin-bottom:.5rem">
-                What did you find EASIEST today?
-              </div>
-              <textarea id="reflect1" style="width:100%;min-height:60px"></textarea>
+              <label class="font-bold">3 things I learned today:</label>
+              <textarea class="w-full border rounded p-2 mt-1" rows="2" placeholder="Type here..."></textarea>
             </div>
             <div>
-              <div style="font-weight:600;margin-bottom:.5rem">
-                What was CHALLENGING and needs more practice?
-              </div>
-              <textarea id="reflect2" style="width:100%;min-height:60px"></textarea>
+              <label class="font-bold">2 methods I can use confidently:</label>
+              <textarea class="w-full border rounded p-2 mt-1" rows="2" placeholder="Type here..."></textarea>
             </div>
             <div>
-              <div style="font-weight:600;margin-bottom:.5rem">
-                Where will you use rational numbers in YOUR life?
-              </div>
-              <textarea id="reflect3" style="width:100%;min-height:60px"></textarea>
+              <label class="font-bold">1 question I still have:</label>
+              <textarea class="w-full border rounded p-2 mt-1" rows="2" placeholder="Type here..."></textarea>
             </div>
           </div>
-          <div style="text-align:center;margin-top:1rem">
-            <button class="btn gold" onclick="saveReflection()">💾 Save My Reflection</button>
-          </div>
+          <button class="btn maroon mt-3 w-full" onclick="saveReflection()">Save My Reflection</button>
         </div>
       </div>
     </section>
 
-    <!-- 9 • Extension & Next Steps -->
-    <section class="slide" id="extensionSlide">
-      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1.5rem;text-align:center">
-        🚀 Ready for More? Extension Activities
-      </h2>
-
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;max-width:1200px;margin:0 auto">
-        <div class="card" style="padding:1.5rem">
-          <div style="font-size:2.5rem;margin-bottom:.5rem">📱</div>
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">
-            Create a Qatar Math Photo Story
-          </h3>
-          <div style="line-height:1.7;margin-bottom:1rem">
-            Take photos around Qatar showing fractions in real life:
-            <ul style="margin-left:1.5rem;margin-top:.5rem">
-              <li>Pizza slices at a restaurant</li>
-              <li>Parking lot sections</li>
-              <li>Sale signs showing fractions off</li>
-              <li>Sports scores or statistics</li>
-            </ul>
-          </div>
-          <button class="btn maroon">Start Project</button>
-        </div>
-
-        <div class="card" style="padding:1.5rem">
-          <div style="font-size:2.5rem;margin-bottom:.5rem">🎲</div>
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">
-            Fraction Card Game
-          </h3>
-          <div style="line-height:1.7;margin-bottom:1rem">
-            Design a card game where players:
-            <ul style="margin-left:1.5rem;margin-top:.5rem">
-              <li>Draw fraction cards</li>
-              <li>Compare to win rounds</li>
-              <li>Simplify to earn bonus points</li>
-              <li>First to 10 wins!</li>
-            </ul>
-          </div>
-          <button class="btn maroon">Get Rules</button>
-        </div>
-
-        <div class="card" style="padding:1.5rem">
-          <div style="font-size:2.5rem;margin-bottom:.5rem">🏗️</div>
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">
-            Qatar 2030 Research Project
-          </h3>
-          <div style="line-height:1.7;margin-bottom:1rem">
-            Research Qatar's development goals and create infographics showing progress as fractions and percentages.
-          </div>
-          <button class="btn maroon">Start Research</button>
-        </div>
-
-        <div class="card" style="padding:1.5rem">
-          <div style="font-size:2.5rem;margin-bottom:.5rem">🎯</div>
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">
-            Challenge Your Teacher!
-          </h3>
-          <div style="line-height:1.7;margin-bottom:1rem">
-            Create the hardest fraction comparison problem you can, involving Qatar contexts. Challenge your teacher or classmates!
-          </div>
-          <button class="btn maroon">Create Challenge</button>
-        </div>
-      </div>
-
-      <div class="qatar-context" style="margin-top:2rem;max-width:900px;margin-left:auto;margin-right:auto;text-align:center">
-        <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem;font-size:1.3rem">
-          🎓 Next Lesson Preview
-        </h3>
-        <div style="font-size:1.1rem;line-height:1.7">
-          <strong>Prime Factorization Toolkit</strong><br>
-          Learn advanced techniques for finding GCF and LCM using factor trees and prime factorization - making fraction operations even easier!
-        </div>
-      </div>
-    </section>
-
-    <!-- 10 • Teacher Dashboard -->
-    <section class="slide" id="dashboardSlide">
-      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1rem;text-align:center">
-        👨‍🏫 Teacher Dashboard & Resources
-      </h2>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:1200px;margin:0 auto">
-        <div class="card" style="padding:1.5rem">
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">
-            📊 Lesson Structure
-          </h3>
-          <div style="line-height:1.8">
-            <div><strong>⏰ Timing:</strong> 45-60 minutes</div>
-            <div><strong>📱 Tech Needed:</strong> Device per student/pair</div>
-            <div><strong>👥 Grouping:</strong> Individual + pairs</div>
-            <div><strong>🎯 Differentiation:</strong> 3 levels built-in</div>
+    <!-- 11 • Next Steps & Extension -->
+    <section class="slide" id="exitSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-3">🎯 Next Steps & Extensions</h2>
+      
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-qatar mb-2">🏠 Homework Options (Choose Your Challenge)</h3>
+          <div class="space-y-2">
+            <div class="p-3 border rounded">
+              <strong class="level-badge level-easy">Level 1:</strong> Complete 10 simplification problems from workbook p.42
+            </div>
+            <div class="p-3 border rounded">
+              <strong class="level-badge level-medium">Level 2:</strong> Create a Qatar shopping scenario using fractions and solve it
+            </div>
+            <div class="p-3 border rounded">
+              <strong class="level-badge level-hard">Level 3:</strong> Research: How are fractions used in Islamic architecture in Qatar? (Symmetry, geometric patterns)
+            </div>
           </div>
         </div>
 
-        <div class="card" style="padding:1.5rem">
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">
-            🎯 Learning Progressions
-          </h3>
-          <div style="font-size:.95rem;line-height:1.7">
-            <strong>Beginner:</strong> Like denominators, simple fractions<br>
-            <strong>Intermediate:</strong> Unlike denominators, mixed numbers<br>
-            <strong>Advanced:</strong> Multi-step, negative rationals, applications
-          </div>
-        </div>
-
-        <div class="card" style="padding:1.5rem">
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">
-            📋 Formative Assessment Points
-          </h3>
-          <ol style="margin-left:1.5rem;line-height:1.7;font-size:.95rem">
-            <li>Think-Pair-Share warmup</li>
-            <li>Method selection justification</li>
-            <li>Qatar problem solving</li>
-            <li>Peer teaching quality</li>
-            <li>Exit ticket (auto-graded)</li>
-          </ol>
-        </div>
-
-        <div class="card" style="padding:1.5rem">
-          <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">
-            💡 Facilitation Tips
-          </h3>
-          <ul style="margin-left:1.5rem;line-height:1.7;font-size:.95rem">
-            <li>Circulate during practice</li>
-            <li>Highlight multiple strategies</li>
-            <li>Connect to Qatar context</li>
-            <li>Encourage peer discussion</li>
-            <li>Celebrate all progress</li>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-qatar mb-2">🚀 Coming Next</h3>
+          <ul class="list-disc list-inside space-y-2">
+            <li><strong>Prime Factorization Toolkit</strong> - Master GCF and LCM</li>
+            <li><strong>Adding & Subtracting Rationals</strong> - Build on today's LCD skills</li>
+            <li><strong>Qatar STEM Project</strong> - Design a scaled model using ratios</li>
           </ul>
+          
+          <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
+            <strong>📱 Digital Resources:</strong>
+            <ul class="text-sm ml-4 mt-2">
+              <li>• Khan Academy: Rational Numbers</li>
+              <li>• IXL: Grade 7 Qatar Standards</li>
+              <li>• Desmos: Fraction Calculator</li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div style="text-align:center;margin-top:2rem">
-        <button class="btn maroon" onclick="downloadTeacherGuide()">⬇️ Download Full Teacher Guide (PDF)</button>
-        <button class="btn gold" onclick="downloadStudentData()">📊 Export Student Progress Data</button>
-      </div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[100px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
     </section>
 
   </div>
@@ -971,750 +599,719 @@
 
 <!-- Controls -->
 <div id="controls" role="group" aria-label="Slideshow controls">
-  <button id="prev" title="Previous (←)">‹</button>
+  <button id="prev" title="Previous (←)">&laquo;</button>
   <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
-  <div id="counter">1 / 11</div>
-  <button id="next" title="Next (→)">›</button>
+  <div id="counter">1 / 12</div>
+  <button id="next" title="Next (→)">&raquo;</button>
 </div>
 <div id="progress"></div>
 
-<!-- Glossary Popover -->
-<div id="glossaryPop" style="display:none;position:fixed;background:#fff;border:3px solid var(--gold);border-radius:12px;padding:1.5rem;max-width:400px;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:200">
-  <button onclick="closeGlossary()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999">×</button>
-  <div id="glossaryContent"></div>
+<!-- Glossary popover -->
+<div id="pop" role="dialog" aria-modal="true" aria-live="polite">
+  <span class="close" title="Close">✕</span>
+  <div id="popBody"></div>
+</div>
+
+<!-- Popup for vocab quiz -->
+<div id="vocabPopup" class="popup-overlay">
+  <div class="popup-content">
+    <h3 class="text-2xl font-bold text-maroon mb-4">Vocabulary Challenge</h3>
+    <div id="vocabQuizContent"></div>
+    <button class="btn maroon mt-4" onclick="closeVocabQuiz()">Close</button>
+  </div>
 </div>
 
 <script>
-// Boot KaTeX
-window.addEventListener('DOMContentLoaded', () => {
-  const renderMath = (root = document.body) => {
-    if (!window.renderMathInElement) return;
-    window.renderMathInElement(root, {
-      delimiters: [
-        { left: '$$', right: '$$', display: true },
-        { left: '\\(', right: '\\)', display: false },
-        { left: '\\[', right: '\\]', display: true }
-      ],
-      throwOnError: false
-    });
+/* ======================= Core Navigation & Utilities ======================= */
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  const prev=document.getElementById('prev'), next=document.getElementById('next'), 
+        counter=document.getElementById('counter'), progress=document.getElementById('progress'), 
+        fsBtn=document.getElementById('fs');
+  const deckTitle='G7_Qatar_Rationals_Enhanced';
+  let slideIndex=0;
+
+  function renderMath(root=document.body){ 
+    if(window._rerenderMath) window._rerenderMath(root); 
+  }
+
+  function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
+    for(let k=0;k<25;k++){
+      const d=document.createElement('div'); 
+      d.className='confetti';
+      d.style.left=x+'px'; 
+      d.style.top=y+'px'; 
+      d.style.width='10px'; 
+      d.style.height='10px';
+      d.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8D1B3D','#22c55e'][k%5];
+      document.body.appendChild(d);
+      const dx=(Math.random()*2-1)*280, dy=(Math.random()*-1-0.4)*350, rot=Math.random()*720;
+      d.animate([
+        {transform:'translate(0,0) rotate(0deg)', opacity:1},
+        {transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`, opacity:0}
+      ],{duration:1000+Math.random()*800,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
+    }
+  }
+
+  function showSlide(k){
+    slideIndex=(k+slides.length)%slides.length;
+    slides.forEach((s,idx)=>s.classList.toggle('active',idx===slideIndex));
+    counter.textContent=(slideIndex+1)+' / '+slides.length;
+    progress.style.width=((slideIndex+1)/slides.length*100)+'%';
+    renderMath(slides[slideIndex]);
+  }
+
+  prev.addEventListener('click',()=>showSlide(slideIndex-1));
+  next.addEventListener('click',()=>showSlide(slideIndex+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight') showSlide(slideIndex+1);
+    if(e.key==='ArrowLeft') showSlide(slideIndex-1);
+    if(e.key.toLowerCase()==='f') toggleFS();
+  });
+
+  function toggleFS(){
+    const el=document.getElementById('slides');
+    if(!document.fullscreenElement){
+      (el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);
+    } else {
+      (document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(document);
+    }
+  }
+  fsBtn.addEventListener('click',toggleFS);
+
+  /* Glossary */
+  const POP=document.getElementById('pop'), POP_BODY=document.getElementById('popBody');
+  const GLOSSARY={
+    rat:'<strong>Rational Number:</strong> Any number that can be written as \\(\\tfrac{a}{b}\\) where a and b are integers and b\\(\\ne\\)0. Examples: \\(\\tfrac{3}{4}\\), 0.5, -2, \\(2\\tfrac{1}{3}\\)',
+    eqv:'<strong>Equivalent Fractions:</strong> Fractions that represent the same value. Example: \\(\\tfrac{2}{3}=\\tfrac{4}{6}=\\tfrac{8}{12}\\)',
+    simp:'<strong>Simplest Form:</strong> A fraction where the numerator and denominator have no common factors other than 1. Example: \\(\\tfrac{6}{8}\\) simplifies to \\(\\tfrac{3}{4}\\)',
+    gcf:'<strong>Greatest Common Factor (GCF):</strong> The largest positive integer that divides both numbers. Example: GCF of 12 and 18 is 6.',
+    lcd:'<strong>Least Common Denominator (LCD):</strong> The smallest common multiple of denominators, useful for comparing and adding fractions.',
+    cross:'<strong>Cross-Multiplication:</strong> For \\(\\tfrac{a}{b}\\) vs \\(\\tfrac{c}{d}\\) (with b,d>0), compare ad and bc. The larger product corresponds to the larger fraction.',
+    mixed:'<strong>Mixed Number:</strong> A whole number plus a proper fraction. Example: \\(2\\tfrac{1}{3}=\\tfrac{7}{3}\\)'
   };
 
-  const checkKaTeX = setInterval(() => {
-    if (window.renderMathInElement) {
-      clearInterval(checkKaTeX);
-      renderMath();
-      window.renderMath = renderMath;
-    }
-  }, 50);
+  POP.querySelector('.close').addEventListener('click',()=>POP.style.display='none');
+  document.addEventListener('click',e=>{
+    const chip=e.target.closest('.chip[data-key]');
+    if(!chip) return;
+    const key=chip.dataset.key;
+    if(!GLOSSARY[key]) return;
+    POP_BODY.innerHTML=GLOSSARY[key];
+    POP.style.display='block';
+    const r=chip.getBoundingClientRect();
+    POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px';
+    POP.style.bottom=(window.innerHeight-r.top+10)+'px';
+    renderMath(POP_BODY);
+  });
 
-  setTimeout(() => clearInterval(checkKaTeX), 5000);
-});
+  /* Math utilities */
+  window.gcd=(a,b)=>{
+    a=Math.abs(Math.trunc(a));
+    b=Math.abs(Math.trunc(b));
+    while(b){[a,b]=[b,a%b]}
+    return a||1
+  };
+  window.simplify=(n,d)=>{
+    let g=gcd(n,d); 
+    if(d<0) g=-g; 
+    return [n/g,d/g]
+  };
+  window.toLatex=(n,d)=> d===1? String(n):`\\dfrac{${n}}{${d}}`;
+  window.randomInt=(a,b)=> Math.floor(Math.random()*(b-a+1))+a;
+  window.randFrom=(arr)=> arr[Math.floor(Math.random()*arr.length)];
+  window.nonzeroRand=(a,b)=>{
+    let x=0; 
+    while(x===0){x=randomInt(a,b)} 
+    return x
+  };
 
-/* ============ NAVIGATION & CORE ============ */
-const slides = [...document.querySelectorAll('.slide')];
-const GLOSSARY = {
-  rat: '<strong>Rational Number (عدد نسبي)</strong><br>Any number that can be expressed as \\(\\frac{a}{b}\\) where a and b are integers and b ≠ 0. Examples: \\(\\frac{3}{4}\\), 2.5, -7',
-  eqv: '<strong>Equivalent Fractions (كسور متساوية)</strong><br>Fractions that represent the same value. Example: \\(\\frac{2}{3} = \\frac{4}{6} = \\frac{8}{12}\\)',
-  simp: '<strong>Simplest Form (أبسط صورة)</strong><br>A fraction where the numerator and denominator share no common factors except 1. Example: \\(\\frac{6}{8}\\) simplifies to \\(\\frac{3}{4}\\)',
-  gcf: '<strong>Greatest Common Factor (GCF) — العامل المشترك الأكبر</strong><br>The largest number that divides both the numerator and denominator',
-  lcd: '<strong>Least Common Denominator (LCD) — المقام المشترك الأصغر</strong><br>The smallest common multiple of two denominators',
-  cross: '<strong>Cross-Multiplication</strong><br>Multiply numerator of first fraction by denominator of second, compare products',
-  mixed: '<strong>Mixed Number (عدد كسري)</strong><br>A whole number combined with a proper fraction. Example: \\(3\\frac{1}{4}\\)',
-  qar: '<strong>QAR (Qatari Riyal — ريال قطري)</strong><br>Official currency of Qatar. Symbol: QAR or ر.ق'
-};
+  showSlide(0);
+  window.confetti = confetti;
+  window.renderMath = renderMath;
+})();
 
-let currentSlide = 0;
-let studentData = {
-  completed: [],
-  streak: 0,
-  answers: {}
-};
-
-function showSlide(n) {
-  currentSlide = (n + slides.length) % slides.length;
-  slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
-  document.getElementById('counter').textContent = `${currentSlide + 1} / ${slides.length}`;
-  document.getElementById('progress').style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
-  if (window.renderMath) window.renderMath(slides[currentSlide]);
-  updateTeacherNotes();
-}
-
-document.getElementById('prev').onclick = () => showSlide(currentSlide - 1);
-document.getElementById('next').onclick = () => showSlide(currentSlide + 1);
-document.getElementById('fs').onclick = () => {
-  const el = document.getElementById('slides');
-  if (!document.fullscreenElement) {
-    (el.requestFullscreen || el.webkitRequestFullscreen).call(el);
-  } else {
-    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-  }
-};
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') showSlide(currentSlide + 1);
-  if (e.key === 'ArrowLeft') showSlide(currentSlide - 1);
-  if (e.key.toLowerCase() === 'f') document.getElementById('fs').click();
-});
-
-/* ============ GLOSSARY ============ */
-document.addEventListener('click', e => {
-  const chip = e.target.closest('.chip[data-key]');
-  if (!chip) return;
-  const key = chip.dataset.key;
-  if (!GLOSSARY[key]) return;
-  
-  const pop = document.getElementById('glossaryPop');
-  document.getElementById('glossaryContent').innerHTML = GLOSSARY[key];
-  pop.style.display = 'block';
-  const rect = chip.getBoundingClientRect();
-  pop.style.left = Math.min(rect.left, window.innerWidth - pop.offsetWidth - 20) + 'px';
-  pop.style.top = (rect.bottom + 10) + 'px';
-  if (window.renderMath) window.renderMath(document.getElementById('glossaryContent'));
-});
-
-function closeGlossary() {
-  document.getElementById('glossaryPop').style.display = 'none';
-}
-
-/* ============ TEACHER NOTES ============ */
-const TEACHER_NOTES = {
-  0: '<strong>Welcome Slide</strong><br>• Greet in Arabic<br>• Preview lesson flow<br>• Set expectations',
-  1: '<strong>Goals & Success Criteria</strong><br>• Have students check off goals<br>• Review vocabulary together<br>• Explain mastery levels',
-  2: '<strong>Think-Pair-Share</strong><br>• Give 2 min individual think time<br>• 3 min pair discussion<br>• Call on 3-4 groups to share<br>• Highlight different strategies',
-  3: '<strong>Simplifying Methods</strong><br>• Let students choose their tab<br>• Visual learners see models<br>• Sequential learners get steps<br>• Kinesthetic try immediately',
-  4: '<strong>Comparing Strategies</strong><br>• Students explore all 3 methods<br>• Discuss when each is best<br>• No single "right" method',
-  5: '<strong>Qatar Real-World</strong><br>• Students self-select level<br>• Provide scaffolds as needed<br>• Connect to student experiences<br>• Allow calculator for complex',
-  6: '<strong>Practice Station</strong><br>• Monitor progress<br>• Provide hints strategically<br>• Celebrate small wins<br>• Note struggling students',
-  7: '<strong>Peer Teaching</strong><br>• Model good teaching first<br>• Circulate and listen<br>• Note student explanations<br>• This reveals understanding!',
-  8: '<strong>Exit Ticket</strong><br>• Silent individual work<br>• Collect data for next lesson<br>• Review reflections tonight',
-  9: '<strong>Extensions</strong><br>• For early finishers<br>• For homework options<br>• For gifted students',
-  10: '<strong>Teacher Dashboard</strong><br>• Export data<br>• Review student progress<br>• Plan differentiation'
-};
-
-document.getElementById('teacherToggle').onclick = () => {
-  const notes = document.getElementById('teacherNotes');
-  notes.classList.toggle('show');
-};
-
-function updateTeacherNotes() {
-  const notes = document.getElementById('teacherNotes');
-  notes.innerHTML = TEACHER_NOTES[currentSlide] || '';
-}
-
-/* ============ MATH UTILITIES ============ */
-function gcd(a, b) {
-  a = Math.abs(Math.trunc(a));
-  b = Math.abs(Math.trunc(b));
-  while (b) [a, b] = [b, a % b];
-  return a || 1;
-}
-
-function simplify(n, d) {
-  const g = gcd(n, d);
-  let sn = n / g, sd = d / g;
-  if (sd < 0) { sn = -sn; sd = -sd; }
-  return [sn, sd];
-}
-
-function randomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function confetti() {
-  for (let i = 0; i < 30; i++) {
-    const el = document.createElement('div');
-    el.className = 'confetti';
-    el.textContent = ['🎉', '⭐', '✨', '🌟'][i % 4];
-    el.style.left = (Math.random() * window.innerWidth) + 'px';
-    el.style.top = (Math.random() * window.innerHeight) + 'px';
-    document.body.appendChild(el);
-    
-    const tx = (Math.random() - 0.5) * 300;
-    const ty = (Math.random() - 0.5) * 300 - 150;
-    el.animate([
-      { transform: 'translate(0,0) rotate(0deg) scale(1)', opacity: 1 },
-      { transform: `translate(${tx}px,${ty}px) rotate(${Math.random()*720}deg) scale(0)`, opacity: 0 }
-    ], {
-      duration: 1500,
-      easing: 'cubic-bezier(.2,.8,.2,1)'
-    }).onfinish = () => el.remove();
-  }
-}
-
-function updateProgress() {
-  const total = 20; // Total activities
-  const completed = studentData.completed.length;
-  const percent = Math.floor((completed / total) * 100);
-  
-  document.getElementById('masterBar').style.width = percent + '%';
-  document.getElementById('masterPercent').textContent = percent;
-  document.getElementById('completeCount').textContent = completed;
-  document.getElementById('streakDisplay').textContent = studentData.streak;
-}
-
-/* ============ WARM-UP ============ */
-function showAnswer() {
-  const answer = document.getElementById('warmupAnswer');
-  answer.style.display = 'block';
-  answer.innerHTML = `
-    <div class="success-msg">
-      <h4 style="font-weight:700;margin-bottom:1rem">✅ Correct Answer: Section B (\\(\\frac{7}{10}\\))</h4>
-      <div style="text-align:left">
-        <strong>Strategy 1 - Common Denominator:</strong><br>
-        \\(\\frac{3}{4} = \\frac{15}{20}\\), \\(\\frac{7}{10} = \\frac{14}{20}\\), \\(0.72 = \\frac{72}{100} = \\frac{36}{50}\\) → Compare<br><br>
-        
-        <strong>Strategy 2 - Convert to Decimals:</strong><br>
-        \\(\\frac{3}{4} = 0.75\\), \\(\\frac{7}{10} = 0.70\\), \\(0.72\\) → Section A is fullest!<br><br>
-        
-        <strong>Wait - Different Answer?</strong> Let's be precise!<br>
-        \\(\\frac{3}{4} = 0.75\\) vs \\(0.72\\) → Section A is actually fullest!
-      </div>
-    </div>
-  `;
-  if (window.renderMath) window.renderMath(answer);
-}
-
-/* ============ DIFFERENTIATION TABS ============ */
-document.addEventListener('click', e => {
-  const tab = e.target.closest('.diff-tab');
-  if (!tab) return;
-  
-  const diff = tab.dataset.diff;
-  document.querySelectorAll('.diff-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.diff-content').forEach(c => c.style.display = 'none');
-  
-  tab.classList.add('active');
-  document.getElementById('diff-' + diff).style.display = 'block';
-  
-  if (diff === 'practice' && !document.getElementById('simplifyPractice').innerHTML) {
-    loadSimplifyPractice();
-  }
-});
-
-function loadSimplifyPractice() {
-  const container = document.getElementById('simplifyPractice');
-  container.innerHTML = `
-    <div style="margin-bottom:1rem">
-      <strong>Practice Problem:</strong> Simplify \\(\\frac{24}{36}\\)
-    </div>
-    <div style="display:flex;gap:1rem;align-items:center;margin-bottom:1rem">
-      <span>\\(\\frac{24}{36} = \\frac{\\)</span>
-      <input type="number" id="practiceNum" style="width:80px">
-      <span>}{</span>
-      <input type="number" id="practiceDen" style="width:80px">
-      <span>}\\)</span>
-      <button class="btn maroon" onclick="checkSimplifyPractice()">Check</button>
-    </div>
-    <div id="practiceFeedback"></div>
-    <button class="btn" onclick="loadSimplifyPractice()" style="margin-top:1rem">New Problem</button>
-  `;
-  if (window.renderMath) window.renderMath(container);
-}
-
-function checkSimplifyPractice() {
-  const n = parseInt(document.getElementById('practiceNum').value);
-  const d = parseInt(document.getElementById('practiceDen').value);
-  const [correctN, correctD] = simplify(24, 36);
-  const [userN, userD] = simplify(n, d);
-  
-  const fb = document.getElementById('practiceFeedback');
-  if (userN === correctN && userD === correctD) {
-    fb.innerHTML = '<div class="success-msg">✅ Perfect! You got \\(\\frac{2}{3}\\)</div>';
+/* ======================= Warm-Up Functions ======================= */
+function checkWarmup(){
+  const areas = document.querySelectorAll('.student-work');
+  let score = 0;
+  areas.forEach((area,idx)=>{
+    const answer = area.dataset.answer;
+    const userAnswer = area.textContent.trim().toLowerCase();
+    // Simple checking
+    if(userAnswer.includes(answer.toLowerCase())) score++;
+  });
+  const fb = document.getElementById('warmupFb');
+  if(score === areas.length){
+    fb.textContent = '🎉 Excellent start, class!';
+    fb.className = 'mt-2 font-semibold text-green-600';
     confetti();
-    studentData.streak++;
-    if (!studentData.completed.includes('simplify-practice')) {
-      studentData.completed.push('simplify-practice');
-      updateProgress();
-    }
   } else {
-    fb.innerHTML = '<div class="error-msg">Not quite. Try finding the GCF of 24 and 36 first.</div>';
-    studentData.streak = 0;
+    fb.textContent = `Good effort! ${score}/${areas.length} correct. Let's discuss.`;
+    fb.className = 'mt-2 font-semibold text-yellow-600';
   }
-  if (window.renderMath) window.renderMath(fb);
-  updateProgress();
 }
 
-/* ============ COMPARING METHODS ============ */
-function showMethod(method) {
-  const detail = document.getElementById('methodDetail');
-  detail.style.display = 'block';
-  
-  const examples = {
-    lcd: `
-      <div class="card" style="padding:2rem">
-        <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">Method 1: Common Denominator</h3>
-        <div style="font-size:1.1rem;line-height:2">
-          <strong>Example:</strong> Compare \\(\\frac{3}{4}\\) and \\(\\frac{5}{6}\\)<br><br>
-          <strong>Step 1:</strong> Find LCD of 4 and 6 → 12<br>
-          <strong>Step 2:</strong> Convert: \\(\\frac{3}{4} = \\frac{9}{12}\\) and \\(\\frac{5}{6} = \\frac{10}{12}\\)<br>
-          <strong>Step 3:</strong> Compare numerators: 9 < 10<br>
-          <strong>Answer:</strong> \\(\\frac{3}{4} < \\frac{5}{6}\\)
-        </div>
-        <div class="hint" style="margin-top:1.5rem">
-          <strong>Best when:</strong> Denominators are small or have obvious LCD
-        </div>
-      </div>
-    `,
-    cross: `
-      <div class="card" style="padding:2rem">
-        <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">Method 2: Cross-Multiplication</h3>
-        <div style="font-size:1.1rem;line-height:2">
-          <strong>Example:</strong> Compare \\(\\frac{3}{4}\\) and \\(\\frac{5}{6}\\)<br><br>
-          <strong>Step 1:</strong> Multiply 3 × 6 = 18<br>
-          <strong>Step 2:</strong> Multiply 4 × 5 = 20<br>
-          <strong>Step 3:</strong> Compare: 18 < 20<br>
-          <strong>Answer:</strong> \\(\\frac{3}{4} < \\frac{5}{6}\\)
-        </div>
-        <div class="hint" style="margin-top:1.5rem">
-          <strong>Best when:</strong> Quick comparison needed, denominators are positive
-        </div>
-      </div>
-    `,
-    decimal: `
-      <div class="card" style="padding:2rem">
-        <h3 style="font-weight:700;color:var(--maroon);margin-bottom:1rem">Method 3: Convert to Decimals</h3>
-        <div style="font-size:1.1rem;line-height:2">
-          <strong>Example:</strong> Compare \\(\\frac{3}{4}\\) and \\(\\frac{5}{6}\\)<br><br>
-          <strong>Step 1:</strong> \\(\\frac{3}{4} = 3 \\div 4 = 0.75\\)<br>
-          <strong>Step 2:</strong> \\(\\frac{5}{6} = 5 \\div 6 = 0.833...\\)<br>
-          <strong>Step 3:</strong> Compare: 0.75 < 0.833<br>
-          <strong>Answer:</strong> \\(\\frac{3}{4} < \\frac{5}{6}\\)
-        </div>
-        <div class="hint" style="margin-top:1.5rem">
-          <strong>Best when:</strong> Calculator available or mental division is easy
-        </div>
-      </div>
-    `
-  };
-  
-  detail.innerHTML = examples[method];
-  if (window.renderMath) window.renderMath(detail);
-  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+function discussWarmup(){
+  alert('Teacher: Lead class discussion. Ask students to explain their reasoning. Highlight different approaches.');
 }
 
-/* ============ QATAR PROBLEMS ============ */
-document.addEventListener('click', e => {
-  const btn = e.target.closest('.level-btn');
-  if (!btn) return;
-  
-  const level = btn.dataset.level;
-  document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.qatar-level-content').forEach(c => c.style.display = 'none');
-  
-  btn.classList.add('active');
-  document.getElementById('qatar-' + level).style.display = 'block';
-});
+/* ======================= Methods Demonstration ======================= */
+function showMethodSteps(method){
+  const box = document.getElementById('methodSteps');
+  box.classList.add('show');
+  if(method===1){
+    box.innerHTML = `<h4 class="font-bold">Method 1: Common Denominator - Full Steps</h4>
+    <ol class="list-decimal list-inside ml-4">
+      <li>Find LCD of 4 and 6: LCD = 12</li>
+      <li>Convert \\(\\frac{3}{4}\\): multiply by \\(\\frac{3}{3}\\) → \\(\\frac{9}{12}\\)</li>
+      <li>Convert \\(\\frac{5}{6}\\): multiply by \\(\\frac{2}{2}\\) → \\(\\frac{10}{12}\\)</li>
+      <li>Compare numerators: 9 < 10</li>
+      <li>Therefore: \\(\\frac{3}{4} < \\frac{5}{6}\\)</li>
+    </ol>`;
+  } else if(method===2){
+    box.innerHTML = `<h4 class="font-bold">Method 2: Cross-Multiplication - Full Steps</h4>
+    <ol class="list-decimal list-inside ml-4">
+      <li>Multiply 3 × 6 = 18 (left fraction's numerator × right denominator)</li>
+      <li>Multiply 5 × 4 = 20 (right fraction's numerator × left denominator)</li>
+      <li>Compare: 18 < 20</li>
+      <li>Therefore: \\(\\frac{3}{4} < \\frac{5}{6}\\)</li>
+    </ol>
+    <p class="text-sm text-gray-600 mt-2">Note: This works when both denominators are positive!</p>`;
+  } else {
+    box.innerHTML = `<h4 class="font-bold">Method 3: Decimal Conversion - Full Steps</h4>
+    <ol class="list-decimal list-inside ml-4">
+      <li>Convert \\(\\frac{3}{4}\\): 3 ÷ 4 = 0.75</li>
+      <li>Convert \\(\\frac{5}{6}\\): 5 ÷ 6 ≈ 0.8333...</li>
+      <li>Compare decimals: 0.75 < 0.8333</li>
+      <li>Therefore: \\(\\frac{3}{4} < \\frac{5}{6}\\)</li>
+    </ol>`;
+  }
+  renderMath(box);
+}
 
-function checkQatar(n) {
-  const answers = {
-    1: 'clothes',
-    2: 'sara',
-    3: 'c',
-    4: 'b<c<a',
-    5: '' // Open-ended
+/* ======================= Board Work Functions ======================= */
+function revealAnswer(num, answer){
+  const box = document.getElementById('answer'+num);
+  box.classList.add('show');
+  const studentName = document.getElementById('student'+num+'Name').value || 'Student';
+  
+  const explanations = {
+    1: `<strong>Solution:</strong> GCF of 84 and 126 is 42. Divide both by 42: \\(\\frac{84÷42}{126÷42} = \\frac{2}{3}\\)`,
+    2: `<strong>Solution:</strong> Cross multiply: 7×18=126, 11×12=132. Since 126<132, we have \\(\\frac{7}{12} < \\frac{11}{18}\\)`,
+    3: `<strong>Solution:</strong> Simplify both: \\(\\frac{12}{20}=\\frac{3}{5}\\) and \\(\\frac{9}{15}=\\frac{3}{5}\\). They're the SAME!`,
+    4: `<strong>Solution:</strong> Convert to decimals or common denominator. Order: \\(\\frac{3}{5}=0.6, \\frac{5}{8}=0.625, \\frac{7}{10}=0.7\\)`
   };
   
-  const input = document.getElementById('qatar' + n);
-  const feedback = document.getElementById('feedback' + n);
-  const userAnswer = input.value.toLowerCase().trim();
-  
-  if (n === 5) {
-    feedback.innerHTML = '<div class="success-msg">✅ Great thinking! Teacher will review your response.</div>';
-    return;
+  box.innerHTML = `✅ <strong>${studentName}'s solution:</strong> ${answer}<br>${explanations[num]}`;
+  renderMath(box);
+  confetti();
+}
+
+function celebrateStudents(){
+  const names = [];
+  for(let i=1; i<=4; i++){
+    const name = document.getElementById('student'+i+'Name').value;
+    if(name) names.push(name);
   }
-  
-  const correct = answers[n];
-  if (userAnswer === correct || userAnswer.replace(/\s/g, '') === correct) {
-    feedback.innerHTML = '<div class="success-msg">✅ Excellent! You got it!</div>';
-    input.classList.add('correct');
-    input.classList.remove('incorrect');
+  if(names.length > 0){
+    alert(`🎉 Outstanding work by: ${names.join(', ')}! Keep up the excellent mathematical thinking!`);
     confetti();
-    if (!studentData.completed.includes('qatar' + n)) {
-      studentData.completed.push('qatar' + n);
-      studentData.streak++;
-      updateProgress();
-    }
   } else {
-    feedback.innerHTML = '<div class="error-msg">❌ Not quite. Check your work and try again!</div>';
-    input.classList.add('incorrect');
-    input.classList.remove('correct');
-    studentData.streak = 0;
-    updateProgress();
+    alert('Add student names to celebrate their work!');
   }
 }
 
-/* ============ PRACTICE STATION ============ */
-const practiceData = {
-  simplify: [],
-  compare: [],
-  order: []
-};
+/* ======================= Differentiated Stations ======================= */
+function selectStation(level){
+  const content = document.getElementById('stationContent');
+  const stations = {
+    emerging: {
+      title: '🌱 Emerging: Building Foundations',
+      desc: 'Focus on basic concepts with visual support',
+      tasks: [
+        {q:'Simplify: \\(\\frac{6}{8}\\)', hint:'Both divisible by 2'},
+        {q:'Compare: \\(\\frac{2}{5}\\) vs \\(\\frac{3}{5}\\)', hint:'Same denominator!'},
+        {q:'Which is bigger: \\(\\frac{1}{2}\\) or \\(\\frac{1}{3}\\)?', hint:'Draw a picture'},
+        {q:'Simplify: \\(\\frac{10}{15}\\)', hint:'Both divisible by 5'}
+      ]
+    },
+    developing: {
+      title: '📚 Developing: Building Skills',
+      desc: 'Practice with guidance available',
+      tasks: [
+        {q:'Simplify: \\(\\frac{24}{36}\\)', hint:'Find GCF of 24 and 36'},
+        {q:'Compare: \\(\\frac{3}{4}\\) vs \\(\\frac{5}{6}\\)', hint:'Use cross-multiplication'},
+        {q:'Order: \\(\\frac{1}{2}, \\frac{2}{3}, \\frac{3}{5}\\)', hint:'Convert to decimals or LCD'},
+        {q:'Qatar: \\(\\frac{18}{24}\\) of students walk to school. Simplify.', hint:'GCF = 6'}
+      ]
+    },
+    proficient: {
+      title: '⭐ Proficient: Applying Skills',
+      desc: 'Independent work with complex problems',
+      tasks: [
+        {q:'Simplify: \\(\\frac{-45}{75}\\)', hint:'Don\'t forget the negative sign'},
+        {q:'Compare: \\(\\frac{7}{12}\\) vs \\(\\frac{11}{18}\\)', hint:'LCD=36'},
+        {q:'Order: \\(\\frac{5}{8}, -\\frac{1}{4}, 0.6, \\frac{3}{5}\\)', hint:'Mix of forms'},
+        {q:'If \\(\\frac{x}{20}=\\frac{3}{4}\\), find x', hint:'Cross multiply'}
+      ]
+    },
+    advanced: {
+      title: '🚀 Advanced: Extended Thinking',
+      desc: 'Challenge problems requiring deep understanding',
+      tasks: [
+        {q:'Find three fractions between \\(\\frac{1}{3}\\) and \\(\\frac{1}{2}\\)', hint:'Use larger denominators'},
+        {q:'Prove: \\(\\frac{a}{b}<\\frac{c}{d}\\) iff ad<bc (when b,d>0)', hint:'Use algebra'},
+        {q:'Qatar: Design a recipe scaling project using fractions', hint:'Real application'},
+        {q:'Investigate: Are all terminating decimals rational?', hint:'Convert to fractions'}
+      ]
+    }
+  };
 
-document.addEventListener('click', e => {
-  const btn = e.target.closest('.station-btn');
-  if (!btn) return;
+  const station = stations[level];
+  let html = `<div class="card p-5">
+    <h3 class="text-2xl font-bold text-maroon mb-2">${station.title}</h3>
+    <p class="text-gray-600 mb-4">${station.desc}</p>
+    <div class="space-y-4">`;
   
-  const station = btn.dataset.station;
-  document.querySelectorAll('.station-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.practice-content').forEach(c => c.style.display = 'none');
+  station.tasks.forEach((task,idx)=>{
+    html += `<div class="border p-3 rounded">
+      <div class="font-bold">Task ${idx+1}:</div>
+      <div class="text-lg mt-1">${task.q}</div>
+      <textarea class="w-full border rounded p-2 mt-2" rows="2" placeholder="Show your work here..."></textarea>
+      <button class="btn btn-sm mt-2" onclick="showHint('${task.hint}')">💡 Hint</button>
+    </div>`;
+  });
   
-  btn.classList.add('active');
-  document.getElementById('practice-' + station).style.display = 'block';
-  
-  if (practiceData[station].length === 0) {
-    newPracticeSet(station);
+  html += `</div></div>`;
+  content.innerHTML = html;
+  renderMath(content);
+}
+
+function showHint(hint){
+  alert('Hint: ' + hint);
+}
+
+/* ======================= Qatar Real-World Challenges ======================= */
+const qatarProblems = [
+  {
+    scenario: '🏪 At Lulu Hypermarket',
+    problem: 'Dates are on sale: \\(\\frac{2}{5}\\) off regular price vs \\(\\frac{3}{8}\\) off premium dates. Which discount is better?',
+    answer: '2/5',
+    explain: 'Convert to LCD=40: \\(\\frac{2}{5}=\\frac{16}{40}\\), \\(\\frac{3}{8}=\\frac{15}{40}\\). First is better!'
+  },
+  {
+    scenario: '🏗️ Lusail Stadium Construction',
+    problem: 'Phase 1 completed \\(\\frac{15}{25}\\) of work. Phase 2 completed \\(\\frac{18}{30}\\). Which phase did more?',
+    answer: 'same',
+    explain: 'Both simplify to \\(\\frac{3}{5}\\)!'
+  },
+  {
+    scenario: '⛽ Fuel Efficiency',
+    problem: 'Car A: \\(\\frac{7}{8}\\) tank remains. Car B: 0.85 tank remains. Which has more fuel?',
+    answer: 'B',
+    explain: '\\(\\frac{7}{8}=0.875\\) but 0.875 < 0.85 is wrong! 0.875 > 0.85, so A has more!'
+  },
+  {
+    scenario: '📚 Class Survey',
+    problem: '\\(\\frac{12}{30}\\) students prefer Arabic literature, \\(\\frac{2}{5}\\) prefer English. Same or different?',
+    answer: 'same',
+    explain: '\\(\\frac{12}{30}=\\frac{2}{5}\\) after simplifying by 6'
+  },
+  {
+    scenario: '🌡️ Temperature Change',
+    problem: 'Temperature dropped \\(\\frac{9}{12}\\) degrees in morning, \\(\\frac{5}{8}\\) in evening. When was drop bigger?',
+    answer: 'morning',
+    explain: '\\(\\frac{9}{12}=\\frac{3}{4}=0.75\\), \\(\\frac{5}{8}=0.625\\). Morning bigger!'
+  },
+  {
+    scenario: '🎨 Art Project',
+    problem: 'Mixing paint: \\(\\frac{24}{36}\\) red in Mix A, \\(\\frac{18}{27}\\) in Mix B. Same shade?',
+    answer: 'same',
+    explain: 'Both equal \\(\\frac{2}{3}\\) when simplified'
   }
-});
+];
 
-function newPracticeSet(type) {
-  if (type === 'simplify') {
-    practiceData.simplify = [];
-    for (let i = 0; i < 6; i++) {
-      let n = randomInt(6, 48);
-      let d = randomInt(6, 60);
-      if (Math.random() < 0.5) {
-        const k = [2, 3, 4, 5, 6][randomInt(0, 4)];
-        n *= k;
-        d *= k;
+function newQatarChallenges(){
+  const box = document.getElementById('qatarChallenges');
+  box.innerHTML = '';
+  const selected = [];
+  while(selected.length < 4){
+    const prob = randFrom(qatarProblems);
+    if(!selected.includes(prob)) selected.push(prob);
+  }
+  
+  selected.forEach((p,idx)=>{
+    const card = document.createElement('div');
+    card.className = 'card p-4 qatar-context';
+    card.innerHTML = `
+      <h4 class="font-bold text-qatar mb-2">${p.scenario}</h4>
+      <div class="text-md mb-2">${p.problem}</div>
+      <input type="text" class="qAnswer border rounded px-3 py-2 w-full" placeholder="Your answer..." data-correct="${p.answer}" data-explain="${p.explain}"/>
+      <div class="qFeedback mt-2 text-sm"></div>
+    `;
+    box.appendChild(card);
+  });
+  renderMath(box);
+}
+
+function checkQatarAnswers(){
+  const inputs = document.querySelectorAll('.qAnswer');
+  let correct = 0;
+  inputs.forEach(input=>{
+    const ans = input.value.trim().toLowerCase();
+    const correctAns = input.dataset.correct.toLowerCase();
+    const feedback = input.nextElementSibling;
+    if(ans === correctAns || ans.includes(correctAns)){
+      feedback.innerHTML = `✅ Correct! ${input.dataset.explain}`;
+      feedback.className = 'qFeedback mt-2 text-sm text-green-600';
+      correct++;
+    } else {
+      feedback.innerHTML = `❌ Try again. Hint: ${input.dataset.explain}`;
+      feedback.className = 'qFeedback mt-2 text-sm text-red-600';
+    }
+    renderMath(feedback);
+  });
+  
+  const fb = document.getElementById('qatarFb');
+  if(correct === inputs.length){
+    fb.textContent = '🎉 All groups mastered Qatar applications!';
+    fb.className = 'mt-2 font-semibold text-green-600';
+    confetti();
+  } else {
+    fb.textContent = `${correct}/${inputs.length} correct. Keep working!`;
+    fb.className = 'mt-2 font-semibold text-yellow-600';
+  }
+}
+
+/* ======================= Ordering Challenge ======================= */
+let orderState = {items:[], correct:[]};
+
+function newOrderSet(){
+  const level = document.getElementById('orLevel').value;
+  const items = [];
+  
+  if(level==='easy'){
+    const den = randFrom([6,8,10,12]);
+    for(let i=0; i<5; i++){
+      items.push({n:randomInt(1,den-1), d:den});
+    }
+  } else if(level==='medium'){
+    for(let i=0; i<5; i++){
+      const type = Math.random();
+      if(type<0.4){ // fraction
+        items.push({n:randomInt(1,15), d:randFrom([6,8,10,12])});
+      } else { // decimal as fraction
+        const dec = randomInt(10,95)/100;
+        items.push({n:Math.round(dec*100), d:100});
       }
-      practiceData.simplify.push([n, d]);
     }
-    renderSimplifyProblems();
-  } else if (type === 'compare') {
-    practiceData.compare = [];
-    for (let i = 0; i < 6; i++) {
-      const d1 = [4, 5, 6, 7, 8, 9, 10, 12][randomInt(0, 7)];
-      const d2 = [4, 5, 6, 7, 8, 9, 10, 12][randomInt(0, 7)];
-      const n1 = randomInt(1, d1 * 2 - 1);
-      const n2 = randomInt(1, d2 * 2 - 1);
-      practiceData.compare.push([n1, d1, n2, d2]);
+  } else { // hard
+    for(let i=0; i<6; i++){
+      const sign = Math.random()<0.3 ? -1 : 1;
+      items.push({n:sign*randomInt(1,20), d:randFrom([6,8,10,12,15])});
     }
-    renderCompareProblems();
-  } else if (type === 'order') {
-    practiceData.order = [];
-    for (let i = 0; i < 6; i++) {
-      const d = [4, 5, 6, 8, 10, 12][randomInt(0, 5)];
-      const n = randomInt(1, d * 2);
-      practiceData.order.push([n, d]);
-    }
-    renderOrderProblems();
   }
-}
-
-function renderSimplifyProblems() {
-  const container = document.getElementById('simplifyProblems');
-  container.innerHTML = '';
   
-  practiceData.simplify.forEach((frac, i) => {
-    const [n, d] = frac;
-    const div = document.createElement('div');
-    div.className = 'card';
-    div.style.padding = '1rem';
-    div.innerHTML = `
-      <div style="font-weight:700;margin-bottom:.5rem">Problem ${i + 1}</div>
-      <div style="font-size:1.2rem;margin-bottom:.5rem">\\(\\frac{${n}}{${d}}\\) =</div>
-      <div style="display:flex;gap:.5rem;align-items:center">
-        <input type="number" class="simp-n" data-idx="${i}" style="width:70px">
-        <span>/</span>
-        <input type="number" class="simp-d" data-idx="${i}" style="width:70px">
-      </div>
-    `;
-    container.appendChild(div);
-  });
+  orderState.items = [...items];
+  // Calculate correct order
+  orderState.correct = items.slice().sort((a,b)=> a.n*b.d - b.n*a.d);
   
-  if (window.renderMath) window.renderMath(container);
-}
-
-function renderCompareProblems() {
-  const container = document.getElementById('compareProblems');
-  container.innerHTML = '';
-  
-  practiceData.compare.forEach((frac, i) => {
-    const [n1, d1, n2, d2] = frac;
-    const div = document.createElement('div');
-    div.className = 'card';
-    div.style.padding = '1rem';
-    div.innerHTML = `
-      <div style="font-weight:700;margin-bottom:.5rem">Problem ${i + 1}</div>
-      <div style="font-size:1.2rem;display:flex;gap:.5rem;align-items:center">
-        <span>\\(\\frac{${n1}}{${d1}}\\)</span>
-        <select class="cmp-sign" data-idx="${i}" style="width:60px">
-          <option value="">?</option>
-          <option value="<">&lt;</option>
-          <option value=">">&gt;</option>
-          <option value="=">=</option>
-        </select>
-        <span>\\(\\frac{${n2}}{${d2}}\\)</span>
-      </div>
-    `;
-    container.appendChild(div);
-  });
-  
-  if (window.renderMath) window.renderMath(container);
-}
-
-function renderOrderProblems() {
-  const ul = document.getElementById('orderList');
+  const ul = document.getElementById('orList');
   ul.innerHTML = '';
-  
-  // Shuffle
-  const shuffled = [...practiceData.order].sort(() => Math.random() - 0.5);
-  
-  shuffled.forEach((frac, i) => {
-    const [n, d] = frac;
+  items.forEach((fr,idx)=>{
     const li = document.createElement('li');
     li.draggable = true;
-    li.dataset.n = n;
-    li.dataset.d = d;
-    li.innerHTML = `<span class="handle">↕</span> \\(\\frac{${n}}{${d}}\\)`;
+    li.dataset.idx = idx;
+    li.innerHTML = `<span class="handle mr-2" style="cursor:grab">↕</span> \\(${toLatex(fr.n,fr.d)}\\)`;
     ul.appendChild(li);
   });
   
+  renderMath(ul);
   makeSortable(ul);
-  if (window.renderMath) window.renderMath(ul);
+  document.getElementById('orFb').textContent = '';
+  document.getElementById('orHintBox').style.display = 'none';
 }
 
-function makeSortable(ul) {
-  let dragging = null;
-  
-  ul.querySelectorAll('li').forEach(li => {
-    li.addEventListener('dragstart', () => {
-      dragging = li;
-      li.classList.add('dragging');
-    });
-    li.addEventListener('dragend', () => {
-      dragging = null;
-      li.classList.remove('dragging');
-    });
+function makeSortable(ul){
+  let dragging=null;
+  ul.querySelectorAll('li').forEach(li=>{
+    li.addEventListener('dragstart',()=>{ dragging=li; li.classList.add('dragging'); });
+    li.addEventListener('dragend',()=>{ dragging=null; li.classList.remove('dragging'); });
   });
-  
-  ul.addEventListener('dragover', e => {
+  ul.addEventListener('dragover',e=>{
     e.preventDefault();
-    const after = [...ul.querySelectorAll('li:not(.dragging)')].find(li => {
-      const box = li.getBoundingClientRect();
-      return e.clientY < box.top + box.height / 2;
-    });
-    if (after) ul.insertBefore(dragging, after);
+    const after=[...ul.querySelectorAll('li:not(.dragging)')].find(li=>
+      e.clientY < li.getBoundingClientRect().top+li.offsetHeight/2
+    );
+    if(after) ul.insertBefore(dragging, after);
     else ul.appendChild(dragging);
   });
 }
 
-function checkPractice(type) {
-  if (type === 'simplify') {
-    let correct = 0;
-    practiceData.simplify.forEach((frac, i) => {
-      const [n, d] = frac;
-      const [correctN, correctD] = simplify(n, d);
-      const userN = parseInt(document.querySelector(`.simp-n[data-idx="${i}"]`).value);
-      const userD = parseInt(document.querySelector(`.simp-d[data-idx="${i}"]`).value);
-      const [simpN, simpD] = simplify(userN, userD);
-      
-      const nInput = document.querySelector(`.simp-n[data-idx="${i}"]`);
-      const dInput = document.querySelector(`.simp-d[data-idx="${i}"]`);
-      
-      if (simpN === correctN && simpD === correctD) {
-        nInput.classList.add('correct');
-        dInput.classList.add('correct');
-        nInput.classList.remove('incorrect');
-        dInput.classList.remove('incorrect');
-        correct++;
-      } else {
-        nInput.classList.add('incorrect');
-        dInput.classList.add('incorrect');
-        nInput.classList.remove('correct');
-        dInput.classList.remove('correct');
-      }
-    });
-    
-    const feedback = document.getElementById('simplifyFeedback');
-    if (correct === practiceData.simplify.length) {
-      feedback.innerHTML = '<span style="color:var(--success)">✅ Perfect! All correct!</span>';
-      confetti();
-      if (!studentData.completed.includes('practice-simplify')) {
-        studentData.completed.push('practice-simplify');
-        studentData.streak++;
-        updateProgress();
-      }
-    } else {
-      feedback.innerHTML = `<span style="color:var(--error)">Score: ${correct}/${practiceData.simplify.length} - Keep trying!</span>`;
-    }
-  } else if (type === 'compare') {
-    let correct = 0;
-    practiceData.compare.forEach((frac, i) => {
-      const [n1, d1, n2, d2] = frac;
-      const sel = document.querySelector(`.cmp-sign[data-idx="${i}"]`);
-      const userSign = sel.value;
-      
-      const cross1 = n1 * d2;
-      const cross2 = d1 * n2;
-      const correctSign = cross1 < cross2 ? '<' : cross1 > cross2 ? '>' : '=';
-      
-      if (userSign === correctSign) {
-        sel.classList.add('correct');
-        sel.classList.remove('incorrect');
-        correct++;
-      } else {
-        sel.classList.add('incorrect');
-        sel.classList.remove('correct');
-      }
-    });
-    
-    const feedback = document.getElementById('compareFeedback');
-    if (correct === practiceData.compare.length) {
-      feedback.innerHTML = '<span style="color:var(--success)">✅ Excellent! All comparisons correct!</span>';
-      confetti();
-      if (!studentData.completed.includes('practice-compare')) {
-        studentData.completed.push('practice-compare');
-        studentData.streak++;
-        updateProgress();
-      }
-    } else {
-      feedback.innerHTML = `<span style="color:var(--error)">Score: ${correct}/${practiceData.compare.length}</span>`;
-    }
-  } else if (type === 'order') {
-    const lis = [...document.getElementById('orderList').children];
-    const userOrder = lis.map(li => [parseInt(li.dataset.n), parseInt(li.dataset.d)]);
-    
-    let isCorrect = true;
-    for (let i = 1; i < userOrder.length; i++) {
-      const [n1, d1] = userOrder[i - 1];
-      const [n2, d2] = userOrder[i];
-      if (n1 * d2 > n2 * d1) {
-        isCorrect = false;
-        break;
-      }
-    }
-    
-    const feedback = document.getElementById('orderFeedback');
-    if (isCorrect) {
-      feedback.innerHTML = '<span style="color:var(--success)">✅ Perfect order!</span>';
-      confetti();
-      if (!studentData.completed.includes('practice-order')) {
-        studentData.completed.push('practice-order');
-        studentData.streak++;
-        updateProgress();
-      }
-    } else {
-      feedback.innerHTML = '<span style="color:var(--error)">❌ Not quite right. Try again!</span>';
-    }
-  }
-}
-
-function practiceHint(type) {
-  const hints = {
-    simplify: 'Find the GCF of the numerator and denominator, then divide both by it!',
-    compare: 'Try cross-multiplying: multiply each numerator by the opposite denominator!',
-    order: 'Convert all to the same denominator or to decimals to compare easily!'
-  };
-  alert('💡 Hint: ' + hints[type]);
-}
-
-/* ============ PEER TEACHING ============ */
-function savePeerWork() {
-  const context = document.getElementById('peerContext').value;
-  const problem = document.getElementById('peerProblem').value;
-  const answer = document.getElementById('peerAnswer').value;
+document.getElementById('orNew').addEventListener('click', newOrderSet);
+document.getElementById('orCheck').addEventListener('click', ()=>{
+  const lis = [...document.getElementById('orList').children];
+  const current = lis.map(li=>orderState.items[Number(li.dataset.idx)]);
+  const correct = current.every((fr,i,arr)=>
+    i===0 || arr[i-1].n*fr.d <= fr.n*arr[i-1].d
+  );
   
-  if (!context || !problem || !answer) {
-    alert('Please fill in all fields!');
-    return;
-  }
-  
-  studentData.answers.peerTeaching = { context, problem, answer };
-  alert('✅ Your teaching problem has been saved!');
-  if (!studentData.completed.includes('peer-teaching')) {
-    studentData.completed.push('peer-teaching');
-    updateProgress();
-  }
-}
-
-function downloadPeerWork() {
-  const data = studentData.answers.peerTeaching;
-  if (!data) {
-    alert('Please save your work first!');
-    return;
-  }
-  
-  const text = `MY TEACHING PROBLEM\n\nContext: ${data.context}\n\nProblem:\n${data.problem}\n\nAnswer & Method:\n${data.answer}`;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'my_math_teaching_problem.txt';
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-/* ============ EXIT TICKET ============ */
-function checkExit() {
-  const n = parseInt(document.getElementById('exit1').value);
-  const d = parseInt(document.getElementById('exit2').value);
-  const sign = document.getElementById('exit3').value;
-  const q3 = document.querySelector('input[name="exit4"]:checked')?.value;
-  
-  let score = 0;
-  const [correctN, correctD] = simplify(48, 72);
-  const [userN, userD] = simplify(n, d);
-  
-  if (userN === correctN && userD === correctD) score++;
-  
-  // 5/6 vs 7/9: 5*9=45, 6*7=42, so 5/6 > 7/9
-  if (sign === '>') score++;
-  
-  // 3/5 = 0.6 vs 0.58, families are larger
-  if (q3 === 'families') score++;
-  
-  const feedback = document.getElementById('exitFeedback');
-  if (score === 3) {
-    feedback.innerHTML = '<div class="success-msg">✅ Perfect! You\'ve mastered the content! 🎉</div>';
+  const fb = document.getElementById('orFb');
+  if(correct){
+    fb.textContent = '🎯 Perfect order!';
+    fb.className = 'mt-2 h-6 font-semibold text-green-600';
     confetti();
-    if (!studentData.completed.includes('exit-ticket')) {
-      studentData.completed.push('exit-ticket');
-      updateProgress();
-    }
   } else {
-    feedback.innerHTML = `<div class="error-msg">Score: ${score}/3 - Review and try again!</div>`;
+    fb.textContent = '❌ Not quite. Try again or use hint.';
+    fb.className = 'mt-2 h-6 font-semibold text-red-600';
   }
+});
+
+document.getElementById('orHint').addEventListener('click', ()=>{
+  const box = document.getElementById('orHintBox');
+  box.style.display = 'block';
+  box.textContent = '💡 Hint: Convert all to decimals or find a common denominator to compare.';
+});
+
+document.getElementById('orReveal').addEventListener('click', ()=>{
+  const correct = orderState.correct.map(fr=>toLatex(fr.n,fr.d)).join(' < ');
+  alert('Correct order: ' + correct);
+});
+
+/* ======================= Simplification Station ======================= */
+let simpState = {items:[]};
+
+function newSimpSet(){
+  const level = document.getElementById('simpLevel').value;
+  const items = [];
+  
+  for(let i=0; i<6; i++){
+    let a,b;
+    if(level==='easy'){
+      a = randomInt(2,20);
+      b = randomInt(2,20);
+    } else if(level==='medium'){
+      a = randomInt(20,100);
+      b = randomInt(20,100);
+    } else {
+      a = nonzeroRand(-200,200);
+      b = randomInt(20,200);
+    }
+    // Make half reducible
+    if(Math.random()<0.5){
+      const k = randFrom([2,3,4,5,6]);
+      a *= k;
+      b *= k;
+    }
+    items.push([a,b]);
+  }
+  
+  simpState.items = items;
+  const box = document.getElementById('simpList');
+  box.innerHTML = '';
+  
+  items.forEach((fr,idx)=>{
+    const card = document.createElement('div');
+    card.className = 'card p-3';
+    const [a,b] = fr;
+    card.innerHTML = `
+      <div class="font-bold text-sm mb-1">Problem ${idx+1}</div>
+      <div class="text-lg">\\(${toLatex(a,b)} = \\)</div>
+      <div class="flex gap-1 mt-2">
+        <input type="number" class="simpN border rounded px-2 py-1 w-20" placeholder="num"/>
+        <span class="self-center">/</span>
+        <input type="number" class="simpD border rounded px-2 py-1 w-20" placeholder="den"/>
+      </div>
+    `;
+    box.appendChild(card);
+  });
+  renderMath(box);
 }
 
-function saveReflection() {
-  const r1 = document.getElementById('reflect1').value;
-  const r2 = document.getElementById('reflect2').value;
-  const r3 = document.getElementById('reflect3').value;
+document.getElementById('simpNew').addEventListener('click', newSimpSet);
+document.getElementById('simpCheck').addEventListener('click', ()=>{
+  const cards = document.querySelectorAll('#simpList .card');
+  let correct = 0;
   
-  if (!r1 || !r2 || !r3) {
-    alert('Please complete all reflection questions!');
+  cards.forEach((card,idx)=>{
+    const [a,b] = simpState.items[idx];
+    const want = simplify(a,b);
+    const n = Number(card.querySelector('.simpN').value);
+    const d = Number(card.querySelector('.simpD').value);
+    const got = simplify(n,d);
+    
+    const isCorrect = (got[0]===want[0] && got[1]===want[1]);
+    card.querySelector('.simpN').style.borderColor = isCorrect ? '#22c55e' : '#ef4444';
+    card.querySelector('.simpD').style.borderColor = isCorrect ? '#22c55e' : '#ef4444';
+    if(isCorrect) correct++;
+  });
+  
+  const fb = document.getElementById('simpFb');
+  if(correct === cards.length){
+    fb.textContent = '🌟 All simplified perfectly!';
+    fb.className = 'mt-2 h-6 font-semibold text-green-600';
+    confetti();
+  } else {
+    fb.textContent = `Score: ${correct}/${cards.length}`;
+    fb.className = 'mt-2 h-6 font-semibold text-yellow-600';
+  }
+});
+
+document.getElementById('simpHint').addEventListener('click', ()=>{
+  alert('Hint: Find the GCF of numerator and denominator, then divide both by it. Use the GCF Helper tool if needed!');
+});
+
+function showGCFHelper(){
+  const helper = document.getElementById('gcfHelper');
+  helper.style.display = helper.style.display==='none' ? 'block' : 'none';
+}
+
+function calculateGCF(){
+  const a = Number(document.getElementById('gcfA').value);
+  const b = Number(document.getElementById('gcfB').value);
+  if(!a || !b){
+    document.getElementById('gcfResult').textContent = 'Enter both numbers!';
     return;
   }
+  const result = gcd(a,b);
+  document.getElementById('gcfResult').textContent = `GCF = ${result}`;
+}
+
+/* ======================= Tournament ======================= */
+let tournState = {current:null, team1:0, team2:0};
+
+function newTournamentQ(){
+  const level = document.getElementById('tournLevel').value;
+  let a,b,c,d;
   
-  studentData.answers.reflection = { easiest: r1, challenging: r2, realLife: r3 };
-  alert('✅ Your reflection has been saved!');
-  if (!studentData.completed.includes('reflection')) {
-    studentData.completed.push('reflection');
-    updateProgress();
+  if(level==='easy'){
+    b = d = randFrom([4,5,6,8,10]);
+    a = randomInt(1,b-1);
+    c = randomInt(1,d-1);
+  } else if(level==='medium'){
+    b = randFrom([6,8,10,12]);
+    d = randFrom([6,8,10,12,15]);
+    a = randomInt(1,2*b-1);
+    c = randomInt(1,2*d-1);
+  } else {
+    b = randFrom([7,11,13]);
+    d = randFrom([6,9,12]);
+    a = nonzeroRand(-15,15);
+    c = nonzeroRand(-15,15);
+  }
+  
+  tournState.current = {a,b,c,d};
+  const box = document.getElementById('tournamentQuestion');
+  box.innerHTML = `Compare: \\(${toLatex(a,b)}\\) __ \\(${toLatex(c,d)}\\)`;
+  renderMath(box);
+  
+  document.getElementById('team1Answer').value = '';
+  document.getElementById('team2Answer').value = '';
+  document.getElementById('tournFb').textContent = '';
+}
+
+function checkTournament(){
+  const {a,b,c,d} = tournState.current;
+  const ad = a*d, bc = b*c;
+  const correct = ad<bc ? '<' : ad>bc ? '>' : '=';
+  
+  const t1 = document.getElementById('team1Answer').value;
+  const t2 = document.getElementById('team2Answer').value;
+  
+  let msg = '';
+  if(t1 === correct){
+    tournState.team1++;
+    msg += 'Team 1 correct! ';
+  }
+  if(t2 === correct){
+    tournState.team2++;
+    msg += 'Team 2 correct! ';
+  }
+  if(t1!==correct && t2!==correct){
+    msg = 'Both teams incorrect. The answer is: ' + correct;
+  }
+  
+  document.getElementById('team1Score').textContent = tournState.team1;
+  document.getElementById('team2Score').textContent = tournState.team2;
+  document.getElementById('tournFb').textContent = msg;
+  
+  if(tournState.team1>=5 || tournState.team2>=5){
+    const winner = tournState.team1>=5 ? 'Team 1' : 'Team 2';
+    setTimeout(()=>{
+      alert(`🏆 ${winner} WINS the tournament!`);
+      confetti();
+    }, 500);
   }
 }
 
-/* ============ DATA EXPORT ============ */
-function downloadTeacherGuide() {
-  alert('Teacher Guide PDF would be downloaded here (requires backend)');
+function resetTournament(){
+  tournState = {current:null, team1:0, team2:0};
+  document.getElementById('team1Score').textContent = '0';
+  document.getElementById('team2Score').textContent = '0';
+  newTournamentQ();
 }
 
-function downloadStudentData() {
-  const json = JSON.stringify(studentData, null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'student_progress_data.json';
-  a.click();
-  URL.revokeObjectURL(url);
+/* ======================= Vocabulary Quiz ======================= */
+function openVocabQuiz(){
+  const popup = document.getElementById('vocabPopup');
+  const content = document.getElementById('vocabQuizContent');
+  
+  const questions = [
+    {q: 'What is a rational number?', opts: ['Any fraction', 'A number that can be written as a/b', 'Only positive numbers'], ans:1},
+    {q: 'What is simplest form?', opts: ['Any equivalent fraction', 'When GCF=1', 'The smallest fraction'], ans:1},
+    {q: 'What is GCF?', opts: ['Greatest Common Factor', 'Greatest Common Fraction', 'General Common Factor'], ans:0}
+  ];
+  
+  let html = '<div class="space-y-4">';
+  questions.forEach((q,idx)=>{
+    html += `<div class="border p-3 rounded">
+      <div class="font-bold mb-2">${q.q}</div>`;
+    q.opts.forEach((opt,i)=>{
+      html += `<label class="block"><input type="radio" name="vocab${idx}" value="${i}"> ${opt}</label>`;
+    });
+    html += '</div>';
+  });
+  html += '<button class="btn maroon mt-3" onclick="checkVocab()">Check Answers</button>';
+  html += '<div id="vocabScore" class="mt-2 font-bold"></div></div>';
+  
+  content.innerHTML = html;
+  popup.classList.add('active');
 }
 
-/* ============ INIT ============ */
-showSlide(0);
-updateProgress();
-newPracticeSet('simplify');
+function closeVocabQuiz(){
+  document.getElementById('vocabPopup').classList.remove('active');
+}
+
+function checkVocab(){
+  const answers = [1,1,0];
+  let score = 0;
+  answers.forEach((ans,idx)=>{
+    const selected = document.querySelector(`input[name="vocab${idx}"]:checked`);
+    if(selected && Number(selected.value)===ans) score++;
+  });
+  document.getElementById('vocabScore').textContent = `Score: ${score}/${answers.length}`;
+  if(score===answers.length) confetti();
+}
+
+/* ======================= Reflection Functions ======================= */
+function updateConfidence(val){
+  document.getElementById('confidenceVal').textContent = val;
+}
+
+function saveReflection(){
+  alert('✅ Reflection saved! Great job reflecting on your learning.');
+  confetti();
+}
+
+/* ======================= Initialize ======================= */
+window.addEventListener('load', ()=>{
+  newOrderSet();
+  newSimpSet();
+  newTournamentQ();
+  newQatarChallenges();
+  selectStation('developing'); // Default station
+});
 </script>
 
 </body>
