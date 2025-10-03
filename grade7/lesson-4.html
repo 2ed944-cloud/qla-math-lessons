@@ -17,102 +17,94 @@
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 
 <style>
-  :root{--maroon:#6C1D45;--gold:#C7A34F;--dark:#1a1a1a;--light:#F5F5F5;--accent:#E8D5B7;--qatar-red:#8D1B3D;--success:#16a34a;--warning:#ea580c;--error:#dc2626}
+  :root{--maroon:#6C1D45;--gold:#C7A34F;--dark:#2C2C2E;--light:#F5F5F5;--accent:#E8D5B7;--qatar-red:#8D1B3D;--success:#22c55e;--warning:#f59e0b;--error:#ef4444}
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;background:#0f172a;color:#1a1a1a;font-family:Inter,system-ui,sans-serif;font-size:18px}
+  html,body{height:100%;background:#1e293b;color:#111;font-family:Inter,system-ui,sans-serif}
   
   #deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
-  #slides{position:relative;width:100%;max-width:1000px;aspect-ratio:16/9;background:#fff;box-shadow:0 20px 50px rgba(0,0,0,.4);overflow:hidden;border-radius:20px}
+  #slides{position:relative;width:100%;max-width:1400px;aspect-ratio:16/9;background:#fff;box-shadow:0 20px 50px rgba(0,0,0,.4);overflow:hidden;border-radius:20px}
 
-  .slide{position:absolute;inset:0;padding:3%;display:flex;flex-direction:column;opacity:0;transform:translateY(20px) scale(.97);transition:.6s cubic-bezier(.4,0,.2,1);pointer-events:none;overflow-y:auto;font-size:1.1rem}
+  .slide{position:absolute;inset:0;padding:3%;display:flex;flex-direction:column;opacity:0;transform:translateY(20px) scale(.97);transition:.6s cubic-bezier(.4,0,.2,1);pointer-events:none;overflow-y:auto}
   .slide.active{opacity:1;transform:none;pointer-events:auto}
 
   .bg-maroon{background:linear-gradient(135deg, var(--maroon) 0%, var(--qatar-red) 100%)}
   .text-maroon{color:var(--maroon)}
   .text-gold{color:var(--gold)}
   
-  .banner{width:100%;height:120px;background:#fff center/contain no-repeat;border-bottom:4px solid var(--gold);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
-  .logo{height:100px;width:auto;object-fit:contain}
+  .banner{width:100%;height:100px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
 
-  .card{border:2px solid #cbd5e1;border-radius:16px;background:#ffffff;transition:.3s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-  .card:hover{border-color:var(--gold);box-shadow:0 6px 16px rgba(0,0,0,.12)}
+  .card{border:2px solid #e5e7eb;border-radius:16px;background:#fafafa;transition:.3s}
+  .card:hover{border-color:var(--gold);box-shadow:0 4px 12px rgba(0,0,0,.1)}
   
-  .chip{display:inline-flex;align-items:center;gap:.4rem;background:#ffffff;border:2px solid var(--maroon);border-radius:999px;padding:.5rem 1rem;cursor:pointer;transition:.2s;font-size:1rem;font-weight:600;color:var(--maroon)}
-  .chip:hover{background:var(--maroon);color:#fff;transform:translateY(-2px);box-shadow:0 6px 12px rgba(108,29,69,.25)}
+  .chip{display:inline-flex;align-items:center;gap:.4rem;background:rgba(108,29,69,.08);border:1px solid rgba(108,29,69,.2);border-radius:999px;padding:.4rem .85rem;cursor:pointer;transition:.2s;font-size:.95rem}
+  .chip:hover{background:var(--maroon);color:#fff;transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.15)}
   
-  .btn{padding:.7rem 1.4rem;border-radius:999px;border:2px solid #94a3b8;background:#fff;font-weight:700;cursor:pointer;transition:.2s;font-size:1.05rem;color:var(--dark)}
-  .btn:hover{transform:translateY(-2px);box-shadow:0 6px 12px rgba(0,0,0,.15);border-color:var(--maroon)}
+  .btn{padding:.6rem 1.2rem;border-radius:999px;border:2px solid #e5e7eb;background:#fff;font-weight:700;cursor:pointer;transition:.2s;font-size:.95rem}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.1)}
   .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
-  .btn.maroon:hover{background:#5a1739}
-  .btn.gold{background:var(--gold);color:var(--dark);border-color:var(--gold);font-weight:800}
-  .btn.gold:hover{background:#b8943d}
+  .btn.gold{background:var(--gold);color:#000;border-color:var(--gold)}
   .btn:disabled{opacity:.5;cursor:not-allowed}
 
-  .badge{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .85rem;border-radius:999px;font-size:.95rem;font-weight:700}
-  .badge.beginner{background:#dbeafe;color:#1e40af;border:2px solid #3b82f6}
-  .badge.intermediate{background:#fef3c7;color:#92400e;border:2px solid #f59e0b}
-  .badge.advanced{background:#fecaca;color:#991b1b;border:2px solid #ef4444}
-  .badge.mastered{background:#d1fae5;color:#065f46;border:2px solid #16a34a}
+  .badge{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .7rem;border-radius:999px;font-size:.85rem;font-weight:700}
+  .badge.beginner{background:#dbeafe;color:#1e40af}
+  .badge.intermediate{background:#fef3c7;color:#92400e}
+  .badge.advanced{background:#fecaca;color:#991b1b}
+  .badge.mastered{background:#d1fae5;color:#065f46}
 
-  #controls{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.8rem;background:rgba(0,0,0,.85);padding:.6rem 1rem;border-radius:999px;z-index:100;backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,.1)}
-  #controls button{width:48px;height:48px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:800;transition:.2s;font-size:1.3rem;color:var(--dark)}
-  #controls button:hover{transform:scale(1.15);box-shadow:0 6px 16px rgba(255,255,255,.4)}
-  #counter{color:#fff;font-weight:800;min-width:100px;text-align:center;font-size:1.1rem}
+  #controls{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.6rem;background:rgba(0,0,0,.7);padding:.5rem .8rem;border-radius:999px;z-index:100;backdrop-filter:blur(10px)}
+  #controls button{width:44px;height:44px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700;transition:.2s}
+  #controls button:hover{transform:scale(1.1);box-shadow:0 4px 12px rgba(255,255,255,.3)}
+  #counter{color:#fff;font-weight:700;min-width:90px;text-align:center;font-size:.95rem}
   
-  #progress{position:fixed;left:0;top:0;height:8px;width:0;background:linear-gradient(90deg, var(--gold), var(--maroon));z-index:101;transition:width .4s ease;box-shadow:0 4px 12px rgba(199,163,79,.6)}
+  #progress{position:fixed;left:0;top:0;height:6px;width:0;background:linear-gradient(90deg, var(--gold), var(--maroon));z-index:101;transition:width .4s ease;box-shadow:0 2px 8px rgba(199,163,79,.5)}
   
-  #teacherNotes{position:fixed;right:20px;top:80px;background:rgba(26,26,26,.95);color:#fff;padding:1.2rem;border-radius:12px;max-width:340px;z-index:99;backdrop-filter:blur(10px);display:none;border:2px solid var(--gold);font-size:1rem;line-height:1.6}
+  #teacherNotes{position:fixed;right:20px;top:20px;background:rgba(0,0,0,.8);color:#fff;padding:1rem;border-radius:12px;max-width:320px;z-index:99;backdrop-filter:blur(10px);display:none}
   #teacherNotes.show{display:block}
-  #teacherToggle{position:fixed;right:20px;top:20px;z-index:100;background:var(--maroon);color:#fff;border:none;padding:.7rem 1.2rem;border-radius:10px;cursor:pointer;font-weight:700;font-size:.95rem;border:2px solid var(--gold);box-shadow:0 4px 12px rgba(0,0,0,.2)}
-  #teacherToggle:hover{background:#5a1739;transform:translateY(-2px)}
+  #teacherToggle{position:fixed;right:20px;top:20px;z-index:100;background:var(--maroon);color:#fff;border:none;padding:.5rem 1rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:.85rem}
 
-  #studentProgress{position:fixed;left:20px;top:20px;background:#ffffff;padding:1.2rem;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.2);z-index:99;max-width:300px;border:2px solid var(--gold)}
-  #studentProgress .progress-bar{height:10px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:.6rem 0;border:1px solid #cbd5e1}
+  #studentProgress{position:fixed;left:20px;top:20px;background:rgba(255,255,255,.95);padding:1rem;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:99;max-width:280px}
+  #studentProgress .progress-bar{height:8px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:.5rem 0}
   #studentProgress .progress-fill{height:100%;background:linear-gradient(90deg, var(--success), var(--gold));transition:width .5s}
 
-  .hint{background:#fffbeb;border:2px solid #fbbf24;border-radius:12px;padding:1rem 1.2rem;border-left:5px solid var(--warning);font-size:1.05rem;color:var(--dark)}
-  .success-msg{background:#f0fdf4;border:2px solid #86efac;border-radius:12px;padding:1rem 1.2rem;border-left:5px solid var(--success);font-size:1.05rem;color:var(--dark)}
-  .error-msg{background:#fef2f2;border:2px solid #fca5a5;border-radius:12px;padding:1rem 1.2rem;border-left:5px solid var(--error);font-size:1.05rem;color:var(--dark)}
+  .hint{background:#fffbeb;border:2px solid #fef3c7;border-radius:12px;padding:.8rem 1rem;border-left:4px solid var(--warning)}
+  .success-msg{background:#f0fdf4;border:2px solid #bbf7d0;border-radius:12px;padding:.8rem 1rem;border-left:4px solid var(--success)}
+  .error-msg{background:#fef2f2;border:2px solid #fecaca;border-radius:12px;padding:.8rem 1rem;border-left:4px solid var(--error)}
 
   .confetti{position:fixed;pointer-events:none;z-index:200;font-size:2rem}
 
   .sortable{list-style:none;padding:0;margin:0}
-  .sortable li{user-select:none;background:#fff;border:3px solid #cbd5e1;border-radius:12px;margin:.6rem 0;padding:1rem 1.2rem;cursor:grab;transition:.2s;display:flex;align-items:center;gap:.8rem;font-size:1.15rem;font-weight:600}
-  .sortable li:hover{border-color:var(--gold);transform:translateX(6px);background:#fefce8}
+  .sortable li{user-select:none;background:#fff;border:2px solid #e5e7eb;border-radius:12px;margin:.5rem 0;padding:.8rem 1rem;cursor:grab;transition:.2s;display:flex;align-items:center;gap:.8rem}
+  .sortable li:hover{border-color:var(--gold);transform:translateX(4px)}
   .sortable .dragging{opacity:.6;transform:scale(.98);cursor:grabbing}
-  .handle{font-size:1.5rem;color:#64748b;cursor:grab;font-weight:800}
+  .handle{font-size:1.2rem;color:#9ca3af;cursor:grab}
 
-  input[type="text"], input[type="number"], select, textarea{border:2px solid #cbd5e1;border-radius:10px;padding:.7rem 1rem;font-size:1.05rem;transition:.2s;font-family:inherit;background:#fff;color:var(--dark)}
-  input:focus, select:focus, textarea:focus{outline:none;border-color:var(--maroon);box-shadow:0 0 0 4px rgba(108,29,69,.15)}
-  input.correct{border-color:var(--success);background:#f0fdf4;border-width:3px}
-  input.incorrect{border-color:var(--error);background:#fef2f2;border-width:3px}
+  input[type="text"], input[type="number"], select{border:2px solid #e5e7eb;border-radius:8px;padding:.5rem .8rem;font-size:.95rem;transition:.2s}
+  input:focus, select:focus{outline:none;border-color:var(--maroon);box-shadow:0 0 0 3px rgba(108,29,69,.1)}
+  input.correct{border-color:var(--success);background:#f0fdf4}
+  input.incorrect{border-color:var(--error);background:#fef2f2}
 
-  .qatar-context{background:linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%);border:3px solid var(--gold);border-radius:12px;padding:1.5rem;margin:1rem 0;box-shadow:0 4px 12px rgba(0,0,0,.08)}
-  .qatar-icon{font-size:2rem;margin-right:.5rem}
+  .qatar-context{background:linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%);border:2px solid var(--gold);border-radius:12px;padding:1rem;margin:1rem 0}
+  .qatar-icon{font-size:1.5rem;margin-right:.5rem}
 
-  .differentiation-tabs{display:flex;gap:.6rem;margin:1.2rem 0;flex-wrap:wrap}
-  .diff-tab{padding:.8rem 1.4rem;border-radius:10px 10px 0 0;border:3px solid #cbd5e1;background:#f8fafc;cursor:pointer;font-weight:700;transition:.2s;font-size:1.05rem;color:var(--dark)}
-  .diff-tab.active{background:#fff;border-bottom-color:#fff;color:var(--maroon);border-color:var(--maroon)}
+  .differentiation-tabs{display:flex;gap:.5rem;margin:1rem 0}
+  .diff-tab{padding:.6rem 1.2rem;border-radius:8px 8px 0 0;border:2px solid #e5e7eb;background:#f9fafb;cursor:pointer;font-weight:600;transition:.2s}
+  .diff-tab.active{background:#fff;border-bottom-color:#fff;color:var(--maroon)}
   .diff-tab:hover{background:#fff}
 
-  .mastery-level{display:flex;gap:1rem;align-items:center;margin:1.5rem 0;flex-wrap:wrap}
-  .mastery-level .level{flex:1;text-align:center;padding:1rem;border-radius:10px;border:3px solid #cbd5e1;transition:.3s;min-width:180px;background:#fff;cursor:pointer}
-  .mastery-level .level:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 6px 16px rgba(0,0,0,.1)}
-  .mastery-level .level.active{border-color:var(--maroon);background:rgba(108,29,69,.05);transform:scale(1.05);box-shadow:0 8px 20px rgba(108,29,69,.15)}
+  .mastery-level{display:flex;gap:1rem;align-items:center;margin:1rem 0}
+  .mastery-level .level{flex:1;text-align:center;padding:.8rem;border-radius:8px;border:2px solid #e5e7eb;transition:.3s}
+  .mastery-level .level.active{border-color:var(--maroon);background:rgba(108,29,69,.05);transform:scale(1.05)}
   .mastery-level .level.complete{background:var(--success);color:#fff;border-color:var(--success)}
 
   @keyframes celebrate{0%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.2) rotate(180deg)}100%{transform:scale(1) rotate(360deg)}}
   .celebrating{animation:celebrate .6s ease-in-out}
 
-  .peer-check{background:#eff6ff;border:3px dashed #3b82f6;border-radius:12px;padding:1.2rem;margin:1rem 0;font-size:1.05rem}
+  .peer-check{background:#eff6ff;border:2px dashed #3b82f6;border-radius:12px;padding:1rem;margin:1rem 0}
   
   @media(max-width:768px){
     #slides{aspect-ratio:4/3}
-    .slide{padding:2%;font-size:1rem}
+    .slide{padding:2%;font-size:.9rem}
     #studentProgress, #teacherNotes{position:static;margin:1rem}
-    h1{font-size:2rem !important}
-    h2{font-size:1.8rem !important}
-    h3{font-size:1.4rem !important}
   }
 </style>
 </head>
@@ -122,14 +114,14 @@
 <div id="teacherNotes"></div>
 
 <div id="studentProgress">
-  <div style="font-weight:800;color:var(--maroon);margin-bottom:.8rem;font-size:1.15rem">📊 Your Progress</div>
+  <div style="font-weight:700;color:var(--maroon);margin-bottom:.5rem">Your Progress</div>
   <div class="progress-bar"><div class="progress-fill" id="masterBar" style="width:0%"></div></div>
-  <div style="font-size:1.05rem;color:#334155;margin-top:.5rem;font-weight:700">
+  <div style="font-size:.85rem;color:#666;margin-top:.3rem">
     <span id="masterPercent">0</span>% Complete
   </div>
-  <div style="margin-top:1rem;font-size:1.05rem;color:var(--dark);line-height:1.8;font-weight:600">
+  <div style="margin-top:.8rem;font-size:.85rem">
     <div>✅ <span id="completeCount">0</span> activities mastered</div>
-    <div>⭐ Streak: <span id="streakDisplay" style="color:var(--gold);font-weight:800">0</span></div>
+    <div>⭐ Streak: <span id="streakDisplay">0</span></div>
   </div>
 </div>
 
@@ -138,100 +130,67 @@
 
     <!-- 0 • Title & Welcome -->
     <section class="slide active bg-maroon text-white" id="titleSlide">
-      <!-- QLA Banner at top -->
-      <div class="banner" style="background-image:url('qla_banner.png');margin-bottom:1.5rem" aria-label="QLA Banner">
-        <!-- Fallback if image doesn't load -->
-        <div style="display:flex;align-items:center;justify-content:center;height:100%;font-weight:800;font-size:1.5rem;color:var(--maroon)">
-          QATAR LEADERSHIP ACADEMY
+      <div style="text-align:center">
+        <h1 style="font-size:3.5rem;font-weight:800;margin-bottom:1rem;text-shadow:2px 2px 4px rgba(0,0,0,.3)">
+           • Welcome • Comparing & Simplifying Rational Numbers
+        </h1>
+        <p class="text-gold" style="font-size:1.8rem;font-weight:600;margin-bottom:1.5rem">
+          Master Fractions • Decimals • Mixed Numbers in Qatar Context
+        </p>
+        <div style="font-size:1.2rem;margin-bottom:2rem">
+          🏛️ Qatar Leadership Academy — Grade 7 Mathematics
         </div>
-      </div>
-      
-      <div style="display:flex;align-items:center;justify-content:center;gap:2rem;margin:1.5rem 0">
-        <!-- Logo -->
-        <img src="qla_logo.png" alt="QLA Logo" class="logo" style="filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))" onerror="this.style.display='none'"/>
-        
-        <div style="text-align:left">
-          <h1 style="font-size:4rem;font-weight:900;margin-bottom:1rem;text-shadow:3px 3px 6px rgba(0,0,0,.4);line-height:1.2">
-           
-          </h1>
-          <h2 style="font-size:3rem;font-weight:800;margin-bottom:.5rem;text-shadow:2px 2px 4px rgba(0,0,0,.3)">
-            Comparing & Simplifying<br>Rational Numbers
-          </h2>
-          <p class="text-gold" style="font-size:1.8rem;font-weight:700;margin-top:1rem;text-shadow:1px 1px 3px rgba(0,0,0,.3)">
-            📊 Fractions • 💯 Decimals • 🔢 Mixed Numbers
-          </p>
-        </div>
-      </div>
-      
-      <div style="font-size:1.4rem;margin:1.5rem 0;font-weight:600;text-shadow:1px 1px 3px rgba(0,0,0,.3)">
-        🏛️ Qatar Leadership Academy — Grade 7 Mathematics
-      </div>
-      
-      <div style="background:rgba(255,255,255,.2);backdrop-filter:blur(10px);border-radius:16px;padding:2rem;max-width:900px;margin:1rem auto;border:3px solid rgba(199,163,79,.5);box-shadow:0 8px 24px rgba(0,0,0,.2)">
-        <div style="font-size:1.4rem;margin-bottom:1.5rem;font-weight:800;text-shadow:1px 1px 2px rgba(0,0,0,.2)">
-          🎯 Today's Mastery Journey
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;text-align:center">
-          <div style="background:rgba(255,255,255,.15);padding:1.2rem;border-radius:12px;backdrop-filter:blur(5px)">
-            <div style="font-size:2.5rem;margin-bottom:.5rem">📊</div>
-            <div style="font-size:1.15rem;font-weight:700">Explore</div>
-          </div>
-          <div style="background:rgba(255,255,255,.15);padding:1.2rem;border-radius:12px;backdrop-filter:blur(5px)">
-            <div style="font-size:2.5rem;margin-bottom:.5rem">🎓</div>
-            <div style="font-size:1.15rem;font-weight:700">Practice</div>
-          </div>
-          <div style="background:rgba(255,255,255,.15);padding:1.2rem;border-radius:12px;backdrop-filter:blur(5px)">
-            <div style="font-size:2.5rem;margin-bottom:.5rem">🌍</div>
-            <div style="font-size:1.15rem;font-weight:700">Apply</div>
-          </div>
-          <div style="background:rgba(255,255,255,.15);padding:1.2rem;border-radius:12px;backdrop-filter:blur(5px)">
-            <div style="font-size:2.5rem;margin-bottom:.5rem">🏆</div>
-            <div style="font-size:1.15rem;font-weight:700">Master</div>
+        <div style="background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border-radius:12px;padding:1.5rem;max-width:800px;margin:0 auto">
+          <div style="font-size:1.1rem;margin-bottom:1rem;font-weight:600">🎯 Today's Journey</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;text-align:center">
+            <div><div style="font-size:2rem">📊</div><div>Explore</div></div>
+            <div><div style="font-size:2rem">🎓</div><div>Practice</div></div>
+            <div><div style="font-size:2rem">🌍</div><div>Apply</div></div>
+            <div><div style="font-size:2rem">🏆</div><div>Master</div></div>
           </div>
         </div>
       </div>
-      
-      <div style="position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);font-size:1.05rem;opacity:.95;text-shadow:1px 1px 2px rgba(0,0,0,.3);font-weight:600">
-        📚 Aligned to AERO 7.NS.1 & 7.NS.2 | Student-Centered Mastery Learning
+      <div style="position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);font-size:.9rem;opacity:.9">
+        Aligned to AERO 7.NS.1 & 7.NS.2 | Student-Centered Mastery Learning
       </div>
     </section>
 
     <!-- 1 • Learning Goals & Success Criteria (Student-Centered) -->
     <section class="slide" id="goalsSlide">
-      <h2 style="font-size:3rem;font-weight:900;color:var(--maroon);margin-bottom:1.5rem;text-align:center">
+      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1.5rem;text-align:center">
         📚 What Will You Master Today?
       </h2>
       
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:1200px;margin:0 auto">
-        <div class="card" style="padding:2rem">
-          <h3 style="font-size:1.8rem;font-weight:800;color:var(--maroon);margin-bottom:1.2rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:1200px;margin:0 auto">
+        <div class="card" style="padding:1.5rem">
+          <h3 style="font-size:1.5rem;font-weight:700;color:var(--maroon);margin-bottom:1rem">
             🎯 I Can Statements
           </h3>
-          <div style="space-y:1rem">
-            <div style="display:flex;gap:1rem;margin-bottom:1.2rem;align-items:start">
-              <input type="checkbox" id="goal1" style="width:24px;height:24px;cursor:pointer;margin-top:2px">
-              <label for="goal1" style="cursor:pointer;font-size:1.1rem;line-height:1.5">I can <strong style="color:var(--maroon)">simplify fractions</strong> to their simplest form using GCF</label>
+          <div style="space-y:.8rem">
+            <div style="display:flex;gap:.8rem;margin-bottom:.8rem">
+              <input type="checkbox" id="goal1" style="width:20px;height:20px;cursor:pointer">
+              <label for="goal1" style="cursor:pointer">I can <strong>simplify fractions</strong> to their simplest form using GCF</label>
             </div>
-            <div style="display:flex;gap:1rem;margin-bottom:1.2rem;align-items:start">
-              <input type="checkbox" id="goal2" style="width:24px;height:24px;cursor:pointer;margin-top:2px">
-              <label for="goal2" style="cursor:pointer;font-size:1.1rem;line-height:1.5">I can <strong style="color:var(--maroon)">compare rational numbers</strong> using 3 different methods</label>
+            <div style="display:flex;gap:.8rem;margin-bottom:.8rem">
+              <input type="checkbox" id="goal2" style="width:20px;height:20px;cursor:pointer">
+              <label for="goal2" style="cursor:pointer">I can <strong>compare rational numbers</strong> using 3 different methods</label>
             </div>
-            <div style="display:flex;gap:1rem;margin-bottom:1.2rem;align-items:start">
-              <input type="checkbox" id="goal3" style="width:24px;height:24px;cursor:pointer;margin-top:2px">
-              <label for="goal3" style="cursor:pointer;font-size:1.1rem;line-height:1.5">I can <strong style="color:var(--maroon)">order fractions</strong> from least to greatest and explain why</label>
+            <div style="display:flex;gap:.8rem;margin-bottom:.8rem">
+              <input type="checkbox" id="goal3" style="width:20px;height:20px;cursor:pointer">
+              <label for="goal3" style="cursor:pointer">I can <strong>order fractions</strong> from least to greatest and explain why</label>
             </div>
-            <div style="display:flex;gap:1rem;margin-bottom:1.2rem;align-items:start">
-              <input type="checkbox" id="goal4" style="width:24px;height:24px;cursor:pointer;margin-top:2px">
-              <label for="goal4" style="cursor:pointer;font-size:1.1rem;line-height:1.5">I can <strong style="color:var(--maroon)">apply rational numbers</strong> to solve Qatar real-world problems</label>
+            <div style="display:flex;gap:.8rem;margin-bottom:.8rem">
+              <input type="checkbox" id="goal4" style="width:20px;height:20px;cursor:pointer">
+              <label for="goal4" style="cursor:pointer">I can <strong>apply rational numbers</strong> to solve Qatar real-world problems</label>
             </div>
           </div>
         </div>
 
-        <div class="card" style="padding:2rem">
-          <h3 style="font-size:1.8rem;font-weight:800;color:var(--maroon);margin-bottom:1.2rem">
+        <div class="card" style="padding:1.5rem">
+          <h3 style="font-size:1.5rem;font-weight:700;color:var(--maroon);margin-bottom:1rem">
             🔑 Key Vocabulary (Tap to Learn)
           </h3>
-          <div style="display:flex;flex-wrap:wrap;gap:.8rem">
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem">
             <span class="chip" data-key="rat">rational number (عدد نسبي)</span>
             <span class="chip" data-key="eqv">equivalent fractions (كسور متساوية)</span>
             <span class="chip" data-key="simp">simplest form (أبسط صورة)</span>
@@ -241,74 +200,74 @@
             <span class="chip" data-key="mixed">mixed number (عدد كسري)</span>
             <span class="chip" data-key="qar">QAR (Qatari Riyal)</span>
           </div>
-          <div class="hint" style="margin-top:1.2rem;font-size:1.05rem">
+          <div class="hint" style="margin-top:1rem;font-size:.9rem">
             💡 <strong>Learning Tip:</strong> You'll use these concepts to solve problems about Qatar's economy, sports, and daily life!
           </div>
         </div>
       </div>
 
-      <div class="mastery-level" style="margin-top:2rem;max-width:1100px;margin-left:auto;margin-right:auto">
+      <div class="mastery-level" style="margin-top:1.5rem;max-width:1000px;margin-left:auto;margin-right:auto">
         <div class="level" data-level="1">
-          <div style="font-size:2.5rem;margin-bottom:.5rem">🌱</div>
-          <div style="font-weight:800;font-size:1.15rem;margin-bottom:.3rem">Level 1: Explore</div>
-          <div style="font-size:1rem;color:#475569">Understand concepts</div>
+          <div style="font-size:2rem">🌱</div>
+          <div style="font-weight:700">Level 1: Explore</div>
+          <div style="font-size:.85rem;color:#666">Understand concepts</div>
         </div>
         <div class="level" data-level="2">
-          <div style="font-size:2.5rem;margin-bottom:.5rem">🌿</div>
-          <div style="font-weight:800;font-size:1.15rem;margin-bottom:.3rem">Level 2: Practice</div>
-          <div style="font-size:1rem;color:#475569">Build skills</div>
+          <div style="font-size:2rem">🌿</div>
+          <div style="font-weight:700">Level 2: Practice</div>
+          <div style="font-size:.85rem;color:#666">Build skills</div>
         </div>
         <div class="level" data-level="3">
-          <div style="font-size:2.5rem;margin-bottom:.5rem">🌳</div>
-          <div style="font-weight:800;font-size:1.15rem;margin-bottom:.3rem">Level 3: Apply</div>
-          <div style="font-size:1rem;color:#475569">Real-world problems</div>
+          <div style="font-size:2rem">🌳</div>
+          <div style="font-weight:700">Level 3: Apply</div>
+          <div style="font-size:.85rem;color:#666">Real-world problems</div>
         </div>
         <div class="level" data-level="4">
-          <div style="font-size:2.5rem;margin-bottom:.5rem">🏆</div>
-          <div style="font-weight:800;font-size:1.15rem;margin-bottom:.3rem">Level 4: Master</div>
-          <div style="font-size:1rem;color:#475569">Teach others</div>
+          <div style="font-size:2rem">🏆</div>
+          <div style="font-weight:700">Level 4: Master</div>
+          <div style="font-size:.85rem;color:#666">Teach others</div>
         </div>
       </div>
     </section>
 
     <!-- 2 • Think-Pair-Share Warm-Up (Qatar Context) -->
     <section class="slide" id="warmupSlide">
-      <h2 style="font-size:3rem;font-weight:900;color:var(--maroon);margin-bottom:1.2rem;text-align:center">
+      <h2 style="font-size:2.5rem;font-weight:800;color:var(--maroon);margin-bottom:1rem;text-align:center">
         🤔 Think • 👥 Pair • 💬 Share
       </h2>
       
-      <div class="qatar-context" style="max-width:950px;margin:1rem auto">
-        <div style="font-size:1.6rem;font-weight:800;margin-bottom:1.2rem;color:var(--maroon)">
+      <div class="qatar-context" style="max-width:900px;margin:1rem auto">
+        <div style="font-size:1.3rem;font-weight:700;margin-bottom:1rem">
           🏟️ Scenario: Khalifa International Stadium Seating
         </div>
-        <div style="font-size:1.2rem;line-height:1.8;margin-bottom:1.5rem;color:var(--dark)">
+        <div style="font-size:1.1rem;line-height:1.6;margin-bottom:1rem">
           During a Qatar Stars League match:
-          <ul style="margin-left:2.5rem;margin-top:.8rem;font-weight:600">
-            <li style="margin-bottom:.5rem">Section A is <strong style="color:var(--maroon)">\\(\\frac{3}{4}\\)</strong> full</li>
-            <li style="margin-bottom:.5rem">Section B is <strong style="color:var(--maroon)">\\(\\frac{7}{10}\\)</strong> full</li>
-            <li style="margin-bottom:.5rem">Section C is <strong style="color:var(--maroon)">0.72</strong> full</li>
+          <ul style="margin-left:2rem;margin-top:.5rem">
+            <li>Section A is <strong>\(\frac{3}{4}\)</strong> full</li>
+            <li>Section B is <strong>\(\frac{7}{10}\)</strong> full</li>
+            <li>Section C is <strong>0.72</strong> full</li>
           </ul>
         </div>
-        <div style="background:#fff;border-radius:12px;padding:1.5rem;margin:1.5rem 0;border:3px solid var(--maroon)">
-          <div style="font-weight:800;margin-bottom:.8rem;font-size:1.25rem;color:var(--maroon)">🤔 THINK (2 minutes)</div>
-          <div style="font-size:1.1rem;margin-bottom:.8rem;color:var(--dark)">Which section has the most fans? How can you tell without converting to decimals?</div>
-          <textarea id="thinkBox" style="width:100%;margin-top:.8rem;padding:.8rem;border-radius:8px;border:3px solid #cbd5e1;min-height:80px;font-size:1.05rem" placeholder="Write your thinking here..."></textarea>
+        <div style="background:#fff;border-radius:8px;padding:1rem;margin:1rem 0">
+          <div style="font-weight:700;margin-bottom:.5rem">🤔 THINK (2 minutes)</div>
+          <div style="font-size:.95rem">Which section has the most fans? How can you tell without converting to decimals?</div>
+          <textarea id="thinkBox" style="width:100%;margin-top:.5rem;padding:.5rem;border-radius:6px;border:2px solid #e5e7eb;min-height:60px" placeholder="Write your thoughts..."></textarea>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
-          <div style="background:#fff;border-radius:12px;padding:1.5rem;border:3px solid #3b82f6">
-            <div style="font-weight:800;margin-bottom:.6rem;font-size:1.25rem;color:#1e40af">👥 PAIR (3 minutes)</div>
-            <div style="font-size:1.05rem;color:var(--dark);line-height:1.6">Discuss with your partner. What strategies did you each use?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div style="background:#fff;border-radius:8px;padding:1rem">
+            <div style="font-weight:700;margin-bottom:.5rem">👥 PAIR (3 minutes)</div>
+            <div style="font-size:.9rem">Discuss with your partner. What strategies did you each use?</div>
           </div>
-          <div style="background:#fff;border-radius:12px;padding:1.5rem;border:3px solid var(--success)">
-            <div style="font-weight:800;margin-bottom:.6rem;font-size:1.25rem;color:#065f46">💬 SHARE (3 minutes)</div>
-            <div style="font-size:1.05rem;color:var(--dark);line-height:1.6">Share your group's best strategy with the class.</div>
+          <div style="background:#fff;border-radius:8px;padding:1rem">
+            <div style="font-weight:700;margin-bottom:.5rem">💬 SHARE (3 minutes)</div>
+            <div style="font-size:.9rem">Share your group's best strategy with the class.</div>
           </div>
         </div>
       </div>
 
-      <div style="text-align:center;margin-top:1.5rem">
-        <button class="btn maroon" onclick="showAnswer()" style="font-size:1.2rem;padding:.9rem 2rem">🔍 Reveal Answer & Strategies</button>
-        <div id="warmupAnswer" style="display:none;margin-top:1.2rem;max-width:850px;margin-left:auto;margin-right:auto"></div>
+      <div style="text-align:center;margin-top:1rem">
+        <button class="btn maroon" onclick="showAnswer()">🔍 Reveal Answer & Strategies</button>
+        <div id="warmupAnswer" style="display:none;margin-top:1rem;max-width:800px;margin-left:auto;margin-right:auto"></div>
       </div>
     </section>
 
