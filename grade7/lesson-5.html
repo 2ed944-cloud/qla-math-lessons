@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G7 • Unit 1 • Addition & Subtraction of Rational Numbers — Interactive (QLA)</title>
+<title>G7 • Unit 1 • Addition & Subtraction of Rational Numbers</title>
 
 <!-- Fonts & Tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,482 +11,432 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- KaTeX -->
+<!-- KaTeX (auto-render) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 
 <style>
   :root{
-    --maroon:#6C1D45;--gold:#C7A34F;--dark:#1e1e23;--ink:#111;--bg:#f7f7fb;--paper:#ffffff
+    --maroon:#6C1D45;--gold:#C7A34F;--ink:#1f2937;--paper:#ffffff;--soft:#f7f7f8;
   }
-  html,body{height:100%;background:var(--dark);color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
-  /* Stage + Slide system */
-  #stage{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:8px}
-  #screen{position:relative;width:100%;max-width:1400px;aspect-ratio:16/9;background:var(--paper);box-shadow:0 16px 42px rgba(0,0,0,.4);overflow:hidden;border-radius:18px}
-  .slide{position:absolute;inset:0;padding:3.6%;display:flex;flex-direction:column;gap:16px;opacity:0;transform:translateY(16px) scale(.985);transition:.45s ease;pointer-events:none}
+  html,body{height:100%;background:#2d3748;color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+  /* Stage */
+  #stage{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
+  #deck{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:var(--paper);box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
+  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.45s ease;pointer-events:none}
   .slide.active{opacity:1;transform:none;pointer-events:auto}
-  .part-tag{position:absolute;top:14px;left:14px;font-weight:800;background:#f4efe9;color:var(--maroon);border:2px solid var(--gold);padding:.25rem .6rem;border-radius:999px}
-  .big{font-size:clamp(24px,2.6vw,36px)}
-  .huge{font-size:clamp(34px,3.8vw,56px);line-height:1.05}
-  .card{background:#fafafa;border:1px solid #ececec;border-radius:14px;padding:14px}
-  .chip{display:inline-flex;align-items:center;gap:.5rem;background:#f1f1f5;border:1px solid #e6e6ea;border-radius:999px;padding:.35rem .75rem;cursor:pointer}
-  .chip:hover{outline:2px solid var(--gold)}
-  .btn{padding:.6rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:800}
+  .banner{width:100%;height:110px;background:#fff center/cover no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
+  .card{border:1px solid #e5e7eb;border-radius:16px;background:#fafafa}
+  .chip{display:inline-flex;align-items:center;gap:.5rem;background:#f1f5f9;border-radius:9999px;padding:.45rem .85rem;cursor:pointer}
+  .chip[data-key]:hover{outline:2px solid var(--gold)}
+  .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
   .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
-  .btn.ghost{background:#fff0;border-color:#dcdcdc}
-  .hint{background:#fff8db;border:1px solid #ffe38a;border-radius:10px;padding:.5rem .75rem}
-  .banner{height:90px;background:linear-gradient(90deg,#fff,#f7f3ea);border-bottom:3px solid var(--gold);border-radius:12px}
-  .titlebar{display:flex;gap:14px;align-items:center}
-  .titlebar h1{font-weight:900}
-  /* Presenter bar */
-  #presenter{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.62);padding:.45rem .6rem;border-radius:999px;z-index:120;backdrop-filter:blur(6px)}
-  #presenter button{height:44px;min-width:44px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:800}
-  #presenter button:hover{transform:scale(1.05)}
-  #counter{color:#fff;font-weight:800;min-width:92px;text-align:center}
-  #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:110;transition:width .35s ease}
-  #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.38);padding:.25rem .5rem;border-radius:8px;font-size:.82rem}
-  /* Ink overlay */
-  #ink{position:absolute;inset:0;pointer-events:none}
-  #ink canvas{position:absolute;inset:0}
-  .ink-on #ink{pointer-events:auto;cursor:crosshair}
-  /* Teacher tools drawer */
-  #tools{position:fixed;right:12px;top:12px;z-index:130;width:min(420px,92vw);max-height:88vh;overflow:auto;background:#ffffff;border:2px solid var(--gold);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.35);display:none}
-  #tools header{display:flex;justify-content:space-between;align-items:center;padding:.6rem .8rem;border-bottom:1px solid #eee;font-weight:800;color:var(--maroon)}
-  #tools .body{padding:.8rem}
-  #tools .row{display:flex;gap:10px;flex-wrap:wrap}
-  #tools .pill{border:1px solid #ddd;border-radius:999px;padding:.25rem .6rem;font-weight:700;cursor:pointer}
-  #tools .pill.on{background:var(--maroon);color:#fff;border-color:var(--maroon)}
-  #tools .mini{display:flex;gap:6px;align-items:center}
-  /* Poll dots */
-  .dot{width:14px;height:14px;border-radius:999px;background:#e5e7eb;display:inline-block;margin-right:6px}
-  .dot.on{background:var(--gold)}
-  /* Number line canvas */
-  .nl-wrap{width:100%;max-width:920px;margin:0 auto}
+  .btn.ghost{background:transparent;border-color:#cbd5e1}
+  .btn:hover{filter:brightness(0.98)}
+  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
+  .note{background:#e0f2fe;border:1px solid #bae6fd;border-radius:10px;padding:.5rem .75rem}
+  .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
+  .bg-maroon{background-color:var(--maroon)} .bg-soft{background:var(--soft)}
+
+  /* Board mode (bigger UI for projection) */
+  .board *{font-size:1.06em}
+  .board h1{font-size:3rem}
+  .board h2{font-size:2.2rem}
+  .board .text-xl{font-size:1.5rem}
+
+  /* Top bars */
+  #partNav{position:absolute;top:10px;left:12px;display:flex;gap:.4rem;z-index:20}
+  #teacherBar{position:absolute;top:10px;right:12px;display:flex;gap:.4rem;z-index:20}
+  #controls{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
+  #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700}
+  #controls button:hover{transform:scale(1.06)}
+  #counter{color:#fff;font-weight:700;min-width:100px;text-align:center}
+  #progress{position:absolute;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:10;transition:width .35s ease}
+
+  /* Teacher panel modal */
+  #panel{position:absolute;right:12px;top:62px;z-index:30;background:#fff;border:2px solid var(--gold);border-radius:14px;padding:12px;display:none;max-width:360px}
+  #panel h4{font-weight:800;color:var(--maroon);margin:.2rem 0 .4rem}
+  #panel input, #panel textarea{border:1px solid #cbd5e1;border-radius:8px;padding:.4rem .6rem;width:100%}
+  #panel .row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+
+  /* Number line canvases */
+  .nl-wrap{width:100%;max-width:920px}
   canvas.nline{width:100%;height:170px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
-  /* Sortable */
-  .sortable li{user-select:none}.sortable .dragging{opacity:.5}
+
+  /* Drag-sort */
+  .sortable li{user-select:none;cursor:move}
+  .sortable .dragging{opacity:.55}
+
+  /* Draw overlay */
+  #ink{position:absolute;inset:0;pointer-events:none}
+  #ink.active{pointer-events:auto}
+  #ink canvas{width:100%;height:100%;}
+
   /* Confetti */
-  .confetti{position:fixed;pointer-events:none;z-index:150}
-  /* Board mode */
-  .board *{letter-spacing:.3px}
-  .board #presenter{background:rgba(0,0,0,.7)}
-  .board .slide{padding:3%}
+  .confetti{position:fixed;pointer-events:none;z-index:50}
 </style>
 </head>
 <body>
 
-<div id="stage" aria-live="polite">
-  <div id="screen" class="relative">
-    <div id="fsHint">Keys: ←/→, 1–8 (Parts), F (fullscreen), T (tools), P (pen), B (board)</div>
+<div id="stage">
+  <div id="deck" class="relative">
 
-    <!-- ============ PART A • LAUNCH ============ -->
-    <section class="slide active" data-part="A">
-      <span class="part-tag">Part A • Launch</span>
-      <div class="banner"></div>
-      <div class="titlebar">
-        <div>
-          <h1 class="huge" style="color:var(--maroon)">Unit 1 — The Number System</h1>
-          <div class="big" style="color:var(--gold);font-weight:800">Lesson: Addition &amp; Subtraction of Rational Numbers</div>
-          <div class="mt-1 text-gray-600">Qatar Leadership Academy — Grade 7 • AERO 7.NS.1b–1c</div>
-        </div>
+    <!-- Part nav -->
+    <div id="partNav" aria-label="Jump to part">
+      <button class="btn ghost" data-jump="A">Part A</button>
+      <button class="btn ghost" data-jump="B">Part B</button>
+      <button class="btn ghost" data-jump="C">Part C</button>
+      <button class="btn ghost" data-jump="D">Part D</button>
+      <button class="btn ghost" data-jump="E">Part E</button>
+    </div>
+
+    <!-- Teacher bar -->
+    <div id="teacherBar" aria-label="Teacher tools">
+      <button id="btnFS" title="Fullscreen (F)" class="btn">⤢</button>
+      <button id="btnBoard" title="Board Mode (B)" class="btn">🖥️</button>
+      <button id="btnDraw" title="Draw (D)" class="btn">✏️</button>
+      <button id="btnPanel" title="Teacher Panel (T)" class="btn">🧰</button>
+    </div>
+
+    <!-- Teacher panel -->
+    <div id="panel" role="dialog" aria-modal="true">
+      <div class="row">
+        <h4 class="grow">Teacher Panel</h4>
+        <button class="btn" id="closePanel">✕</button>
       </div>
 
-      <div class="grid lg:grid-cols-2 gap-4 mt-2">
-        <div class="card">
-          <div class="text-xl font-extrabold" style="color:var(--maroon)">Learning Objectives</div>
-          <ul class="list-disc list-inside big leading-relaxed">
-            <li>Interpret \(p+q\) on a number line as moving \(q\) units from \(p\) (right if \(q&gt;0\), left if \(q&lt;0\)).</li>
-            <li>Use \(p-q=p+(-q)\) to make sense of subtraction.</li>
-            <li>Add/subtract rational numbers across forms and justify strategies visually &amp; arithmetically.</li>
-            <li>Use prime factorization to find LCM for unlike denominators.</li>
+      <h4>Timer</h4>
+      <div class="row">
+        <input type="number" id="min" value="2" min="0" style="width:84px"> min
+        <input type="number" id="sec" value="0" min="0" max="59" style="width:84px"> sec
+        <button class="btn maroon" id="startTimer">Start</button>
+        <button class="btn" id="stopTimer">Stop</button>
+        <span id="clock" class="font-bold ml-2">–:–</span>
+      </div>
+
+      <h4 class="mt-2">Random Name</h4>
+      <div class="row">
+        <textarea id="roster" rows="3" placeholder="Paste names, one per line"></textarea>
+        <button class="btn" id="pickName">Pick</button>
+        <span id="nameOut" class="font-bold"></span>
+      </div>
+
+      <h4 class="mt-2">Options</h4>
+      <div class="row">
+        <label class="chip"><input type="checkbox" id="snapTenths" class="mr-2">Snap number line to tenths</label>
+        <label class="chip"><input type="checkbox" id="showNotes" class="mr-2">Show teacher notes</label>
+      </div>
+    </div>
+
+    <!-- Draw/ink overlay -->
+    <div id="ink"><canvas></canvas></div>
+
+    <!-- Slides -->
+
+    <!-- A0 Title -->
+    <section class="slide active bg-maroon text-white" data-part="A">
+      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="Banner"></div>
+      <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Unit 1 — The Number System</h1>
+      <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Addition &amp; Subtraction of Rational Numbers</p>
+      <p class="mt-2 text-lg">Qatar Leadership Academy — Grade 7</p>
+      <div class="text-sm mt-4">Aligned to AERO 7.NS.1b–1c</div>
+    </section>
+
+    <!-- A1 Learning goals + norms -->
+    <section class="slide" data-part="A">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Today’s Goals</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Objectives</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Interpret \(p+q\) on a number line: move \(q\) units from \(p\) (right if \(q&gt;0\), left if \(q&lt;0\)).</li>
+            <li>See subtraction as adding the inverse: \(p-q=p+(-q)\).</li>
+            <li>Add/subtract rational numbers and justify via number line & arithmetic.</li>
+            <li>Use prime factorization to find LCM for fraction denominators.</li>
+          </ul>
+          <div class="note mt-3 hidden teacher-note">Emphasize “why” with multiple reps: number line → symbolic → explanation.</div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">We Learn By…</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Predict → Try → Check → Explain cycles</li>
+            <li>Think–Pair–Share using on‑screen timer</li>
+            <li>Quick checks & error analysis</li>
+            <li>Whole‑class board work with annotation</li>
           </ul>
         </div>
-        <div class="card">
-          <div class="text-xl font-extrabold" style="color:var(--maroon)">Keywords (tap)</div>
-          <div class="flex flex-wrap gap-2 big">
-            <span class="chip" data-key="rational">rational number</span>
-            <span class="chip" data-key="integer">integer</span>
-            <span class="chip" data-key="sum">sum</span>
-            <span class="chip" data-key="difference">difference</span>
-            <span class="chip" data-key="inverse">additive inverse</span>
-            <span class="chip" data-key="prime">prime</span>
-            <span class="chip" data-key="composite">composite</span>
-            <span class="chip" data-key="primefact">prime factorization</span>
-            <span class="chip" data-key="lcm">LCM</span>
-            <span class="chip" data-key="numberline">number line</span>
-          </div>
-          <div class="hint mt-3 text-sm">Use the <b>Tools</b> drawer (T) for a quick A–D poll on “What does subtracting a negative do?”</div>
-        </div>
       </div>
+    </section>
 
-      <div class="card mt-1">
-        <div class="text-xl font-extrabold" style="color:var(--maroon)">Warm‑Up: Notice &amp; Wonder</div>
-        <div class="grid md:grid-cols-3 gap-3 big">
-          <div class="p-2 border rounded">
-            <div class="font-bold" style="color:var(--maroon)">Integers</div>
-            <div>\( -3 + 7 = \) <span class="font-extrabold" data-reveal="w1">?</span></div>
-            <button class="btn reveal" data-target="w1">Reveal</button>
-          </div>
-          <div class="p-2 border rounded">
-            <div class="font-bold" style="color:var(--maroon)">Fractions</div>
-            <div>\( \frac{5}{8}-\frac{3}{8}= \) <span class="font-extrabold" data-reveal="w2">?</span></div>
-            <button class="btn reveal" data-target="w2">Reveal</button>
-          </div>
-          <div class="p-2 border rounded">
-            <div class="font-bold" style="color:var(--maroon)">Decimals</div>
-            <div>\( 2.6 + (-1.25) = \) <span class="font-extrabold" data-reveal="w3">?</span></div>
-            <button class="btn reveal" data-target="w3">Reveal</button>
-          </div>
+    <!-- A2 Warm-up -->
+    <section class="slide" data-part="A">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm‑Up: What do you notice?</h2>
+      <div class="grid md:grid-cols-3 gap-4 w-full max-w-5xl">
+        <div class="card p-4">
+          <div class="font-bold text-maroon mb-1">Integers</div>
+          <div class="text-2xl">\( -3 + 7 = \) <b>4</b></div>
+          <div class="text-sm mt-1">We moved 7 right from −3.</div>
+        </div>
+        <div class="card p-4">
+          <div class="font-bold text-maroon mb-1">Fractions</div>
+          <div class="text-2xl">\( \frac{5}{8}-\frac{3}{8}=\frac{1}{4} \)</div>
+          <div class="text-sm mt-1">Subtract numerators; keep denominator; simplify.</div>
+        </div>
+        <div class="card p-4">
+          <div class="font-bold text-maroon mb-1">Decimals</div>
+          <div class="text-2xl">\( 2.6 + (-1.25) = 1.35 \)</div>
+          <div class="text-sm mt-1">Add signed numbers by place value.</div>
         </div>
       </div>
     </section>
 
-    <!-- ============ PART B • BUILD CONCEPTS ============ -->
+    <!-- B1 Primes -->
     <section class="slide" data-part="B" id="primeSlide">
-      <span class="part-tag">Part B • Build</span>
-      <div class="titlebar"><h2 class="huge" style="color:var(--maroon)">Prime &amp; Composite</h2></div>
-      <div class="grid lg:grid-cols-2 gap-4">
-        <div class="card">
-          <p class="big">A <strong>prime</strong> is an integer \( \ge 2 \) with exactly two positive factors: 1 and itself. A <strong>composite</strong> has more than two. 1 is <em>neither</em>.</p>
-          <div id="primeList" class="grid md:grid-cols-2 gap-2 mt-2"></div>
-          <div class="mt-2 flex gap-2">
-            <button id="primeNew" class="btn">New set</button>
-            <button id="primeCheck" class="btn maroon">Check</button>
-            <div id="primeFb" class="font-bold" style="color:var(--maroon)"></div>
-          </div>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part B • Prime or Composite?</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <p class="mb-2">A <b>prime</b> is an integer \( \ge 2 \) with exactly two positive factors. A <b>composite</b> has more than two. 1 is neither.</p>
+        <div id="primeList" class="grid md:grid-cols-4 gap-2"></div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button id="primeNew" class="btn">New set</button>
+          <button id="primeCheck" class="btn maroon">Check</button>
         </div>
-        <div class="card" id="pfSlide">
-          <div class="text-xl font-extrabold" style="color:var(--maroon)">Prime Factorization (Exponent Form)</div>
-          <p class="big">Write \( n=\prod p_i^{e_i} \). Example: \( 60 = 2^2\cdot3\cdot5 \).</p>
-          <div id="pfList" class="grid gap-2 mt-2"></div>
-          <div class="mt-2 flex gap-2">
-            <button id="pfNew" class="btn">New set</button>
-            <button id="pfCheck" class="btn maroon">Check</button>
-            <div id="pfFb" class="font-bold" style="color:var(--maroon)"></div>
-          </div>
-        </div>
-      </div>
-      <div class="card mt-2" id="lcmExSlide">
-        <div class="text-xl font-extrabold" style="color:var(--maroon)">LCM — Two Methods</div>
-        <div class="grid md:grid-cols-2 gap-3 big">
-          <div>
-            <div class="font-bold" style="color:var(--maroon)">Method 1: Listing multiples</div>
-            <div id="lcmListArea"></div>
-          </div>
-          <div>
-            <div class="font-bold" style="color:var(--maroon)">Method 2: Prime exponents</div>
-            <div id="lcmPrimeArea"></div>
-          </div>
-        </div>
-        <div class="mt-2 flex gap-2">
-          <button id="lcmNew" class="btn">New example</button>
-          <span class="hint text-sm">Ask: Which method would you choose? (Use a poll in <b>Tools</b>.)</span>
-        </div>
+        <div id="primeFb" class="mt-2 h-6 font-semibold"></div>
+        <div class="note mt-3 hidden teacher-note">Ask: “How do you know?” Students justify with factor pairs.</div>
       </div>
     </section>
 
-    <!-- ============ PART C • EXPLORE ============ -->
-    <section class="slide" data-part="C" id="addSlide">
-      <span class="part-tag">Part C • Explore</span>
-      <h2 class="huge" style="color:var(--maroon)">Explore \(p+q\) and \(p-q\) on a Number Line</h2>
-      <div class="grid lg:grid-cols-2 gap-4">
-        <div class="card">
-          <div class="text-xl font-bold" style="color:var(--maroon)">Addition \(p+q\)</div>
-          <p class="text-gray-600 big">Drag \(p\). The gold arrow shows \(q\). Result is \(p+q\).</p>
-          <div class="nl-wrap mt-1"><canvas id="lineAdd" class="nline" aria-label="Interactive number line (addition)"></canvas></div>
-          <div class="mt-2 flex flex-wrap items-center gap-3 big">
-            <label class="chip">p = <input id="pInput" class="border rounded px-2 py-1 w-24" value="-2"/></label>
-            <label class="chip">q = <input id="qInput" class="border rounded px-2 py-1 w-24" value="3.5"/></label>
-            <span class="chip">p+q = <b id="sumOut">1.5</b></span>
-            <button id="randAdd" class="btn">Random</button>
-            <button id="snapAdd" class="btn">Snap tenths</button>
-            <button id="resetAdd" class="btn">Reset</button>
-          </div>
-          <div class="hint mt-2 text-sm">Rule (AERO 7.NS.1b): start at \(p\), move \(q\) — right if \(q&gt;0\), left if \(q&lt;0\).</div>
+    <!-- B2 Prime factorization -->
+    <section class="slide" data-part="B" id="pfSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Prime Factorization (Exponent Form)</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <p class="mb-2">Write each as a product of primes, e.g., \(60 = 2^{2}\cdot 3^{1}\cdot 5^{1}\).</p>
+        <div id="pfList" class="grid md:grid-cols-2 gap-3"></div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button id="pfNew" class="btn">New set</button>
+          <button id="pfCheck" class="btn maroon">Check</button>
         </div>
+        <div id="pfFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
 
-        <div class="card" id="subSlide">
-          <div class="text-xl font-bold" style="color:var(--maroon)">Subtraction \(p-q=p+(-q)\)</div>
-          <div class="nl-wrap mt-1"><canvas id="lineSub" class="nline" aria-label="Interactive number line (subtraction)"></canvas></div>
-          <div class="mt-2 flex flex-wrap items-center gap-3 big">
+    <!-- B3 LCM by multiples & by primes -->
+    <section class="slide" data-part="B" id="lcmExSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">LCM — Two Methods</h2>
+      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-2">List Multiples</h3>
+          <div id="lcmListArea" class="text-lg"></div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-2">Prime Exponents</h3>
+          <div id="lcmPrimeArea" class="text-lg"></div>
+        </div>
+      </div>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <button id="lcmNew" class="btn">New example</button>
+      </div>
+      <div class="hint mt-3 text-left text-sm">For \(a\) and \(b\): \( \mathrm{LCM}(a,b)=\prod p^{\max(\alpha,\beta)} \).</div>
+    </section>
+
+    <!-- C1 Number line: p+q -->
+    <section class="slide" data-part="C" id="addSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Explorer: \(p+q\) on a Number Line</h2>
+      <p class="text-gray-600 mb-2">Drag maroon point for \(p\). Drag gold point for \(p+q\) (this sets \(q\)).</p>
+      <div class="nl-wrap"><canvas id="lineAdd" class="nline" aria-label="Interactive number line (addition)"></canvas></div>
+      <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
+        <label class="chip">p = <input id="pInput" class="border rounded px-2 py-1 w-24" value="-2"/></label>
+        <label class="chip">q = <input id="qInput" class="border rounded px-2 py-1 w-24" value="3.5"/></label>
+        <span class="chip">p+q = <b id="sumOut">1.5</b></span>
+        <button id="randAdd" class="btn">Random</button>
+        <button id="resetAdd" class="btn">Reset</button>
+      </div>
+      <div class="hint mt-3 text-left text-sm">Rule (AERO 7.NS.1b): start at \(p\), move \(q\) units — right if \(q&gt;0\), left if \(q&lt;0\).</div>
+    </section>
+
+    <!-- C2 Subtraction = adding the inverse -->
+    <section class="slide" data-part="C" id="subSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Subtraction: \(p-q = p + (-q)\)</h2>
+      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-2">Visualize</h3>
+          <div class="nl-wrap"><canvas id="lineSub" class="nline" aria-label="Interactive number line (subtraction)"></canvas></div>
+          <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
             <label class="chip">p = <input id="p2Input" class="border rounded px-2 py-1 w-24" value="1"/></label>
             <label class="chip">q = <input id="q2Input" class="border rounded px-2 py-1 w-24" value="-4"/></label>
             <span class="chip">p−q = <b id="diffOut">5</b></span>
             <button id="randSub" class="btn">Random</button>
           </div>
-          <div class="mt-2">
-            <div class="font-bold" style="color:var(--maroon)">Quick Check</div>
-            <div class="grid gap-2 big">
-              <div>1) \( 6 - 9 =\) <input class="qc border rounded px-2 py-1 w-24" data-prob="6-9" data-ans="-3"></div>
-              <div>2) \( -4 - (-7) =\) <input class="qc border rounded px-2 py-1 w-24" data-prob="-4 - (-7)" data-ans="3"></div>
-              <div>3) \( -2.5 - 1.5 =\) <input class="qc border rounded px-2 py-1 w-24" data-prob="-2.5 - 1.5" data-ans="-4"></div>
-            </div>
-            <div class="mt-2 flex gap-2">
-              <button id="checkQC" class="btn maroon">Check</button>
-              <button id="resetQC" class="btn">Reset</button>
-              <div id="qcFb" class="font-bold" style="color:var(--maroon)"></div>
-            </div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-2">Quick Check</h3>
+          <div class="grid gap-2">
+            <div>1) \( 6 - 9 =\) <input class="qc border rounded px-2 py-1 w-24" data-prob="6-9" data-ans="-3"></div>
+            <div>2) \( -4 - (-7) =\) <input class="qc border rounded px-2 py-1 w-24" data-prob="-4 - (-7)" data-ans="3"></div>
+            <div>3) \( -2.5 - 1.5 =\) <input class="qc border rounded px-2 py-1 w-24" data-prob="-2.5 - 1.5" data-ans="-4"></div>
           </div>
+          <div class="mt-3 flex gap-2">
+            <button id="checkQC" class="btn maroon">Check</button>
+            <button id="resetQC" class="btn">Reset</button>
+          </div>
+          <div id="qcFb" class="mt-2 h-6 font-semibold"></div>
         </div>
       </div>
+      <div class="note mt-3 hidden teacher-note">Invite multiple strategies: number line; integer‑chips language; algebraic rewrite.</div>
     </section>
 
-    <!-- ============ PART D • PRACTICE A ============ -->
-    <section class="slide" data-part="D" id="likeSlide">
-      <span class="part-tag">Part D • Practice A</span>
-      <h2 class="huge" style="color:var(--maroon)">Fractions (Like Denominators) &amp; Decimals</h2>
-      <div class="grid lg:grid-cols-2 gap-4">
-        <div class="card">
-          <div class="text-xl font-bold" style="color:var(--maroon)">Like Denominators</div>
-          <p class="text-gray-600 big">Add/subtract numerators; keep denominator; simplify.</p>
-          <div id="likeList" class="grid gap-2 mt-1"></div>
-          <div class="mt-2 flex gap-2">
-            <button id="likeCheck" class="btn maroon">Check</button>
-            <button id="likeNew" class="btn">New set</button>
-            <div id="likeFb" class="font-bold" style="color:var(--maroon)"></div>
-          </div>
-        </div>
-        <div class="card" id="decSlide">
-          <div class="text-xl font-bold" style="color:var(--maroon)">Decimals (Align by place value)</div>
-          <div id="decList" class="grid gap-2 mt-1"></div>
-          <div class="mt-2 flex gap-2">
-            <button id="decCheck" class="btn maroon">Check</button>
-            <button id="decNew" class="btn">New set</button>
-            <div id="decFb" class="font-bold" style="color:var(--maroon)"></div>
-          </div>
-        </div>
+    <!-- C3 Fractions like denominators -->
+    <section class="slide" data-part="C" id="likeSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Fractions: Like Denominators</h2>
+      <p class="text-gray-600 mb-2">Add/subtract numerators; keep denominator; simplify.</p>
+      <div id="likeList" class="w-full max-w-4xl grid md:grid-cols-2 gap-3"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="likeCheck" class="btn maroon">Check</button>
+        <button id="likeNew" class="btn">New set</button>
       </div>
+      <div id="likeFb" class="mt-2 h-6 font-semibold"></div>
     </section>
 
-    <!-- ============ PART E • PRACTICE B ============ -->
-    <section class="slide" data-part="E" id="unlikeSlide">
-      <span class="part-tag">Part E • Practice B</span>
-      <h2 class="huge" style="color:var(--maroon)">Fractions (Unlike Denominators)</h2>
-      <div class="card big">
-        <div class="mb-1">Find the <span class="chip" data-key="lcm">LCM</span>, build equivalent fractions, combine, then simplify.</div>
-        <div id="unlikeBox" class="grid md:grid-cols-2 gap-3"></div>
-        <div class="mt-2 flex gap-2">
+    <!-- C4 Fractions unlike denominators (guided) -->
+    <section class="slide" data-part="C" id="unlikeSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Fractions: Unlike Denominators (Guided)</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div class="mb-2">Find the LCM, build equivalent fractions, operate, then simplify.</div>
+        <div id="unlikeBox" class="grid md:grid-cols-2 gap-4"></div>
+        <div class="mt-3 flex gap-2">
           <button id="unlikeCheck" class="btn maroon">Check</button>
           <button id="unlikeNew" class="btn">New pair</button>
-          <div id="unlikeFb" class="font-bold" style="color:var(--maroon)"></div>
         </div>
+        <div id="unlikeFb" class="mt-2 h-6 font-semibold"></div>
       </div>
-      <div class="hint mt-2 text-sm">Use the <b>pen (P)</b> to annotate each step live on the board.</div>
+      <div class="note mt-2 hidden teacher-note">Have students justify their LCM choice with prime exponents or multiple lists.</div>
     </section>
 
-    <!-- ============ PART F • REASON & EXPLAIN ============ -->
-    <section class="slide" data-part="F" id="reasonSlide">
-      <span class="part-tag">Part F • Reason</span>
-      <h2 class="huge" style="color:var(--maroon)">Reasoning, Ordering, &amp; Error Analysis</h2>
-      <div class="grid lg:grid-cols-2 gap-4">
-        <div class="card" id="sortSlide">
-          <div class="text-xl font-bold" style="color:var(--maroon)">Order Rational Numbers (Low → High)</div>
-          <ul id="sortList" class="sortable border rounded-md bg-white p-3 space-y-2 mt-2"></ul>
-          <div class="mt-2 flex gap-2">
-            <button id="sortNew" class="btn">New set</button>
-            <button id="sortCheck" class="btn maroon">Check</button>
-            <div id="sortFb" class="font-bold" style="color:var(--maroon)"></div>
-          </div>
-        </div>
-        <div class="card" id="challengeSlide">
-          <div class="text-xl font-bold" style="color:var(--maroon)">Error Analysis &amp; Missing Addends</div>
-          <div class="grid gap-3">
-            <div id="errBox" class="text-xl"></div>
-            <div class="big">
-              <label class="mr-2"><input type="radio" name="errChoice" value="A"> Added/subtracted denominators directly</label><br/>
-              <label class="mr-2"><input type="radio" name="errChoice" value="B"> Failed to use common denominator</label><br/>
-              <label class="mr-2"><input type="radio" name="errChoice" value="C"> Sign error</label><br/>
-              <label class="mr-2"><input type="radio" name="errChoice" value="D"> Decimal place-value misalignment</label>
-            </div>
-            <div class="flex gap-2">
-              <button id="errCheck" class="btn maroon">Check</button>
-              <button id="errReveal" class="btn">Reveal correct work</button>
-              <button id="errNew" class="btn">New example</button>
-            </div>
-            <div id="errFb" class="font-bold" style="color:var(--maroon)"></div>
-            <div id="errRevealBox" class="hint text-sm"></div>
-          </div>
-
-          <div class="mt-4 grid gap-2">
-            <div class="font-bold" style="color:var(--maroon)">Missing number</div>
-            <div class="big">\( p + q = r \). If \(p=-4.5\), \(r=1.25\), then \(q=\) <input class="ch1 border rounded px-2 py-1 w-28" data-ans="5.75"></div>
-            <div class="big">\( p - q = r \). If \(p=\frac{3}{4}\), \(r=-\frac{5}{4}\), then \(q=\) <input class="ch1 border rounded px-2 py-1 w-28" data-ans="2"></div>
-            <div class="flex gap-2 mt-1">
-              <button id="chCheck" class="btn maroon">Check</button>
-              <button id="chReset" class="btn">Reset</button>
-              <div id="chFb" class="font-bold" style="color:var(--maroon)"></div>
-            </div>
-          </div>
-        </div>
+    <!-- C5 Decimals -->
+    <section class="slide" data-part="C" id="decSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Decimals (Align Place Value)</h2>
+      <div id="decList" class="w-full max-w-4xl grid md:grid-cols-2 gap-3"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="decCheck" class="btn maroon">Check</button>
+        <button id="decNew" class="btn">New set</button>
       </div>
+      <div id="decFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
 
-      <div class="card mt-2">
-        <div class="text-xl font-bold" style="color:var(--maroon)">Strategy Board (student‑authored)</div>
-        <div class="grid md:grid-cols-[1fr_auto] gap-3 big">
-          <div id="strategyList" class="grid gap-2"></div>
-          <div class="flex flex-col gap-2">
-            <input id="strategyIn" class="border rounded px-2 py-2 w-72" placeholder="Add a class strategy (e.g., 'Use LCM 12')">
-            <button id="addStrategy" class="btn">Post strategy</button>
-            <button id="clearStrategy" class="btn ghost">Clear</button>
-          </div>
+    <!-- D1 Order rationals -->
+    <section class="slide" data-part="D" id="sortSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Order Rational Numbers (Low → High)</h2>
+      <div class="card p-5 w-full max-w-3xl text-left">
+        <ul id="sortList" class="sortable border rounded-md bg-white p-3 space-y-2"></ul>
+        <div class="mt-3 flex gap-2">
+          <button id="sortNew" class="btn">New set</button>
+          <button id="sortCheck" class="btn maroon">Check</button>
         </div>
+        <div id="sortFb" class="mt-2 h-6 font-semibold"></div>
       </div>
     </section>
 
-    <!-- ============ PART G • APPLY (REAL‑WORLD) ============ -->
-    <section class="slide" data-part="G" id="realSlide">
-      <span class="part-tag">Part G • Apply</span>
-      <h2 class="huge" style="color:var(--maroon)">Real‑World Practice</h2>
-      <div class="card">
-        <div id="realList" class="grid md:grid-cols-2 gap-3 big"></div>
-        <div class="mt-2 flex gap-2">
-          <button id="realNew" class="btn">New set</button>
-          <button id="realCheck" class="btn maroon">Check</button>
-          <div id="realFb" class="font-bold" style="color:var(--maroon)"></div>
+    <!-- D2 Mixed generator + hints -->
+    <section class="slide" data-part="D" id="mixedSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice Generator (Mixed)</h2>
+      <div class="card p-5 w-full max-w-3xl text-left">
+        <div class="flex items-center gap-3">
+          <span>Difficulty:</span>
+          <select id="level" class="border rounded px-2 py-1">
+            <option value="easy">easy (integers)</option>
+            <option value="med" selected>medium (like‑denominator fractions &amp; decimals)</option>
+            <option value="hard">hard (unlike denominators; signed)</option>
+          </select>
+          <button id="newQ" class="btn">New question</button>
         </div>
+        <div class="mt-3 text-2xl">Compute: <span id="qText" class="font-extrabold"></span></div>
+        <div class="mt-2">
+          <input id="ans" class="border rounded px-3 py-2 w-60" placeholder="e.g., -7/6 or  -1.166..." />
+          <button id="checkQ" class="btn maroon">Check</button>
+          <button id="hintQ" class="btn">Hint</button>
+        </div>
+        <div id="qHint" class="mt-3 text-sm"></div>
+        <div id="qFb" class="mt-2 h-6 font-semibold"></div>
       </div>
     </section>
 
-    <!-- ============ PART H • MIXED & EXIT ============ -->
-    <section class="slide" data-part="H" id="exitSlide">
-      <span class="part-tag">Part H • Mixed & Exit</span>
-      <h2 class="huge" style="color:var(--maroon)">Mixed Practice &amp; Exit Ticket</h2>
-      <div class="grid lg:grid-cols-2 gap-4">
-        <div class="card" id="mixedSlide">
-          <div class="text-xl font-bold" style="color:var(--maroon)">Practice Generator (mixed)</div>
-          <div class="flex items-center gap-3 mt-1 big">
-            <span>Difficulty:</span>
-            <select id="level" class="border rounded px-2 py-1">
-              <option value="easy">easy (integers)</option>
-              <option value="med" selected>medium (like‑denominator fractions &amp; decimals)</option>
-              <option value="hard">hard (unlike denominators; signed)</option>
-            </select>
-            <button id="newQ" class="btn">New question</button>
+    <!-- D3 Error analysis + missing addend -->
+    <section class="slide" data-part="D" id="challengeSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Challenge: Missing Addend & Error Analysis</h2>
+      <div class="grid md:grid-cols-2 gap-6 w-full max-w-5xl text-left">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-1">Missing number</h3>
+          <div class="grid gap-2">
+            <div>\( p + q = r \).  If \(p=-4.5\) and \(r=1.25\), then \(q=\) <input class="ch1 border rounded px-2 py-1 w-28" data-ans="5.75"></div>
+            <div>\( p - q = r \).  If \(p=\frac{3}{4}\) and \(r=-\frac{5}{4}\), then \(q=\) <input class="ch1 border rounded px-2 py-1 w-28" data-ans="2"></div>
           </div>
-          <div class="mt-2 text-2xl">Compute: <span id="qText" class="font-extrabold"></span></div>
+          <div class="mt-3">
+            <button id="chCheck" class="btn maroon">Check</button>
+            <button id="chReset" class="btn">Reset</button>
+          </div>
+          <div id="chFb" class="mt-2 h-6 font-semibold"></div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-1">Error Analysis</h3>
+          <div id="errBox" class="text-lg"></div>
           <div class="mt-2">
-            <input id="ans" class="border rounded px-3 py-2 w-60" placeholder="e.g., -7/6 or  -1.166..." />
-            <button id="checkQ" class="btn maroon">Check</button>
-            <button id="hintQ" class="btn">Hint</button>
+            <label class="mr-2"><input type="radio" name="errChoice" value="A"> Added/subtracted denominators directly</label><br/>
+            <label class="mr-2"><input type="radio" name="errChoice" value="B"> Failed to use common denominator</label><br/>
+            <label class="mr-2"><input type="radio" name="errChoice" value="C"> Sign error</label><br/>
+            <label class="mr-2"><input type="radio" name="errChoice" value="D"> Decimal place-value misalignment</label>
           </div>
-          <div id="qHint" class="mt-2 text-sm"></div>
-          <div id="qFb" class="mt-1 font-bold" style="color:var(--maroon)"></div>
-        </div>
-
-        <div class="card">
-          <div class="text-xl font-bold" style="color:var(--maroon)">Exit Ticket</div>
-          <div class="grid md:grid-cols-2 gap-3 big">
-            <div class="p-2 border rounded">
-              <div class="font-bold" style="color:var(--maroon)">3–2–1 Reflect</div>
-              <ul class="list-disc list-inside">
-                <li>3 ideas you learned about adding/subtracting rationals</li>
-                <li>2 strategies you can use (visual &amp; arithmetic)</li>
-                <li>1 question you still have</li>
-              </ul>
-            </div>
-            <div class="p-2 border rounded">
-              <div class="font-bold" style="color:var(--maroon)">Up Next</div>
-              <p>Extend to <strong>multi‑step problems</strong> and estimation for reasonableness (AERO 7.EE.3).</p>
-              <p class="hint text-sm mt-2">Use the tools drawer to time a 90‑sec write, then cold‑call 3 students.</p>
-            </div>
+          <div class="mt-2 flex gap-2">
+            <button id="errCheck" class="btn maroon">Check</button>
+            <button id="errReveal" class="btn">Reveal correct work</button>
+            <button id="errNew" class="btn">New example</button>
           </div>
+          <div id="errFb" class="mt-2 h-6 font-semibold"></div>
+          <div id="errRevealBox" class="mt-2 text-sm"></div>
         </div>
       </div>
     </section>
 
-    <!-- Ink overlay -->
-    <div id="ink"><canvas id="inkCanvas"></canvas></div>
-  </div>
-</div>
-
-<!-- Presenter controls -->
-<div id="presenter" role="group" aria-label="Slideshow controls">
-  <button id="prev" title="Previous (←)">⟨</button>
-  <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
-  <button id="pen" title="Toggle Pen (P)">✎</button>
-  <button id="toolsBtn" title="Teacher Tools (T)">☰</button>
-  <div id="counter">A / 8</div>
-  <button id="next" title="Next (→)">⟩</button>
-</div>
-<div id="progress"></div>
-
-<!-- Teacher Tools Drawer -->
-<div id="tools" role="dialog" aria-modal="true" aria-live="polite">
-  <header>
-    <span>Teacher Tools</span>
-    <button id="toolsClose" class="btn">✕</button>
-  </header>
-  <div class="body">
-    <!-- Timer -->
-    <div class="mb-3">
-      <div class="font-extrabold" style="color:var(--maroon)">Timer</div>
-      <div class="row mt-1">
-        <button class="pill mini tset" data-secs="30">30s</button>
-        <button class="pill mini tset" data-secs="60">60s</button>
-        <button class="pill mini tset" data-secs="90">90s</button>
-        <button class="pill mini tset" data-secs="180">3m</button>
-        <button class="pill mini" id="tstart">Start</button>
-        <button class="pill mini" id="tstop">Stop</button>
-        <button class="pill mini" id="treset">Reset</button>
-        <span id="tread" class="ml-2 font-bold">00:00</span>
+    <!-- E Exit -->
+    <section class="slide" data-part="E">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">3–2–1 Reflect</h3>
+          <ul class="list-disc list-inside">
+            <li>3 ideas about adding/subtracting rationals</li>
+            <li>2 strategies you can use (visual &amp; arithmetic)</li>
+            <li>1 question you still have</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">Up Next</h3>
+          <p>Multi‑step problems with rational numbers and estimation for reasonableness (AERO 7.EE.3).</p>
+        </div>
       </div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[100px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
+    </section>
+
+    <!-- Glossary popover (tap chips) -->
+    <div id="pop" class="hidden absolute left-4 bottom-4 z-30 max-w-[560px] bg-white border-2 border-[var(--gold)] rounded-md p-3 text-left"></div>
+
+    <!-- Controls -->
+    <div id="controls" role="group" aria-label="Slideshow controls">
+      <button id="prev" title="Previous (←)">&laquo;</button>
+      <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
+      <div id="counter">1 / 1</div>
+      <button id="next" title="Next (→)">&raquo;</button>
     </div>
+    <div id="progress"></div>
 
-    <!-- Randomizer -->
-    <div class="mb-3">
-      <div class="font-extrabold" style="color:var(--maroon)">Random Name</div>
-      <div class="row mt-1">
-        <input id="namesIn" class="border rounded px-2 py-1 grow" placeholder="Comma-separated list of student names"/>
-        <button id="saveNames" class="pill">Save</button>
-        <button id="spinName" class="pill">Spin</button>
-        <span id="nameOut" class="font-bold ml-1"></span>
-      </div>
-    </div>
-
-    <!-- Polls -->
-    <div class="mb-3">
-      <div class="font-extrabold" style="color:var(--maroon)">Quick Poll</div>
-      <div class="row mt-1">
-        <button class="pill poll" data-k="A">A <span class="dot" id="pa"></span></button>
-        <button class="pill poll" data-k="B">B <span class="dot" id="pb"></span></button>
-        <button class="pill poll" data-k="C">C <span class="dot" id="pc"></span></button>
-        <button class="pill poll" data-k="D">D <span class="dot" id="pd"></span></button>
-        <button class="pill" id="pClear">Clear</button>
-      </div>
-      <div class="font-extrabold" style="color:var(--maroon);margin-top:12px">Status Check</div>
-      <div class="row mt-1">
-        <button class="pill status" data-k="R">🔴</button>
-        <button class="pill status" data-k="Y">🟡</button>
-        <button class="pill status" data-k="G">🟢</button>
-        <button class="pill" id="sClear">Clear</button>
-        <span id="statusRead" class="ml-2"></span>
-      </div>
-    </div>
-
-    <!-- Board toggle -->
-    <div class="mb-1">
-      <div class="row">
-        <button id="boardMode" class="pill">Toggle Board Mode (B)</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Glossary popover -->
-<div id="pop" class="fixed left-4 bottom-4 max-w-[560px] w-[90vw] bg-white border-2 rounded-lg shadow-2xl p-3 z-[140] hidden text-left" style="border-color:var(--gold)">
-  <div class="flex items-start justify-between">
-    <div id="popBody"></div>
-    <button id="popClose" class="btn ml-2">✕</button>
   </div>
 </div>
 
 <script>
-/* =========================
-   Boot KaTeX (auto-render)
-========================= */
+/* =========================================================
+   BOOT + KATEX
+   ========================================================= */
 window.addEventListener('DOMContentLoaded', () => {
-  const run = (root = document.body) => {
+  const renderMath = (root = document.body) => {
     if (!window.renderMathInElement) return;
     window.renderMathInElement(root, {
       delimiters: [
@@ -497,726 +447,616 @@ window.addEventListener('DOMContentLoaded', () => {
       throwOnError: false
     });
   };
-  if (window.renderMathInElement) run();
+  if (window.renderMathInElement) renderMath();
   else {
     const t = setInterval(() => {
-      if (window.renderMathInElement) { clearInterval(t); run(); }
+      if (window.renderMathInElement) { clearInterval(t); renderMath(); }
     }, 25);
     setTimeout(() => clearInterval(t), 6000);
   }
-  window._rerenderMath = run;
+  window._renderMath = renderMath;
 });
 
-/* =========================
-   Utilities & Math helpers
-========================= */
-const id = (x) => document.getElementById(x);
-const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
-const ri = (a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+/* =========================================================
+   SLIDE ENGINE + NAV + PARTS
+   ========================================================= */
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  const prev=byId('prev'), next=byId('next'), counter=byId('counter'), progress=byId('progress');
+  const partButtons=[...byId('partNav').querySelectorAll('button[data-jump]')];
+  const fsBtn=byId('fs'), btnFS=byId('btnFS'), btnBoard=byId('btnBoard'), btnDraw=byId('btnDraw'), btnPanel=byId('btnPanel');
+  const deck=byId('deck'); const stage=byId('stage');
 
-function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
-  for(let k=0;k<18;k++){
-    const d=document.createElement('div'); d.className='confetti';
-    d.style.left=x+'px'; d.style.top=y+'px'; d.style.width='8px'; d.style.height='8px';
-    d.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8a3d64'][k%4];
-    document.body.appendChild(d);
-    const dx=(Math.random()*2-1)*240, dy=(Math.random()*-1-0.3)*300, rot=Math.random()*720;
-    d.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],
-              {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
+  let i=0; // slide index
+  function show(k){
+    i=(k+slides.length)%slides.length;
+    slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
+    counter.textContent=(i+1)+' / '+slides.length;
+    progress.style.width=((i+1)/slides.length*100)+'%';
+    // lazy render when needed
+    const sid=slides[i].id||'';
+    if(sid==='addSlide') drawAdd();
+    if(sid==='subSlide') drawSub();
+    if(sid==='lcmExSlide') newLCMEx(false);
+    if(sid==='primeSlide') primeNew();
+    if(sid==='pfSlide') pfNew();
+    if(sid==='likeSlide') renderLike();
+    if(sid==='unlikeSlide') newUnlike();
+    if(sid==='decSlide') newDecSet();
+    if(sid==='sortSlide') sortNew();
+    if(sid==='mixedSlide') newQuestion();
+    if(sid==='challengeSlide') errNew();
+    if(window._renderMath) window._renderMath(slides[i]);
   }
-}
-
-function downloadJSON(filename, data){
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob); const a=document.createElement('a');
-  a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-}
-function downloadCSV(filename, rows){
-  const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
-  a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-}
-
-// Number helpers
-const gcd=(a,b)=>{a=Math.trunc(Math.abs(a));b=Math.trunc(Math.abs(b));while(b){[a,b]=[b,a%b]}return a||1};
-const lcm=(a,b)=>Math.abs(a*b)/gcd(a,b);
-function isPrime(n){ if(n<2 || n%1) return false; for(let k=2;k*k<=n;k++) if(n%k===0) return false; return true; }
-function primeFactorMap(n){
-  const m=new Map(); let x=Math.abs(n); let p=2;
-  while(p*p<=x){
-    while(x%p===0){ m.set(p,(m.get(p)||0)+1); x/=p; }
-    p=(p===2)?3:p+2;
+  function byId(x){return document.getElementById(x)}
+  function toggleFS(){
+    const el=byId('deck');
+    if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);}
+    else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(document);}
   }
-  if(x>1) m.set(x,(m.get(x)||0)+1);
-  return m;
-}
+  prev.addEventListener('click',()=>show(i-1));
+  next.addEventListener('click',()=>show(i+1));
+  fsBtn.addEventListener('click',toggleFS);
+  btnFS.addEventListener('click',toggleFS);
 
-// Rational helpers
-function parseRational(s){
-  if(typeof s==='number') return [Math.trunc(s*1000),1000]; // approximate for typed decimals
-  if(!s) return null;
-  s=s.toString().trim().replace('−','-');
-  const m=s.match(/^(-?\d+)\s+(\d+)\/(\d+)$/);
-  if(m){const A=+m[1],B=+m[2],C=+m[3];const sign=A<0?-1:1;return [A*C+sign*B, C];}
-  const f=s.match(/^(-?\d+)\/(-?\d+)$/);
-  if(f){let n=+f[1],d=+f[2]; if(d===0) return null; let g=gcd(n,d); d<0&&(g=-g); return [n/g,d/g];}
-  if(!isNaN(Number(s))){
-    const parts=s.split('.');
-    if(parts.length===1) return [Number(s),1];
-    const k=parts[1].length; const n=Math.round(Number(s)*10**k); const d=10**k; let g=gcd(n,d); return [n/g,d/g];
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight') show(i+1);
+    if(e.key==='ArrowLeft') show(i-1);
+    if(e.key.toLowerCase()==='f') toggleFS();
+    if(e.key.toLowerCase()==='b') toggleBoard();
+    if(e.key.toLowerCase()==='d') toggleInk();
+    if(e.key.toLowerCase()==='t') togglePanel();
+    if('12345'.includes(e.key)){ // jump to part A..E
+      const part='ABCDE'[Number(e.key)-1];
+      jumpToPart(part);
+    }
+  });
+  partButtons.forEach(btn=>btn.addEventListener('click',()=>jumpToPart(btn.dataset.jump)));
+  function jumpToPart(letter){
+    const idx = slides.findIndex(s=>s.dataset.part===letter);
+    if(idx>=0) show(idx);
   }
-  return null;
-}
-function toFrac(n,d){let g=gcd(n,d); d<0&&(g=-g); return [n/g,d/g]}
-const addFrac=(a,b)=>toFrac(a[0]*b[1]+b[0]*a[1], a[1]*b[1]);
-const subFrac=(a,b)=>toFrac(a[0]*b[1]-b[0]*a[1], a[1]*b[1]);
-const fracEq=(a,b)=>a[0]*b[1]===b[0]*a[1];
-const sFrac=([n,d])=> d===1? String(n) : `${n}/${d}`;
-const asNumber=([n,d])=> n/d;
 
-/* =========================
-   Slide Deck & Presenter
-========================= */
-const slides=[...document.querySelectorAll('.slide')];
-const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
-const penBtn=id('pen'), toolsBtn=id('toolsBtn');
-const deckTitle='G7_Unit1_AddSub_Rationals_QLA_Interactive';
-let i=0;
-const parts = [...new Set(slides.map(s=>s.dataset.part))]; // ['A','B',...]
-function show(k){
-  i=(k+slides.length)%slides.length;
-  slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
-  counter.textContent = slides[i].dataset.part + ' / ' + parts.length;
-  progress.style.width=((i+1)/slides.length*100)+'%';
-  const sid=slides[i].id||'';
-  if(sid==='addSlide') drawAdd();
-  if(sid==='subSlide') drawSub();
-  if(sid==='lcmExSlide' || slides[i].querySelector('#lcmListArea')) newLCMEx(false);
-  if(window._rerenderMath) window._rerenderMath(slides[i]);
-}
-prev.addEventListener('click',()=>show(i-1));
-next.addEventListener('click',()=>show(i+1));
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight') show(i+1);
-  if(e.key==='ArrowLeft') show(i-1);
-  if(e.key.toLowerCase()==='f') toggleFS();
-  if(e.key.toLowerCase()==='t') toggleTools();
-  if(e.key.toLowerCase()==='p') toggleInk();
-  if(e.key.toLowerCase()==='b') toggleBoard();
-  // Jump to parts 1–9 dynamically if within range
-  if(/[1-9]/.test(e.key)){
-    const n=parseInt(e.key,10);
-    if(n>=1 && n<=parts.length){
-      const idx = slides.findIndex(s=>s.dataset.part===parts[n-1]);
-      if(idx>=0) show(idx);
+  function toggleBoard(){ deck.classList.toggle('board'); }
+  btnBoard.addEventListener('click',toggleBoard);
+
+  // Board ink overlay
+  const ink=byId('ink'), inkCanvas=ink.querySelector('canvas'), ictx=inkCanvas.getContext('2d');
+  let drawing=false, last=null;
+  function fitInk(){ inkCanvas.width=ink.clientWidth*devicePixelRatio; inkCanvas.height=ink.clientHeight*devicePixelRatio; ictx.scale(devicePixelRatio,devicePixelRatio); ictx.lineWidth=3; ictx.lineCap='round'; ictx.strokeStyle='#111'; }
+  function toggleInk(){ ink.classList.toggle('active'); }
+  function clearInk(){ ictx.clearRect(0,0,inkCanvas.width,inkCanvas.height); }
+  btnDraw.addEventListener('click',toggleInk);
+  ink.addEventListener('mousedown',e=>{drawing=true; last=[e.offsetX,e.offsetY]});
+  ink.addEventListener('mousemove',e=>{
+    if(!drawing) return; ictx.beginPath(); ictx.moveTo(last[0],last[1]); ictx.lineTo(e.offsetX,e.offsetY); ictx.stroke(); last=[e.offsetX,e.offsetY];
+  });
+  window.addEventListener('mouseup',()=>drawing=false);
+  window.addEventListener('resize',fitInk); fitInk();
+  // Double‑click clears ink
+  ink.addEventListener('dblclick',clearInk);
+
+  // Teacher panel
+  const panel=byId('panel'); const btnClose=byId('closePanel');
+  function togglePanel(){ panel.style.display = (panel.style.display==='block')? 'none' : 'block'; }
+  btnPanel.addEventListener('click',togglePanel);
+  btnClose.addEventListener('click',togglePanel);
+
+  show(0);
+
+  /* =========================================================
+     CONFETTI
+     ========================================================= */
+  function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
+    for(let k=0;k<16;k++){
+      const d=document.createElement('div'); d.className='confetti';
+      d.style.left=x+'px'; d.style.top=y+'px'; d.style.width='8px'; d.style.height='8px';
+      d.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8a3d64'][k%4];
+      document.body.appendChild(d);
+      const dx=(Math.random()*2-1)*240, dy=(Math.random()*-1-0.3)*300, rot=Math.random()*720;
+      d.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],
+                {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
     }
   }
-});
-function toggleFS(){
-  const el=id('screen');
-  if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);}
-  else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(document);}
-}
-fsBtn.addEventListener('click',toggleFS);
+  window._confetti=confetti;
 
-/* =========================
-   Board Mode & Ink Overlay
-========================= */
-let boardOn=false;
-function toggleBoard(){
-  boardOn=!boardOn;
-  document.body.classList.toggle('board',boardOn);
-}
-const inkWrap=id('ink'), inkCanvas=id('inkCanvas'); let inkOn=false, ctxInk=null, drawing=false, last=null;
-function resizeInk(){
-  const r=id('screen').getBoundingClientRect();
-  inkCanvas.width=r.width*devicePixelRatio; inkCanvas.height=r.height*devicePixelRatio;
-  inkCanvas.style.width=r.width+'px'; inkCanvas.style.height=r.height+'px';
-  ctxInk=inkCanvas.getContext('2d'); ctxInk.scale(devicePixelRatio,devicePixelRatio);
-  ctxInk.lineCap='round'; ctxInk.lineJoin='round'; ctxInk.strokeStyle='#111'; ctxInk.lineWidth=4;
-}
-function toggleInk(){ inkOn=!inkOn; document.body.classList.toggle('ink-on',inkOn); }
-penBtn.addEventListener('click',toggleInk);
-window.addEventListener('resize',resizeInk);
-resizeInk();
-inkCanvas.addEventListener('pointerdown',e=>{ if(!inkOn)return; drawing=true; last=[e.offsetX,e.offsetY]; });
-window.addEventListener('pointerup',()=>drawing=false);
-inkCanvas.addEventListener('pointermove',e=>{
-  if(!inkOn||!drawing) return;
-  ctxInk.beginPath();
-  ctxInk.moveTo(last[0],last[1]);
-  ctxInk.lineTo(e.offsetX,e.offsetY);
-  ctxInk.stroke();
-  last=[e.offsetX,e.offsetY];
-});
-inkCanvas.addEventListener('dblclick',()=>{ // quick erase all
-  const r=inkCanvas.getBoundingClientRect();
-  ctxInk.clearRect(0,0,r.width,r.height);
-});
-
-/* =========================
-   Teacher Tools Drawer
-========================= */
-const tools = id('tools'); const toolsClose=id('toolsClose');
-function toggleTools(){ tools.style.display = (tools.style.display==='block')?'none':'block'; }
-toolsBtn.addEventListener('click',toggleTools); toolsClose.addEventListener('click',toggleTools);
-
-// Timer
-let tSecs=60, tLeft=60, tInt=null;
-[...document.querySelectorAll('.tset')].forEach(b=>b.addEventListener('click',()=>{tSecs=+b.dataset.secs; tLeft=tSecs; tread();}));
-id('tstart').addEventListener('click',()=>{ if(tInt) return; tInt=setInterval(()=>{tLeft=Math.max(0,tLeft-1); tread(); if(tLeft===0){clearInterval(tInt); tInt=null; confetti(window.innerWidth-200,120);} },1000);});
-id('tstop').addEventListener('click',()=>{clearInterval(tInt); tInt=null;});
-id('treset').addEventListener('click',()=>{tLeft=tSecs; tread();});
-function tread(){ const m=String(Math.floor(tLeft/60)).padStart(2,'0'); const s=String(tLeft%60).padStart(2,'0'); id('tread').textContent=`${m}:${s}`; }
-
-// Randomizer
-const LS='QLA_G7_NAMES';
-const savedNames = localStorage.getItem(LS)||'';
-id('namesIn').value = savedNames;
-id('saveNames').addEventListener('click',()=>{ localStorage.setItem(LS,id('namesIn').value||''); });
-id('spinName').addEventListener('click',()=>{
-  const arr=(id('namesIn').value||'').split(',').map(s=>s.trim()).filter(Boolean);
-  if(arr.length===0){ id('nameOut').textContent='(no names)'; return; }
-  id('nameOut').textContent = arr[Math.floor(Math.random()*arr.length)];
-});
-
-// Polls & Status
-const pollDots={A:id('pa'),B:id('pb'),C:id('pc'),D:id('pd')};
-let pollState={A:false,B:false,C:false,D:false};
-document.querySelectorAll('.poll').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const k=btn.dataset.k; pollState[k]=!pollState[k];
-    pollDots[k].classList.toggle('on',pollState[k]);
+  /* =========================================================
+     TIMER + ROSTER (Teacher Panel)
+     ========================================================= */
+  const min=byId('min'), sec=byId('sec'), clock=byId('clock'), startTimer=byId('startTimer'), stopTimer=byId('stopTimer');
+  let tHandle=null, tEnd=0;
+  startTimer.addEventListener('click',()=>{
+    const total = (Number(min.value)||0)*60 + (Number(sec.value)||0);
+    if(total<=0) return;
+    tEnd = Date.now() + total*1000;
+    if(tHandle) clearInterval(tHandle);
+    tHandle=setInterval(()=>{
+      const left = Math.max(0, Math.round((tEnd-Date.now())/1000));
+      const mm = String(Math.floor(left/60)).padStart(2,'0');
+      const ss = String(left%60).padStart(2,'0');
+      clock.textContent = `${mm}:${ss}`;
+      if(left===0){ clearInterval(tHandle); tHandle=null; window._confetti(); }
+    },200);
   });
-});
-id('pClear').addEventListener('click',()=>{
-  pollState={A:false,B:false,C:false,D:false};
-  Object.values(pollDots).forEach(d=>d.classList.remove('on'));
-});
-let statusCounts={R:0,Y:0,G:0};
-document.querySelectorAll('.status').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    statusCounts[btn.dataset.k]++; id('statusRead').textContent=`R:${statusCounts.R} Y:${statusCounts.Y} G:${statusCounts.G}`;
+  stopTimer.addEventListener('click',()=>{ if(tHandle) clearInterval(tHandle); tHandle=null; clock.textContent='–:–'; });
+
+  const roster=byId('roster'), pickName=byId('pickName'), nameOut=byId('nameOut');
+  pickName.addEventListener('click',()=>{
+    const names = roster.value.split('\n').map(s=>s.trim()).filter(Boolean);
+    if(!names.length){ nameOut.textContent='(no names)'; return; }
+    const idx = Math.floor(Math.random()*names.length);
+    nameOut.textContent = names[idx];
   });
-});
-id('sClear').addEventListener('click',()=>{statusCounts={R:0,Y:0,G:0}; id('statusRead').textContent='';});
 
-// Board mode button
-id('boardMode').addEventListener('click',toggleBoard);
+  /* =========================================================
+     TOGGLES: teacher notes; snap tenths (number line)
+     ========================================================= */
+  const showNotes=byId('showNotes'), snapTenths=byId('snapTenths');
+  showNotes.addEventListener('change',()=>{ document.querySelectorAll('.teacher-note').forEach(n=>n.classList.toggle('hidden', !showNotes.checked)); });
+  snapTenths.addEventListener('change',()=>{ addState.snap = !!snapTenths.checked; });
 
-/* =========================
-   Glossary Popover
-========================= */
-const POP=id('pop'), POP_BODY=id('popBody');
-const GLOS={
-  rational:'<strong>Rational number</strong>: any number that can be written as a fraction of integers (terminating or repeating decimal).',
-  integer:'<strong>Integer</strong>: {..., −3, −2, −1, 0, 1, 2, 3, ...}',
-  sum:'<strong>Sum</strong>: result of addition.',
-  difference:'<strong>Difference</strong>: result of subtraction.',
-  inverse:'<strong>Additive inverse</strong> of p is −p (they add to 0).',
-  prime:'<strong>Prime</strong>: integer ≥2 with exactly two positive factors (1 and itself).',
-  composite:'<strong>Composite</strong>: integer ≥2 with more than two positive factors.',
-  primefact:'<strong>Prime factorization</strong>: \(72=2^{3}\cdot 3^{2}\).',
-  lcm:'<strong>LCM</strong> (least common multiple): smallest positive multiple of each denominator.',
-  numberline:'<strong>Number line</strong>: points laid out in order; left is less, right is greater.'
-};
-document.addEventListener('click',e=>{
-  const el=e.target.closest('.chip[data-key]'); 
-  if(el){ POP_BODY.innerHTML=GLOS[el.dataset.key]; POP.classList.remove('hidden'); if(window._rerenderMath) _rerenderMath(POP); }
-});
-id('popClose').addEventListener('click',()=>POP.classList.add('hidden'));
-
-/* =========================
-   Part A: Warm-up reveals
-========================= */
-const warmAnswers={w1:'4', w2:'\\(\\tfrac{1}{4}\\)', w3:'1.35'};
-document.querySelectorAll('.reveal').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const t=btn.dataset.target; const sp=document.querySelector(`[data-reveal="${t}"]`);
-    sp.innerHTML=warmAnswers[t]; if(window._rerenderMath) _rerenderMath(sp);
+  /* =========================================================
+     GLOSSARY POPOVER (demo - editable text)
+     ========================================================= */
+  const POP=document.getElementById('pop');
+  const GLOS={
+    rational:'<b>Rational number</b>: any number that can be written as a fraction of integers (terminating or repeating decimal).',
+    integer:'<b>Integer</b>: {..., −3, −2, −1, 0, 1, 2, 3, ...}',
+    lcm:'<b>LCM</b>: least common multiple.',
+    numberline:'<b>Number line</b>: points laid out in order; left is less, right is greater.'
+  };
+  document.addEventListener('click',e=>{
+    const el=e.target.closest('.chip[data-key]');
+    if(el){ POP.innerHTML=GLOS[el.dataset.key]||'(define me)'; POP.classList.remove('hidden'); return; }
+    if(!e.target.closest('#pop')) POP.classList.add('hidden');
   });
-});
 
-/* =========================
-   Part B: Primes, PF, LCM
-========================= */
-const primeState={set:[]};
-function primeNew(){
-  const nums=new Set();
-  while(nums.size<8){ const x=Math.floor(Math.random()*98)+2; nums.add(x); }
-  primeState.set=[...nums].sort((a,b)=>a-b).map(n=>({n,prime:isPrime(n)}));
-  const box=id('primeList'); box.innerHTML='';
-  primeState.set.forEach((o,idx)=>{
-    const row=document.createElement('div'); row.className='card flex items-center justify-between';
-    row.innerHTML=`<div class="text-2xl">\\( ${o.n} \\)</div>
-      <select class="border rounded px-2 py-1 big" id="pc_${idx}">
-        <option value="">— classify —</option>
-        <option value="P">Prime</option>
-        <option value="C">Composite</option>
-      </select>`;
-    box.appendChild(row);
-  });
-  if(window._rerenderMath) _rerenderMath(id('primeSlide'));
-}
-function primeCheck(){
-  let ok=0; primeState.set.forEach((o,idx)=>{
-    const sel=id('pc_'+idx); const got=sel.value; const want=o.prime?'P':'C';
-    sel.style.borderColor=(got===want && got!=='') ? '#22c55e' : '#ef4444';
-    if(got===want && got!=='') ok++;
-  });
-  id('primeFb').textContent=(ok===primeState.set.length)?'✅ All correct!':'Score: '+ok+'/'+primeState.set.length;
-  if(ok===primeState.set.length) confetti();
-}
-id('primeNew').addEventListener('click',primeNew);
-id('primeCheck').addEventListener('click',primeCheck);
-primeNew();
-
-// Prime factorization
-const pfState={set:[], primes:[2,3,5,7,11,13]};
-function buildN(exps){ return pfState.primes.reduce((acc,p)=>acc*Math.pow(p,exps[p]||0),1) }
-function pfNew(){
-  const list=[];
-  while(list.length<4){
-    const exps={};
-    pfState.primes.forEach(p=>{
-      let e=0;
-      if(p<=5){ e=Math.floor(Math.random()*3); }
-      else if(p===7){ e=Math.random()<0.7?0:1; }
-      else { e=Math.random()<0.8?0:1; }
-      exps[p]=e;
-    });
-    if(Object.values(exps).every(e=>e===0)) exps[2]=1;
-    const n=buildN(exps);
-    if(n>=60 && n<=5000){ list.push({n,exps}); }
+  /* =========================================================
+     MATH HELPERS
+     ========================================================= */
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const gcd=(a,b)=>{a=Math.trunc(Math.abs(a));b=Math.trunc(Math.abs(b));while(b){[a,b]=[b,a%b]}return a||1};
+  const lcm=(a,b)=>Math.abs(a*b)/gcd(a,b);
+  function isPrime(n){ if(n<2 || n%1) return false; for(let k=2;k*k<=n;k++) if(n%k===0) return false; return true; }
+  function primeFactorMap(n){
+    const m=new Map(); let x=Math.abs(n); let p=2;
+    while(p*p<=x){
+      while(x%p===0){ m.set(p,(m.get(p)||0)+1); x/=p; }
+      p=(p===2)?3:p+2;
+    }
+    if(x>1) m.set(x,(m.get(x)||0)+1);
+    return m;
   }
-  pfState.set=list;
-  const box=id('pfList'); box.innerHTML='';
-  pfState.set.forEach((o,idx)=>{
-    const row=document.createElement('div'); row.className='card';
-    row.innerHTML=`
-      <div class="text-xl mb-1">\\( ${o.n} = 2^{\\square}\\cdot 3^{\\square}\\cdot 5^{\\square}\\cdot 7^{\\square}\\cdot 11^{\\square}\\cdot 13^{\\square} \\)</div>
-      <div class="flex flex-wrap gap-2">
-        ${pfState.primes.map(p=>`<label class="chip">${p}: <input class="pfexp border rounded px-2 py-1 w-16" id="pf_${idx}_${p}" placeholder="exp"></label>`).join('')}
-      </div>`;
-    box.appendChild(row);
-  });
-  if(window._rerenderMath) _rerenderMath(id('pfSlide'));
-}
-function pfCheck(){
-  let total=0,ok=0;
-  pfState.set.forEach((o,idx)=>{
-    total++;
-    let good=true;
-    pfState.primes.forEach(p=>{
-      const inp=id(`pf_${idx}_${p}`); const g=Number(inp.value||0); const want=o.exps[p]||0;
-      if(g===want){ inp.style.borderColor='#22c55e'; } else { good=false; inp.style.borderColor='#ef4444'; }
+  function parseRational(s){
+    if(typeof s==='number') return [Math.trunc(s*1000),1000]; // fallback
+    if(!s) return null;
+    s=s.toString().trim().replace('−','-');
+    const mix=s.match(/^(-?\d+)\s+(\d+)\/(\d+)$/);
+    if(mix){const A=+mix[1],B=+mix[2],C=+mix[3];const sign=A<0?-1:1;return [A*C+sign*B, C];}
+    const f=s.match(/^(-?\d+)\/(-?\d+)$/);
+    if(f){let n=+f[1],d=+f[2]; if(d===0) return null; let g=gcd(n,d); d<0&&(g=-g); return [n/g,d/g];}
+    if(!isNaN(Number(s))){
+      const parts=s.split('.');
+      if(parts.length===1) return [Number(s),1];
+      const k=parts[1].length; const n=Math.round(Number(s)*10**k); const d=10**k; let g=gcd(n,d); return [n/g,d/g];
+    }
+    return null;
+  }
+  function toFrac(n,d){let g=gcd(n,d); d<0&&(g=-g); return [n/g,d/g]}
+  const addFrac=(a,b)=>toFrac(a[0]*b[1]+b[0]*a[1], a[1]*b[1]);
+  const subFrac=(a,b)=>toFrac(a[0]*b[1]-b[0]*a[1], a[1]*b[1]);
+  const fracEq=(a,b)=>a[0]*b[1]===b[0]*a[1];
+  const sFrac=([n,d])=> d===1? String(n) : `${n}/${d}`;
+  const asNumber=([n,d])=> n/d;
+
+  /* =========================================================
+     PART B: PRIMES / PF / LCM
+     ========================================================= */
+  // PRIMES classify
+  const primeState={set:[]};
+  function primeNew(){
+    const nums=new Set();
+    while(nums.size<8){ nums.add(Math.floor(Math.random()*98)+2); }
+    primeState.set=[...nums].sort((a,b)=>a-b).map(n=>({n,prime:isPrime(n)}));
+    const box=byId('primeList'); box.innerHTML='';
+    primeState.set.forEach((o,idx)=>{
+      const row=document.createElement('div'); row.className='card p-3 flex items-center justify-between';
+      row.innerHTML=`
+        <div class="text-xl">\\( ${o.n} \\)</div>
+        <select class="border rounded px-2 py-1" id="pc_${idx}">
+          <option value="">— classify —</option>
+          <option value="P">Prime</option>
+          <option value="C">Composite</option>
+        </select>`;
+      box.appendChild(row);
     });
-    if(good) ok++;
-  });
-  id('pfFb').textContent= ok===total ? '✅ All correct!' : 'Score: '+ok+'/'+total;
-  if(ok===total) confetti();
-}
-id('pfNew').addEventListener('click',pfNew);
-id('pfCheck').addEventListener('click',pfCheck);
-pfNew();
+    if(window._renderMath) window._renderMath(byId('primeSlide'));
+  }
+  function primeCheck(){
+    let ok=0; primeState.set.forEach((o,idx)=>{
+      const sel=byId('pc_'+idx); const got=sel.value; const want=o.prime?'P':'C';
+      sel.style.borderColor= (got===want && got!=='') ? '#22c55e' : '#ef4444';
+      if(got===want && got!=='') ok++;
+    });
+    byId('primeFb').textContent= (ok===primeState.set.length)?'✅ All correct!':'Score: '+ok+'/'+primeState.set.length;
+    if(ok===primeState.set.length) window._confetti();
+  }
+  byId('primeNew').addEventListener('click',primeNew);
+  byId('primeCheck').addEventListener('click',primeCheck);
 
-// LCM examples
-const lcmState={a:0,b:0, l:0, listA:[], listB:[], expA:{}, expB:{}, expLCM:{}};
-function mults(a,count=10){ return Array.from({length:count},(_,i)=>a*(i+1)); }
-function mapToObj(m){ const o={}; m.forEach((v,k)=>o[k]=v); return o; }
-function newLCMEx(fireConfetti=true){
-  let a=0,b=0; while(a===b || a<4 || b<4){ a=Math.floor(Math.random()*15)+4; b=Math.floor(Math.random()*15)+4; }
-  const listA=mults(a,10), listB=mults(b,10);
-  const common=listA.find(x=>listB.includes(x)) || lcm(a,b);
-  const fa=primeFactorMap(a), fb=primeFactorMap(b);
-  const primes=[...new Set([...fa.keys(), ...fb.keys()])].sort((x,y)=>x-y);
-  const expLCM={}; primes.forEach(p=>expLCM[p]=Math.max(fa.get(p)||0, fb.get(p)||0));
-  const L=primes.reduce((acc,p)=>acc*Math.pow(p,expLCM[p]),1);
+  // PF
+  const pfState={set:[], primes:[2,3,5,7,11,13]};
+  function buildN(exps){ return pfState.primes.reduce((acc,p)=>acc*Math.pow(p,exps[p]||0),1) }
+  function pfNew(){
+    const list=[];
+    while(list.length<4){
+      const exps={}; pfState.primes.forEach(p=>{
+        let e=0;
+        if(p<=5){ e=Math.floor(Math.random()*3); }
+        else if(p===7){ e=Math.random()<0.7?0:1; }
+        else { e=Math.random()<0.8?0:1; }
+        exps[p]=e;
+      });
+      if(Object.values(exps).every(e=>e===0)) exps[2]=1;
+      const n=buildN(exps);
+      if(n>=60 && n<=5000) list.push({n,exps});
+    }
+    pfState.set=list;
+    const box=byId('pfList'); box.innerHTML='';
+    pfState.set.forEach((o,idx)=>{
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`
+        <div class="text-xl mb-1">\\( ${o.n} = 2^{\\square}\\cdot 3^{\\square}\\cdot 5^{\\square}\\cdot 7^{\\square}\\cdot 11^{\\square}\\cdot 13^{\\square} \\)</div>
+        <div class="flex flex-wrap gap-2 text-sm">
+          ${pfState.primes.map(p=>`<label class="chip">${p}: <input class="pfexp border rounded px-2 py-1 w-16" id="pf_${idx}_${p}" placeholder="exp"></label>`).join('')}
+        </div>`;
+      box.appendChild(row);
+    });
+    if(window._renderMath) window._renderMath(byId('pfSlide'));
+  }
+  function pfCheck(){
+    let total=0,ok=0;
+    pfState.set.forEach((o,idx)=>{
+      total++; let good=true;
+      pfState.primes.forEach(p=>{
+        const inp=byId(`pf_${idx}_${p}`); const g=Number(inp.value||0); const want=o.exps[p]||0;
+        inp.style.borderColor=(g===want)? '#22c55e':'#ef4444'; if(g!==want) good=false;
+      });
+      if(good) ok++;
+    });
+    byId('pfFb').textContent= ok===total ? '✅ All correct!' : 'Score: '+ok+'/'+total;
+    if(ok===total) window._confetti();
+  }
+  byId('pfNew').addEventListener('click',pfNew);
+  byId('pfCheck').addEventListener('click',pfCheck);
 
-  lcmState.a=a; lcmState.b=b; lcmState.l=L; lcmState.listA=listA; lcmState.listB=listB;
-  lcmState.expA=mapToObj(fa); lcmState.expB=mapToObj(fb); lcmState.expLCM=expLCM;
+  // LCM examples
+  const lcmState={};
+  function mults(a, count=10){ return Array.from({length:count},(_,i)=>a*(i+1)); }
+  function newLCMEx(conf=true){
+    let a=0,b=0; while(a===b || a<4 || b<4){ a=Math.floor(Math.random()*15)+4; b=Math.floor(Math.random()*15)+4; }
+    const listA=mults(a,10), listB=mults(b,10);
+    const common=listA.find(x=>listB.includes(x)) || lcm(a,b);
+    const fa=primeFactorMap(a), fb=primeFactorMap(b);
+    const primes=[...new Set([...fa.keys(), ...fb.keys()])].sort((x,y)=>x-y);
+    const expLCM={}; primes.forEach(p=>expLCM[p]=Math.max(fa.get(p)||0, fb.get(p)||0));
+    const L=primes.reduce((acc,p)=>acc*Math.pow(p,expLCM[p]),1);
+    lcmState.a=a; lcmState.b=b; lcmState.l=L; lcmState.listA=listA; lcmState.listB=listB; lcmState.expLCM=expLCM; lcmState.common=common;
 
-  const listArea=id('lcmListArea'), primeArea=id('lcmPrimeArea');
-  if(listArea){
-    listArea.innerHTML=`
-      <div class="mb-1">\\( a=${a},\\; b=${b} \\)</div>
+    byId('lcmListArea').innerHTML=`
+      <div class="mb-2">\\( a=${a},\\; b=${b} \\)</div>
       <div>Multiples of \\(a\\): ${listA.map(x=> x===common? '<b>'+x+'</b>' : x).join(', ')}</div>
       <div>Multiples of \\(b\\): ${listB.map(x=> x===common? '<b>'+x+'</b>' : x).join(', ')}</div>
-      <div class="mt-1">First common multiple: <b>${common}</b></div>`;
-  }
-  if(primeArea){
+      <div class="mt-2">First common multiple: <b>${common}</b></div>`;
     const fmt=(obj)=>Object.keys(obj).sort((x,y)=>+x-+y).map(p=>` ${p}^{${obj[p]}}`).join('\\cdot')||'1';
-    primeArea.innerHTML=`
-      <div>\\( a = ${ fmt(lcmState.expA) } \\)</div>
-      <div>\\( b = ${ fmt(lcmState.expB) } \\)</div>
-      <div class="mt-1">\\( \\mathrm{LCM}(a,b) = ${ fmt(lcmState.expLCM) } = ${L} \\)</div>`;
+    byId('lcmPrimeArea').innerHTML=`
+      <div>\\( \\mathrm{LCM}(a,b) = ${ fmt(lcmState.expLCM) } = ${L} \\)</div>`;
+    if(window._renderMath) window._renderMath(byId('lcmExSlide'));
+    if(conf) window._confetti();
   }
-  if(window._rerenderMath){ _rerenderMath(id('lcmExSlide')); }
-  if(fireConfetti) confetti();
-}
-id('lcmNew')?.addEventListener('click',()=>newLCMEx(true));
-newLCMEx(false);
+  byId('lcmNew').addEventListener('click',()=>newLCMEx(true));
 
-/* =========================
-   Part C: Number Lines + QC
-========================= */
-const cA=id('lineAdd'); const pIn=id('pInput'), qIn=id('qInput'), sumOut=id('sumOut');
-const addState={min:-12,max:12,snap:false,p:-2,q:3.5,drag:false};
-function mapAdd(x){const m=28,W=cA.clientWidth;return m+(x-addState.min)*(W-2*m)/(addState.max-addState.min)}
-function unmapAdd(px){const m=28,W=cA.clientWidth;return addState.min+(px-m)*(addState.max-addState.min)/(W-2*m)}
-function drawAdd(){
-  if(!cA) return; const ctx=cA.getContext('2d');
-  cA.width=cA.clientWidth*devicePixelRatio; cA.height=cA.clientHeight*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio);
-  const y=cA.clientHeight/2, m=28; ctx.clearRect(0,0,cA.clientWidth,cA.clientHeight);
-  ctx.lineWidth=2; ctx.strokeStyle='#6C1D45'; ctx.beginPath(); ctx.moveTo(m,y); ctx.lineTo(cA.clientWidth-m,y); ctx.stroke();
-  for(let t=addState.min;t<=addState.max;t++){const x=mapAdd(t); ctx.beginPath(); ctx.moveTo(x,y-8); ctx.lineTo(x,y+8); ctx.stroke(); if(t%2==0){ctx.fillStyle='#555'; ctx.font='12px Inter'; ctx.fillText(String(t),x-6,y+24);}}
-  const px=mapAdd(addState.p); ctx.fillStyle='#6C1D45'; ctx.beginPath(); ctx.arc(px,y,9,0,Math.PI*2); ctx.fill();
-  const qx=mapAdd(addState.p+addState.q); ctx.strokeStyle='#C7A34F'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(px,y); ctx.lineTo(qx,y); ctx.stroke();
-  ctx.fillStyle='#C7A34F'; ctx.beginPath(); ctx.arc(qx,y,9,0,Math.PI*2); ctx.fill();
-  sumOut.textContent=(addState.p+addState.q).toFixed(2).replace(/\.00$/,'');
-}
-function setFromInputs(){ addState.p=Number(pIn.value||0); addState.q=Number(qIn.value||0); drawAdd(); }
-pIn?.addEventListener('input', setFromInputs); qIn?.addEventListener('input', setFromInputs);
-cA?.addEventListener('mousedown',e=>{addState.drag=true; handleAdd(e)}); window.addEventListener('mouseup',()=>addState.drag=false);
-window.addEventListener('mousemove',e=>{if(addState.drag) handleAdd(e)});
-function handleAdd(e){const r=cA.getBoundingClientRect(); let val=unmapAdd((e.clientX||e.touches?.[0].clientX)-r.left); if(addState.snap) val=Math.round(val*10)/10; addState.p=clamp(val,addState.min,addState.max); pIn.value=addState.p; drawAdd();}
-id('randAdd')?.addEventListener('click',()=>{addState.p=+(Math.random()*12-6).toFixed(1); addState.q=+(Math.random()*8-4).toFixed(1); pIn.value=addState.p; qIn.value=addState.q; drawAdd();});
-id('resetAdd')?.addEventListener('click',()=>{addState.p=-2;addState.q=3.5;pIn.value=-2;qIn.value=3.5;drawAdd()});
-id('snapAdd')?.addEventListener('click',()=>{addState.snap=!addState.snap; id('snapAdd').classList.toggle('ring-2')});
+  /* =========================================================
+     PART C: NUMBER LINES / FRACTIONS / DECIMALS
+     ========================================================= */
+  // Number line: Addition with two draggable handles (p and p+q)
+  const cA=byId('lineAdd'); const pIn=byId('pInput'), qIn=byId('qInput'), sumOut=byId('sumOut');
+  const addState={min:-12,max:12,snap:false,p:-2,q:3.5, dragging:null}; // dragging: 'p' or 'r'
+  function mapA(x){const m=28,W=cA.clientWidth;return m+(x-addState.min)*(W-2*m)/(addState.max-addState.min)}
+  function unmapA(px){const m=28,W=cA.clientWidth;return addState.min+(px-m)*(addState.max-addState.min)/(W-2*m)}
+  function drawAdd(){
+    if(!cA) return; const ctx=cA.getContext('2d');
+    cA.width=cA.clientWidth*devicePixelRatio; cA.height=cA.clientHeight*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio);
+    const y=cA.clientHeight/2, m=28; ctx.clearRect(0,0,cA.clientWidth,cA.clientHeight);
+    // axis
+    ctx.lineWidth=2; ctx.strokeStyle='#6C1D45'; ctx.beginPath(); ctx.moveTo(m,y); ctx.lineTo(cA.clientWidth-m,y); ctx.stroke();
+    for(let t=addState.min;t<=addState.max;t++){
+      const x=mapA(t); ctx.beginPath(); ctx.moveTo(x,y-8); ctx.lineTo(x,y+8); ctx.stroke();
+      if(t%2==0){ctx.fillStyle='#555'; ctx.font='12px Inter'; ctx.fillText(String(t),x-6,y+24);}
+    }
+    const px=mapA(addState.p), rx=mapA(addState.p+addState.q);
+    // arrows
+    ctx.strokeStyle='#C7A34F'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(px,y); ctx.lineTo(rx,y); ctx.stroke();
+    // points
+    ctx.fillStyle='#6C1D45'; ctx.beginPath(); ctx.arc(px,y,9,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#C7A34F'; ctx.beginPath(); ctx.arc(rx,y,9,0,Math.PI*2); ctx.fill();
 
-// Subtraction line
-const cS=id('lineSub'); const p2=id('p2Input'), q2=id('q2Input'), diffOut=id('diffOut');
-const subState={min:-12,max:12,p:1,q:-4};
-function mapS(x){const m=28,W=cS.clientWidth;return m+(x-subState.min)*(W-2*m)/(subState.max-subState.min)}
-function drawSub(){
-  const ctx=cS.getContext('2d'); cS.width=cS.clientWidth*devicePixelRatio; cS.height=cS.clientHeight*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio);
-  const y=cS.clientHeight/2, m=28; ctx.clearRect(0,0,cS.clientWidth,cS.clientHeight);
-  ctx.lineWidth=2; ctx.strokeStyle='#6C1D45'; ctx.beginPath(); ctx.moveTo(m,y); ctx.lineTo(cS.clientWidth-m,y); ctx.stroke();
-  for(let t=subState.min;t<=subState.max;t++){const x=mapS(t); ctx.beginPath(); ctx.moveTo(x,y-8); ctx.lineTo(x,y+8); ctx.stroke(); if(t%2==0){ctx.fillStyle='#555'; ctx.font='12px Inter'; ctx.fillText(String(t),x-6,y+24);}}
-  const px=mapS(subState.p); const qx=mapS(subState.p - subState.q); // move by -q for subtraction
-  ctx.fillStyle='#6C1D45'; ctx.beginPath(); ctx.arc(px,y,9,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='#C7A34F'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(px,y); ctx.lineTo(qx,y); ctx.stroke();
-  ctx.fillStyle='#C7A34F'; ctx.beginPath(); ctx.arc(qx,y,9,0,Math.PI*2); ctx.fill();
-  diffOut.textContent=(subState.p - subState.q).toFixed(2).replace(/\.00$/,'');
-}
-function setSub(){subState.p=Number(p2.value||0); subState.q=Number(q2.value||0); drawSub()}
-p2?.addEventListener('input', setSub); q2?.addEventListener('input', setSub);
-id('randSub')?.addEventListener('click',()=>{subState.p=+(Math.random()*8-4).toFixed(1); subState.q=+(Math.random()*8-4).toFixed(1); p2.value=subState.p; q2.value=subState.q; drawSub()});
-
-// Quick check
-id('checkQC')?.addEventListener('click',()=>{
-  let total=0,ok=0; [...document.querySelectorAll('.qc')].forEach(inp=>{total++; const want=Number(inp.dataset.ans); const got=Number(inp.value); if(got===want){inp.style.borderColor='#22c55e'; ok++;} else {inp.style.borderColor='#ef4444';}});
-  id('qcFb').textContent= ok===total?'✅ Great!':'Score: '+ok+'/'+total; if(ok===total) confetti();
-});
-id('resetQC')?.addEventListener('click',()=>{document.querySelectorAll('.qc').forEach(i=>{i.value='';i.style.borderColor='#e5e7eb'}); id('qcFb').textContent=''});
-
-/* =========================
-   Part D: Like + Decimals
-========================= */
-const likePairs=[['5/8','-1/8','+'],['7/9','2/9','-'],['-3/10','4/10','+'],['-5/6','-1/6','+'],['11/12','1/12','-'],['-7/15','2/15','+']];
-const likeState={set:[]};
-function renderLike(){
-  const box=id('likeList'); if(!box) return; box.innerHTML=''; likeState.set=[];
-  likePairs.sort(()=>Math.random()-0.5).slice(0,4).forEach((t,idx)=>{
-    const [a,b,op]=t; const row=document.createElement('div'); row.className='card';
-    row.innerHTML=`<div class="text-left font-semibold" style="color:var(--maroon)">Item ${idx+1}</div>
-      <div class="text-2xl mt-1">\\( ${a} ${op} ${b} \\) = <input class="lin border rounded px-2 py-1 w-32" placeholder="e.g., 1/4"></div>`;
-    row.dataset.a=a; row.dataset.b=b; row.dataset.op=op; box.appendChild(row);
-    likeState.set.push({a,b,op});
-  });
-  if(window._rerenderMath) _rerenderMath(id('likeSlide'));
-}
-renderLike();
-id('likeNew')?.addEventListener('click',renderLike);
-id('likeCheck')?.addEventListener('click',()=>{
-  let total=0,ok=0; id('likeList').querySelectorAll('.card').forEach(row=>{
-    total++; const A=parseRational(row.dataset.a), B=parseRational(row.dataset.b); const op=row.dataset.op;
-    const ans=(op==='+')? addFrac(A,B): subFrac(A,B);
-    const inp=row.querySelector('.lin'); const got=parseRational(inp.value);
-    if(got && fracEq(toFrac(got[0],got[1]), ans)){inp.style.borderColor='#22c55e'; ok++;} else {inp.style.borderColor='#ef4444';}
-  });
-  id('likeFb').textContent= ok===total?'✅ All correct!':'Score: '+ok+'/'+total; if(ok===total) confetti();
-});
-
-// Decimals
-const decState={set:[]};
-function newDecSet(){
-  const bank=[['2.75','-3.4'],['-1.2','-0.8'],['5.06','-2.31'],['-4.5','1.75'],['3.2','0.45'],['-6.75','-1.25']];
-  const box=id('decList'); if(!box) return; box.innerHTML=''; decState.set=[];
-  bank.sort(()=>Math.random()-0.5).slice(0,4).forEach((p,idx)=>{
-    const [a,b]=p; const op=Math.random()<0.5?'+':'-';
-    const row=document.createElement('div'); row.className='card';
-    row.innerHTML=`<div class="text-left font-semibold" style="color:var(--maroon)">Item ${idx+1}</div>
-      <div class="text-2xl mt-1">${a} ${op} ${b} = <input class="din border rounded px-2 py-1 w-32" placeholder="e.g., 0.44"></div>`;
-    row.dataset.a=a; row.dataset.b=b; row.dataset.op=op; box.appendChild(row);
-    decState.set.push({a,b,op});
-  });
-}
-newDecSet(); id('decNew')?.addEventListener('click',newDecSet);
-id('decCheck')?.addEventListener('click',()=>{
-  let total=0,ok=0; id('decList').querySelectorAll('.card').forEach(row=>{
-    total++;
-    const a=parseFloat(row.dataset.a), b=parseFloat(row.dataset.b), op=row.dataset.op;
-    const ans = op==='+' ? a + b : a - b;
-    const got = Number(row.querySelector('.din').value);
-    if(Math.abs(got-ans)<1e-10){row.querySelector('.din').style.borderColor='#22c55e'; ok++;} else {row.querySelector('.din').style.borderColor='#ef4444'}
-  });
-  id('decFb').textContent= ok===total?'✅ All correct!':'Score: '+ok+'/'+total; if(ok===total) confetti();
-});
-
-/* =========================
-   Part E: Unlike Denoms
-========================= */
-const unlikeState={a:null,b:null,op:null};
-function newUnlike(){
-  const den1=[3,4,5,6,8,9][Math.floor(Math.random()*6)];
-  const den2=[4,5,6,7,8,9,10][Math.floor(Math.random()*7)];
-  const n1=Math.floor(Math.random()*den1), n2=Math.floor(Math.random()*den2);
-  const op=Math.random()<0.5?'+':'-';
-  const box=id('unlikeBox'); 
-  if(!box) return;
-  box.innerHTML = `
-    <div class="card">
-      <div class="text-2xl">\\( \\frac{${n1}}{${den1}} ${op} \\frac{${n2}}{${den2}} \\)</div>
-      <div class="mt-2">LCM = <input id="lcmIn" class="border rounded px-2 py-1 w-28" placeholder="LCM"></div>
-      <div class="mt-2 flex flex-wrap items-center gap-3">
-        <span>\\( \\frac{${n1}}{${den1}} = \\)</span>
-        <input id="eq1" class="border rounded px-2 py-1 w-24" placeholder="?"> /
-        <input id="d1"  class="border rounded px-2 py-1 w-24" placeholder="?">
-        <span class="ml-6">\\( \\frac{${n2}}{${den2}} = \\)</span>
-        <input id="eq2" class="border rounded px-2 py-1 w-24" placeholder="?"> /
-        <input id="d2"  class="border rounded px-2 py-1 w-24" placeholder="?">
-      </div>
-    </div>
-    <div class="card">
-      <div>Final answer (simplest): <input id="unAns" class="border rounded px-2 py-1 w-32" placeholder="e.g., 7/12"></div>
-    </div>`;
-  if(window._rerenderMath) _rerenderMath(id('unlikeSlide'));
-  unlikeState.a=`${n1}/${den1}`; unlikeState.b=`${n2}/${den2}`; unlikeState.op=op;
-}
-newUnlike();
-id('unlikeNew')?.addEventListener('click',newUnlike);
-id('unlikeCheck')?.addEventListener('click',()=>{
-  const a=parseRational(unlikeState.a), b=parseRational(unlikeState.b); const op=unlikeState.op;
-  const L=lcm(a[1],b[1]);
-  const A=[a[0]*(L/a[1]), L], B=[b[0]*(L/b[1]), L];
-  const ans = (op==='+')? addFrac(A,B) : subFrac(A,B);
-  let ok=true;
-  const lcmIn=id('lcmIn'); if(Number(lcmIn.value)==L){lcmIn.style.borderColor='#22c55e'} else {ok=false; lcmIn.style.borderColor='#ef4444'}
-  function eqCheck(idn, val){const el=id(idn); if(Number(el.value)==val){el.style.borderColor='#22c55e'} else {ok=false; el.style.borderColor='#ef4444'}}
-  eqCheck('eq1', A[0]); eqCheck('d1', A[1]); eqCheck('eq2', B[0]); eqCheck('d2', B[1]);
-  const got=parseRational(id('unAns').value);
-  if(!(got && fracEq(got, ans))){ok=false; id('unAns').style.borderColor='#ef4444'} else id('unAns').style.borderColor='#22c55e';
-  id('unlikeFb').textContent= ok?'✅ Nice work!':'❌ Check highlights'; if(ok) confetti();
-});
-
-/* =========================
-   Part F: Reasoning + Challenges
-========================= */
-// Ordering
-const sortState={items:[]};
-function genRationalString(){
-  const t=Math.random();
-  if(t<0.33){ const v=Math.floor(Math.random()*21)-10; return {disp:String(v), val:v}; }
-  else if(t<0.66){
-    const den=[4,5,6,8,10,12][Math.floor(Math.random()*6)];
-    const num=Math.floor(Math.random()*(den*2+1))-den;
-    return {disp:`\\( \\frac{${num}}{${den}} \\)`, val:num/den};
-  } else {
-    const v=Math.round((Math.random()*20-10)*10)/10; return {disp:String(v.toFixed(1).replace(/\\.0$/,'')), val:v};
+    sumOut.textContent=(addState.p+addState.q).toFixed(2).replace(/\.00$/,'');
   }
-}
-function sortNew(){
-  const set=[]; while(set.length<5){ set.push(genRationalString()); }
-  sortState.items=set;
-  const ul=id('sortList'); ul.innerHTML='';
-  set.forEach((o,idx)=>{
-    const li=document.createElement('li'); li.className='border rounded px-3 py-2 flex items-center justify-between cursor-move';
-    li.setAttribute('draggable','true'); li.dataset.val=o.val; li.innerHTML=`<span class="text-2xl">${o.disp}</span><span class="text-gray-400 text-sm">drag</span>`;
-    ul.appendChild(li);
-  });
-  enableDrag(ul);
-  if(window._rerenderMath) _rerenderMath(id('sortSlide'));
-}
-function enableDrag(ul){
-  let dragEl=null;
-  ul.querySelectorAll('li').forEach(li=>{
-    li.addEventListener('dragstart',()=>{dragEl=li; li.classList.add('dragging')});
-    li.addEventListener('dragend',()=>{dragEl=null; li.classList.remove('dragging')});
-  });
-  ul.addEventListener('dragover',e=>{
-    e.preventDefault();
-    const after=getDragAfterElement(ul,e.clientY);
-    if(after==null) ul.appendChild(dragEl); else ul.insertBefore(dragEl,after);
-  });
-  function getDragAfterElement(container, y){
-    const els=[...container.querySelectorAll('li:not(.dragging)')];
-    return els.reduce((closest,child)=>{
-      const box=child.getBoundingClientRect();
-      const offset=y - box.top - box.height/2;
-      if(offset<0 && offset>closest.offset){ return {offset,element:child}; } else { return closest; }
-    }, {offset:Number.NEGATIVE_INFINITY}).element;
+  function setFromInputs(){ addState.p=Number(pIn.value||0); addState.q=Number(qIn.value||0); drawAdd(); }
+  pIn.addEventListener('input', setFromInputs); qIn.addEventListener('input', setFromInputs);
+  function handleAddDrag(e){
+    const r=cA.getBoundingClientRect(); const x=(e.clientX||e.touches?.[0].clientX)-r.left; let val=unmapA(x); if(addState.snap) val=Math.round(val*10)/10;
+    if(addState.dragging==='p'){ addState.p=clamp(val,addState.min,addState.max); pIn.value=addState.p; }
+    if(addState.dragging==='r'){ const rVal=clamp(val,addState.min,addState.max); addState.q = rVal - addState.p; qIn.value=+addState.q.toFixed(2); }
+    drawAdd();
   }
-}
-id('sortNew')?.addEventListener('click',sortNew);
-id('sortCheck')?.addEventListener('click',()=>{
-  const now=[...id('sortList').children].map(li=>({val:Number(li.dataset.val), el:li}));
-  const sorted=[...now].sort((a,b)=>a.val-b.val);
-  let ok=true;
-  now.forEach((o,idx)=>{ if(o!==sorted[idx]) ok=false; });
-  now.forEach((o,idx)=>o.el.style.borderColor = (o===sorted[idx])? '#22c55e' : '#ef4444');
-  id('sortFb').textContent= ok? '✅ Correct order!' : 'Some items are out of order.';
-  if(ok) confetti();
-});
-sortNew();
-
-// Error analysis bank
-function errorBank(){
-  return [
-    {work:'\\( (-\\tfrac{3}{4}) + (\\tfrac{1}{2}) = -\\tfrac{4}{6} = -\\tfrac{2}{3} \\)', correct:'Use a common denominator 4: \\( -\\tfrac{3}{4} + \\tfrac{1}{2} = -\\tfrac{3}{4} + \\tfrac{2}{4} = -\\tfrac{1}{4} \\).', key:'A'},
-    {work:'\\( 6 - 9 = 3 \\)', correct:'Subtracting a larger number yields a negative: \\( 6-9=-3 \\).', key:'C'},
-    {work:'\\( -2.5 - 1.5 = -1.0 \\)', correct:'Both negative: difference is \\( -4.0 \\).', key:'C'},
-    {work:'\\( \\tfrac{3}{5} + \\tfrac{1}{2} = \\tfrac{4}{7} \\)', correct:'LCD 10: \\( \\tfrac{3}{5}+\\tfrac{1}{2}=\\tfrac{6}{10}+\\tfrac{5}{10}=\\tfrac{11}{10}=1\\tfrac{1}{10} \\).', key:'A'},
-    {work:'\\( 2.6 + (-1.25) = 2. - 1.25 = 0.75 \\) (misaligned)', correct:'Align decimals: \\( 2.60 + (-1.25)=1.35 \\).', key:'D'}
-  ];
-}
-const errState={item:null};
-function errNew(){
-  const bank=errorBank(); errState.item=bank[Math.floor(Math.random()*bank.length)];
-  id('errBox').innerHTML=`Incorrect work:<br/> <div class="mt-1" style="color:var(--maroon)"> ${errState.item.work} </div>`;
-  id('errFb').textContent=''; id('errRevealBox').textContent='';
-  if(window._rerenderMath) _rerenderMath(id('challengeSlide'));
-}
-id('errNew')?.addEventListener('click',errNew);
-id('errCheck')?.addEventListener('click',()=>{
-  const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-  if(!sel){ id('errFb').textContent='Choose an option.'; return; }
-  if(sel.value===errState.item.key){ id('errFb').textContent='✅ Correct diagnosis.'; confetti(); }
-  else { id('errFb').textContent='❌ Not quite. Try again or reveal the correct work.'; }
-});
-id('errReveal')?.addEventListener('click',()=>{
-  id('errRevealBox').innerHTML = `<div class="hint">${errState.item.correct}</div>`;
-  if(window._rerenderMath) _rerenderMath(id('challengeSlide'));
-});
-errNew();
-
-// Missing addend
-id('chCheck')?.addEventListener('click',()=>{
-  let ok=true; document.querySelectorAll('.ch1').forEach(inp=>{const want=parseRational(inp.dataset.ans); const got=parseRational(inp.value); if(!(got && fracEq(got,want))){ok=false; inp.style.borderColor='#ef4444'} else inp.style.borderColor='#22c55e'}); id('chFb').textContent= ok?'✅ Excellent!':'❌ Try to fix the red ones'; if(ok) confetti();
-});
-id('chReset')?.addEventListener('click',()=>{document.querySelectorAll('.ch1').forEach(i=>{i.value='';i.style.borderColor='#e5e7eb'}); id('chFb').textContent=''});
-
-// Strategy board
-const SKEY='QLA_G7_STRATEGIES';
-function renderStrategies(){
-  const list=JSON.parse(localStorage.getItem(SKEY)||'[]');
-  const host=id('strategyList'); host.innerHTML='';
-  list.forEach((s,idx)=>{
-    const row=document.createElement('div'); row.className='flex items-center justify-between p-2 border rounded bg-white';
-    row.innerHTML=`<span>${s.text}</span>
-      <span class="flex items-center gap-2">
-        <button class="btn ghost up" data-i="${idx}">👍 ${s.votes||0}</button>
-        <button class="btn ghost del" data-i="${idx}">🗑</button>
-      </span>`;
-    host.appendChild(row);
+  cA.addEventListener('mousedown',e=>{
+    const px=mapA(addState.p), rx=mapA(addState.p+addState.q);
+    const x=e.offsetX;
+    addState.dragging = (Math.abs(x-px) < Math.abs(x-rx)) ? 'p' : 'r';
+    handleAddDrag(e);
   });
-  host.querySelectorAll('.up').forEach(b=>b.addEventListener('click',()=>{
-    const i=+b.dataset.i; const L=JSON.parse(localStorage.getItem(SKEY)||'[]'); L[i].votes=(L[i].votes||0)+1; localStorage.setItem(SKEY,JSON.stringify(L)); renderStrategies();
-  }));
-  host.querySelectorAll('.del').forEach(b=>b.addEventListener('click',()=>{
-    const i=+b.dataset.i; const L=JSON.parse(localStorage.getItem(SKEY)||'[]'); L.splice(i,1); localStorage.setItem(SKEY,JSON.stringify(L)); renderStrategies();
-  }));
-}
-id('addStrategy')?.addEventListener('click',()=>{
-  const v=id('strategyIn').value.trim(); if(!v) return;
-  const L=JSON.parse(localStorage.getItem(SKEY)||'[]'); L.push({text:v,votes:0}); localStorage.setItem(SKEY,JSON.stringify(L)); id('strategyIn').value=''; renderStrategies();
-});
-id('clearStrategy')?.addEventListener('click',()=>{ localStorage.removeItem(SKEY); renderStrategies();});
-renderStrategies();
+  window.addEventListener('mousemove',e=>{ if(addState.dragging) handleAddDrag(e) });
+  window.addEventListener('mouseup',()=>addState.dragging=null);
+  byId('randAdd').addEventListener('click',()=>{addState.p=+(Math.random()*12-6).toFixed(1); addState.q=+(Math.random()*8-4).toFixed(1); pIn.value=addState.p; qIn.value=addState.q; drawAdd();});
+  byId('resetAdd').addEventListener('click',()=>{addState.p=-2;addState.q=3.5;pIn.value=-2;qIn.value=3.5;drawAdd()});
+  window.addEventListener('resize',()=>{ if(slides[i].id==='addSlide') drawAdd(); });
 
-/* =========================
-   Part G: Real‑World Practice
-========================= */
-const realState={items:[]};
-function realTemplates(){
-  const items=[];
-  // Temperature
-  const t0=ri(-6,10), d=ri(-6,6);
-  items.push({text:`Temperature: morning ${t0}\\(^\\circ\\!\\text{C}\\), changes by ${d}\\(^\\circ\\!\\text{C}\\) → final =`, ans:t0+d, suffix:'°C'});
-  // Bank
-  const bal=ri(80,200), w=ri(50,180); const act=Math.random()<0.5?'withdraw':'deposit';
-  const final= act==='withdraw'? bal-w : bal+w;
-  items.push({text:`Bank balance: start QAR ${bal}, ${act} QAR ${w} → balance =`, ans:final, suffix:'QAR'});
-  // Elevation
-  const e0=ri(-50,20), climb=ri(-15,25);
-  items.push({text:`Elevation: start ${e0} m (below sea level negative), change by ${climb} m → elevation =`, ans:e0+climb, suffix:'m'});
-  // Score
-  const s0=ri(-10,10), gain=ri(-8,12);
-  items.push({text:`Game score: starts at ${s0}, then ${gain>=0? 'gains':'loses'} ${Math.abs(gain)} → score =`, ans:s0+gain, suffix:''});
-  return items;
-}
-function realNew(){
-  realState.items=realTemplates();
-  const box=id('realList'); box.innerHTML='';
-  realState.items.forEach((o,idx)=>{
-    const row=document.createElement('div'); row.className='card';
-    row.innerHTML=`<div class="text-xl">${o.text} <input class="rin border rounded px-2 py-1 w-28" id="r_${idx}" placeholder="answer"> ${o.suffix}</div>`;
-    box.appendChild(row);
-  });
-}
-id('realNew')?.addEventListener('click',realNew); realNew();
-id('realCheck')?.addEventListener('click',()=>{
-  let ok=0; realState.items.forEach((o,idx)=>{
-    const el=id('r_'+idx); const got=Number(el.value);
-    if(Math.abs(got-o.ans)<1e-10){ok++; el.style.borderColor='#22c55e'} else el.style.borderColor='#ef4444';
-  });
-  id('realFb').textContent = ok===realState.items.length? '✅ Excellent!' : 'Score: '+ok+'/'+realState.items.length;
-  if(ok===realState.items.length) confetti();
-});
-
-/* =========================
-   Part H: Mixed Generator
-========================= */
-const qText=id('qText'), ansIn=id('ans'), qFb=id('qFb'), qHint=id('qHint'), level=id('level');
-let current=null;
-function frac(n,d){return [n,d]}
-function newQuestion(){
-  qFb.textContent=''; qHint.textContent=''; ansIn.value='';
-  const lvl=level.value; let A,B,op;
-  if(lvl==='easy'){ A=frac(ri(-9,9),1); B=frac(ri(-9,9),1); op=Math.random()<0.5?'+':'-'; }
-  else if(lvl==='med'){
-    if(Math.random()<0.5){ const d=[4,5,6,8,10][ri(0,4)]; A=frac(ri(-d+1,d-1),d); B=frac(ri(-d+1,d-1),d); }
-    else { const a=(ri(-30,30)/10), b=(ri(-30,30)/10); A=parseRational(String(a)); B=parseRational(String(b)); }
-    op=Math.random()<0.5?'+':'-';
-  } else {
-    const d1=[3,4,5,6,8,9][ri(0,5)], d2=[4,5,6,7,8,10][ri(0,5)];
-    A=frac(ri(-d1+1,d1-1),d1); B=frac(ri(-d2+1,d2-1),d2); op=Math.random()<0.5?'+':'-';
+  // Number line: Subtraction
+  const cS=byId('lineSub'); const p2=byId('p2Input'), q2=byId('q2Input'), diffOut=byId('diffOut');
+  const subState={min:-12,max:12,p:1,q:-4};
+  function mapS(x){const m=28,W=cS.clientWidth;return m+(x-subState.min)*(W-2*m)/(subState.max-subState.min)}
+  function drawSub(){
+    const ctx=cS.getContext('2d'); cS.width=cS.clientWidth*devicePixelRatio; cS.height=cS.clientHeight*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio);
+    const y=cS.clientHeight/2, m=28; ctx.clearRect(0,0,cS.clientWidth,cS.clientHeight);
+    ctx.lineWidth=2; ctx.strokeStyle='#6C1D45'; ctx.beginPath(); ctx.moveTo(m,y); ctx.lineTo(cS.clientWidth-m,y); ctx.stroke();
+    for(let t=subState.min;t<=subState.max;t++){
+      const x=mapS(t); ctx.beginPath(); ctx.moveTo(x,y-8); ctx.lineTo(x,y+8); ctx.stroke();
+      if(t%2==0){ctx.fillStyle='#555'; ctx.font='12px Inter'; ctx.fillText(String(t),x-6,y+24);}
+    }
+    const px=mapS(subState.p), qx=mapS(subState.p - subState.q); // move by -q
+    ctx.fillStyle='#6C1D45'; ctx.beginPath(); ctx.arc(px,y,9,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#C7A34F'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(px,y); ctx.lineTo(qx,y); ctx.stroke();
+    ctx.fillStyle='#C7A34F'; ctx.beginPath(); ctx.arc(qx,y,9,0,Math.PI*2); ctx.fill();
+    diffOut.textContent=(subState.p - subState.q).toFixed(2).replace(/\.00$/,'');
   }
-  current={A,B,op};
-  qText.innerHTML = `\\( ${sFrac(A)} \\ ${op}\\ ${sFrac(B)} \\)`;
-  if(window._rerenderMath) _rerenderMath(id('mixedSlide'));
-}
-id('newQ')?.addEventListener('click',newQuestion); newQuestion();
-id('hintQ')?.addEventListener('click',()=>{
-  if(!current) return;
-  const {A,B,op}=current;
-  if(A[1]===B[1]) qHint.innerHTML=`<div class="hint">Like denominators: \\( ${sFrac(A)} ${op} ${sFrac(B)} \\Rightarrow ${(op==='+')? (A[0]+'+'+B[0]): (A[0]+'-'+B[0])} \\) over \\( ${A[1]} \\).</div>`;
-  else {const L=lcm(A[1],B[1]); qHint.innerHTML=`<div class="hint">Unlike denominators: \\(\\mathrm{LCM}(${A[1]}, ${B[1]}) = ${L}\\). Equivalents: \\( ${sFrac([A[0]*(L/A[1]),L])} ${op} ${sFrac([B[0]*(L/B[1]),L])} \\).</div>`}
-  if(window._rerenderMath) _rerenderMath(id('mixedSlide'));
-});
-id('checkQ')?.addEventListener('click',()=>{
-  if(!current) return;
-  const got=parseRational(ansIn.value); if(!got){qFb.textContent='Enter a valid number or fraction.'; qFb.className='mt-1 font-bold text-red-700'; return;}
-  const {A,B,op}=current; const ans = op==='+'? addFrac(A,B): subFrac(A,B);
-  if(fracEq(got, ans)){qFb.textContent='✅ Correct! '+sFrac(ans); qFb.className='mt-1 font-bold text-green-700'; confetti();}
-  else {qFb.textContent='❌ Not quite. Expected '+sFrac(ans); qFb.className='mt-1 font-bold text-red-700';}
-});
+  function setSub(){subState.p=Number(p2.value||0); subState.q=Number(q2.value||0); drawSub()}
+  p2.addEventListener('input', setSub); q2.addEventListener('input', setSub);
+  byId('randSub').addEventListener('click',()=>{subState.p=+(Math.random()*8-4).toFixed(1); subState.q=+(Math.random()*8-4).toFixed(1); p2.value=subState.p; q2.value=subState.q; drawSub()});
+  window.addEventListener('resize',()=>{ if(slides[i].id==='subSlide') drawSub(); });
 
-/* =========================
-   Init & Resize hooks
-========================= */
-window.addEventListener('resize',()=>{ if(slides[i].id==='addSlide') drawAdd(); if(slides[i].id==='subSlide') drawSub(); resizeInk(); });
-show(0);
+  // Quick check
+  byId('checkQC').addEventListener('click',()=>{
+    let total=0,ok=0; [...document.querySelectorAll('.qc')].forEach(inp=>{
+      total++; const want=Number(inp.dataset.ans); const got=Number(inp.value);
+      if(got===want){inp.style.borderColor='#22c55e'; ok++;} else {inp.style.borderColor='#ef4444';}
+    });
+    const fb=byId('qcFb'); fb.textContent= ok===total?'✅ Great!':'Score: '+ok+'/'+total; if(ok===total) window._confetti();
+  });
+  byId('resetQC').addEventListener('click',()=>{document.querySelectorAll('.qc').forEach(i=>{i.value='';i.style.borderColor='#e5e7eb'}); byId('qcFb').textContent='';});
+
+  // Like denominators
+  const likePairs=[['5/8','-1/8','+'],['7/9','2/9','-'],['-3/10','4/10','+'],['-5/6','-1/6','+'],['11/12','1/12','-'],['-7/15','2/15','+']];
+  const likeState={set:[]};
+  function renderLike(){
+    const box=byId('likeList'); box.innerHTML=''; likeState.set=[];
+    likePairs.sort(()=>Math.random()-0.5).slice(0,4).forEach((t,idx)=>{
+      const [a,b,op]=t; const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
+        <div class="text-xl mt-1">\\( ${a} ${op} ${b} \\) = <input class="lin border rounded px-2 py-1 w-32" placeholder="e.g., 1/4"></div>`;
+      row.dataset.a=a; row.dataset.b=b; row.dataset.op=op; box.appendChild(row);
+      likeState.set.push({a,b,op});
+    });
+    if(window._renderMath) window._renderMath(byId('likeSlide'));
+  }
+  byId('likeNew').addEventListener('click',renderLike);
+  byId('likeCheck').addEventListener('click',()=>{
+    let total=0,ok=0; byId('likeList').querySelectorAll('.card').forEach(row=>{
+      total++; const A=parseRational(row.dataset.a), B=parseRational(row.dataset.b); const op=row.dataset.op;
+      const ans=(op==='+')? addFrac(A,B): subFrac(A,B);
+      const inp=row.querySelector('.lin'); const got=parseRational(inp.value);
+      if(got && fracEq(toFrac(got[0],got[1]), ans)){inp.style.borderColor='#22c55e'; ok++;} else {inp.style.borderColor='#ef4444';}
+    });
+    const fb=byId('likeFb'); fb.textContent= ok===total?'✅ All correct!':'Score: '+ok+'/'+total; if(ok===total) window._confetti();
+  });
+
+  // Unlike denominators (guided)
+  const unlikeState={a:null,b:null,op:null};
+  function newUnlike(){
+    const den1=[3,4,5,6,8,9][Math.floor(Math.random()*6)];
+    const den2=[4,5,6,7,8,9,10][Math.floor(Math.random()*7)];
+    const n1=Math.floor(Math.random()*den1), n2=Math.floor(Math.random()*den2);
+    const op=Math.random()<0.5?'+':'-';
+    const box=byId('unlikeBox'); 
+    box.innerHTML = `
+      <div class="card p-4">
+        <div class="text-xl">\\( \\frac{${n1}}{${den1}} ${op} \\frac{${n2}}{${den2}} \\)</div>
+        <ol class="list-decimal ml-5 mt-2">
+          <li class="mt-1">LCM = <input id="lcmIn" class="border rounded px-2 py-1 w-28" placeholder="LCM"></li>
+          <li class="mt-1">Build equivalents: 
+            \\( \\frac{${n1}}{${den1}} = \\)
+            <input id="eq1" class="border rounded px-2 py-1 w-24" placeholder="?"> /
+            <input id="d1"  class="border rounded px-2 py-1 w-24" placeholder="?"> and
+            \\( \\frac{${n2}}{${den2}} = \\)
+            <input id="eq2" class="border rounded px-2 py-1 w-24" placeholder="?"> /
+            <input id="d2"  class="border rounded px-2 py-1 w-24" placeholder="?">
+          </li>
+          <li class="mt-1">Operate & simplify: <input id="unAns" class="border rounded px-2 py-1 w-32" placeholder="e.g., 7/12"></li>
+        </ol>
+      </div>`;
+    if(window._renderMath) window._renderMath(byId('unlikeSlide'));
+    unlikeState.a=`${n1}/${den1}`; unlikeState.b=`${n2}/${den2}`; unlikeState.op=op;
+  }
+  byId('unlikeNew').addEventListener('click',newUnlike);
+  byId('unlikeCheck').addEventListener('click',()=>{
+    const a=parseRational(unlikeState.a), b=parseRational(unlikeState.b); const op=unlikeState.op;
+    const L=lcm(a[1],b[1]);
+    const A=[a[0]*(L/a[1]), L], B=[b[0]*(L/b[1]), L];
+    const ans = (op==='+')? addFrac(A,B) : subFrac(A,B);
+    let ok=true;
+    function okField(id,val){ const el=byId(id); const good=(String(el.value).trim()==String(val)); el.style.borderColor=good?'#22c55e':'#ef4444'; if(!good) ok=false; }
+    okField('lcmIn',L); okField('eq1',A[0]); okField('d1',A[1]); okField('eq2',B[0]); okField('d2',B[1]);
+    const got=parseRational(byId('unAns').value);
+    if(!(got && fracEq(got, ans))){ok=false; byId('unAns').style.borderColor='#ef4444'} else byId('unAns').style.borderColor='#22c55e';
+    byId('unlikeFb').textContent= ok?'✅ Nice work!':'❌ Check highlights'; if(ok) window._confetti();
+  });
+
+  // Decimals
+  const decState={set:[]};
+  function newDecSet(){
+    const bank=[['2.75','-3.4'],['-1.2','-0.8'],['5.06','-2.31'],['-4.5','1.75'],['3.2','0.45'],['-6.75','-1.25']];
+    const box=byId('decList'); box.innerHTML=''; decState.set=[];
+    bank.sort(()=>Math.random()-0.5).slice(0,4).forEach((p,idx)=>{
+      const [a,b]=p; const op=Math.random()<0.5?'+':'-';
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
+        <div class="text-xl mt-1">${a} ${op} ${b} = <input class="din border rounded px-2 py-1 w-32" placeholder="e.g., 0.44"></div>`;
+      row.dataset.a=a; row.dataset.b=b; row.dataset.op=op; box.appendChild(row);
+      decState.set.push({a,b,op});
+    });
+  }
+  byId('decNew').addEventListener('click',newDecSet);
+  byId('decCheck').addEventListener('click',()=>{
+    let total=0,ok=0; byId('decList').querySelectorAll('.card').forEach(row=>{
+      total++;
+      const a=parseFloat(row.dataset.a), b=parseFloat(row.dataset.b), op=row.dataset.op;
+      const ans = op==='+' ? a + b : a - b;
+      const got = Number(row.querySelector('.din').value);
+      if(Math.abs(got-ans)<1e-10){row.querySelector('.din').style.borderColor='#22c55e'; ok++;} else {row.querySelector('.din').style.borderColor='#ef4444'}
+    });
+    const fb=byId('decFb'); fb.textContent= ok===total?'✅ All correct!':'Score: '+ok+'/'+total; if(ok===total) window._confetti();
+  });
+
+  /* =========================================================
+     PART D: ORDER / MIXED / CHALLENGE
+     ========================================================= */
+  // Order rationals
+  const sortState={items:[]};
+  function genRationalString(){
+    const t=Math.random();
+    if(t<0.33){ // integer
+      const v=Math.floor(Math.random()*21)-10; return {disp:String(v), val:v};
+    } else if(t<0.66){ // fraction
+      const den=[4,5,6,8,10,12][Math.floor(Math.random()*6)];
+      const num=Math.floor(Math.random()* (den*2+1)) - den; // -den..den
+      return {disp:`\\( \\frac{${num}}{${den}} \\)`, val:num/den};
+    } else { // decimal
+      const v=Math.round((Math.random()*20-10)*10)/10; return {disp:String(v.toFixed(1).replace(/\\.0$/,'')), val:v};
+    }
+  }
+  function sortNew(){
+    const set=[]; while(set.length<5){ set.push(genRationalString()); }
+    sortState.items=set;
+    const ul=byId('sortList'); ul.innerHTML='';
+    set.forEach((o,idx)=>{
+      const li=document.createElement('li'); li.className='border rounded px-3 py-2 flex items-center justify-between';
+      li.setAttribute('draggable','true'); li.dataset.val=o.val; li.innerHTML=`<span class="text-xl">${o.disp}</span><span class="text-gray-400 text-sm">drag</span>`;
+      ul.appendChild(li);
+    });
+    if(window._renderMath) window._renderMath(byId('sortSlide'));
+    enableDrag(ul);
+  }
+  function enableDrag(ul){
+    let dragEl=null;
+    ul.querySelectorAll('li').forEach(li=>{
+      li.addEventListener('dragstart',()=>{dragEl=li; li.classList.add('dragging')});
+      li.addEventListener('dragend',()=>{dragEl=null; li.classList.remove('dragging')});
+    });
+    ul.addEventListener('dragover',e=>{
+      e.preventDefault();
+      const after=getDragAfterElement(ul,e.clientY);
+      if(after==null) ul.appendChild(dragEl); else ul.insertBefore(dragEl,after);
+    });
+    function getDragAfterElement(container, y){
+      const els=[...container.querySelectorAll('li:not(.dragging)')];
+      return els.reduce((closest,child)=>{
+        const box=child.getBoundingClientRect();
+        const offset=y - box.top - box.height/2;
+        if(offset<0 && offset>closest.offset){ return {offset,element:child}; } else { return closest; }
+      }, {offset:Number.NEGATIVE_INFINITY}).element;
+    }
+  }
+  byId('sortNew').addEventListener('click',sortNew);
+  byId('sortCheck').addEventListener('click',()=>{
+    const now=[...byId('sortList').children].map(li=>({val:Number(li.dataset.val), el:li}));
+    const sorted=[...now].sort((a,b)=>a.val-b.val);
+    let ok=true;
+    now.forEach((o,idx)=>{ if(o!==sorted[idx]) ok=false; });
+    now.forEach((o,idx)=>o.el.style.borderColor = (o===sorted[idx])? '#22c55e' : '#ef4444');
+    byId('sortFb').textContent= ok? '✅ Correct order!' : 'Some items are out of order.';
+    if(ok) window._confetti();
+  });
+
+  // Mixed generator
+  const qText=byId('qText'), ansIn=byId('ans'), qFb=byId('qFb'), qHint=byId('qHint'), level=byId('level');
+  let current=null;
+  function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+  function newQuestion(){
+    qFb.textContent=''; qHint.textContent=''; ansIn.value='';
+    const lvl=level.value; let A,B,op;
+    if(lvl==='easy'){ A=[randInt(-9,9),1]; B=[randInt(-9,9),1]; op=Math.random()<0.5?'+':'-'; }
+    else if(lvl==='med'){
+      if(Math.random()<0.5){
+        const d=[4,5,6,8,10][randInt(0,4)]; A=[randInt(-d+1,d-1),d]; B=[randInt(-d+1,d-1),d];
+      } else {
+        const a=(randInt(-30,30)/10), b=(randInt(-30,30)/10); A=parseRational(String(a)); B=parseRational(String(b));
+      }
+      op=Math.random()<0.5?'+':'-';
+    } else {
+      const d1=[3,4,5,6,8,9][randInt(0,5)], d2=[4,5,6,7,8,10][randInt(0,5)];
+      A=[randInt(-d1+1,d1-1),d1]; B=[randInt(-d2+1,d2-1),d2]; op=Math.random()<0.5?'+':'-';
+    }
+    current={A,B,op};
+    qText.innerHTML = `\\( ${sFrac(A)} \\ ${op}\\ ${sFrac(B)} \\)`;
+    if(window._renderMath) window._renderMath(byId('mixedSlide'));
+  }
+  byId('newQ').addEventListener('click',newQuestion);
+  byId('hintQ').addEventListener('click',()=>{
+    if(!current) return;
+    const {A,B,op}=current;
+    if(A[1]===B[1]) qHint.innerHTML=`<div class="hint">Like denominators: \\( ${sFrac(A)} ${op} ${sFrac(B)} \\Rightarrow ${(op==='+')? (A[0]+'+'+B[0]): (A[0]+'-'+B[0])} \\) over \\( ${A[1]} \\).</div>`;
+    else {const L=lcm(A[1],B[1]); qHint.innerHTML=`<div class="hint">Unlike denominators: \\(\\mathrm{LCM}(${A[1]}, ${B[1]}) = ${L}\\). Equivalents: \\( ${sFrac([A[0]*(L/A[1]),L])} ${op} ${sFrac([B[0]*(L/B[1]),L])} \\).</div>`}
+    if(window._renderMath) window._renderMath(byId('mixedSlide'));
+  });
+  byId('checkQ').addEventListener('click',()=>{
+    if(!current) return;
+    const got=parseRational(ansIn.value); if(!got){qFb.textContent='Enter a valid number/fraction.'; qFb.className='mt-2 h-6 font-semibold text-red-700'; return;}
+    const {A,B,op}=current; const ans = op==='+'? addFrac(A,B): subFrac(A,B);
+    if(fracEq(got, ans)){qFb.textContent='✅ Correct! '+sFrac(ans); qFb.className='mt-2 h-6 font-semibold text-green-700'; window._confetti();}
+    else {qFb.textContent='❌ Not quite. Expected '+sFrac(ans); qFb.className='mt-2 h-6 font-semibold text-red-700';}
+  });
+
+  // Challenge + Error analysis
+  function errorBank(){
+    return [
+      {work:'\\( (-\\tfrac{3}{4}) + (\\tfrac{1}{2}) = -\\tfrac{4}{6} = -\\tfrac{2}{3} \\)', correct:'Use a common denominator 4: \\( -\\tfrac{3}{4} + \\tfrac{1}{2} = -\\tfrac{3}{4} + \\tfrac{2}{4} = -\\tfrac{1}{4} \\).', key:'A'},
+      {work:'\\( 6 - 9 = 3 \\)', correct:'Subtracting a larger number yields a negative: \\( 6-9=-3 \\).', key:'C'},
+      {work:'\\( -2.5 - 1.5 = -1.0 \\)', correct:'Both negative: difference is \\( -4.0 \\).', key:'C'},
+      {work:'\\( \\tfrac{3}{5} + \\tfrac{1}{2} = \\tfrac{4}{7} \\)', correct:'LCD 10: \\( \\tfrac{3}{5}+\\tfrac{1}{2}=\\tfrac{6}{10}+\\tfrac{5}{10}=\\tfrac{11}{10}=1\\tfrac{1}{10} \\).', key:'A'},
+      {work:'\\( 2.6 + (-1.25) = 0.75 \\) (misaligned)', correct:'Align decimals: \\( 2.60 + (-1.25)=1.35 \\).', key:'D'}
+    ];
+  }
+  const errState={item:null};
+  function errNew(){
+    const bank=errorBank(); errState.item=bank[Math.floor(Math.random()*bank.length)];
+    byId('errBox').innerHTML=`Incorrect work:<br/> <div class="mt-1 text-maroon"> ${errState.item.work} </div>`;
+    byId('errFb').textContent=''; byId('errRevealBox').textContent='';
+    if(window._renderMath) window._renderMath(byId('challengeSlide'));
+  }
+  byId('errNew').addEventListener('click',errNew);
+  byId('errCheck').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    if(!sel){ byId('errFb').textContent='Choose an option.'; return; }
+    if(sel.value===errState.item.key){ byId('errFb').textContent='✅ Correct diagnosis.'; window._confetti(); }
+    else { byId('errFb').textContent='❌ Not quite. Try again or reveal the correct work.'; }
+  });
+  byId('errReveal').addEventListener('click',()=>{
+    byId('errRevealBox').innerHTML = `<div class="hint">${errState.item.correct}</div>`;
+    if(window._renderMath) window._renderMath(byId('challengeSlide'));
+  });
+
+})(); // end IIFE
 </script>
 </body>
 </html>
