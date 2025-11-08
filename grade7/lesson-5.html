@@ -3,81 +3,333 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G7 • Unit 1 • Interactive Rational Numbers (Enhanced)</title>
+<title>G7 • Unit 1 • Addition & Subtraction of Rational Numbers</title>
+
+<!-- Fonts & Tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- KaTeX (auto-render) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
 <style>
   :root{--maroon:#6C1D45;--gold:#C7A34F;--ink:#1f2937;--paper:#ffffff;--soft:#f7f7f8}
   html,body{height:100%;background:#2d3748;color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
   #stage{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
   #deck{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:var(--paper);box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
-  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.4s ease;pointer-events:none}
+  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.45s ease;pointer-events:none}
   .slide.active{opacity:1;transform:none;pointer-events:auto}
+  .banner{width:100%;height:110px;background:#fff center/cover no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
   .card{border:1px solid #e5e7eb;border-radius:16px;background:#fafafa}
+  .chip{display:inline-flex;align-items:center;gap:.5rem;background:#f1f5f9;border-radius:9999px;padding:.45rem .9rem;cursor:pointer}
+  .chip[data-key]:hover{outline:2px solid var(--gold)}
   .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
   .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
-  .chip{display:inline-flex;align-items:center;gap:.4rem;background:#f1f5f9;border-radius:9999px;padding:.4rem .8rem}
-  .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)} .bg-maroon{background:var(--maroon)}
-  #controls{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:.5rem;z-index:20}
-  #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;font-weight:700}
+  .btn.ghost{background:transparent;border-color:#cbd5e1}
+  .btn:hover{filter:brightness(0.98)}
+  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
+  .note{background:#e0f2fe;border:1px solid #bae6fd;border-radius:10px;padding:.5rem .75rem}
+  .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
+  .bg-maroon{background-color:var(--maroon)} .bg-soft{background:var(--soft)}
+  .board *{font-size:1.06em}
+  .board h1{font-size:3rem}
+  .board h2{font-size:2.2rem}
+  .board .text-xl{font-size:1.5rem}
+  #partNav{position:absolute;top:10px;left:12px;display:flex;gap:.4rem;z-index:20}
+  #teacherBar{position:absolute;top:10px;right:12px;display:flex;gap:.4rem;z-index:20}
+  #controls{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
+  #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700}
+  #controls button:hover{transform:scale(1.06)}
   #counter{color:#fff;font-weight:700;min-width:100px;text-align:center}
   #progress{position:absolute;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:10;transition:width .35s ease}
+  #panel{position:absolute;right:12px;top:62px;z-index:30;background:#fff;border:2px solid var(--gold);border-radius:14px;padding:12px;display:none;max-width:360px}
+  #panel h4{font-weight:800;color:var(--maroon);margin:.2rem 0 .4rem}
+  #panel input, #panel textarea{border:1px solid #cbd5e1;border-radius:8px;padding:.4rem .6rem;width:100%}
+  #panel .row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
   .nl-wrap{width:100%;max-width:920px}
   canvas.nline{width:100%;height:170px;border-radius:12px;background:linear-gradient(180deg,#fff,#fafafa);border:2px solid #ececec}
-  /* Fraction Lab canvases */
-  .lab-can{width:100%;height:260px;border-radius:12px;background:#fff;border:2px solid #ececec}
-  .toggle{display:inline-flex;border:1px solid #cbd5e1;border-radius:9999px;overflow:hidden}
-  .toggle button{padding:.35rem .75rem;border:none;background:#fff}
-  .toggle button.active{background:var(--maroon);color:#fff}
+  .sortable li{user-select:none;cursor:move}
+  .sortable .dragging{opacity:.55}
+  #ink{position:absolute;inset:0;pointer-events:none}
+  #ink.active{pointer-events:auto}
+  #ink canvas{width:100%;height:100%}
+  .confetti{position:fixed;pointer-events:none;z-index:50}
+
+  /* ---------- Warm‑Up + Lab UI ---------- */
+  .toggle{display:flex;gap:.5rem;flex-wrap:wrap}
+  .toggle button{padding:.45rem .9rem;border:1px solid #cbd5e1;border-radius:999px;background:#fff;font-weight:700;cursor:pointer}
+  .toggle button.active{border-color:var(--gold);box-shadow:0 0 0 2px rgba(199,163,79,.25)}
+  #warmEst .opt{border:1px solid #e5e7eb;border-radius:14px;padding:1rem;background:#fff;cursor:pointer}
+  #warmEst .opt.active{outline:3px solid var(--gold)}
+  #warmEst .badge{font-size:.8rem;padding:.15rem .5rem;border-radius:999px;background:#f1f5f9}
+  #warmWODB .tile{border:1px solid #e5e7eb;border-radius:14px;padding:1rem;background:#fff;display:flex;align-items:center;justify-content:center;min-height:90px;cursor:pointer}
+  #warmWODB .tile.sel{outline:3px solid var(--gold)}
+  .lab-can{width:100%;height:520px;background:#fff;border:2px solid #e5e7eb;border-radius:14px}
+  .board .lab-can{height:640px}
 </style>
 </head>
 <body>
+
 <div id="stage">
   <div id="deck" class="relative">
 
-    <!-- Title -->
-    <section class="slide active bg-maroon text-white">
+    <!-- Part nav -->
+    <div id="partNav" aria-label="Jump to part">
+      <button class="btn ghost" data-jump="A">Part A</button>
+      <button class="btn ghost" data-jump="B">Part B</button>
+      <button class="btn ghost" data-jump="C">Part C</button>
+      <button class="btn ghost" data-jump="D">Part D</button>
+      <button class="btn ghost" data-jump="E">Part E</button>
+    </div>
+
+    <!-- Teacher bar -->
+    <div id="teacherBar" aria-label="Teacher tools">
+      <button id="btnFS" title="Fullscreen (F)" class="btn">⤢</button>
+      <button id="btnBoard" title="Board Mode (B)" class="btn">🖥️</button>
+      <button id="btnDraw" title="Draw (D)" class="btn">✏️</button>
+      <button id="btnPanel" title="Teacher Panel (T)" class="btn">🧰</button>
+    </div>
+
+    <!-- Teacher panel -->
+    <div id="panel" role="dialog" aria-modal="true">
+      <div class="row">
+        <h4 class="grow">Teacher Panel</h4>
+        <button class="btn" id="closePanel">✕</button>
+      </div>
+
+      <h4>Timer</h4>
+      <div class="row">
+        <input type="number" id="min" value="2" min="0" style="width:84px"> min
+        <input type="number" id="sec" value="0" min="0" max="59" style="width:84px"> sec
+        <button class="btn maroon" id="startTimer">Start</button>
+        <button class="btn" id="stopTimer">Stop</button>
+        <span id="clock" class="font-bold ml-2">–:–</span>
+      </div>
+
+      <h4 class="mt-2">Random Name</h4>
+      <div class="row">
+        <textarea id="roster" rows="3" placeholder="Paste names, one per line"></textarea>
+        <button class="btn" id="pickName">Pick</button>
+        <span id="nameOut" class="font-bold"></span>
+      </div>
+
+      <h4 class="mt-2">Options</h4>
+      <div class="row">
+        <label class="chip"><input type="checkbox" id="snapTenths" class="mr-2">Snap number line to tenths</label>
+        <label class="chip"><input type="checkbox" id="showNotes" class="mr-2">Show teacher notes</label>
+      </div>
+    </div>
+
+    <!-- Draw/ink overlay -->
+    <div id="ink"><canvas></canvas></div>
+
+    <!-- Slides -->
+
+    <!-- A0 Title -->
+    <section class="slide active bg-maroon text-white" data-part="A">
+      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="Banner"></div>
       <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Unit 1 — The Number System</h1>
       <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Addition &amp; Subtraction of Rational Numbers</p>
-      <p class="mt-2 text-lg">QLA • Grade 7</p>
+      <p class="mt-2 text-lg">Qatar Leadership Academy — Grade 7</p>
+      <div class="text-sm mt-4">Aligned to AERO 7.NS.1b–1c</div>
     </section>
 
-    <!-- NEW Warm-Up: WODB + Estimation Duel -->
-    <section class="slide" id="warmup">
-      <h2 class="text-3xl font-extrabold text-maroon mb-3">Warm‑Up: Notice & Wonder + WODB</h2>
-      <div class="grid lg:grid-cols-2 gap-5 w-full max-w-5xl text-left">
+    <!-- A1 Learning goals -->
+    <section class="slide" data-part="A">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Today’s Goals</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon mb-2">Which One Doesn't Belong?</h3>
-          <div id="wodbSet" class="grid grid-cols-2 gap-3"></div>
-          <div class="mt-3 flex gap-2 items-center">
-            <button id="wodbNew" class="btn">New set</button>
-            <span class="text-sm">Click a tile, defend your choice.</span>
-          </div>
-          <div id="wodbClaim" class="mt-2 font-semibold"></div>
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Objectives</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Interpret \(p+q\) on a number line: move \(q\) units from \(p\) (right if \(q&gt;0\), left if \(q&lt;0\)).</li>
+            <li>See subtraction as adding the inverse: \(p-q=p+(-q)\).</li>
+            <li>Add/subtract rational numbers and justify via number line & arithmetic.</li>
+            <li>Use prime factorization to find LCM for fraction denominators.</li>
+          </ul>
+          <div class="note mt-3 hidden teacher-note">Emphasize “why”: number line → symbolic → explanation.</div>
         </div>
         <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon mb-2">Estimation Duel: \(p+q\) on a Number Line</h3>
-          <div class="nl-wrap"><canvas id="estLine" class="nline" aria-label="Estimation number line"></canvas></div>
-          <div class="mt-2 text-sm">Place your guesses for \(p\) and \(p+q\). Closest wins; reveal actual after debate.</div>
-          <div class="mt-2 flex flex-wrap gap-2 text-sm">
-            <button id="estNew" class="btn">New duel</button>
-            <button id="estReveal" class="btn maroon">Reveal</button>
-            <span class="chip">p ≈ <b id="gP">?</b></span>
-            <span class="chip">p+q ≈ <b id="gR">?</b></span>
-          </div>
+          <h3 class="text-2xl font-bold text-maroon mb-1">We Learn By…</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Predict → Try → Check → Explain cycles</li>
+            <li>Think–Pair–Share using on‑screen timer</li>
+            <li>Quick checks & error analysis</li>
+            <li>Whole‑class board work with annotation</li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- Fraction Interpretation Lab -->
-    <section class="slide" id="fracLab">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Fraction Lab: Interpret \(\,\frac{a}{b}\; \square\; \frac{c}{d}\,\)</h2>
+    <!-- A2 Warm‑Up A: Estimation Duel -->
+    <section class="slide" id="warmEst" data-part="A">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm‑Up A: Estimation Duel</h2>
+      <p class="text-gray-600 mb-2">No calculators. Which expression is larger? Be ready to justify without exact computation.</p>
+      <div class="grid md:grid-cols-2 gap-4 max-w-5xl w-full">
+        <div class="opt" data-side="A">
+          <div class="badge mb-1">Expression A</div>
+          <div id="estA" class="text-3xl font-extrabold"></div>
+        </div>
+        <div class="opt" data-side="B">
+          <div class="badge mb-1">Expression B</div>
+          <div id="estB" class="text-3xl font-extrabold"></div>
+        </div>
+      </div>
+      <div class="mt-3 flex gap-2">
+        <button id="estCheck" class="btn maroon">Check</button>
+        <button id="estNew" class="btn">New duel</button>
+        <span id="estFb" class="font-semibold"></span>
+      </div>
+      <div class="note mt-3 hidden teacher-note">
+        First 20–30s silent think, then pair‑share. Listen for sign reasoning and denominator comparisons.
+      </div>
+    </section>
+
+    <!-- A3 Warm‑Up B: WODB -->
+    <section class="slide" id="warmWODB" data-part="A">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm‑Up B: Which One Doesn’t Belong?</h2>
+      <p class="text-gray-600 mb-2">Pick one and defend your choice. Many answers can be correct.</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-5xl w-full">
+        <div class="tile" id="w1"></div>
+        <div class="tile" id="w2"></div>
+        <div class="tile" id="w3"></div>
+        <div class="tile" id="w4"></div>
+      </div>
+      <div class="mt-3 flex gap-2">
+        <button id="wNew" class="btn">New set</button>
+        <button id="wReveal" class="btn maroon">Reveal sample reasons</button>
+      </div>
+      <div id="wFb" class="mt-2"></div>
+      <div id="wReasons" class="mt-2 text-sm"></div>
+    </section>
+
+    <!-- B1 Primes -->
+    <section class="slide" id="primeSlide" data-part="B">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Part B • Prime or Composite?</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <p class="mb-2">A <b>prime</b> is an integer \( \ge 2 \) with exactly two positive factors. A <b>composite</b> has more than two. 1 is neither.</p>
+        <div id="primeList" class="grid md:grid-cols-4 gap-2"></div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button id="primeNew" class="btn">New set</button>
+          <button id="primeCheck" class="btn maroon">Check</button>
+        </div>
+        <div id="primeFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- B2 Prime factorization -->
+    <section class="slide" id="pfSlide" data-part="B">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Prime Factorization (Exponent Form)</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <p class="mb-2">Write each as a product of primes, e.g., \(60 = 2^{2}\cdot 3^{1}\cdot 5^{1}\).</p>
+        <div id="pfList" class="grid md:grid-cols-2 gap-3"></div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button id="pfNew" class="btn">New set</button>
+          <button id="pfCheck" class="btn maroon">Check</button>
+        </div>
+        <div id="pfFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- B3 LCM -->
+    <section class="slide" id="lcmExSlide" data-part="B">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">LCM — Two Methods</h2>
+      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-2">List Multiples</h3>
+          <div id="lcmListArea" class="text-lg"></div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-2">Prime Exponents</h3>
+          <div id="lcmPrimeArea" class="text-lg"></div>
+        </div>
+      </div>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <button id="lcmNew" class="btn">New example</button>
+      </div>
+      <div class="hint mt-3 text-left text-sm">For \(a\) and \(b\): \( \mathrm{LCM}(a,b)=\prod p^{\max(\alpha,\beta)} \).</div>
+    </section>
+
+    <!-- C1 Number line: p+q -->
+    <section class="slide" id="addSlide" data-part="C">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Explorer: \(p+q\) on a Number Line</h2>
+      <p class="text-gray-600 mb-2">Drag maroon point for \(p\). Drag gold point for \(p+q\) (this sets \(q\)).</p>
+      <div class="nl-wrap"><canvas id="lineAdd" class="nline" aria-label="Interactive number line (addition)"></canvas></div>
+      <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
+        <label class="chip">p = <input id="pInput" class="border rounded px-2 py-1 w-24" value="-2"/></label>
+        <label class="chip">q = <input id="qInput" class="border rounded px-2 py-1 w-24" value="3.5"/></label>
+        <span class="chip">p+q = <b id="sumOut">1.5</b></span>
+        <button id="randAdd" class="btn">Random</button>
+        <button id="resetAdd" class="btn">Reset</button>
+      </div>
+      <div class="hint mt-3 text-left text-sm">Rule: start at \(p\), move \(q\) units — right if \(q&gt;0\), left if \(q&lt;0\).</div>
+    </section>
+
+    <!-- C2 Subtraction -->
+    <section class="slide" id="subSlide" data-part="C">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Subtraction: \(p-q = p + (-q)\)</h2>
+      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-2">Visualize</h3>
+          <div class="nl-wrap"><canvas id="lineSub" class="nline" aria-label="Interactive number line (subtraction)"></canvas></div>
+          <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
+            <label class="chip">p = <input id="p2Input" class="border rounded px-2 py-1 w-24" value="1"/></label>
+            <label class="chip">q = <input id="q2Input" class="border rounded px-2 py-1 w-24" value="-4"/></label>
+            <span class="chip">p−q = <b id="diffOut">5</b></span>
+            <button id="randSub" class="btn">Random</button>
+          </div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-2">Quick Check</h3>
+          <div class="grid gap-2">
+            <div>1) \( 6 - 9 =\) <input class="qc border rounded px-2 py-1 w-24" data-ans="-3"></div>
+            <div>2) \( -4 - (-7) =\) <input class="qc border rounded px-2 py-1 w-24" data-ans="3"></div>
+            <div>3) \( -2.5 - 1.5 =\) <input class="qc border rounded px-2 py-1 w-24" data-ans="-4"></div>
+          </div>
+          <div class="mt-3 flex gap-2">
+            <button id="checkQC" class="btn maroon">Check</button>
+            <button id="resetQC" class="btn">Reset</button>
+          </div>
+          <div id="qcFb" class="mt-2 h-6 font-semibold"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- C3 Fractions like denominators -->
+    <section class="slide" id="likeSlide" data-part="C">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Fractions: Like Denominators</h2>
+      <p class="text-gray-600 mb-2">Add/subtract numerators; keep denominator; simplify.</p>
+      <div id="likeList" class="w-full max-w-4xl grid md:grid-cols-2 gap-3"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="likeCheck" class="btn maroon">Check</button>
+        <button id="likeNew" class="btn">New set</button>
+      </div>
+      <div id="likeFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- C4 Fractions unlike denominators -->
+    <section class="slide" id="unlikeSlide" data-part="C">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Fractions: Unlike Denominators (Guided)</h2>
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div class="mb-2">Find the LCM, build equivalent fractions, operate, then simplify.</div>
+        <div id="unlikeBox" class="grid md:grid-cols-2 gap-4"></div>
+        <div class="mt-3 flex gap-2">
+          <button id="unlikeCheck" class="btn maroon">Check</button>
+          <button id="unlikeNew" class="btn">New pair</button>
+        </div>
+        <div id="unlikeFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- C5 Fraction Interpretation Lab (BIG shapes) -->
+    <section class="slide" id="fracLab" data-part="C">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Fraction Lab: Interpret \(\,\frac{a}{b}\;\square\;\frac{c}{d}\,\)</h2>
+
       <div class="grid lg:grid-cols-3 gap-5 w-full max-w-6xl text-left">
+        <!-- 1) Setup -->
         <div class="card p-4">
           <h3 class="text-lg font-bold text-maroon mb-1">1) Setup (Predict)</h3>
           <div class="grid grid-cols-2 gap-2 text-sm">
@@ -86,361 +338,929 @@
             <label class="chip">c <input id="B_num" type="number" class="border rounded px-2 py-1 w-20" value="1"></label>
             <label class="chip">d <input id="B_den" type="number" class="border rounded px-2 py-1 w-20" value="4"></label>
           </div>
+
           <div class="mt-2 toggle" role="tablist" aria-label="Choose operation">
             <button id="opAdd" class="active" aria-selected="true">Add</button>
             <button id="opSub">Subtract</button>
           </div>
+
           <div class="mt-2 toggle" role="tablist" aria-label="Representation">
             <button id="repPie" class="active">Pie</button>
             <button id="repBar">Bars</button>
             <button id="repLine">Number Line</button>
           </div>
-          <div class="mt-2 text-sm">Your prediction: <input id="pred" class="border rounded px-2 py-1 w-40" placeholder="e.g., 7/12 or 0.58"></div>
-          <div class="mt-2 flex gap-2"><button id="labNew" class="btn">Random</button><button id="labClear" class="btn">Clear</button></div>
+
+          <div class="mt-2 text-sm">Your prediction:
+            <input id="pred" class="border rounded px-2 py-1 w-40" placeholder="e.g., 7/12 or 0.58">
+          </div>
+
+          <div class="mt-2 flex gap-2">
+            <button id="labNew" class="btn">Random</button>
+            <button id="labClear" class="btn">Clear</button>
+          </div>
+          <div class="note mt-3 hidden teacher-note">Estimate with 0, 1/2, 1 before computing.</div>
         </div>
+
+        <!-- 2) Model -->
         <div class="card p-4">
-          <h3 class="text-lg font-bold text-maroon mb-1">2) Model (Build equivalents)</h3>
+          <h3 class="text-lg font-bold text-maroon mb-1">2) Model (Build Equivalents)</h3>
           <canvas id="labModel" class="lab-can" aria-label="Fraction model canvas"></canvas>
           <div class="mt-2 text-sm flex flex-wrap gap-2">
             <span class="chip">LCM(b,d) = <b id="labLCM">–</b></span>
-            <span class="chip">Eqv: <b id="eqA">–</b></span>
-            <span class="chip">Eqv: <b id="eqB">–</b></span>
+            <span class="chip">Eqv A: <b id="eqA">–</b></span>
+            <span class="chip">Eqv B: <b id="eqB">–</b></span>
             <label class="chip"><input id="showLCMGrid" type="checkbox" class="mr-2">Show partitions</label>
           </div>
-          <div class="mt-2 flex gap-2"><button id="labStep1" class="btn maroon">Build equivalents</button><button id="labStep2" class="btn">Combine / Remove</button></div>
+          <div class="mt-2 flex gap-2">
+            <button id="labStep1" class="btn maroon">Build equivalents</button>
+            <button id="labStep2" class="btn">Combine / Remove</button>
+          </div>
         </div>
+
+        <!-- 3) Record -->
         <div class="card p-4">
           <h3 class="text-lg font-bold text-maroon mb-1">3) Record (Simplify & Explain)</h3>
-          <div class="text-xl">\(\frac{a}{b}\; <span id="opSym">+</span>\; \frac{c}{d} =\) <b id="labAns">?</b></div>
-          <div class="mt-2 text-sm">Simplest form: <input id="labUser" class="border rounded px-2 py-1 w-40" placeholder="e.g., 7/12"></div>
-          <div class="mt-2 flex gap-2"><button id="labCheck" class="btn maroon">Check</button><button id="labHint" class="btn">Hint</button></div>
+          <div class="text-xl">
+            \(\frac{a}{b}\; <span id="opSym">+</span>\; \frac{c}{d} =\) <b id="labAns">?</b>
+          </div>
+          <div class="mt-2 text-sm">Simplest form:
+            <input id="labUser" class="border rounded px-2 py-1 w-40" placeholder="e.g., 7/12">
+          </div>
+          <div class="mt-2 flex gap-2">
+            <button id="labCheck" class="btn maroon">Check</button>
+            <button id="labHint" class="btn">Hint</button>
+          </div>
           <div id="labFb" class="mt-2 h-6 font-semibold"></div>
           <div id="labHintBox" class="mt-2 text-sm"></div>
+          <div class="hint mt-3">In subtraction, orange indicates what is removed from the first fraction.</div>
         </div>
       </div>
-      <div class="mt-3 text-sm text-gray-600">Tip: Toggle Pie/Bars/Line to compare models. In subtraction, orange shows the amount removed.</div>
-    </section>
 
-    <!-- Guided Practice (refined tasks) -->
-    <section class="slide" id="guided">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Guided Practice: Like & Unlike Denominators</h2>
-      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-5xl text-left">
-        <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon mb-2">Like Denominators</h3>
-          <div id="likeList" class="grid gap-3"></div>
-          <div class="mt-3 flex gap-2"><button id="likeCheck" class="btn maroon">Check</button><button id="likeNew" class="btn">New set</button></div>
-          <div id="likeFb" class="mt-2 h-6 font-semibold"></div>
-        </div>
-        <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon mb-2">Unlike Denominators (Guided)</h3>
-          <div id="unlikeBox" class="grid gap-3"></div>
-          <div class="mt-3 flex gap-2"><button id="unlikeCheck" class="btn maroon">Check</button><button id="unlikeNew" class="btn">New pair</button></div>
-          <div id="unlikeFb" class="mt-2 h-6 font-semibold"></div>
-        </div>
+      <div class="mt-3 text-sm text-gray-600">
+        Tip: Toggle Pie/Bars/Line to compare models. Use “Show partitions” to display the LCM grid.
       </div>
     </section>
 
-    <!-- Exit ticket -->
-    <section class="slide" id="exit">
+    <!-- D1 Order rationals -->
+    <section class="slide" id="sortSlide" data-part="D">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Order Rational Numbers (Low → High)</h2>
+      <div class="card p-5 w-full max-w-3xl text-left">
+        <ul id="sortList" class="sortable border rounded-md bg-white p-3 space-y-2"></ul>
+        <div class="mt-3 flex gap-2">
+          <button id="sortNew" class="btn">New set</button>
+          <button id="sortCheck" class="btn maroon">Check</button>
+        </div>
+        <div id="sortFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- D2 Mixed generator -->
+    <section class="slide" id="mixedSlide" data-part="D">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice Generator (Mixed)</h2>
+      <div class="card p-5 w-full max-w-3xl text-left">
+        <div class="flex items-center gap-3">
+          <span>Difficulty:</span>
+          <select id="level" class="border rounded px-2 py-1">
+            <option value="easy">easy (integers)</option>
+            <option value="med" selected>medium (like‑denominator fractions &amp; decimals)</option>
+            <option value="hard">hard (unlike denominators; signed)</option>
+          </select>
+          <button id="newQ" class="btn">New question</button>
+        </div>
+        <div class="mt-3 text-2xl">Compute: <span id="qText" class="font-extrabold"></span></div>
+        <div class="mt-2">
+          <input id="ans" class="border rounded px-3 py-2 w-60" placeholder="e.g., -7/6 or  -1.166..." />
+          <button id="checkQ" class="btn maroon">Check</button>
+          <button id="hintQ" class="btn">Hint</button>
+        </div>
+        <div id="qHint" class="mt-3 text-sm"></div>
+        <div id="qFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- D3 Challenge -->
+    <section class="slide" id="challengeSlide" data-part="D">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Challenge: Missing Addend & Error Analysis</h2>
+      <div class="grid md:grid-cols-2 gap-6 w-full max-w-5xl text-left">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-1">Missing number</h3>
+          <div class="grid gap-2">
+            <div>\( p + q = r \).  If \(p=-4.5\) and \(r=1.25\), then \(q=\) <input class="ch1 border rounded px-2 py-1 w-28" data-ans="5.75"></div>
+            <div>\( p - q = r \).  If \(p=\frac{3}{4}\) and \(r=-\frac{5}{4}\), then \(q=\) <input class="ch1 border rounded px-2 py-1 w-28" data-ans="2"></div>
+          </div>
+          <div class="mt-3">
+            <button id="chCheck" class="btn maroon">Check</button>
+            <button id="chReset" class="btn">Reset</button>
+          </div>
+          <div id="chFb" class="mt-2 h-6 font-semibold"></div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon mb-1">Error Analysis</h3>
+          <div id="errBox" class="text-lg"></div>
+          <div class="mt-2">
+            <label class="mr-2"><input type="radio" name="errChoice" value="A"> Added/subtracted denominators directly</label><br/>
+            <label class="mr-2"><input type="radio" name="errChoice" value="B"> Failed to use common denominator</label><br/>
+            <label class="mr-2"><input type="radio" name="errChoice" value="C"> Sign error</label><br/>
+            <label class="mr-2"><input type="radio" name="errChoice" value="D"> Decimal place-value misalignment</label>
+          </div>
+          <div class="mt-2 flex gap-2">
+            <button id="errCheck" class="btn maroon">Check</button>
+            <button id="errReveal" class="btn">Reveal correct work</button>
+            <button id="errNew" class="btn">New example</button>
+          </div>
+          <div id="errFb" class="mt-2 h-6 font-semibold"></div>
+          <div id="errRevealBox" class="mt-2 text-sm"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- E Exit -->
+    <section class="slide" data-part="E">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon">3–2–1 Reflect</h3>
           <ul class="list-disc list-inside">
-            <li>3 ideas from the Fraction Lab</li>
-            <li>2 representations you trust (and why)</li>
+            <li>3 ideas about adding/subtracting rationals</li>
+            <li>2 strategies you can use (visual &amp; arithmetic)</li>
             <li>1 question you still have</li>
           </ul>
         </div>
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon">Up Next</h3>
-          <p>Multi‑step rational problems & estimation for reasonableness (AERO 7.EE.3).</p>
+          <p>Multi‑step problems with rational numbers and estimation for reasonableness (AERO 7.EE.3).</p>
         </div>
       </div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[100px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
     </section>
 
+    <!-- Glossary popover -->
+    <div id="pop" class="hidden absolute left-4 bottom-4 z-30 max-w-[560px] bg-white border-2 border-[var(--gold)] rounded-md p-3 text-left"></div>
+
     <!-- Controls -->
-    <div id="controls">
-      <button id="prev" title="Previous">«</button>
-      <button id="fs" title="Fullscreen">⤢</button>
-      <div id="counter" class="text-white">1 / 4</div>
-      <button id="next" title="Next">»</button>
+    <div id="controls" role="group" aria-label="Slideshow controls">
+      <button id="prev" title="Previous (←)">&laquo;</button>
+      <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
+      <div id="counter">1 / 1</div>
+      <button id="next" title="Next (→)">&raquo;</button>
     </div>
     <div id="progress"></div>
+
   </div>
 </div>
 
 <script>
-// ---------- Boot KaTeX
-window.addEventListener('DOMContentLoaded',()=>{
-  const run=(root=document.body)=>{
-    if(!window.renderMathInElement) return;
-    window.renderMathInElement(root,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false});
+/* ---------- KaTeX bootstrap ---------- */
+window.addEventListener('DOMContentLoaded', () => {
+  const renderMath = (root = document.body) => {
+    if (!window.renderMathInElement) return;
+    window.renderMathInElement(root, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      throwOnError: false
+    });
   };
-  if(window.renderMathInElement) run(); else {const t=setInterval(()=>{if(window.renderMathInElement){clearInterval(t);run()}},25); setTimeout(()=>clearInterval(t),6e3)}
-  window._rerenderMath=run;
+  if (window.renderMathInElement) renderMath();
+  else {
+    const t = setInterval(() => {
+      if (window.renderMathInElement) { clearInterval(t); renderMath(); }
+    }, 25);
+    setTimeout(() => clearInterval(t), 6000);
+  }
+  window._renderMath = renderMath;
 });
+</script>
 
-// ---------- Slide engine
+<script>
+/* =========================================================
+   SLIDE ENGINE + TOOLS
+   ========================================================= */
 (function(){
   const slides=[...document.querySelectorAll('.slide')];
-  const prev=I('prev'), next=I('next'), counter=I('counter'), progress=I('progress'), fsBtn=I('fs');
+  const prev=byId('prev'), next=byId('next'), counter=byId('counter'), progress=byId('progress');
+  const partButtons=[...byId('partNav').querySelectorAll('button[data-jump]')];
+  const fsBtn=byId('fs'), btnFS=byId('btnFS'), btnBoard=byId('btnBoard'), btnDraw=byId('btnDraw'), btnPanel=byId('btnPanel');
+  const deck=byId('deck');
+
   let i=0;
   function show(k){
-    i=(k+slides.length)%slides.length; slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
-    counter.textContent=(i+1)+' / '+slides.length; progress.style.width=((i+1)/slides.length*100)+'%';
-    if(slides[i].id==='warmup') { wodbNew(); drawEst(); }
-    if(slides[i].id==='fracLab') { labRender(); }
-    if(slides[i].id==='guided') { renderLike(); newUnlike(); }
-    if(window._rerenderMath) window._rerenderMath(slides[i]);
+    i=(k+slides.length)%slides.length;
+    slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
+    counter.textContent=(i+1)+' / '+slides.length;
+    progress.style.width=((i+1)/slides.length*100)+'%';
+    const sid=slides[i].id||'';
+    if(sid==='addSlide') drawAdd();
+    if(sid==='subSlide') drawSub();
+    if(sid==='lcmExSlide') newLCMEx(false);
+    if(sid==='primeSlide') primeNew();
+    if(sid==='pfSlide') pfNew();
+    if(sid==='likeSlide') renderLike();
+    if(sid==='unlikeSlide') newUnlike();
+    if(sid==='decSlide') newDecSet && newDecSet();
+    if(sid==='sortSlide') sortNew();
+    if(sid==='mixedSlide') newQuestion();
+    if(sid==='challengeSlide') errNew();
+    if(sid==='warmEst') newEst();
+    if(sid==='warmWODB') newWODB();
+    if(sid==='fracLab') initLab && initLab(true);
+    if(window._renderMath) window._renderMath(slides[i]);
   }
-  prev.addEventListener('click',()=>show(i-1)); next.addEventListener('click',()=>show(i+1));
-  document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight') show(i+1); if(e.key==='ArrowLeft') show(i-1); if(e.key.toLowerCase()==='f') toggleFS(); });
-  function toggleFS(){ const el=I('deck'); if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);} else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(document);} }
+  function byId(x){return document.getElementById(x)}
+  function toggleFS(){
+    const el=byId('deck');
+    if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);}
+    else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(document);}
+  }
+  prev.addEventListener('click',()=>show(i-1));
+  next.addEventListener('click',()=>show(i+1));
   fsBtn.addEventListener('click',toggleFS);
-  window.addEventListener('resize',()=>{ if(slides[i].id==='warmup') drawEst(); if(slides[i].id==='fracLab') labRender(); });
-  function I(x){return document.getElementById(x)}
-  show(0);
-})();
+  btnFS.addEventListener('click',toggleFS);
 
-// ---------- Helpers
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-const gcd=(a,b)=>{a=Math.trunc(Math.abs(a));b=Math.trunc(Math.abs(b));while(b){[a,b]=[b,a%b]}return a||1};
-const lcm=(a,b)=>Math.abs(a*b)/gcd(a,b);
-function parseRational(s){
-  if(typeof s==='number') return [Math.trunc(s*1000),1000];
-  if(!s) return null; s=s.toString().trim().replace('−','-');
-  const f=s.match(/^(-?\d+)\/(-?\d+)$/); if(f){let n=+f[1],d=+f[2]; if(d===0) return null; let g=gcd(n,d); d<0&&(g=-g); return [n/g,d/g];}
-  if(!isNaN(Number(s))){ const parts=s.split('.'); if(parts.length===1) return [Number(s),1]; const k=parts[1].length; const n=Math.round(Number(s)*10**k); const d=10**k; let g=gcd(n,d); return [n/g,d/g]; }
-  return null;
-}
-function toFrac(n,d){let g=gcd(n,d); d<0&&(g=-g); return [n/g,d/g]}
-const addFrac=(a,b)=>toFrac(a[0]*b[1]+b[0]*a[1], a[1]*b[1]);
-const subFrac=(a,b)=>toFrac(a[0]*b[1]-b[0]*a[1], a[1]*b[1]);
-const fracEq=(a,b)=>a[0]*b[1]===b[0]*a[1];
-const sFrac=([n,d])=> d===1? String(n) : `${n}/${d}`;
-
-// ---------- WODB Warm-up
-(function(){
-  const T=()=>({val:randVal(), type:['int','frac','dec'][Math.floor(Math.random()*3)]});
-  function randVal(){ const r=Math.random(); if(r<.34) return Math.floor(Math.random()*17)-8; if(r<.67){ const den=[4,5,6,8,10,12][Math.floor(Math.random()*6)]; const num=Math.floor(Math.random()*(den*2+1))-den; return `${num}/${den}` } const v=Math.round((Math.random()*20-10)*10)/10; return v.toFixed(1).replace(/\.0$/,''); }
-  window.wodbNew=function(){
-    const cells=[T(),T(),T(),T()]; const box=document.getElementById('wodbSet'); box.innerHTML='';
-    cells.forEach((c,idx)=>{
-      const d=document.createElement('button'); d.className='border rounded p-3 bg-white hover:ring-2 hover:ring-[var(--gold)] text-left';
-      d.innerHTML=`<div class="text-sm text-gray-500">Tile ${idx+1}</div><div class="text-2xl font-extrabold">${c.type==='frac'?`\\( ${c.val} \\)`:c.val}</div>`;
-      d.addEventListener('click',()=>{
-        const claim=genClaim(cells,idx); document.getElementById('wodbClaim').innerHTML=claim; if(window._rerenderMath) window._rerenderMath(document.getElementById('warmup'));
-      });
-      box.appendChild(d);
-    });
-    if(window._rerenderMath) window._rerenderMath(document.getElementById('warmup'));
-  }
-  function genClaim(cells,idx){
-    const picked=cells[idx]; const others=cells.filter((_,i)=>i!==idx);
-    const p=picked.val; const fr=picked.type==='frac';
-    if(fr) return `I think Tile ${idx+1} doesn’t belong because it’s a <b>fraction</b> and the others can be written without a denominator. Convert the others to fractions to compare.`;
-    if(typeof p==='string' && p.includes('/')) return `Tile ${idx+1}: <b>unlike denominators</b> with others → needs LCM to compare.`;
-    const num=parseFloat(p);
-    if(num<0) return `Tile ${idx+1} is the only <b>negative</b> value.`;
-    if(Number.isInteger(num)) return `Tile ${idx+1} is the only <b>integer</b> (no fractional part).`;
-    return `Tile ${idx+1} is different by <b>place value structure</b> (decimal vs fraction).`;
-  }
-  document.getElementById('wodbNew').addEventListener('click',wodbNew);
-})();
-
-// ---------- Estimation Duel
-(function(){
-  const c=document.getElementById('estLine'); const gP=document.getElementById('gP'); const gR=document.getElementById('gR');
-  const state={min:-12,max:12,p:0,q:0, gp:null, gr:null, reveal:false};
-  function map(x){const m=28,W=c.clientWidth;return m+(x-state.min)*(W-2*m)/(state.max-state.min)}
-  function unmap(px){const m=28,W=c.clientWidth;return state.min+(px-m)*(state.max-state.min)/(W-2*m)}
-  function draw(){ if(!c) return; const ctx=c.getContext('2d'); c.width=c.clientWidth*devicePixelRatio; c.height=c.clientHeight*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio);
-    const y=c.clientHeight/2,m=28; ctx.clearRect(0,0,c.clientWidth,c.clientHeight);
-    ctx.lineWidth=2; ctx.strokeStyle='#6C1D45'; ctx.beginPath(); ctx.moveTo(m,y); ctx.lineTo(c.clientWidth-m,y); ctx.stroke();
-    for(let t=state.min;t<=state.max;t++){const x=map(t); ctx.beginPath(); ctx.moveTo(x,y-8); ctx.lineTo(x,y+8); ctx.stroke(); if(t%2==0){ctx.fillStyle='#555'; ctx.font='12px Inter'; ctx.fillText(String(t),x-6,y+24);}}
-    if(state.gp!=null){ ctx.fillStyle='#6C1D45'; ctx.beginPath(); ctx.arc(map(state.gp),y,7,0,Math.PI*2); ctx.fill(); }
-    if(state.gr!=null){ ctx.fillStyle='#C7A34F'; ctx.beginPath(); ctx.arc(map(state.gr),y,7,0,Math.PI*2); ctx.fill(); }
-    if(state.reveal){ ctx.strokeStyle='#C7A34F'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(map(state.p),y); ctx.lineTo(map(state.p+state.q),y); ctx.stroke(); }
-  }
-  function newDuel(){ state.p=+(Math.random()*12-6).toFixed(1); state.q=+(Math.random()*8-4).toFixed(1); state.gp=null; state.gr=null; state.reveal=false; gP.textContent='?'; gR.textContent='?'; draw(); }
-  c.addEventListener('click',e=>{ const r=c.getBoundingClientRect(); const x=unmap(e.clientX-r.left); if(state.gp==null){state.gp=x; gP.textContent=x.toFixed(1);} else {state.gr=x; gR.textContent=x.toFixed(1);} draw(); });
-  document.getElementById('estNew').addEventListener('click',newDuel);
-  document.getElementById('estReveal').addEventListener('click',()=>{state.reveal=true; draw();});
-  window.drawEst=draw; window.estNew=newDuel; newDuel();
-})();
-
-// ---------- Fraction Lab (Pie/Bars/Number Line)
-(function(){
-  const A_num=G('A_num'), A_den=G('A_den'), B_num=G('B_num'), B_den=G('B_den');
-  const opAdd=G('opAdd'), opSub=G('opSub'), opSym=G('opSym');
-  const repPie=G('repPie'), repBar=G('repBar'), repLine=G('repLine');
-  const pred=G('pred'), LCMOut=G('labLCM'), eqA=G('eqA'), eqB=G('eqB');
-  const labModel=G('labModel'), showGrid=G('showLCMGrid');
-  const step1=G('labStep1'), step2=G('labStep2'), labAns=G('labAns'), labUser=G('labUser'), labCheck=G('labCheck'), labHint=G('labHint'), labHintBox=G('labHintBox');
-  const labNew=G('labNew'), labClear=G('labClear');
-  const state={op:'+', rep:'pie', built:false, combined:false};
-  function G(id){return document.getElementById(id)}
-  function active(btn,group){ [repPie,repBar,repLine,opAdd,opSub].forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
-
-  opAdd.addEventListener('click',()=>{state.op='+'; opSym.textContent='+'; active(opAdd); labRender();});
-  opSub.addEventListener('click',()=>{state.op='-'; opSym.textContent='−'; active(opSub); labRender();});
-  repPie.addEventListener('click',()=>{state.rep='pie'; active(repPie); labRender();});
-  repBar.addEventListener('click',()=>{state.rep='bar'; active(repBar); labRender();});
-  repLine.addEventListener('click',()=>{state.rep='line'; active(repLine); labRender();});
-
-  [A_num,A_den,B_num,B_den,showGrid].forEach(el=>el.addEventListener('input',()=>{state.built=false; state.combined=false; labAns.textContent='?'; labRender();}));
-  labNew.addEventListener('click',()=>{ A_den.value=[3,4,5,6,8,10,12][rand(0,6)]; B_den.value=[3,4,5,6,8,10,12][rand(0,6)]; A_num.value=rand(1,Math.max(1,A_den.value-1)); B_num.value=rand(1,Math.max(1,B_den.value-1)); state.built=false; state.combined=false; labAns.textContent='?'; labRender(); });
-  labClear.addEventListener('click',()=>{pred.value=''; labUser.value=''; state.built=false; state.combined=false; labAns.textContent='?'; labRender();});
-
-  step1.addEventListener('click',()=>{ buildEquivalents(); state.built=true; labRender(); });
-  step2.addEventListener('click',()=>{ if(!state.built) buildEquivalents(); state.combined=true; labRender(true); });
-
-  labCheck.addEventListener('click',()=>{
-    const ans = compute(); const got=parseRational(labUser.value);
-    if(got && fracEq(got,ans)){ fb('labFb','✅ Correct! '+sFrac(ans),'green'); } else { fb('labFb','❌ Not quite. Expected '+sFrac(ans),'red'); }
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight') show(i+1);
+    if(e.key==='ArrowLeft') show(i-1);
+    if(e.key.toLowerCase()==='f') toggleFS();
+    if(e.key.toLowerCase()==='b') deck.classList.toggle('board');
+    if(e.key.toLowerCase()==='d') toggleInk();
+    if(e.key.toLowerCase()==='t') togglePanel();
+    if('12345'.includes(e.key)){ const part='ABCDE'[Number(e.key)-1]; jumpToPart(part); }
   });
-  labHint.addEventListener('click',()=>{
-    const b=Number(A_den.value), d=Number(B_den.value); const L=lcm(b,d);
-    labHintBox.innerHTML=`<div class="chip">Hint: LCM(${b}, ${d}) = <b>${L}</b>. Build equivalents: \( ${A_num}/${b} = ${A_num*(L/b)}/${L} \), \( ${B_num}/${d} = ${B_num*(L/d)}/${L} \).</div>`;
-    if(window._rerenderMath) window._rerenderMath(G('fracLab'));
-  })
+  function jumpToPart(letter){ const idx = slides.findIndex(s=>s.dataset.part===letter); if(idx>=0) show(idx); }
+  partButtons.forEach(btn=>btn.addEventListener('click',()=>jumpToPart(btn.dataset.jump)));
 
-  function compute(){
-    const a=[Number(A_num.value), Number(A_den.value)], b=[Number(B_num.value), Number(B_den.value)];
-    return state.op==='+'? addFrac(a,b): subFrac(a,b);
-  }
-  function buildEquivalents(){
-    const b=Number(A_den.value), d=Number(B_den.value); const L=lcm(b,d); const eA=[Number(A_num.value)*(L/b), L]; const eB=[Number(B_num.value)*(L/d), L];
-    LCMOut.textContent=L; eqA.textContent=`${eA[0]}/${eA[1]}`; eqB.textContent=`${eB[0]}/${eB[1]}`;
-  }
-  function fb(id,msg,color){ const el=G(id); el.textContent=msg; el.className='mt-2 h-6 font-semibold '+(color==='green'?'text-green-700':'text-red-700'); }
-  function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+  // Board ink overlay
+  const ink=byId('ink'), inkCanvas=ink.querySelector('canvas'), ictx=inkCanvas.getContext('2d');
+  let drawing=false, last=null;
+  function fitInk(){ inkCanvas.width=ink.clientWidth*devicePixelRatio; inkCanvas.height=ink.clientHeight*devicePixelRatio; ictx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); ictx.lineWidth=3; ictx.lineCap='round'; ictx.strokeStyle='#111'; }
+  function toggleInk(){ ink.classList.toggle('active'); }
+  btnDraw.addEventListener('click',toggleInk);
+  ink.addEventListener('mousedown',e=>{drawing=true; last=[e.offsetX,e.offsetY]});
+  ink.addEventListener('mousemove',e=>{ if(!drawing) return; ictx.beginPath(); ictx.moveTo(last[0],last[1]); ictx.lineTo(e.offsetX,e.offsetY); ictx.stroke(); last=[e.offsetX,e.offsetY]; });
+  window.addEventListener('mouseup',()=>drawing=false);
+  window.addEventListener('resize',fitInk); fitInk();
+  ink.addEventListener('dblclick',()=>ictx.clearRect(0,0,inkCanvas.width,inkCanvas.height));
 
-  // Rendering
-  function labRender(animate=false){
-    const ctx=labModel.getContext('2d'); labModel.width=labModel.clientWidth*devicePixelRatio; labModel.height=labModel.clientHeight*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio);
-    const W=labModel.clientWidth, H=labModel.clientHeight; ctx.clearRect(0,0,W,H);
-    const aN=Number(A_num.value), aD=Number(A_den.value), bN=Number(B_num.value), bD=Number(B_den.value);
-    const L=lcm(aD,bD); const eA=aN*(L/aD), eB=bN*(L/bD);
-    LCMOut.textContent=L; eqA.textContent=`${eA}/${L}`; eqB.textContent=`${eB}/${L}`;
-    // decide op
-    const sign = (state.op==='+'? +1 : -1);
-    const total = clamp(eA + sign*eB, -L*2, L*2);
-    // layout boxes
-    const pad=24; const cols=3; const boxW=(W-4*pad)/cols; const boxH=H-2*pad;
-    // draw boxes labels
-    drawBox(ctx,pad,pad,boxW,boxH,'A',state.rep,eA,L,showGrid.checked);
-    drawBox(ctx,2*pad+boxW,pad,boxW,boxH,(state.op==='+'?'+':'−'),state.rep,eB,L,showGrid.checked,true);
-    drawBox(ctx,3*pad+2*boxW,pad,boxW,boxH,'Result',state.rep,total,L,showGrid.checked,false,true);
+  // Teacher panel: timer + roster
+  const panel=byId('panel'), btnClose=byId('closePanel');
+  function togglePanel(){ panel.style.display = (panel.style.display==='block')? 'none' : 'block'; }
+  btnPanel.addEventListener('click',togglePanel);
+  btnClose.addEventListener('click',togglePanel);
 
-    // write algebraic answer if combined
-    if(state.combined){ const ans = toFrac(total, L); labAns.textContent=sFrac(ans); if(window._rerenderMath) window._rerenderMath(G('fracLab')); }
-  }
-
-  function drawBox(ctx,x,y,w,h,label,rep,count,L,grid,neg=false,emph=false){
-    // frame
-    ctx.save(); ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=2; ctx.strokeRect(x,y,w,h);
-    ctx.fillStyle='#111'; ctx.font='14px Inter'; ctx.fillText(label,x+4,y+16);
-    // choose renderer
-    if(rep==='pie') drawPie(ctx,x,y,w,h,count,L,grid,neg,emph);
-    else if(rep==='bar') drawBars(ctx,x,y,w,h,count,L,grid,neg,emph);
-    else drawLine(ctx,x,y,w,h,count,L,grid,neg,emph);
-    ctx.restore();
-  }
-
-  function drawPie(ctx,x,y,w,h,count,L,grid,neg,emph){
-    const cx=x+w/2, cy=y+h/2, r=Math.min(w,h)*0.36; const start=-Math.PI/2; const unit=2*Math.PI/L;
-    // grid slices
-    if(grid){ ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=1; for(let k=0;k<L;k++){ ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,start+k*unit,start+(k+1)*unit); ctx.closePath(); ctx.stroke(); }}
-    // fill count
-    const sign = count<0?-1:1; const n=Math.abs(count);
-    for(let k=0;k<n;k++){
-      const a0=start+k*unit; const a1=a0+unit; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,a0,a1); ctx.closePath(); ctx.fillStyle = neg? '#f59e0b' : '#6C1D45'; ctx.globalAlpha=emph?0.95:0.85; ctx.fill(); ctx.globalAlpha=1; }
-    // outline
-    ctx.beginPath(); ctx.arc(cx,cy,r,0,2*Math.PI); ctx.strokeStyle=emph?'#C7A34F':'#94a3b8'; ctx.lineWidth=emph?3:2; ctx.stroke();
-  }
-
-  function drawBars(ctx,x,y,w,h,count,L,grid,neg,emph){
-    const pw=w*0.8, ph=h*0.6; const px=x+(w-pw)/2, py=y+(h-ph)/2;
-    ctx.strokeStyle=emph?'#C7A34F':'#94a3b8'; ctx.lineWidth=emph?3:2; ctx.strokeRect(px,py,pw,ph);
-    const unit=pw/L; if(grid){ ctx.strokeStyle='#e5e7eb'; for(let k=1;k<L;k++){ ctx.beginPath(); ctx.moveTo(px+k*unit,py); ctx.lineTo(px+k*unit,py+ph); ctx.stroke(); }}
-    const n=Math.abs(count); ctx.fillStyle=neg?'#f59e0b':'#6C1D45'; ctx.globalAlpha=0.9;
-    ctx.fillRect(px,py,n*unit,ph); ctx.globalAlpha=1;
-  }
-
-  function drawLine(ctx,x,y,w,h,count,L,grid,neg,emph){
-    const mY=y+h/2; const left=x+w*0.1, right=x+w*0.9; const len=right-left; const unit=len/L;
-    ctx.strokeStyle=emph?'#C7A34F':'#94a3b8'; ctx.lineWidth=emph?3:2; ctx.beginPath(); ctx.moveTo(left,mY); ctx.lineTo(right,mY); ctx.stroke();
-    if(grid){ ctx.strokeStyle='#e5e7eb'; for(let k=0;k<=L;k++){ const xx=left+k*unit; ctx.beginPath(); ctx.moveTo(xx,mY-10); ctx.lineTo(xx,mY+10); ctx.stroke(); }}
-    const n=Math.abs(count); ctx.strokeStyle=neg?'#f59e0b':'#6C1D45'; ctx.lineWidth=6; ctx.beginPath(); ctx.moveTo(left,mY); ctx.lineTo(left+n*unit,mY); ctx.stroke();
-  }
-
-  window.labRender=labRender;
-})();
-
-// ---------- Guided Practice (reuse of like/unlike from prior lesson)
-(function(){
-  const likePairs=[['5/8','-1/8','+'],['7/9','2/9','-'],['-3/10','4/10','+'],['-5/6','-1/6','+'],['11/12','1/12','-'],['-7/15','2/15','+']];
-  const likeState={set:[]};
-  window.renderLike=function(){
-    const box=document.getElementById('likeList'); box.innerHTML=''; likeState.set=[];
-    likePairs.sort(()=>Math.random()-0.5).slice(0,4).forEach((t,idx)=>{
-      const [a,b,op]=t; const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
-        <div class="text-xl mt-1">\\( ${a} ${op} ${b} \\) = <input class="lin border rounded px-2 py-1 w-32" placeholder="e.g., 1/4"></div>`;
-      row.dataset.a=a; row.dataset.b=b; row.dataset.op=op; box.appendChild(row);
-      likeState.set.push({a,b,op});
-    });
-    if(window._rerenderMath) window._rerenderMath(document.getElementById('guided'));
-  }
-  document.getElementById('likeNew').addEventListener('click',renderLike);
-  document.getElementById('likeCheck').addEventListener('click',()=>{
-    let total=0,ok=0; document.getElementById('likeList').querySelectorAll('.card').forEach(row=>{
-      total++; const A=parseRational(row.dataset.a), B=parseRational(row.dataset.b); const op=row.dataset.op;
-      const ans=(op==='+')? addFrac(A,B): subFrac(A,B); const inp=row.querySelector('.lin'); const got=parseRational(inp.value);
-      if(got && fracEq(toFrac(got[0],got[1]), ans)){inp.style.borderColor='#22c55e'; ok++;} else {inp.style.borderColor='#ef4444';}
-    });
-    const fb=document.getElementById('likeFb'); fb.textContent= ok===total?'✅ All correct!':'Score: '+ok+'/'+total;
+  const min=byId('min'), sec=byId('sec'), clock=byId('clock'), startTimer=byId('startTimer'), stopTimer=byId('stopTimer');
+  let tHandle=null, tEnd=0;
+  startTimer.addEventListener('click',()=>{
+    const total = (Number(min.value)||0)*60 + (Number(sec.value)||0);
+    if(total<=0) return;
+    tEnd = Date.now() + total*1000;
+    if(tHandle) clearInterval(tHandle);
+    tHandle=setInterval(()=>{
+      const left = Math.max(0, Math.round((tEnd-Date.now())/1000));
+      const mm = String(Math.floor(left/60)).padStart(2,'0');
+      const ss = String(left%60).padStart(2,'0');
+      clock.textContent = `${mm}:${ss}`;
+      if(left===0){ clearInterval(tHandle); tHandle=null; confetti(); }
+    },200);
+  });
+  stopTimer.addEventListener('click',()=>{ if(tHandle) clearInterval(tHandle); tHandle=null; clock.textContent='–:–'; });
+  const roster=byId('roster'), pickName=byId('pickName'), nameOut=byId('nameOut');
+  pickName.addEventListener('click',()=>{
+    const names = roster.value.split('\n').map(s=>s.trim()).filter(Boolean);
+    nameOut.textContent = names.length? names[Math.floor(Math.random()*names.length)] : '(no names)';
   });
 
-  // Unlike guided
-  const unlikeState={};
-  window.newUnlike=function(){
-    const den1=[3,4,5,6,8,9][Math.floor(Math.random()*6)];
-    const den2=[4,5,6,7,8,9,10][Math.floor(Math.random()*7)];
-    const n1=Math.floor(Math.random()*den1), n2=Math.floor(Math.random()*den2);
-    const op=Math.random()<0.5?'+':'-';
-    const box=document.getElementById('unlikeBox');
-    box.innerHTML=`
-      <div class="card p-4 text-lg">\\( \\frac{${n1}}{${den1}} ${op} \\frac{${n2}}{${den2}} \\)</div>
-      <div class="card p-4">
-        <ol class="list-decimal ml-5">
-          <li class="mt-1">LCM = <input id="lcmIn" class="border rounded px-2 py-1 w-28" placeholder="LCM"></li>
-          <li class="mt-1">Build equivalents →
-            <div class="mt-1 flex flex-wrap items-center gap-2">
-              <span>\\( \\frac{${n1}}{${den1}} = \\)</span><input id="eq1" class="border rounded px-2 py-1 w-24" placeholder="?">/
-              <input id="d1" class="border rounded px-2 py-1 w-24" placeholder="?">
-              <span class="ml-4">\\( \\frac{${n2}}{${den2}} = \\)</span><input id="eq2" class="border rounded px-2 py-1 w-24" placeholder="?">/
-              <input id="d2" class="border rounded px-2 py-1 w-24" placeholder="?">
-            </div>
-          </li>
-          <li class="mt-1">Operate & simplify: <input id="unAns" class="border rounded px-2 py-1 w-28" placeholder="e.g., 7/12"></li>
-        </ol>
-      </div>`;
-    if(window._rerenderMath) window._rerenderMath(document.getElementById('guided'));
-    unlikeState.a=`${n1}/${den1}`; unlikeState.b=`${n2}/${den2}`; unlikeState.op=op;
+  // Notes toggle
+  byId('showNotes').addEventListener('change',e=>{ document.querySelectorAll('.teacher-note').forEach(n=>n.classList.toggle('hidden', !e.target.checked)); });
+
+  // Snap tenths toggle (used by number line addition module below)
+  byId('snapTenths').addEventListener('change',e=>{ addState.snap = !!e.target.checked; });
+
+  // Confetti utility
+  function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
+    for(let k=0;k<16;k++){
+      const d=document.createElement('div'); d.className='confetti';
+      d.style.left=x+'px'; d.style.top=y+'px'; d.style.width='8px'; d.style.height='8px';
+      d.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8a3d64'][k%4];
+      document.body.appendChild(d);
+      const dx=(Math.random()*2-1)*240, dy=(Math.random()*-1-0.3)*300, rot=Math.random()*720;
+      d.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],
+                {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
+    }
   }
-  document.getElementById('unlikeNew').addEventListener('click',newUnlike);
-  document.getElementById('unlikeCheck').addEventListener('click',()=>{
-    const a=parseRational(unlikeState.a), b=parseRational(unlikeState.b), op=unlikeState.op; const L=lcm(a[1],b[1]);
-    const A=[a[0]*(L/a[1]), L], B=[b[0]*(L/b[1]), L]; const ans = (op==='+')? addFrac(A,B) : subFrac(A,B);
-    let ok=true; function chk(id,v){ const el=document.getElementById(id); const good=(String(el.value).trim()==String(v)); el.style.borderColor=good?'#22c55e':'#ef4444'; if(!good) ok=false; }
-    chk('lcmIn',L); chk('eq1',A[0]); chk('d1',A[1]); chk('eq2',B[0]); chk('d2',B[1]);
-    const got=parseRational(document.getElementById('unAns').value); if(!(got && fracEq(got, ans))){ok=false; document.getElementById('unAns').style.borderColor='#ef4444'} else document.getElementById('unAns').style.borderColor='#22c55e';
-    document.getElementById('unlikeFb').textContent= ok?'✅ Nice work!':'❌ Check highlights';
-  });
+  window.confetti=confetti;
+
+  show(0); // start
 })();
 </script>
+
+<!-- =========================================================
+     CORE MATH HELPERS (scoped to modules below)
+     ========================================================= -->
+<script>
+(function(){
+  const root = window;
+  // Local helpers for fraction/number ops
+  root._gcd=(a,b)=>{a=Math.trunc(Math.abs(a));b=Math.trunc(Math.abs(b));while(b){[a,b]=[b,a%b]}return a||1};
+  root._lcm=(a,b)=>Math.abs(a*b)/root._gcd(a,b);
+  root._parseR=(s)=>{
+    if(typeof s==='number') return [s,1];
+    if(!s) return null;
+    s=String(s).trim().replace('−','-');
+    const mix=s.match(/^(-?\d+)\s+(\d+)\/(\d+)$/);
+    if(mix){const A=+mix[1],B=+mix[2],C=+mix[3];const sign=A<0?-1:1;return [A*C+sign*B, C];}
+    const f=s.match(/^(-?\d+)\/(-?\d+)$/);
+    if(f){let n=+f[1],d=+f[2]; if(d===0) return null; let g=root._gcd(n,d); d<0&&(g=-g); return [n/g,d/g];}
+    if(!isNaN(Number(s))){
+      const parts=s.split('.');
+      if(parts.length===1) return [Number(s),1];
+      const k=parts[1].length; const n=Math.round(Number(s)*10**k); const d=10**k; let g=root._gcd(n,d); return [n/g,d/g];
+    }
+    return null;
+  };
+  root._toFrac=(n,d)=>{let g=root._gcd(n,d); d<0&&(g=-g); return [n/g,d/g]};
+  root._addF=(a,b)=>root._toFrac(a[0]*b[1]+b[0]*a[1], a[1]*b[1]);
+  root._subF=(a,b)=>root._toFrac(a[0]*b[1]-b[0]*a[1], a[1]*b[1]);
+  root._eqF=(a,b)=>a[0]*b[1]===b[0]*a[1];
+  root._sF=([n,d])=> d===1? String(n) : `${n}/${d}`;
+  root._asNum=([n,d])=> n/d;
+})();
+</script>
+
+<!-- =========================================================
+     IMPROVED WARM‑UPS + FRACTION LAB (BIG SHAPES)
+     ========================================================= -->
+<script>
+/* ---------- Warm‑Up A: Estimation Duel ---------- */
+function newEst(){
+  const host=document.getElementById('warmEst'); if(!host) return;
+  const estA=document.getElementById('estA'), estB=document.getElementById('estB'), estFb=document.getElementById('estFb');
+  function fmt(e){ return `\\( ${e} \\)`; }
+  function rpick(arr){ return arr[Math.floor(Math.random()*arr.length)] }
+  function term(){
+    const t=Math.random();
+    if(t<0.33){ const v=Math.floor(Math.random()*17)-8; return String(v); }
+    if(t<0.66){
+      const den=[3,4,5,6,8,10,12][Math.floor(Math.random()*7)];
+      const num=Math.floor(Math.random()*(den-1))+1; const sign=Math.random()<0.4?'-':''; return `${sign}${num}/${den}`;
+    }
+    const v=Math.round((Math.random()*10-5)*10)/10; return String(v.toFixed(1).replace(/\\.0$/,''));
+  }
+  function expr(){ const op=rpick(['+','-']); return `${term()} ${op} ${term()}`; }
+  function evalExpr(s){
+    const m = s.match(/^\s*([^\s]+)\s*([+-])\s*([^\s]+)\s*$/);
+    if(!m) return NaN;
+    const A=_parseR(m[1]), B=_parseR(m[3]);
+    const res = (m[2]==='+')? _addF(A,B):_subF(A,B);
+    return _asNum(res);
+  }
+  const boxA=expr(), boxB=expr();
+  host.dataset.A=boxA; host.dataset.B=boxB; host.dataset.valA=evalExpr(boxA); host.dataset.valB=evalExpr(boxB); host.dataset.pick='';
+  estA.innerHTML=fmt(boxA); estB.innerHTML=fmt(boxB); estFb.textContent='';
+  host.querySelectorAll('.opt').forEach(x=>x.classList.remove('active'));
+  if(window._renderMath) window._renderMath(host);
+}
+(function(){
+  const host=document.getElementById('warmEst'); if(!host) return;
+  const estFb=document.getElementById('estFb');
+  host.querySelectorAll('.opt').forEach(opt=>{
+    opt.addEventListener('click',()=>{ host.dataset.pick=opt.dataset.side; host.querySelectorAll('.opt').forEach(x=>x.classList.toggle('active', x===opt)); });
+    opt.addEventListener('dblclick',()=>{ host.dataset.pick='equal'; check(); });
+  });
+  document.getElementById('estNew').addEventListener('click',newEst);
+  document.getElementById('estCheck').addEventListener('click',check);
+  function check(){
+    const pick=host.dataset.pick||''; if(!pick){ estFb.textContent='Pick A, B, or argue they are equal.'; return; }
+    const cmp = Math.sign(parseFloat(host.dataset.valA)-parseFloat(host.dataset.valB));
+    const right = (cmp>0 && pick==='A') || (cmp<0 && pick==='B') || (cmp===0 && pick==='equal');
+    estFb.textContent = right? '✅ Reason it out: what made it bigger?' : '❌ Revisit signs, sizes, denominators.';
+    if(right) window.confetti();
+  }
+  newEst();
+})();
+
+/* ---------- Warm‑Up B: WODB ---------- */
+function newWODB(){
+  const host=document.getElementById('warmWODB'); if(!host) return;
+  const tiles=['w1','w2','w3','w4'].map(id=>document.getElementById(id));
+  const BANK = [
+    { items:['1/2','3/6','4/8','3/5'], reason:['Three equal 0.5; one is not (3/5).','Three have denominator multiple of 2; one does not.'] },
+    { items:['-2','-1.5','0.5','-3/2'], reason:['Three are negative; one is positive (0.5).','Two forms for same value: -1.5 = -3/2.'] },
+    { items:['2/3','4/6','0.66','5/7'], reason:['Two equal (2/3=4/6≈0.66); one doesn’t match (5/7).'] },
+    { items:['-3/4','0.75','-0.75','3/4'], reason:['Signs split the set; magnitudes match across forms.'] },
+    { items:['1/8','3/8','5/8','2/7'], reason:['Three share denominator 8; one does not (2/7).'] }
+  ];
+  const pick=BANK[Math.floor(Math.random()*BANK.length)];
+  host.dataset.set = JSON.stringify(pick);
+  tiles.forEach((t,idx)=>{ t.innerHTML=`\\( ${pick.items[idx]} \\)`; t.classList.remove('sel'); });
+  document.getElementById('wFb').textContent=''; document.getElementById('wReasons').textContent='';
+  if(window._renderMath) window._renderMath(host);
+}
+(function(){
+  const host=document.getElementById('warmWODB'); if(!host) return;
+  const tiles=['w1','w2','w3','w4'].map(id=>document.getElementById(id));
+  tiles.forEach((t,idx)=>t.addEventListener('click',()=>{ tiles.forEach((x,k)=>x.classList.toggle('sel',k===idx)); document.getElementById('wFb').textContent='Great—now defend your choice.'; }));
+  document.getElementById('wNew').addEventListener('click',newWODB);
+  document.getElementById('wReveal').addEventListener('click',()=>{
+    const pick = JSON.parse(host.dataset.set||'{}');
+    const bullets = (pick.reason||[]).map(r=>`<li>${r}</li>`).join('');
+    document.getElementById('wReasons').innerHTML = `<div class="hint"><b>Sample reasons:</b><ul class="list-disc ml-5">${bullets||'<li>Any valid structure works.</li>'}</ul></div>`;
+  });
+  newWODB();
+})();
+
+/* ---------- Number line explorers (p+q and subtraction) ---------- */
+const cA=document.getElementById('lineAdd'); const pIn=document.getElementById('pInput'), qIn=document.getElementById('qInput'), sumOut=document.getElementById('sumOut');
+const addState={min:-12,max:12,snap:false,p:-2,q:3.5,dragging:null};
+function mapA(x){const m=28,W=cA.clientWidth;return m+(x-addState.min)*(W-2*m)/(addState.max-addState.min)}
+function unmapA(px){const m=28,W=cA.clientWidth;return addState.min+(px-m)*(addState.max-addState.min)/(W-2*m)}
+function drawAdd(){
+  if(!cA) return; const ctx=cA.getContext('2d');
+  cA.width=cA.clientWidth*devicePixelRatio; cA.height=cA.clientHeight*devicePixelRatio; ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  const y=cA.clientHeight/2, m=28; ctx.clearRect(0,0,cA.clientWidth,cA.clientHeight);
+  ctx.lineWidth=2; ctx.strokeStyle='#6C1D45'; ctx.beginPath(); ctx.moveTo(m,y); ctx.lineTo(cA.clientWidth-m,y); ctx.stroke();
+  for(let t=addState.min;t<=addState.max;t++){const x=mapA(t); ctx.beginPath(); ctx.moveTo(x,y-8); ctx.lineTo(x,y+8); ctx.stroke(); if(t%2==0){ctx.fillStyle='#555'; ctx.font='12px Inter'; ctx.fillText(String(t),x-6,y+24);}}
+  const px=mapA(addState.p), rx=mapA(addState.p+addState.q);
+  ctx.strokeStyle='#C7A34F'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(px,y); ctx.lineTo(rx,y); ctx.stroke();
+  ctx.fillStyle='#6C1D45'; ctx.beginPath(); ctx.arc(px,y,9,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#C7A34F'; ctx.beginPath(); ctx.arc(rx,y,9,0,Math.PI*2); ctx.fill();
+  sumOut.textContent=(addState.p+addState.q).toFixed(2).replace(/\.00$/,'');
+}
+function setFromInputs(){ addState.p=Number(pIn.value||0); addState.q=Number(qIn.value||0); drawAdd(); }
+pIn&&pIn.addEventListener('input', setFromInputs); qIn&&qIn.addEventListener('input', setFromInputs);
+cA&&cA.addEventListener('mousedown',e=>{const px=mapA(addState.p), rx=mapA(addState.p+addState.q); const x=e.offsetX; addState.dragging=(Math.abs(x-px)<Math.abs(x-rx))?'p':'r'; handleAddDrag(e);});
+window.addEventListener('mousemove',e=>{ if(addState.dragging) handleAddDrag(e) });
+window.addEventListener('mouseup',()=>addState.dragging=null);
+function handleAddDrag(e){const r=cA.getBoundingClientRect(); let val=unmapA((e.clientX||e.touches?.[0].clientX)-r.left); if(addState.snap) val=Math.round(val*10)/10; if(addState.dragging==='p'){ addState.p=Math.max(addState.min,Math.min(addState.max,val)); pIn.value=addState.p; } else { const rVal=Math.max(addState.min,Math.min(addState.max,val)); addState.q = rVal - addState.p; qIn.value=+addState.q.toFixed(2); } drawAdd();}
+document.getElementById('randAdd')&&document.getElementById('randAdd').addEventListener('click',()=>{addState.p=+(Math.random()*12-6).toFixed(1); addState.q=+(Math.random()*8-4).toFixed(1); pIn.value=addState.p; qIn.value=addState.q; drawAdd();});
+document.getElementById('resetAdd')&&document.getElementById('resetAdd').addEventListener('click',()=>{addState.p=-2;addState.q=3.5;pIn.value=-2;qIn.value=3.5;drawAdd()});
+window.addEventListener('resize',()=>{ if(document.getElementById('addSlide')?.classList.contains('active')) drawAdd(); });
+
+const cS=document.getElementById('lineSub'); const p2=document.getElementById('p2Input'), q2=document.getElementById('q2Input'), diffOut=document.getElementById('diffOut');
+const subState={min:-12,max:12,p:1,q:-4};
+function mapS(x){const m=28,W=cS.clientWidth;return m+(x-subState.min)*(W-2*m)/(subState.max-subState.min)}
+function drawSub(){
+  if(!cS) return; const ctx=cS.getContext('2d'); cS.width=cS.clientWidth*devicePixelRatio; cS.height=cS.clientHeight*devicePixelRatio; ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  const y=cS.clientHeight/2, m=28; ctx.clearRect(0,0,cS.clientWidth,cS.clientHeight);
+  ctx.lineWidth=2; ctx.strokeStyle='#6C1D45'; ctx.beginPath(); ctx.moveTo(m,y); ctx.lineTo(cS.clientWidth-m,y); ctx.stroke();
+  for(let t=subState.min;t<=subState.max;t++){const x=mapS(t); ctx.beginPath(); ctx.moveTo(x,y-8); ctx.lineTo(x,y+8); ctx.stroke(); if(t%2==0){ctx.fillStyle='#555'; ctx.font='12px Inter'; ctx.fillText(String(t),x-6,y+24);}}
+  const px=mapS(subState.p), qx=mapS(subState.p - subState.q);
+  ctx.fillStyle='#6C1D45'; ctx.beginPath(); ctx.arc(px,y,9,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#C7A34F'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(px,y); ctx.lineTo(qx,y); ctx.stroke();
+  ctx.fillStyle='#C7A34F'; ctx.beginPath(); ctx.arc(qx,y,9,0,Math.PI*2); ctx.fill();
+  diffOut.textContent=(subState.p - subState.q).toFixed(2).replace(/\.00$/,'');
+}
+function setSub(){subState.p=Number(p2.value||0); subState.q=Number(q2.value||0); drawSub()}
+p2&&p2.addEventListener('input', setSub); q2&&q2.addEventListener('input', setSub);
+document.getElementById('randSub')&&document.getElementById('randSub').addEventListener('click',()=>{subState.p=+(Math.random()*8-4).toFixed(1); subState.q=+(Math.random()*8-4).toFixed(1); p2.value=subState.p; q2.value=subState.q; drawSub()});
+window.addEventListener('resize',()=>{ if(document.getElementById('subSlide')?.classList.contains('active')) drawSub(); });
+
+/* ---------- Like / Unlike denominators (quick versions) ---------- */
+const likePairs=[['5/8','-1/8','+'],['7/9','2/9','-'],['-3/10','4/10','+'],['-5/6','-1/6','+'],['11/12','1/12','-'],['-7/15','2/15','+']];
+const likeState={set:[]};
+function renderLike(){
+  const box=document.getElementById('likeList'); if(!box) return; box.innerHTML=''; likeState.set=[];
+  likePairs.sort(()=>Math.random()-0.5).slice(0,4).forEach((t,idx)=>{
+    const [a,b,op]=t; const row=document.createElement('div'); row.className='card p-4';
+    row.innerHTML=`<div class="text-left font-semibold text-maroon">Item ${idx+1}</div>
+      <div class="text-xl mt-1">\\( ${a} ${op} ${b} \\) = <input class="lin border rounded px-2 py-1 w-32" placeholder="e.g., 1/4"></div>`;
+    row.dataset.a=a; row.dataset.b=b; row.dataset.op=op; box.appendChild(row);
+    likeState.set.push({a,b,op});
+  });
+  if(window._renderMath) window._renderMath(document.getElementById('likeSlide'));
+}
+document.getElementById('likeNew')&&document.getElementById('likeNew').addEventListener('click',renderLike);
+document.getElementById('likeCheck')&&document.getElementById('likeCheck').addEventListener('click',()=>{
+  let total=0,ok=0; document.getElementById('likeList').querySelectorAll('.card').forEach(row=>{
+    total++; const A=_parseR(row.dataset.a), B=_parseR(row.dataset.b); const op=row.dataset.op;
+    const ans=(op==='+')? _addF(A,B): _subF(A,B);
+    const got=_parseR(row.querySelector('.lin').value);
+    if(got && _eqF(_toFrac(got[0],got[1]), ans)){row.querySelector('.lin').style.borderColor='#22c55e'; ok++;} else {row.querySelector('.lin').style.borderColor='#ef4444'}
+  });
+  const fb=document.getElementById('likeFb'); fb.textContent= ok===total?'✅ All correct!':'Score: '+ok+'/'+total; if(ok===total) window.confetti();
+});
+
+/* ---------- Unlike denominators guided ---------- */
+const unlikeState={a:null,b:null,op:null};
+function newUnlike(){
+  const box=document.getElementById('unlikeBox'); if(!box) return;
+  const den1=[3,4,5,6,8,9][Math.floor(Math.random()*6)];
+  const den2=[4,5,6,7,8,9,10][Math.floor(Math.random()*7)];
+  const n1=Math.floor(Math.random()*den1), n2=Math.floor(Math.random()*den2);
+  const op=Math.random()<0.5?'+':'-';
+  box.innerHTML = `
+    <div class="card p-4">
+      <div class="text-xl">\\( \\frac{${n1}}{${den1}} ${op} \\frac{${n2}}{${den2}} \\)</div>
+      <ol class="list-decimal ml-5 mt-2">
+        <li class="mt-1">LCM = <input id="lcmIn" class="border rounded px-2 py-1 w-28" placeholder="LCM"></li>
+        <li class="mt-1">Build equivalents: 
+          \\( \\frac{${n1}}{${den1}} = \\)
+          <input id="eq1" class="border rounded px-2 py-1 w-24" placeholder="?"> /
+          <input id="d1"  class="border rounded px-2 py-1 w-24" placeholder="?"> and
+          \\( \\frac{${n2}}{${den2}} = \\)
+          <input id="eq2" class="border rounded px-2 py-1 w-24" placeholder="?"> /
+          <input id="d2"  class="border rounded px-2 py-1 w-24" placeholder="?">
+        </li>
+        <li class="mt-1">Operate & simplify: <input id="unAns" class="border rounded px-2 py-1 w-32" placeholder="e.g., 7/12"></li>
+      </ol>
+    </div>`;
+  if(window._renderMath) window._renderMath(document.getElementById('unlikeSlide'));
+  unlikeState.a=`${n1}/${den1}`; unlikeState.b=`${n2}/${den2}`; unlikeState.op=op;
+}
+document.getElementById('unlikeNew')&&document.getElementById('unlikeNew').addEventListener('click',newUnlike);
+document.getElementById('unlikeCheck')&&document.getElementById('unlikeCheck').addEventListener('click',()=>{
+  const a=_parseR(unlikeState.a), b=_parseR(unlikeState.b); const op=unlikeState.op;
+  const L=_lcm(a[1],b[1]); const A=[a[0]*(L/a[1]), L], B=[b[0]*(L/b[1]), L];
+  const ans = (op==='+')? _addF(A,B) : _subF(A,B);
+  let ok=true; function chk(id,val){ const el=document.getElementById(id); const good=(String(el.value).trim()==String(val)); el.style.borderColor=good?'#22c55e':'#ef4444'; if(!good) ok=false; }
+  chk('lcmIn',L); chk('eq1',A[0]); chk('d1',A[1]); chk('eq2',B[0]); chk('d2',B[1]);
+  const got=_parseR(document.getElementById('unAns').value);
+  if(!(got && _eqF(got, ans))){ok=false; document.getElementById('unAns').style.borderColor='#ef4444'} else document.getElementById('unAns').style.borderColor='#22c55e';
+  const fb=document.getElementById('unlikeFb'); fb.textContent= ok?'✅ Nice work!':'❌ Check highlights'; if(ok) window.confetti();
+});
+
+/* ---------- LCM examples ---------- */
+const lcmState={};
+function mults(a, count=10){ return Array.from({length:count},(_,i)=>a*(i+1)); }
+function newLCMEx(conf=true){
+  const listA=document.getElementById('lcmListArea'), listB=document.getElementById('lcmPrimeArea'); if(!listA||!listB) return;
+  let a=0,b=0; while(a===b || a<4 || b<4){ a=Math.floor(Math.random()*15)+4; b=Math.floor(Math.random()*15)+4; }
+  const LA=mults(a,10), LB=mults(b,10); const common=LA.find(x=>LB.includes(x)) || _lcm(a,b);
+  const fa=primeFactorMap(a), fb=primeFactorMap(b);
+  const primes=[...new Set([...fa.keys(), ...fb.keys()])].sort((x,y)=>x-y);
+  const expLCM={}; primes.forEach(p=>expLCM[p]=Math.max(fa.get(p)||0, fb.get(p)||0));
+  const L=primes.reduce((acc,p)=>acc*Math.pow(p,expLCM[p]),1);
+  listA.innerHTML=`<div class="mb-2">\\( a=${a},\\; b=${b} \\)</div>
+    <div>Multiples of \\(a\\): ${LA.map(x=> x===common? '<b>'+x+'</b>' : x).join(', ')}</div>
+    <div>Multiples of \\(b\\): ${LB.map(x=> x===common? '<b>'+x+'</b>' : x).join(', ')}</div>
+    <div class="mt-2">First common multiple: <b>${common}</b></div>`;
+  const fmt=(obj)=>Object.keys(obj).sort((x,y)=>+x-+y).map(p=>` ${p}^{${obj[p]}}`).join('\\cdot')||'1';
+  listB.innerHTML=`<div>\\( \\mathrm{LCM}(a,b) = ${ fmt(expLCM) } = ${L} \\)</div>`;
+  if(window._renderMath) window._renderMath(document.getElementById('lcmExSlide'));
+  if(conf) window.confetti();
+}
+function primeFactorMap(n){
+  const m=new Map(); let x=Math.abs(n); let p=2;
+  while(p*p<=x){ while(x%p===0){ m.set(p,(m.get(p)||0)+1); x/=p; } p=(p===2)?3:p+2; }
+  if(x>1) m.set(x,(m.get(x)||0)+1);
+  return m;
+}
+
+/* ---------- PRIMES + PF ---------- */
+const primeState={set:[]};
+function primeNew(){
+  const box=document.getElementById('primeList'); if(!box) return;
+  const nums=new Set(); while(nums.size<8) nums.add(Math.floor(Math.random()*98)+2);
+  primeState.set=[...nums].sort((a,b)=>a-b).map(n=>({n,prime:isPrime(n)})); box.innerHTML='';
+  primeState.set.forEach((o,idx)=>{
+    const row=document.createElement('div'); row.className='card p-3 flex items-center justify-between';
+    row.innerHTML=`<div class="text-xl">\\( ${o.n} \\)</div>
+      <select class="border rounded px-2 py-1" id="pc_${idx}">
+        <option value="">— classify —</option>
+        <option value="P">Prime</option>
+        <option value="C">Composite</option>
+      </select>`;
+    box.appendChild(row);
+  });
+  if(window._renderMath) window._renderMath(document.getElementById('primeSlide'));
+}
+function isPrime(n){ if(n<2||n%1) return false; for(let k=2;k*k<=n;k++) if(n%k===0) return false; return true; }
+function primeCheck(){
+  let ok=0; primeState.set.forEach((o,idx)=>{
+    const sel=document.getElementById('pc_'+idx); const got=sel.value; const want=o.prime?'P':'C';
+    sel.style.borderColor= (got===want && got!=='') ? '#22c55e' : '#ef4444';
+    if(got===want && got!=='') ok++;
+  });
+  document.getElementById('primeFb').textContent= (ok===primeState.set.length)?'✅ All correct!':'Score: '+ok+'/'+primeState.set.length;
+  if(ok===primeState.set.length) window.confetti();
+}
+document.getElementById('primeNew')&&document.getElementById('primeNew').addEventListener('click',primeNew);
+document.getElementById('primeCheck')&&document.getElementById('primeCheck').addEventListener('click',primeCheck);
+
+const pfState={set:[], primes:[2,3,5,7,11,13]};
+function buildN(exps){ return pfState.primes.reduce((acc,p)=>acc*Math.pow(p,exps[p]||0),1) }
+function pfNew(){
+  const box=document.getElementById('pfList'); if(!box) return; const list=[];
+  while(list.length<4){
+    const exps={}; pfState.primes.forEach(p=>{
+      let e=0; if(p<=5){ e=Math.floor(Math.random()*3); } else if(p===7){ e=Math.random()<0.7?0:1; } else { e=Math.random()<0.8?0:1; } exps[p]=e;
+    });
+    if(Object.values(exps).every(e=>e===0)) exps[2]=1;
+    const n=buildN(exps); if(n>=60 && n<=5000) list.push({n,exps});
+  }
+  pfState.set=list; box.innerHTML='';
+  pfState.set.forEach((o,idx)=>{
+    const row=document.createElement('div'); row.className='card p-4';
+    row.innerHTML=`<div class="text-xl mb-1">\\( ${o.n} = 2^{\\square}\\cdot 3^{\\square}\\cdot 5^{\\square}\\cdot 7^{\\square}\\cdot 11^{\\square}\\cdot 13^{\\square} \\)</div>
+      <div class="flex flex-wrap gap-2 text-sm">${pfState.primes.map(p=>`<label class="chip">${p}: <input class="pfexp border rounded px-2 py-1 w-16" id="pf_${idx}_${p}" placeholder="exp"></label>`).join('')}</div>`;
+    box.appendChild(row);
+  });
+  if(window._renderMath) window._renderMath(document.getElementById('pfSlide'));
+}
+function pfCheck(){
+  let total=0,ok=0;
+  pfState.set.forEach((o,idx)=>{
+    total++; let good=true;
+    pfState.primes.forEach(p=>{
+      const inp=document.getElementById(`pf_${idx}_${p}`); const g=Number(inp.value||0); const want=o.exps[p]||0;
+      inp.style.borderColor=(g===want)? '#22c55e':'#ef4444'; if(g!==want) good=false;
+    });
+    if(good) ok++;
+  });
+  document.getElementById('pfFb').textContent= ok===total ? '✅ All correct!' : 'Score: '+ok+'/'+total;
+  if(ok===total) window.confetti();
+}
+document.getElementById('pfNew')&&document.getElementById('pfNew').addEventListener('click',pfNew);
+document.getElementById('pfCheck')&&document.getElementById('pfCheck').addEventListener('click',pfCheck);
+
+/* ---------- Mixed / Sort / Challenges (light) ---------- */
+function sortNew(){
+  const ul=document.getElementById('sortList'); if(!ul) return; ul.innerHTML='';
+  function gen(){
+    const t=Math.random();
+    if(t<0.33){ const v=Math.floor(Math.random()*21)-10; return {disp:String(v), val:v}; }
+    if(t<0.66){ const den=[4,5,6,8,10,12][Math.floor(Math.random()*6)]; const num=Math.floor(Math.random()*(den*2+1))-den; return {disp:`\\( \\frac{${num}}{${den}} \\)`, val:num/den}; }
+    const v=Math.round((Math.random()*20-10)*10)/10; return {disp:String(v.toFixed(1).replace(/\\.0$/,'')), val:v};
+  }
+  const set=[]; while(set.length<5) set.push(gen());
+  set.forEach(o=>{ const li=document.createElement('li'); li.className='border rounded px-3 py-2 flex items-center justify-between'; li.setAttribute('draggable','true'); li.dataset.val=o.val; li.innerHTML=`<span class="text-xl">${o.disp}</span><span class="text-gray-400 text-sm">drag</span>`; ul.appendChild(li); });
+  if(window._renderMath) window._renderMath(document.getElementById('sortSlide'));
+  enableDrag(ul);
+}
+function enableDrag(ul){
+  let dragEl=null;
+  ul.querySelectorAll('li').forEach(li=>{
+    li.addEventListener('dragstart',()=>{dragEl=li; li.classList.add('dragging')});
+    li.addEventListener('dragend',()=>{dragEl=null; li.classList.remove('dragging')});
+  });
+  ul.addEventListener('dragover',e=>{
+    e.preventDefault();
+    const after=getAfter(ul,e.clientY); if(after==null) ul.appendChild(dragEl); else ul.insertBefore(dragEl,after);
+  });
+  function getAfter(container,y){
+    const els=[...container.querySelectorAll('li:not(.dragging)')];
+    return els.reduce((closest,child)=>{
+      const box=child.getBoundingClientRect(); const offset=y - box.top - box.height/2;
+      if(offset<0 && offset>closest.offset){ return {offset,element:child}; } else { return closest; }
+    }, {offset:Number.NEGATIVE_INFINITY}).element;
+  }
+}
+document.getElementById('sortNew')&&document.getElementById('sortNew').addEventListener('click',sortNew);
+document.getElementById('sortCheck')&&document.getElementById('sortCheck').addEventListener('click',()=>{
+  const now=[...document.getElementById('sortList').children].map(li=>({val:Number(li.dataset.val), el:li}));
+  const sorted=[...now].sort((a,b)=>a.val-b.val); let ok=true; now.forEach((o,idx)=>{ if(o!==sorted[idx]) ok=false; o.el.style.borderColor=(o===sorted[idx])? '#22c55e':'#ef4444'; });
+  document.getElementById('sortFb').textContent= ok? '✅ Correct order!' : 'Some items are out of order.'; if(ok) window.confetti();
+});
+
+const qText=document.getElementById('qText'), ansIn=document.getElementById('ans'), qFb=document.getElementById('qFb'), qHint=document.getElementById('qHint'), level=document.getElementById('level'); let current=null;
+function rint(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function newQuestion(){
+  if(!qText) return;
+  qFb.textContent=''; qHint.textContent=''; ansIn.value='';
+  const lvl=level.value; let A,B,op;
+  if(lvl==='easy'){ A=[rint(-9,9),1]; B=[rint(-9,9),1]; op=Math.random()<0.5?'+':'-'; }
+  else if(lvl==='med'){
+    if(Math.random()<0.5){ const d=[4,5,6,8,10][rint(0,4)]; A=[rint(-d+1,d-1),d]; B=[rint(-d+1,d-1),d]; }
+    else { const a=(rint(-30,30)/10), b=(rint(-30,30)/10); A=_parseR(String(a)); B=_parseR(String(b)); }
+    op=Math.random()<0.5?'+':'-';
+  } else { const d1=[3,4,5,6,8,9][rint(0,5)], d2=[4,5,6,7,8,10][rint(0,5)]; A=[rint(-d1+1,d1-1),d1]; B=[rint(-d2+1,d2-1),d2]; op=Math.random()<0.5?'+':'-'; }
+  current={A,B,op}; qText.innerHTML = `\\( ${_sF(A)} \\ ${op}\\ ${_sF(B)} \\)`; if(window._renderMath) window._renderMath(document.getElementById('mixedSlide'));
+}
+document.getElementById('newQ')&&document.getElementById('newQ').addEventListener('click',newQuestion);
+document.getElementById('hintQ')&&document.getElementById('hintQ').addEventListener('click',()=>{
+  if(!current) return; const {A,B,op}=current;
+  if(A[1]===B[1]) qHint.innerHTML=`<div class="hint">Like denominators: \\( ${_sF(A)} ${op} ${_sF(B)} \\Rightarrow ${(op==='+')? (A[0]+'+'+B[0]): (A[0]+'-'+B[0])} \\) over \\( ${A[1]} \\).</div>`;
+  else {const L=_lcm(A[1],B[1]); qHint.innerHTML=`<div class="hint">Unlike denominators: \\(\\mathrm{LCM}(${A[1]}, ${B[1]}) = ${L}\\). Equivalents: \\( ${_sF([A[0]*(L/A[1]),L])} ${op} ${_sF([B[0]*(L/B[1]),L])} \\).</div>`}
+  if(window._renderMath) window._renderMath(document.getElementById('mixedSlide'));
+});
+document.getElementById('checkQ')&&document.getElementById('checkQ').addEventListener('click',()=>{
+  if(!current) return; const got=_parseR(ansIn.value); if(!got){qFb.textContent='Enter a valid number/fraction.'; qFb.className='mt-2 h-6 font-semibold text-red-700'; return;}
+  const {A,B,op}=current; const ans = op==='+'? _addF(A,B): _subF(A,B);
+  if(_eqF(got, ans)){qFb.textContent='✅ Correct! '+_sF(ans); qFb.className='mt-2 h-6 font-semibold text-green-700'; window.confetti();}
+  else {qFb.textContent='❌ Not quite. Expected '+_sF(ans); qFb.className='mt-2 h-6 font-semibold text-red-700';}
+});
+function errNew(){
+  const bank=[
+    {work:'\\( (-\\tfrac{3}{4}) + (\\tfrac{1}{2}) = -\\tfrac{4}{6} = -\\tfrac{2}{3} \\)', correct:'Use a common denominator 4: \\( -\\tfrac{3}{4} + \\tfrac{1}{2} = -\\tfrac{3}{4} + \\tfrac{2}{4} = -\\tfrac{1}{4} \\).', key:'A'},
+    {work:'\\( 6 - 9 = 3 \\)', correct:'Subtracting a larger number yields a negative: \\( 6-9=-3 \\).', key:'C'},
+    {work:'\\( -2.5 - 1.5 = -1.0 \\)', correct:'Both negative: difference is \\( -4.0 \\).', key:'C'},
+    {work:'\\( \\tfrac{3}{5} + \\tfrac{1}{2} = \\tfrac{4}{7} \\)', correct:'LCD 10: \\( \\tfrac{3}{5}+\\tfrac{1}{2}=\\tfrac{6}{10}+\\tfrac{5}{10}=\\tfrac{11}{10}=1\\tfrac{1}{10} \\).', key:'A'},
+    {work:'\\( 2.6 + (-1.25) = 0.75 \\) (misaligned)', correct:'Align decimals: \\( 2.60 + (-1.25)=1.35 \\).', key:'D'}
+  ];
+  const item=bank[Math.floor(Math.random()*bank.length)];
+  const box=document.getElementById('errBox'); if(!box) return;
+  box.innerHTML=`Incorrect work:<br/> <div class="mt-1 text-maroon"> ${item.work} </div>`;
+  box.dataset.key=item.key; document.getElementById('errFb').textContent=''; document.getElementById('errRevealBox').textContent='';
+  if(window._renderMath) window._renderMath(document.getElementById('challengeSlide'));
+}
+document.getElementById('errNew')&&document.getElementById('errNew').addEventListener('click',errNew);
+document.getElementById('errCheck')&&document.getElementById('errCheck').addEventListener('click',()=>{
+  const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked); if(!sel){ document.getElementById('errFb').textContent='Choose an option.'; return; }
+  if(sel.value===document.getElementById('errBox').dataset.key){ document.getElementById('errFb').textContent='✅ Correct diagnosis.'; window.confetti(); }
+  else { document.getElementById('errFb').textContent='❌ Not quite. Try again or reveal the correct work.'; }
+});
+document.getElementById('errReveal')&&document.getElementById('errReveal').addEventListener('click',()=>{
+  const bankText=document.getElementById('errBox').textContent; const match=bankText?true:false;
+  const reveal = document.getElementById('errRevealBox');
+  const key=document.getElementById('errBox').dataset.key;
+  const map={A:'Use a common denominator and add numerators.',C:'Check signs and the direction of subtraction.',D:'Align decimal places before adding/subtracting.'};
+  reveal.innerHTML=`<div class="hint">${map[key]||'Explain the structure clearly.'}</div>`;
+});
+document.getElementById('chCheck')&&document.getElementById('chCheck').addEventListener('click',()=>{
+  let ok=true; document.querySelectorAll('.ch1').forEach(inp=>{const want=_parseR(inp.dataset.ans); const got=_parseR(inp.value); if(!(got && _eqF(got,want))){ok=false; inp.style.borderColor='#ef4444'} else inp.style.borderColor='#22c55e'}); document.getElementById('chFb').textContent= ok?'✅ Excellent!':'❌ Try to fix the red ones'; if(ok) window.confetti();
+});
+document.getElementById('chReset')&&document.getElementById('chReset').addEventListener('click',()=>{document.querySelectorAll('.ch1').forEach(i=>{i.value='';i.style.borderColor='#e5e7eb'}); document.getElementById('chFb').textContent='';});
+
+/* ---------- FRACTION INTERPRETATION LAB (PIE/BAR/LINE, BIG) ---------- */
+let _labInited=false;
+function initLab(force){
+  if(_labInited && !force) return;
+  const L = {
+    A_num: document.getElementById('A_num'),
+    A_den: document.getElementById('A_den'),
+    B_num: document.getElementById('B_num'),
+    B_den: document.getElementById('B_den'),
+    opAdd: document.getElementById('opAdd'),
+    opSub: document.getElementById('opSub'),
+    repPie: document.getElementById('repPie'),
+    repBar: document.getElementById('repBar'),
+    repLine: document.getElementById('repLine'),
+    pred: document.getElementById('pred'),
+    labNew: document.getElementById('labNew'),
+    labClear: document.getElementById('labClear'),
+    canvas: document.getElementById('labModel'),
+    showGrid: document.getElementById('showLCMGrid'),
+    labLCM: document.getElementById('labLCM'),
+    eqA: document.getElementById('eqA'),
+    eqB: document.getElementById('eqB'),
+    labStep1: document.getElementById('labStep1'),
+    labStep2: document.getElementById('labStep2'),
+    opSym: document.getElementById('opSym'),
+    labAns: document.getElementById('labAns'),
+    labUser: document.getElementById('labUser'),
+    labCheck: document.getElementById('labCheck'),
+    labHint: document.getElementById('labHint'),
+    labFb: document.getElementById('labFb'),
+    labHintBox: document.getElementById('labHintBox'),
+    host: document.getElementById('fracLab')
+  };
+  if(!L.host) return;
+  _labInited=true;
+  const S = {a:1,b:3,c:1,d:4, op:'+', rep:'pie', step:0, L:12, Aeq:[0,1], Beq:[0,1], result:[0,1], colors:{A:'#6C1D45', B:'#C7A34F', removed:'#e07a00', grid:'#e5e7eb', axis:'#6C1D45'}};
+  const τ=Math.PI*2;
+
+  function readUI(){
+    S.a = clamp(parseInt(L.A_num.value||'1'), -50, 50);
+    S.b = clamp(parseInt(L.A_den.value||'3'), 1, 200);
+    S.c = clamp(parseInt(L.B_num.value||'1'), -50, 50);
+    S.d = clamp(parseInt(L.B_den.value||'4'), 1, 200);
+    S.op = L.opAdd.classList.contains('active')? '+' : '-';
+    S.rep = L.repPie.classList.contains('active')? 'pie' : (L.repBar.classList.contains('active')? 'bar' : 'line');
+    L.opSym.textContent = (S.op==='+')? '+' : '−';
+    const LCM = _lcm(S.b, S.d) || (S.b*S.d);
+    S.L = LCM; const k1=LCM/S.b, k2=LCM/S.d;
+    S.Aeq = [S.a*k1, LCM]; S.Beq=[S.c*k2, LCM];
+    S.result = (S.op==='+')? _addF(S.Aeq,S.Beq) : _subF(S.Aeq,S.Beq);
+    L.labLCM.textContent = String(LCM);
+    L.eqA.textContent = _sF(S.Aeq);
+    L.eqB.textContent = _sF(S.Beq);
+  }
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+
+  function fitCanvas(){
+    const W = L.canvas.clientWidth || L.canvas.parentElement.clientWidth || 900;
+    const H = L.canvas.clientHeight || 520;
+    const dpr = window.devicePixelRatio||1;
+    L.canvas.width = Math.floor(W*dpr);
+    L.canvas.height = Math.floor(H*dpr);
+    const ctx=L.canvas.getContext('2d');
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    return {ctx,W,H};
+  }
+  function draw(){ const g=fitCanvas(); const {ctx,W,H}=g; ctx.clearRect(0,0,W,H); (S.rep==='pie')? drawPie(ctx,W,H) : (S.rep==='bar'? drawBars(ctx,W,H) : drawLine(ctx,W,H)); }
+
+  function drawPie(ctx,W,H){
+    const pad=24, topY = H*0.28, botY = H*0.74;
+    const R = Math.min((W-4*pad)/4, (H-3*pad)/2)-6;
+    const cxA = W*0.25, cxB=W*0.75, cxR=W*0.5;
+    const Lcap = Math.min(S.L, 64); const showGrid = L.showGrid.checked;
+    function pie(cx,cy,fillCount,colorAccent){
+      ctx.beginPath(); ctx.arc(cx,cy,R,0,τ); ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=2; ctx.stroke();
+      if(showGrid){
+        for(let k=0;k<Lcap;k++){
+          const ang = -Math.PI/2 + (k/Lcap)*τ;
+          ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+R*Math.cos(ang), cy+R*Math.sin(ang));
+          ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=1; ctx.stroke();
+        }
+      }
+      const count = Math.min(Math.abs(fillCount), Lcap); const sign = Math.sign(fillCount)||1;
+      ctx.fillStyle = (sign>0)? colorAccent : '#ef4444';
+      for(let k=0;k<count;k++){
+        const a0=-Math.PI/2 + (k/Lcap)*τ, a1=-Math.PI/2 + ((k+1)/Lcap)*τ;
+        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,R,a0,a1); ctx.closePath(); ctx.fill();
+      }
+    }
+    ctx.font='14px Inter'; ctx.fillStyle='#374151'; ctx.textAlign='center';
+    ctx.fillText('A', cxA, topY - R - 10);
+    ctx.fillText('B', cxB, topY - R - 10);
+    if(S.step>=1){ pie(cxA, topY, S.Aeq[0], S.colors.A); pie(cxB, topY, S.Beq[0], S.colors.B); }
+    else { ctx.beginPath(); ctx.arc(cxA,topY,R,0,τ); ctx.strokeStyle='#e5e7eb'; ctx.stroke(); ctx.beginPath(); ctx.arc(cxB,topY,R,0,τ); ctx.strokeStyle='#e5e7eb'; ctx.stroke(); }
+    ctx.fillText('Result', cxR, botY - R - 10);
+    if(S.step>=2){
+      const val = S.op==='+' ? (S.Aeq[0]+S.Beq[0]) : (S.Aeq[0]-S.Beq[0]);
+      pie(cxR, botY, val, (S.op==='+')? '#4b5563' : S.colors.removed);
+      if(S.op==='-'){ const remove = Math.min(Math.abs(S.Beq[0]), Lcap); ctx.strokeStyle=S.colors.removed; ctx.lineWidth=3;
+        for(let k=0;k<remove;k++){ const a0=-Math.PI/2 + (k/Lcap)*τ, a1=-Math.PI/2 + ((k+1)/Lcap)*τ; ctx.beginPath(); ctx.arc(cxR,botY,R-3,a0,a1); ctx.stroke(); } }
+    } else { ctx.beginPath(); ctx.arc(cxR,botY,R,0,τ); ctx.strokeStyle='#e5e7eb'; ctx.stroke(); }
+  }
+
+  function drawBars(ctx,W,H){
+    const pad=24, left=pad, right=W-pad, width=right-left;
+    const rowH=42, gap=40, yA=H*0.20, yB=yA+rowH+gap, yR=yB+rowH+gap;
+    const showGrid = L.showGrid.checked;
+    function bar(y,label,fillCount,color){
+      ctx.fillStyle='#374151'; ctx.font='14px Inter'; ctx.textAlign='left'; ctx.fillText(label,left, y-10);
+      ctx.strokeStyle='#cbd5e1'; ctx.strokeRect(left,y,width,rowH);
+      if(showGrid){
+        for(let k=1;k<S.L;k++){ const x= left + k*(width/S.L);
+          ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y+rowH); ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=1; ctx.stroke(); }
+      }
+      const count = Math.max(0, Math.min(Math.abs(fillCount), S.L));
+      const wCell= width/S.L; ctx.fillStyle = (Math.sign(fillCount)>=0)? color : '#ef4444';
+      ctx.fillRect(left, y, count*wCell, rowH);
+    }
+    if(S.step>=1){ bar(yA,'A', S.Aeq[0], S.colors.A); bar(yB,'B', S.Beq[0], S.colors.B); }
+    else { ctx.strokeStyle='#e5e7eb'; ctx.strokeRect(left,yA,width,rowH); ctx.strokeRect(left,yB,width,rowH); }
+    if(S.step>=2){ const val = S.op==='+' ? (S.Aeq[0]+S.Beq[0]) : (S.Aeq[0]-S.Beq[0]); bar(yR,'Result', val, (S.op==='+')? '#4b5563' : S.colors.removed); }
+    else { ctx.strokeStyle='#e5e7eb'; ctx.strokeRect(left,yR,width,rowH); }
+  }
+
+  function drawLine(ctx,W,H){
+    const pad=40, left=pad, right=W-pad, mid=H*0.55;
+    const vals = [0, _asNum(S.Aeq), _asNum(S.Beq), _asNum(S.result)];
+    const minV = Math.min(...vals, 0), maxV = Math.max(...vals, 1);
+    const span = Math.max(1, maxV - minV);
+    const a=minV - 0.1*span, b=maxV + 0.1*span;
+    const map = x => left + (x - a) * (right-left) / (b-a);
+    ctx.strokeStyle=S.colors.axis; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(left,mid); ctx.lineTo(right,mid); ctx.stroke();
+    const step = span<=1.5? 0.25 : 0.5;
+    ctx.fillStyle='#374151'; ctx.font='12px Inter'; ctx.textAlign='center';
+    for(let t=Math.ceil(a/step)*step; t<=b; t+=step){
+      const x=map(t); ctx.beginPath(); ctx.moveTo(x,mid-8); ctx.lineTo(x,mid+8); ctx.strokeStyle='#cbd5e1'; ctx.stroke(); ctx.fillText(String(Math.round(t*100)/100), x, mid+22);
+    }
+    function arrow(x0,x1,color){
+      ctx.strokeStyle=color; ctx.lineWidth=5; ctx.beginPath(); ctx.moveTo(x0,mid); ctx.lineTo(x1,mid); ctx.stroke(); ctx.beginPath(); ctx.arc(x1,mid,6,0,Math.PI*2); ctx.fillStyle=color; ctx.fill();
+    }
+    if(S.step>=1){
+      const x0=map(0), xA=map(_asNum(S.Aeq)); arrow(x0,xA,S.colors.A);
+      if(S.op==='+'){ arrow(xA, map(_asNum(S.Aeq)+_asNum(S.Beq)), S.colors.B); }
+      else { arrow(xA, map(_asNum(S.Aeq)-_asNum(S.Beq)), S.colors.removed); }
+    }
+    if(S.step>=2){
+      const xRes=map(_asNum(S.result)); ctx.beginPath(); ctx.arc(xRes,mid,10,0,Math.PI*2); ctx.fillStyle='#111827'; ctx.fill();
+    }
+  }
+
+  function setActive(btn, group){ group.forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
+  [L.opAdd,L.opSub,L.repPie,L.repBar,L.repLine,L.A_num,L.A_den,L.B_num,L.B_den,L.showGrid].forEach(el=> el && el.addEventListener('input',()=>{ readUI(); S.step=0; L.labAns.textContent='?'; draw(); }));
+  L.opAdd&&L.opAdd.addEventListener('click',()=>{ setActive(L.opAdd,[L.opAdd,L.opSub]); readUI(); draw(); });
+  L.opSub&&L.opSub.addEventListener('click',()=>{ setActive(L.opSub,[L.opAdd,L.opSub]); readUI(); draw(); });
+  L.repPie&&L.repPie.addEventListener('click',()=>{ setActive(L.repPie,[L.repPie,L.repBar,L.repLine]); readUI(); draw(); });
+  L.repBar&&L.repBar.addEventListener('click',()=>{ setActive(L.repBar,[L.repPie,L.repBar,L.repLine]); readUI(); draw(); });
+  L.repLine&&L.repLine.addEventListener('click',()=>{ setActive(L.repLine,[L.repPie,L.repBar,L.repLine]); readUI(); draw(); });
+  L.labStep1&&L.labStep1.addEventListener('click',()=>{ S.step=Math.max(S.step,1); readUI(); draw(); });
+  L.labStep2&&L.labStep2.addEventListener('click',()=>{ S.step=Math.max(S.step,2); readUI(); draw(); });
+  L.labNew&&L.labNew.addEventListener('click',()=>{
+    const den = [3,4,5,6,7,8,9,10];
+    const b = den[Math.floor(Math.random()*den.length)];
+    let d = den[Math.floor(Math.random()*den.length)];
+    if(d===b) d = den[(den.indexOf(d)+1)%den.length];
+    const a = Math.floor(Math.random()*(b-1))+1;
+    const c = Math.floor(Math.random()*(d-1))+1;
+    L.A_num.value=a; L.A_den.value=b; L.B_num.value=c; L.B_den.value=d;
+    S.step=0; L.pred.value=''; L.labUser.value=''; L.labAns.textContent='?'; L.labFb.textContent=''; L.labHintBox.textContent='';
+    readUI(); draw();
+  });
+  L.labClear&&L.labClear.addEventListener('click',()=>{ L.A_num.value=1; L.A_den.value=3; L.B_num.value=1; L.B_den.value=4; S.step=0; L.pred.value=''; L.labUser.value=''; L.labAns.textContent='?'; L.labFb.textContent=''; L.labHintBox.textContent=''; readUI(); draw(); });
+  L.labCheck&&L.labCheck.addEventListener('click',()=>{
+    const correct = S.result; const got = _parseR(L.labUser.value);
+    if(got && _eqF(got, correct)){ L.labFb.textContent='✅ Correct! '+_sF(correct); window.confetti(); }
+    else { L.labFb.textContent='❌ Not quite. Try the hint.'; }
+    L.labAns.textContent = _sF(correct); if(window._renderMath) window._renderMath(L.host);
+  });
+  L.labHint&&L.labHint.addEventListener('click',()=>{
+    L.labHintBox.innerHTML = `<div class="hint">Find LCM(${S.b}, ${S.d}) = ${S.L}. Build equivalents: \\( ${_sF(S.Aeq)} \\) and \\( ${_sF(S.Beq)} \\). Then ${S.op==='+'?'add':'subtract'} numerators and keep denominator ${S.L}, simplify: <b>${_sF(S.result)}</b>.</div>`;
+    if(window._renderMath) window._renderMath(L.host);
+  });
+
+  const ro = new ResizeObserver(()=>draw()); ro.observe(L.canvas);
+  const mo = new MutationObserver(()=>draw()); mo.observe(L.host,{attributes:true, attributeFilter:['class']});
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+
+  setActive(L.opAdd,[L.opAdd,L.opSub]); setActive(L.repPie,[L.repPie,L.repBar,L.repLine]); S.step=0; readUI(); draw();
+}
+</script>
+
 </body>
 </html>
