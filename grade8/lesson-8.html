@@ -16,7 +16,6 @@
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 <script>
-  // KaTeX auto-render bootstrap
   window.addEventListener('DOMContentLoaded', () => {
     const run = (root = document.body) => {
       if (!window.renderMathInElement) return;
@@ -147,8 +146,6 @@
           <span class="pill">Linear‑pair partner: <b id="lpOut">140°</b></span>
           <span class="pill">Vertical to \(A\): <b id="vertOut">40°</b></span>
         </div>
-
-        <!-- Overlays + utilities -->
         <div class="flex flex-wrap items-center gap-2 mb-2 text-sm">
           <label class="badge"><input type="checkbox" id="abShowProt" checked> Protractor</label>
           <label class="badge"><input type="checkbox" id="abShowComp" checked> Complement</label>
@@ -160,7 +157,6 @@
           <button id="abExport" class="btn">Export PNG</button>
           <span class="text-xs text-gray-500 ml-2">Drag on canvas • Press <span class="kbd">F</span> for fullscreen</span>
         </div>
-
         <svg id="angleSvg" viewBox="0 0 760 360" aria-label="Interactive angle canvas"></svg>
         <div class="hint mt-3 text-sm">Move the handle or slider. Complementary wedges fill to \(90^\circ\), supplementary/linear‑pairs to \(180^\circ\); vertical angles are equal (animate the proof).</div>
       </div>
@@ -247,7 +243,7 @@
       </div>
     </section>
 
-    <!-- 7 • Solve for x — (comp/supp/vertical/linear) -->
+    <!-- 7 • Solve for x — Set A -->
     <section class="slide" id="solveSlide1">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Solve for \(x\) — Set A</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -338,10 +334,10 @@
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Polygon Explorer</h2>
       <div class="card p-5 w-full max-w-5xl text-left">
         <div class="flex flex-wrap items-center gap-3 mb-2">
-          <label class="chip">Sides \(n\): <input id="polyN" type="range" min="3" max="12" value="6" class="w-56"> <b id="polyNLabel">6</b></label>
+          <label class="chip">Sides n: <input id="polyN" type="range" min="3" max="12" value="6" class="w-56"> <b id="polyNLabel">6</b></label>
           <span class="pill">Interior Sum: <b id="polySum">720°</b></span>
-          <span class="pill">Regular \(\\angle_{\\text{int}}\): <b id="polyInt">120°</b></span>
-          <span class="pill">Regular \(\\angle_{\\text{ext}}\): <b id="polyExt">60°</b></span>
+          <span class="pill">Regular interior angle: <b id="polyInt">120°</b></span>
+          <span class="pill">Regular exterior angle: <b id="polyExt">60°</b></span>
         </div>
         <div class="flex flex-wrap items-center gap-2 mb-2 text-sm">
           <label class="badge"><input id="polyTri" type="checkbox"> Show triangulation</label>
@@ -354,7 +350,7 @@
       </div>
     </section>
 
-    <!-- 12 • Missing Interior Angle Practice (with diagrams) -->
+    <!-- 12 • Missing Interior Angle Practice -->
     <section class="slide" id="polyMissSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Find the Missing Interior Angle</h2>
       <div class="flex items-center gap-3 mb-2">
@@ -765,7 +761,6 @@
 
     svg.appendChild(rightMarker(cx,cy));
 
-    // handle
     const handle=document.createElementNS('http://www.w3.org/2000/svg','circle');
     handle.setAttribute('cx',rx); handle.setAttribute('cy',ry); handle.setAttribute('r',6);
     handle.setAttribute('fill','#C7A34F'); handle.setAttribute('class','handle');
@@ -812,104 +807,129 @@
     img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml);
   }
 
-  /* ---------- Part 1: Classify & Missing ---------- */
+  /* ---------- Part 1: Classify (corrected) ---------- */
   const TYPES=['complementary','supplementary','vertical','adjacent','linear pair','neither'];
   function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
   function choice(arr){ return arr[rand(0,arr.length-1)] }
 
-  // small diagram generator for classify
-  function svgPairHTML(type, a, b){
-    const W=200,H=120,cx=90,cy=78,R=56;
-    const arcPath=(cx,cy,r,a0,a1)=>{
-      const A0=deg2rad(a0), A1=deg2rad(a1);
-      const x0=cx+r*Math.cos(A0), y0=cy-r*Math.sin(A0);
-      const x1=cx+r*Math.cos(A1), y1=cy-r*Math.sin(A1);
-      const large=((a1-a0+360)%360)>180 ? 1:0;
+  // Larger, unambiguous diagrams; show only 2 items per set
+  const CLF_COUNT = 2;
+  const CLF_W = 360, CLF_H = 200;
+
+  function makeClassAngles(type){
+    let a,b;
+    if(type==='complementary'){ a = rand(15,75); b = 90 - a; }
+    else if(type==='linear pair'){ a = rand(20,160); if(a===90) a+=1; b = 180 - a; }
+    else if(type==='supplementary'){ a = rand(25,155); if(a===90) a+=1; b = 180 - a; }
+    else if(type==='vertical'){ a = rand(20,160); b = a; }
+    else if(type==='adjacent'){
+      do { a = rand(20,70); b = rand(20,70); } while(a===b || a+b===90 || a+b===180);
+    } else {
+      do { a = rand(20,100); b = rand(20,100); } while(a===b || a+b===90 || a+b===180);
+    }
+    return {a,b};
+  }
+
+  function svgPairHTML(type, A, B){
+    const cx = CLF_W/2, cy = 120, R = 70;
+    const d2r = t=>t*Math.PI/180;
+    const arcP = (x,y,r,a0,a1)=>{
+      const x0=x+r*Math.cos(d2r(a0)), y0=y-r*Math.sin(d2r(a0));
+      const x1=x+r*Math.cos(d2r(a1)), y1=y-r*Math.sin(d2r(a1));
+      const large = ((a1-a0+360)%360)>180 ? 1 : 0;
       return `M${x0},${y0} A${r},${r} 0 ${large} 0 ${x1},${y1}`;
     };
-    const sectorPath=(cx,cy,r,a0,a1)=>`M${cx},${cy} ${arcPath(cx,cy,r,a0,a1).slice(1)} Z`;
-    const pl=(x1,y1,x2,y2,st='#6C1D45',w=2, dash='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${st}" stroke-width="${w}" ${dash?`stroke-dasharray="${dash}"`:''}/>`;
-    const txt=(x,y,t,cls='svg-dim')=>`<text x="${x}" y="${y}" class="${cls}" text-anchor="middle">${t}</text>`;
-    const arc=(r,A0,A1,col='#C7A34F',w=3)=>`<path d="${arcPath(cx,cy,r,A0,A1)}" fill="none" stroke="${col}" stroke-width="${w}"/>`;
-    const wedge=(r,A0,A1,fill,op)=>`<path d="${sectorPath(cx,cy,r,A0,A1)}" fill="${fill}" fill-opacity="${op??0.15}" />`;
+    const sectorP = (x,y,r,a0,a1)=>`M${x},${y} ${arcP(x,y,r,a0,a1).slice(1)} Z`;
+    const L = (x1,y1,x2,y2,st='#6C1D45',w=2, dash='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${st}" stroke-width="${w}" ${dash?`stroke-dasharray="${dash}"`:''}/>`;
+    const T = (x,y,txt,cls='svg-dim')=>`<text x="${x}" y="${y}" class="${cls}" text-anchor="middle" font-size="13">${txt}</text>`;
+    const tag = t => `<text x="${CLF_W-10}" y="${CLF_H-10}" class="svg-note" text-anchor="end">${t}</text>`;
+    let g = '';
 
-    let rays = `${pl(cx-80,cy,cx+80,cy,'#6C1D45',2.2)}${pl(cx,cy,cx,cy-76,'#6C1D45',2.2)}`;
-    let gfx='', note='';
-
-    if(type==='complementary'){
-      const A=a, B=90-a;
-      gfx = wedge(R-6, 0, A, '#C7A34F', .22) + wedge(R-6, A, 90, '#6C1D45', .10)
-          + arc(R, 0, A) + arc(R-10, A, 90, '#6C1D45', 2)
-          + txt(cx+(R+12)*Math.cos(deg2rad(A/2)), cy-(R+12)*Math.sin(deg2rad(A/2)), `${A}°`)
-          + txt(cx+(R-2)*Math.cos(deg2rad((A+90)/2)), cy-(R-2)*Math.sin(deg2rad((A+90)/2)), `${B}°`)
-          + `<path d="M${cx+18},${cy} L${cx+18},${cy-18} L${cx},${cy-18}" stroke="#94a3b8" stroke-width="2" fill="none"/>`;
-      note='Complementary';
-    } else if(type==='supplementary' || type==='linear pair'){
-      const A=a, B=180-a;
-      rays = `${pl(cx-90,cy,cx+90,cy,'#6C1D45',2.2)}${pl(cx,cy,cx,cy-1,'#ffffff',0.01)}`;
-      gfx = wedge(R-8, 0, A, '#C7A34F', .22) + wedge(R-8, A, 180, '#6C1D45', .08)
-          + arc(R, 0, A) + arc(R-10, A, 180, '#6C1D45', 2)
-          + txt(cx+(R+10)*Math.cos(deg2rad(A/2)), cy-(R+10)*Math.sin(deg2rad(A/2)), `${A}°`)
-          + txt(cx+(R-6)*Math.cos(deg2rad((A+180)/2)), cy-(R-6)*Math.sin(deg2rad((A+180)/2)), `${B}°`);
-      note = (type==='linear pair' ? 'Linear pair' : 'Supplementary');
+    if(type==='linear pair'){
+      g += L(40,cy, CLF_W-40,cy, '#6C1D45', 2.4);
+      g += `<path d="${sectorP(cx,cy,R,0,A)}" fill="rgba(199,163,79,.22)"/>`;
+      g += `<path d="${arcP(cx,cy,R,0,A)}" fill="none" stroke="#C7A34F" stroke-width="3"/>`;
+      g += `<path d="${arcP(cx,cy,R-12,A,180)}" fill="none" stroke="#6C1D45" stroke-width="2.2" stroke-dasharray="6 6"/>`;
+      g += T(cx+(R+14)*Math.cos(d2r(A/2)), cy-(R+14)*Math.sin(d2r(A/2)), `${A}°`);
+      g += T(cx+(R-18)*Math.cos(d2r((A+180)/2)), cy-(R-18)*Math.sin(d2r((A+180)/2)), `${180-A}°`);
+      g += tag('Linear pair');
+    } else if(type==='supplementary'){
+      const Lx=cx-95, Rx=cx+95;
+      g += L(Lx-60,cy,Lx+60,cy,'#6C1D45',2.2);
+      g += L(Rx-60,cy,Rx+60,cy,'#6C1D45',2.2);
+      g += `<path d="${sectorP(Lx,cy,R-8,0,A)}" fill="rgba(199,163,79,.22)"/>`;
+      g += `<path d="${arcP(Lx,cy,R-8,0,A)}" fill="none" stroke="#C7A34F" stroke-width="3"/>`;
+      g += `<path d="${sectorP(Rx,cy,R-8,0,B)}" fill="rgba(108,29,69,.10)"/>`;
+      g += `<path d="${arcP(Rx,cy,R-8,0,B)}" fill="none" stroke="#6C1D45" stroke-width="2.2"/>`;
+      g += T(Lx+(R+10)*Math.cos(d2r(A/2)), cy-(R+10)*Math.sin(d2r(A/2)), `${A}°`);
+      g += T(Rx+(R+10)*Math.cos(d2r(B/2)), cy-(R+10)*Math.sin(d2r(B/2)), `${B}°`);
+      g += tag('Supplementary (not adjacent)');
+    } else if(type==='complementary'){
+      g += L(40,cy, CLF_W-40,cy, '#6C1D45', 2.2);
+      g += L(cx,cy, cx, cy-90, '#6C1D45', 2.2);
+      g += `<path d="M${cx+18},${cy} L${cx+18},${cy-18} L${cx},${cy-18}" stroke="#94a3b8" stroke-width="2" fill="none"/>`;
+      g += `<path d="${sectorP(cx,cy,R-8,0,A)}" fill="rgba(199,163,79,.22)"/>`;
+      g += `<path d="${arcP(cx,cy,R-8,0,A)}" fill="none" stroke="#C7A34F" stroke-width="3"/>`;
+      g += `<path d="${arcP(cx,cy,R-18,A,90)}" fill="none" stroke="#6C1D45" stroke-width="2.2" stroke-dasharray="6 6"/>`;
+      g += T(cx+(R+14)*Math.cos(d2r(A/2)), cy-(R+14)*Math.sin(d2r(A/2)), `${A}°`);
+      g += T(cx+(R-10)*Math.cos(d2r((A+90)/2)), cy-(R-10)*Math.sin(d2r((A+90)/2)), `${90-A}°`);
+      g += tag('Complementary');
     } else if(type==='vertical'){
-      const A0=a, B0=(a+180)%360;
-      rays = `${pl(cx-90,cy-30,cx+90,cy+30,'#6C1D45',2.2)}${pl(cx-90,cy+30,cx+90,cy-30,'#6C1D45',2.2)}`;
-      gfx = wedge(R-8, A0-20, A0+20, '#C7A34F', .22)
-          + wedge(R-8, B0-20, B0+20, '#C7A34F', .22)
-          + txt(cx+(R-2)*Math.cos(deg2rad(A0)), cy-(R-2)*Math.sin(deg2rad(A0)), `${a}°`,'svg-eq')
-          + txt(cx+(R-2)*Math.cos(deg2rad(B0)), cy-(R-2)*Math.sin(deg2rad(B0)), `${a}°`,'svg-eq');
-      note='Vertical';
+      g += L(cx-160,cy-40, cx+160,cy+40,'#6C1D45',2.2);
+      g += L(cx-160,cy+40, cx+160,cy-40,'#6C1D45',2.2);
+      const a0 = 30, a1 = 30 + Math.min(150, A);
+      const b0 = a0+180, b1 = a1+180;
+      g += `<path d="${arcP(cx,cy,R-6,a0,a1)}" fill="none" stroke="#C7A34F" stroke-width="3"/>`;
+      g += `<path d="${arcP(cx,cy,R-6,b0,b1)}" fill="none" stroke="#C7A34F" stroke-width="3"/>`;
+      g += T(cx+(R-2)*Math.cos(d2r((a0+a1)/2)), cy-(R-2)*Math.sin(d2r((a0+a1)/2)), `${A}°`, 'svg-eq');
+      g += T(cx+(R-2)*Math.cos(d2r((b0+b1)/2)), cy-(R-2)*Math.sin(d2r((b0+b1)/2)), `${A}°`, 'svg-eq');
+      g += tag('Vertical');
     } else if(type==='adjacent'){
-      const A0=a, B0=a+b;
-      gfx = wedge(R-8, 0, A0, '#C7A34F', .22) + wedge(R-8, A0, B0, '#6C1D45', .10)
-          + arc(R, 0, A0) + arc(R-10, A0, B0, '#6C1D45', 2)
-          + txt(cx+(R+10)*Math.cos(deg2rad(A0/2)), cy-(R+10)*Math.sin(deg2rad(A0/2)), `${a}°`)
-          + txt(cx+(R-2)*Math.cos(deg2rad((A0+B0)/2)), cy-(R-2)*Math.sin(deg2rad((A0+B0)/2)), `${b}°`);
-      note='Adjacent';
+      g += L(40,cy, CLF_W-40,cy, '#6C1D45', 2.2);
+      g += `<path d="${sectorP(cx,cy,R-8,0,A)}" fill="rgba(199,163,79,.22)"/>`;
+      g += `<path d="${arcP(cx,cy,R-8,0,A)}" fill="none" stroke="#C7A34F" stroke-width="3"/>`;
+      g += `<path d="${arcP(cx,cy,R-18,A,A+B)}" fill="none" stroke="#6C1D45" stroke-width="2.2"/>`;
+      g += T(cx+(R+12)*Math.cos(d2r(A/2)), cy-(R+12)*Math.sin(d2r(A/2)), `${A}°`);
+      g += T(cx+(R-6)*Math.cos(d2r(A+B/2)), cy-(R-6)*Math.sin(d2r(A+B/2)), `${B}°`);
+      g += tag('Adjacent');
     } else {
-      const cx2=150, cy2=44;
-      const fig2 = `<g>
-        ${pl(cx2-28,cy2,cx2+28,cy2,'#6C1D45',2)}
-        ${pl(cx2,cy2,cx2+26,cy2-22,'#C7A34F',2)}
-        <path d="${arcPath(cx2,cy2,22,0,48)}" stroke="#C7A34F" stroke-width="3" fill="none"/>
-        ${txt(cx2+24,cy2-6,'α','svg-dim')}
-      </g>`;
-      gfx = wedge(R-8, 0, 46, '#C7A34F', .18) + `<path d="${arcPath(cx,cy,R,0,46)}" stroke="#C7A34F" stroke-width="3" fill="none"/>`
-          + txt(cx+(R+10)*Math.cos(deg2rad(23)), cy-(R+10)*Math.sin(deg2rad(23)), 'β')
-          + fig2;
-      note='Neither';
+      const Lx=cx-95, Rx=cx+95;
+      g += L(Lx-60,cy,Lx+60,cy,'#6C1D45',2.2);
+      g += L(Rx-60,cy,Rx+60,cy,'#6C1D45',2.2);
+      g += `<path d="${arcP(Lx,cy,R-12,0,Math.min(120,A))}" fill="none" stroke="#C7A34F" stroke-width="3"/>`;
+      g += `<path d="${arcP(Rx,cy,R-12,180,180+Math.min(120,B))}" fill="none" stroke="#6C1D45" stroke-width="2.2"/>`;
+      g += T(Lx+(R+10)*Math.cos(d2r(Math.min(120,A)/2)), cy-(R+10)*Math.sin(d2r(Math.min(120,A)/2)), `${A}°`);
+      g += T(Rx+(R+10)*Math.cos(d2r(180+Math.min(120,B)/2)), cy-(R+10)*Math.sin(d2r(180+Math.min(120,B)/2)), `${B}°`);
+      g += tag('Neither');
     }
-    return `<svg width="200" height="120" viewBox="0 0 ${W} ${H}" aria-label="Angle relationship diagram">
-      <rect x="0" y="0" width="${W}" height="${H}" rx="10" fill="#fff"/>
-      ${rays} ${gfx}
-      <text x="${W-8}" y="${H-8}" class="svg-note" text-anchor="end">${note}</text>
+
+    return `
+    <svg width="${CLF_W}" height="${CLF_H}" viewBox="0 0 ${CLF_W} ${CLF_H}" aria-label="Angle relationship diagram">
+      <rect x="0" y="0" width="${CLF_W}" height="${CLF_H}" rx="14" fill="#fff" />
+      ${g}
     </svg>`;
   }
 
-  const clfState={items:[]};
   function buildClassifyPrompt(type, lv){
-    let a=0,b=0,msg='';
-    if(type==='complementary'){ a=rand(10,70); b=90-a; msg=svgPairHTML('complementary',a,b); }
-    else if(type==='supplementary'){ a=rand(30,150); b=180-a; msg=svgPairHTML('supplementary',a,b); }
-    else if(type==='vertical'){ a=rand(20,140); msg=svgPairHTML('vertical',a,0); }
-    else if(type==='adjacent'){ a=rand(20,70); b=rand(20,70); msg=svgPairHTML('adjacent',a,b); }
-    else if(type==='linear pair'){ a=rand(20,160); b=180-a; msg=svgPairHTML('linear pair',a,b); }
-    else { msg=svgPairHTML('neither',0,0); }
-    if(lv==='hard' && Math.random()<0.3) msg+=` <span class="hint ml-1">Trap: complementary angles need not be adjacent.</span>`;
-    return msg;
+    const {a,b} = makeClassAngles(type);
+    const fig = svgPairHTML(type,a,b);
+    const line = `<div class="mt-1 text-sm text-gray-600">Which relationship best describes the two highlighted angles?</div>`;
+    if(lv==='hard' && Math.random()<0.28) return fig + ` <span class="hint ml-1">Trap: complementary angles need not be adjacent.</span>` + line;
+    return fig + line;
   }
+
+  const clfState={items:[]};
   function clfNew(){
-    const lv=id('clfLevel').value; const k= (lv==='easy'?6:(lv==='med'?8:10));
+    const lv=id('clfLevel').value; const k = CLF_COUNT;
     clfState.items=[];
     const box=id('clfList'); box.innerHTML='';
     for(let i=0;i<k;i++){
       const t=choice(TYPES);
       const prompt=buildClassifyPrompt(t, lv);
       clfState.items.push({t, prompt});
-      const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML=`<div class="text-maroon font-semibold mb-1">Item ${i+1}</div>
-        <div class="mb-2">${prompt}</div>
+      const row=document.createElement('div'); row.className='card p-5 text-left';
+      row.innerHTML=`<div class="text-maroon font-semibold mb-2 text-lg">Item ${i+1}</div>
+        <div class="mb-3">${prompt}</div>
         <div class="flex flex-wrap gap-2 text-sm mt-1">
           ${TYPES.map(s=>`<label class="pill"><input type="radio" name="clf_${i}" value="${s}" class="mr-1">${s}</label>`).join('')}
         </div>`;
@@ -946,36 +966,98 @@
     downloadJSON(`${deckTitle}_P1_classify.json`, data);
   });
 
-  /* ---------- Missing‑angle (Part 1) — logic retained ---------- */
+  /* ---------- Part 1: Missing‑angle (exactly 4) with diagrams ---------- */
   const missState={items:[]};
+
+  function missDiagram(kind, data){
+    const W=340,H=190,cx=W/2,cy=120,R=70, d2r=t=>t*Math.PI/180;
+    const arcP=(x,y,r,a0,a1)=>{const x0=x+r*Math.cos(d2r(a0)),y0=y-r*Math.sin(d2r(a0));
+      const x1=x+r*Math.cos(d2r(a1)),y1=y-r*Math.sin(d2r(a1)); const large=((a1-a0+360)%360)>180?1:0;
+      return `M${x0},${y0} A${r},${r} 0 ${large} 0 ${x1},${y1}`;};
+    const sectorP=(x,y,r,a0,a1)=>`M${x},${y} ${arcP(x,y,r,a0,a1).slice(1)} Z`;
+    const L=(x1,y1,x2,y2,st='#6C1D45',w=2,dash='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${st}" stroke-width="${w}" ${dash?`stroke-dasharray="${dash}"`:''}/>`;
+    const T=(x,y,t,cls='svg-dim')=>`<text x="${x}" y="${y}" text-anchor="middle" font-size="13" class="${cls}">${t}</text>`;
+    let g='';
+    if(kind==='comp'){
+      const a=data.a;
+      g += L(40,cy, W-40,cy,'#6C1D45',2.2) + L(cx,cy,cx,cy-90,'#6C1D45',2.2);
+      g += `<path d="M${cx+16},${cy} L${cx+16},${cy-16} L${cx},${cy-16}" stroke="#94a3b8" stroke-width="2" fill="none"/>`;
+      g += `<path d="${sectorP(cx,cy,R-8,0,a)}" fill="rgba(199,163,79,.22)"/>`;
+      g += `<path d="${arcP(cx,cy,R-8,a,90)}" fill="none" stroke="#6C1D45" stroke-width="2.2" stroke-dasharray="6 6"/>`;
+      g += T(cx+(R+12)*Math.cos(d2r(a/2)), cy-(R+12)*Math.sin(d2r(a/2)), `${a}°`);
+      g += T(cx+(R-6)*Math.cos(d2r((a+90)/2)), cy-(R-6)*Math.sin(d2r((a+90)/2)), '?');
+    } else if(kind==='supp' || kind==='lp'){
+      const a=data.a;
+      g += L(40,cy, W-40,cy,'#6C1D45',2.4);
+      g += `<path d="${sectorP(cx,cy,R-8,0,a)}" fill="rgba(199,163,79,.22)"/>`;
+      g += `<path d="${arcP(cx,cy,R-8,a,180)}" fill="none" stroke="#6C1D45" stroke-width="2.2" stroke-dasharray="6 6"/>`;
+      g += T(cx+(R+12)*Math.cos(d2r(a/2)), cy-(R+12)*Math.sin(d2r(a/2)), `${a}°`);
+      g += T(cx+(R-6)*Math.cos(d2r((a+180)/2)), cy-(R-6)*Math.sin(d2r((a+180)/2)), '?');
+    } else if(kind==='vert'){
+      const a=data.a;
+      g += L(cx-150,cy-40,cx+150,cy+40,'#6C1D45',2.2) + L(cx-150,cy+40,cx+150,cy-40,'#6C1D45',2.2);
+      g += `<path d="${sectorP(cx,cy,R-8,20,20+Math.min(150,a))}" fill="rgba(199,163,79,.22)"/>`;
+      g += `<path d="${arcP(cx,cy,R-8,200,200+Math.min(150,a))}" fill="none" stroke="#C7A34F" stroke-width="3" stroke-dasharray="6 6"/>`;
+      g += T(cx+(R+8)*Math.cos(d2r(20+Math.min(150,a)/2)), cy-(R+8)*Math.sin(d2r(20+Math.min(150,a)/2)), `${a}°`);
+      g += T(cx+(R-4)*Math.cos(d2r(200+Math.min(150,a)/2)), cy-(R-4)*Math.sin(d2r(200+Math.min(150,a)/2)), '?');
+    } else { // around a point
+      const a=data.a, b=data.b, c=data.c;
+      g += `<circle cx="${cx}" cy="${cy}" r="3" fill="#6C1D45"/>`;
+      let start=0; const chunks=[a,b,c]; const colors=['rgba(199,163,79,.22)','rgba(108,29,69,.10)','rgba(199,163,79,.16)'];
+      chunks.forEach((val,idx)=>{
+        g += `<path d="${sectorP(cx,cy,R-10,start,start+val)}" fill="${colors[idx]}"/>`;
+        g += `<path d="${arcP(cx,cy,R-10,start,start+val)}" fill="none" stroke="#6C1D45" stroke-width="2"/>`;
+        const mid=start+val/2; g += T(cx+(R+8)*Math.cos(d2r(mid)), cy-(R+8)*Math.sin(d2r(mid)), `${val}°`);
+        start+=val;
+      });
+      g += `<path d="${arcP(cx,cy,R-10,start,360)}" fill="none" stroke="#6C1D45" stroke-width="2" stroke-dasharray="6 6"/>`;
+      g += T(cx+(R-6)*Math.cos(d2r((start+360)/2)), cy-(R-6)*Math.sin(d2r((start+360)/2)), '?');
+      g += T(cx, cy+R+20, 'Sum around a point = 360°', 'svg-note');
+    }
+    return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-label="Find the missing angle">${g}</svg>`;
+  }
+
+  function buildMissing(kind, lv){
+    if(kind==='comp'){
+      const a=rand(10,80); return {prompt:`Find the complement of <b>${a}°</b>.`, ans:90-a, given:a};
+    } else if(kind==='supp'){
+      const a=rand(30,170); return {prompt:`∠1 forms a linear pair with ∠2. If \(m∠1=${a}°\), find \(m∠2\).`, ans:180-a, given:a};
+    } else if(kind==='vert'){
+      const a=rand(15,165); return {prompt:`Two lines intersect. If \(m∠A=${a}°\), find \(m∠A'\) (vertical angle).`, ans:a, given:a};
+    } else if(kind==='lp'){
+      const a=rand(25,155); return {prompt:`Adjacent ∠X and ∠Y form a straight line. If \(m∠X=${a}°\), find \(m∠Y\).`, ans:180-a, given:a};
+    } else {
+      // ensure positive remainder with a reasonable size
+      let a,b,c,d;
+      do {
+        a=rand(40,120); b=rand(40,120); c=rand(40,120); d=360-(a+b+c);
+      } while(d<=10 || d>=200);
+      return {prompt:`Angles around a point: ${a}°, ${b}°, ${c}°, and ∠? . Find ∠?.`, ans:d, a,b,c};
+    }
+  }
+
   function missNew(){
-    const lv=id('missLevel').value; const k = (lv==='easy'?6:(lv==='med'?8:10));
+    const lv=id('missLevel').value; const k = 4; // exactly 4
     missState.items=[]; const box=id('missList'); box.innerHTML='';
     for(let i=0;i<k;i++){
       const kind = choice(['comp','supp','vert','lp','around']);
       const o=buildMissing(kind, lv);
       missState.items.push(o);
-      const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML=`<div class="font-semibold text-maroon mb-1">Item ${i+1}</div>
-        <div class="mb-2">${o.prompt}</div>
+      let diag='';
+      if(kind==='comp') diag = missDiagram('comp',{a:o.given ?? (90-o.ans)});
+      else if(kind==='supp') diag = missDiagram('supp',{a:o.given ?? (180-o.ans)});
+      else if(kind==='vert') diag = missDiagram('vert',{a:o.given ?? o.ans});
+      else if(kind==='lp')  diag = missDiagram('lp',{a:o.given ?? (180-o.ans)});
+      else diag = missDiagram('around',{a:o.a, b:o.b, c:o.c});
+      const row=document.createElement('div'); row.className='card p-5 text-left';
+      row.innerHTML=`<div class="text-maroon font-semibold mb-1">Item ${i+1}</div>
+        <div class="mb-2">${diag}</div>
+        <div class="mb-1 text-sm text-gray-600">Find the measure of the unknown angle.</div>
         <div>Answer: <input class="minp border rounded px-2 py-1 w-24"> °</div>`;
       box.appendChild(row);
     }
   }
-  function buildMissing(kind, lv){
-    if(kind==='comp'){
-      const a=rand(10,80); return {prompt:`Find the complement of <b>${a}°</b>.`, ans:90-a};
-    } else if(kind==='supp'){
-      const a=rand(30,170); return {prompt:`∠1 forms a linear pair with ∠2. If \(m∠1=${a}°\), find \(m∠2\).`, ans:180-a};
-    } else if(kind==='vert'){
-      const a=rand(15,165); return {prompt:`Two lines intersect. If \(m∠A=${a}°\), find \(m∠A'\) (vertical angle).`, ans:a};
-    } else if(kind==='lp'){
-      const a=rand(25,155); return {prompt:`Adjacent ∠X and ∠Y form a straight line. If \(m∠X=${a}°\), find \(m∠Y\).`, ans:180-a};
-    } else {
-      const a=rand(40,140), b=rand(40,140), c=rand(40,140); const sum=a+b+c;
-      const d=360-sum; return {prompt:`Angles around a point: ${a}°, ${b}°, ${c}°, and ∠? . Find ∠?.`, ans:d};
-    }
-  }
+
   function missCheck(){
     let ok=0;
     [...id('missList').children].forEach((row,idx)=>{
@@ -1000,36 +1082,72 @@
     downloadJSON(`${deckTitle}_P1_missing.json`, data);
   });
 
-  /* ---------- Part 1 Real‑Life (retained) ---------- */
+  /* ---------- Part 1 Real‑Life (same 4, now with mini‑icons) ---------- */
   const p1RealState={items:[]};
+
+  function iconReal(kind, data){
+    const W=320,H=120,cx=W/2,cy=70,R=46,d2r=t=>t*Math.PI/180;
+    const arcP=(x,y,r,a0,a1)=>{const x0=x+r*Math.cos(d2r(a0)),y0=y-r*Math.sin(d2r(a0));
+      const x1=x+r*Math.cos(d2r(a1)),y1=y-r*Math.sin(d2r(a1)); const large=((a1-a0+360)%360)>180?1:0;
+      return `M${x0},${y0} A${r},${r} 0 ${large} 0 ${x1},${y1}`;};
+    const L=(x1,y1,x2,y2,st='#6C1D45',w=2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${st}" stroke-width="${w}"/>`;
+    let g='';
+    if(kind==='frame'){
+      g += L(40,cy,160,cy) + L(40,cy,40,cy-60);
+      g += `<path d="M${56},${cy} L${56},${cy-16} L${40},${cy-16}" stroke="#94a3b8" stroke-width="2" fill="none"/>`;
+      g += `<path d="${arcP(40,cy,R,0,Math.min(80,data.a))}" fill="none" stroke="#C7A34F" stroke-width="3"/>`;
+    } else if(kind==='door'){
+      g += L(60,cy+24,60,cy-40); g += L(60,cy+24,120,cy+24);
+      g += `<rect x="120" y="${cy-40}" width="80" height="64" fill="none" stroke="#6C1D45" stroke-width="2"/>`;
+      g += `<path d="${arcP(60,cy+24,40,0,Math.min(90,data.a))}" fill="none" stroke="#C7A34F" stroke-width="3"/>`;
+    } else if(kind==='bracket'){
+      g += L(40,cy, 280,cy, '#6C1D45',2.4);
+      g += `<path d="${arcP(140,cy,R,0,Math.min(160,data.a))}" fill="none" stroke="#C7A34F" stroke-width="3"/>`;
+    } else {
+      g += `<circle cx="${cx}" cy="${cy}" r="3" fill="#6C1D45"/>`;
+      let start=0; [data.a,data.b,data.c].forEach(v=>{
+        g += `<path d="${arcP(cx,cy,R,start,start+v)}" fill="none" stroke="#C7A34F" stroke-width="3"/>`; start+=v;
+      });
+      g += `<path d="${arcP(cx,cy,R,start,360)}" stroke="#6C1D45" stroke-width="2" fill="none" stroke-dasharray="6 6"/>`;
+    }
+    return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-label="real-life diagram">${g}</svg>`;
+  }
+
+  function addRealRow(box, prompt, suf, iconHTML){
+    const row=document.createElement('div'); row.className='card p-4';
+    row.innerHTML=`<div class="text-left">${prompt}</div>
+      <div class="mt-2">${iconHTML||''}</div>
+      <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> ${suf||''}</div>`;
+    box.appendChild(row);
+  }
+
   function p1RealNew(){
     const lv=id('p1RealLevel').value; p1RealState.items=[]; const box=id('p1RealList'); box.innerHTML='';
     (function(){
-      const a=rand(20,70); const prompt=`A picture frame corner must make a right angle. If one miter cut is <b>${a}°</b> from the edge, what angle must the other cut be?`;
+      const a=rand(20,70);
+      const prompt=`A picture frame corner must make a right angle. If one miter cut is <b>${a}°</b> from the edge, what angle must the other cut be?`;
       p1RealState.items.push({ans:90-a});
-      addRealRow(box,prompt,'°');
+      addRealRow(box,prompt,'°', iconReal('frame',{a}));
     })();
     (function(){
-      const a=rand(35,85); const prompt=`A door opened to <b>${a}°</b>. How many more degrees to reach a right angle?`;
+      const a=rand(35,85);
+      const prompt=`A door opened to <b>${a}°</b>. How many more degrees to reach a right angle?`;
       p1RealState.items.push({ans:90-a});
-      addRealRow(box,prompt,'°');
+      addRealRow(box,prompt,'°', iconReal('door',{a}));
     })();
     (function(){
-      const a=rand(30,150); const prompt=`A wall bracket forms a straight line with a support. If the support angle is <b>${a}°</b>, find the bracket’s angle with the wall.`;
+      const a=rand(30,150);
+      const prompt=`A wall bracket forms a straight line with a support. If the support angle is <b>${a}°</b>, find the bracket’s angle with the wall.`;
       p1RealState.items.push({ans:180-a});
-      addRealRow(box,prompt,'°');
+      addRealRow(box,prompt,'°', iconReal('bracket',{a}));
     })();
     (function(){
-      const a=rand(60,150), b=rand(40,120), c=rand(30,110); const prompt=`Three stage spotlights make angles of ${a}°, ${b}°, ${c}° around the DJ. What angle remains to complete 360°?`;
-      p1RealState.items.push({ans:360-(a+b+c)});
-      addRealRow(box,prompt,'°');
+      let a=rand(60,150), b=rand(40,120), c=rand(30,110); let d=360-(a+b+c);
+      while(d<=10){ a=rand(60,150); b=rand(40,120); c=rand(30,110); d=360-(a+b+c); }
+      const prompt=`Three stage spotlights make angles of ${a}°, ${b}°, ${c}° around the DJ. What angle remains to complete 360°?`;
+      p1RealState.items.push({ans:d});
+      addRealRow(box,prompt,'°', iconReal('spot',{a,b,c}));
     })();
-  }
-  function addRealRow(box, prompt, suf){
-    const row=document.createElement('div'); row.className='card p-4';
-    row.innerHTML=`<div class="text-left">${prompt}</div>
-      <div class="mt-2">Answer: <input class="rin border rounded px-2 py-1 w-28"> ${suf||''}</div>`;
-    box.appendChild(row);
   }
   id('p1RealNew').addEventListener('click',p1RealNew); p1RealNew();
   id('p1RealCheck').addEventListener('click',()=>{
@@ -1050,7 +1168,7 @@
     downloadJSON(`${deckTitle}_P1_real.json`, data);
   });
 
-  /* ---------- Part 2: Equation Solvers (retained) ---------- */
+  /* ---------- Part 2: Equation Solvers (unchanged logic) ---------- */
   function makeLinearProblem(type, lv){
     function makeExpr(aRange,bRange){ return {a:rand(...aRange), b:rand(...bRange)}; }
     if(type==='comp' || type==='supp' || type==='lp'){
@@ -1158,102 +1276,103 @@
   id('solBExportCSV').addEventListener('click',()=>exportSolve(solBState,'solBList','solveB'));
   id('solBExportJSON').addEventListener('click',()=>exportSolveJSON(solBState,'solBList','solveB'));
 
-  /* ---------- Part 2 Real‑Life (retained) ---------- */
-  const p2RealState={items:[]};
-  function p2RealNew(){
-    const lv=id('p2RealLevel').value; p2RealState.items=[]; const box=id('p2RealList'); box.innerHTML='';
-    (function(){
-      const e1={a:rand(1,4), b:rand(10,40)}, e2={a:rand(1,4), b:rand(10,40)}; const target=180;
-      const sumA=e1.a+e2.a, sumB=e1.b+e2.b; const x=(target-sumB)/sumA; if(!Number.isInteger(x) || x<=0) return arguments.callee();
-      const prompt=`Two support bars form a linear pair. Angles are \\(${e1.a}x+${e1.b}\\)° and \\(${e2.a}x+${e2.b}\\)°. Find \(x\).`;
-      p2RealState.items.push({ans:x});
-      addRealRow(box, prompt, '');
-    })();
-    (function(){
-      const e1={a:rand(1,4), b:rand(0,30)}, e2={a:rand(1,4), b:rand(0,30)};
-      const diffA=e1.a-e2.a, diffB=e2.b-e1.b; if(diffA===0 || diffB%diffA!==0) return arguments.callee();
-      const x=diffB/diffA; if(x<=0) return arguments.callee();
-      const prompt=`Two braces cross; opposite angles are equal: \\(${e1.a}x+${e1.b}\\)° and \\(${e2.a}x+${e2.b}\\)°. Solve \(x\).`;
-      p2RealState.items.push({ans:x});
-      addRealRow(box, prompt, '');
-    })();
-    (function(){
-      const e1={a:rand(1,4), b:rand(0,40)}, e2={a:rand(1,4), b:rand(0,40)}, target=90;
-      const sumA=e1.a+e2.a, sumB=e1.b+e2.b; const x=(target-sumB)/sumA; if(!Number.isInteger(x) || x<=0) return arguments.callee();
-      const prompt=`A control dial sets two complementary angles: \\(${e1.a}x+${e1.b}\\)° and \\(${e2.a}x+${e2.b}\\)°. Solve \(x\).`;
-      p2RealState.items.push({ans:x});
-      addRealRow(box, prompt, '');
-    })();
-    (function(){
-      const e1={a:rand(1,3), b:rand(10,60)}, e2={a:rand(1,3), b:rand(10,60)}, e3={a:rand(1,3), b:rand(10,60)}, c=rand(20,120);
-      const sumA=e1.a+e2.a+e3.a, sumB=e1.b+e2.b+e3.b+c; const x=(360-sumB)/sumA; if(!Number.isInteger(x) || x<=0) return arguments.callee();
-      const prompt=`Four light beams around a point: \\(${e1.a}x+${e1.b}\\)°, \\(${e2.a}x+${e2.b}\\)°, \\(${e3.a}x+${e3.b}\\)°, and ${c}°. Sum is 360°. Find \(x\).`;
-      p2RealState.items.push({ans:x});
-      addRealRow(box, prompt, '');
-    })();
-  }
-  id('p2RealNew').addEventListener('click',p2RealNew); p2RealNew();
-  id('p2RealCheck').addEventListener('click',()=>{
-    let ok=0; [...id('p2RealList').querySelectorAll('.rin')].forEach((el,idx)=>{
-      const got=Number(el.value); const want=p2RealState.items[idx].ans;
-      el.style.borderColor=(Math.abs(got-want)<1e-10)? '#22c55e':'#ef4444'; if(Math.abs(got-want)<1e-10) ok++;
-    });
-    id('p2RealFb').textContent = ok===p2RealState.items.length? '✅ Design approved!' : `Score: ${ok}/${p2RealState.items.length}`;
-    if(ok===p2RealState.items.length) confetti();
-  });
-  id('p2RealExportCSV').addEventListener('click',()=>{
-    const rows=[['prompt','answer','user']];
-    [...id('p2RealList').children].forEach((row,idx)=>rows.push([row.children[0].innerText.trim(), p2RealState.items[idx].ans, row.querySelector('.rin').value||'']));
-    downloadCSV(`${deckTitle}_P2_real.csv`, rows);
-  });
-  id('p2RealExportJSON').addEventListener('click',()=>{
-    const data=[...id('p2RealList').children].map((row,idx)=>({prompt:row.children[0].innerText.trim(), answer:p2RealState.items[idx].ans, user:row.querySelector('.rin').value||''}));
-    downloadJSON(`${deckTitle}_P2_real.json`, data);
-  });
-
-  /* ---------- Part 3: Polygon Explorer & Practice (upgraded) ---------- */
+  /* ---------- Part 3: Polygon Explorer (visual upgrade) ---------- */
   const polyN=id('polyN'), polyNLabel=id('polyNLabel'), polySum=id('polySum'), polyInt=id('polyInt'), polyExt=id('polyExt');
   const polySvg = id('polySvg');
   const polyState = { walkTimer:null, step:0 };
 
-  function line2(x1,y1,x2,y2,stroke,w,dash){ const L=lineEl(x1,y1,x2,y2,stroke,w,dash); return L; }
   function round(x){ return Number.isInteger(x)? x : Number(x.toFixed(2)); }
 
   function drawPolygon(){
     const n=Number(polyN.value);
     polySvg.innerHTML='';
-    const W=760,H=360,cx=380,cy=188,R=110, rot=-90;
+    const W=760,H=360,cx=380,cy=188,R=112, rot=-90;
+
+    const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+    defs.innerHTML = `
+      <linearGradient id="polyGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fff"/>
+        <stop offset="100%" stop-color="#fafafa"/>
+      </linearGradient>
+      <filter id="polyShadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.25"></feDropShadow>
+      </filter>`;
+    polySvg.appendChild(defs);
 
     const V=[...Array(n)].map((_,k)=>{
       const th=deg2rad(rot + 360*k/n);
       return [cx+R*Math.cos(th), cy+R*Math.sin(th)];
     });
 
+    const d = 'M'+V.map(p=>p.join(',')).join(' L ')+' Z';
+    const poly = document.createElementNS('http://www.w3.org/2000/svg','path');
+    poly.setAttribute('d', d);
+    poly.setAttribute('fill', 'url(#polyGrad)');
+    poly.setAttribute('stroke', '#6C1D45');
+    poly.setAttribute('stroke-width', '3');
+    poly.setAttribute('stroke-linejoin', 'round');
+    poly.setAttribute('filter','url(#polyShadow)');
+    polySvg.appendChild(poly);
+
     if(id('polyTri').checked){
       for(let k=2;k<n;k++){
-        polySvg.appendChild(line2(V[0][0],V[0][1],V[k-1][0],V[k-1][1],'#d1d5db',1.5,'5 5'));
+        const t=document.createElementNS('http://www.w3.org/2000/svg','line');
+        t.setAttribute('x1',V[0][0]); t.setAttribute('y1',V[0][1]); t.setAttribute('x2',V[k-1][0]); t.setAttribute('y2',V[k-1][1]);
+        t.setAttribute('stroke','#d1d5db'); t.setAttribute('stroke-width','1.5'); t.setAttribute('stroke-dasharray','5 5');
+        polySvg.appendChild(t);
       }
     }
 
-    const pathD = 'M'+V.map(p=>p.join(',')).join(' L ')+' Z';
-    polySvg.appendChild(pathEl(pathD,'#6C1D45',2.6,'#E8D5B7',0.12));
-
-    const v0=V[0], v1=V[1], vEnd=V[n-1];
+    const v0=V[0], v1=V[1], vL=V[n-1];
     const aIn = (n-2)*180/n, aExt=360/n;
-    const thetaPrev = Math.atan2(vEnd[1]-v0[1], vEnd[0]-v0[0]);
-    const thetaNext = Math.atan2(v1[1]-v0[1], v1[0]-v0[0]);
-    let A0 = (rad2deg(thetaPrev)+360)%360, A1=(rad2deg(thetaNext)+360)%360;
-    if(A1<A0) A1+=360;
 
-    polySvg.appendChild(pathEl(sectorPath(v0[0],v0[1],22,A0,A1),null,null,'#C7A34F',0.20));
-    polySvg.appendChild(textEl(v0[0]+30*Math.cos(deg2rad((A0+A1)/2)), v0[1]+30*Math.sin(deg2rad((A0+A1)/2)), `${round(aIn)}°`,'svg-tag'));
+    const aPrev = Math.atan2(vL[1]-v0[1], vL[0]-v0[0])*180/Math.PI;
+    const aNext = Math.atan2(v1[1]-v0[1], v1[0]-v0[0])*180/Math.PI;
+    let A0=(aPrev+360)%360, A1=(aNext+360)%360; if(A1<A0) A1+=360;
+
+    const arcP = (x,y,r,a0,a1)=>{
+      const A0=deg2rad(a0), A1=deg2rad(a1);
+      const x0=x+r*Math.cos(A0), y0=y+r*Math.sin(A0);
+      const x1=x+r*Math.cos(A1), y1=y+r*Math.sin(A1);
+      const large=((a1-a0+360)%360)>180?1:0;
+      return `M${x0},${y0} A${r},${r} 0 ${large} 1 ${x1},${y1}`;
+    };
+    const sector = (x,y,r,a0,a1)=>`M${x},${y} ${arcP(x,y,r,a0,a1).slice(1)} Z`;
+
+    const int = document.createElementNS('http://www.w3.org/2000/svg','path');
+    int.setAttribute('d', sector(v0[0],v0[1],28,A0,A1));
+    int.setAttribute('fill', 'rgba(108,29,69,.14)');
+    polySvg.appendChild(int);
+
+    const intArc = document.createElementNS('http://www.w3.org/2000/svg','path');
+    intArc.setAttribute('d', arcP(v0[0],v0[1],28,A0,A1));
+    intArc.setAttribute('fill','none'); intArc.setAttribute('stroke','#6C1D45'); intArc.setAttribute('stroke-width','3');
+    polySvg.appendChild(intArc);
 
     if(id('polyExtMarks').checked){
-      const extStart=A1, extEnd=A1+aExt;
-      polySvg.appendChild(pathEl(arcPath(v0[0],v0[1],34,extStart,extEnd),'#6C1D45',2));
-      polySvg.appendChild(textEl(v0[0]+46*Math.cos(deg2rad((extStart+extEnd)/2)), v0[1]+46*Math.sin(deg2rad((extStart+extEnd)/2)), `${round(aExt)}°`,'svg-note'));
+      const extStart = A1, extEnd = A1 + aExt;
+      const extArc = document.createElementNS('http://www.w3.org/2000/svg','path');
+      extArc.setAttribute('d', arcP(v0[0],v0[1],42,extStart,extEnd));
+      extArc.setAttribute('fill','none'); extArc.setAttribute('stroke','#C7A34F'); extArc.setAttribute('stroke-width','3');
+      polySvg.appendChild(extArc);
     }
-    polySvg.appendChild(textEl(cx, H-24, `n=${n} • S=(n−2)·180° = ${(n-2)*180}°`,'svg-note'));
+
+    const label = (x,y,t,cls)=>{
+      const T=document.createElementNS('http://www.w3.org/2000/svg','text');
+      T.setAttribute('x',x); T.setAttribute('y',y); T.setAttribute('text-anchor','middle');
+      T.setAttribute('class',cls||'svg-tag'); T.textContent=t; return T;
+    };
+    const midInt=(A0+A1)/2, midExt=(A1 + (A1 + aExt))/2;
+    polySvg.appendChild(label(v0[0]+40*Math.cos(deg2rad(midInt)), v0[1]+40*Math.sin(deg2rad(midInt)), `${round(aIn)}°`,'svg-tag'));
+    if(id('polyExtMarks').checked){
+      polySvg.appendChild(label(v0[0]+58*Math.cos(deg2rad(midExt)), v0[1]+58*Math.sin(deg2rad(midExt)), `${round(aExt)}°`,'svg-note'));
+    }
+
+    const foot=document.createElementNS('http://www.w3.org/2000/svg','text');
+    foot.setAttribute('x',cx); foot.setAttribute('y',H-22); foot.setAttribute('text-anchor','middle');
+    foot.setAttribute('class','svg-note');
+    foot.textContent = `n=${n} • S=(n−2)·180° = ${(n-2)*180}°`;
+    polySvg.appendChild(foot);
   }
 
   function updatePoly(){
@@ -1280,14 +1399,15 @@
       const i=polyState.step%n, v=V[i], vNext=V[(i+1)%n];
       const aNext=(rad2deg(Math.atan2(vNext[1]-v[1], vNext[0]-v[0]))+360)%360;
       const start=aNext, end=aNext+ext;
-      polySvg.appendChild(pathEl(sectorPath(v[0],v[1],44,start,end),null,null,'#6C1D45',0.10));
-      polySvg.appendChild(pathEl(arcPath(v[0],v[1],46,start,end),'#6C1D45',3));
-      polySvg.appendChild(textEl(v[0]+60*Math.cos(deg2rad((start+end)/2)), v[1]+60*Math.sin(deg2rad((start+end)/2)), `${round(ext)}°`,'svg-dim'));
+      polySvg.appendChild((()=>{const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+        const arc=(x,y,r,a0,a1)=>{const A0=deg2rad(a0),A1=deg2rad(a1);const x0=x+r*Math.cos(A0),y0=y-r*Math.sin(A0);const x1=x+r*Math.cos(A1),y1=y-r*Math.sin(A1);
+          const lg=((a1-a0+360)%360)>180?1:0; return `M${x0},${y0} A${r},${r} 0 ${lg} 1 ${x1},${y1}`;};
+        p.setAttribute('d',arc(v[0],v[1],46,start,end)); p.setAttribute('fill','none'); p.setAttribute('stroke','#6C1D45'); p.setAttribute('stroke-width','3'); return p;})());
       polyState.step++; if(polyState.step>n){ clearInterval(polyState.walkTimer); }
     }, 550);
   }
 
-  /* ---------- Part 3 Practice: Missing Interior Angle (with diagrams) ---------- */
+  /* ---------- Part 3 Practice: Missing Interior Angle (kept from prior upgrade) ---------- */
   const pmState={items:[]};
   function pmNew(){
     const lv=id('pmLevel').value; const n = (lv==='easy'? rand(3,5): (lv==='med'? rand(5,7): rand(6,8)));
@@ -1403,7 +1523,7 @@
     downloadJSON(`${deckTitle}_P3_exterior.json`, data);
   });
 
-  /* ---------- Part 3 Real‑Life (retained) ---------- */
+  /* ---------- Part 3 Real‑Life (kept) ---------- */
   const p3RealState={items:[]};
   function p3RealNew(){
     const lv=id('p3RealLevel').value; p3RealState.items=[]; const box=id('p3RealList'); box.innerHTML='';
@@ -1540,7 +1660,7 @@
     downloadJSON(`${deckTitle}_error.json`, {claim:id('errBox').innerText.trim(), explanation:errState.item.correct, key:errState.item.key, user: sel?sel.value:''});
   });
 
-  /* ---------- Mixed Review (retained, now uses diagrams in classify case) ---------- */
+  /* ---------- Mixed Review ---------- */
   const mixState={cur:null};
   function mixNew(){
     const lv=id('mixLevel').value;
