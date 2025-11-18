@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="keywords" content="Grade 7 math, rational numbers, addition of rational numbers, subtraction of rational numbers, integers, fractions, decimals, number line, additive inverse, common denominator, least common multiple, Qatar Leadership Academy, Qatar context">
 <title>G7 • Unit 1 • Addition & Subtraction of Rational Numbers</title>
 
 <!-- Fonts & Tailwind -->
@@ -131,7 +132,16 @@
 
     <!-- A0 Title -->
     <section class="slide active bg-maroon text-white" data-part="A">
-      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="Banner"></div>
+      <div
+        class="w-full h-16 banner mb-6 rounded-md flex items-center"
+        style="background-image:url('qla_banner.png')"
+        aria-label="Banner"
+      >
+        <!-- School logo placeholder – replace src with your logo file -->
+        <img src="school_logo.png"
+             alt="School logo"
+             class="h-12 w-auto ml-4 object-contain">
+      </div>
       <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Unit 1 — The Number System</h1>
       <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Addition &amp; Subtraction of Rational Numbers</p>
       <p class="mt-2 text-lg">Qatar Leadership Academy — Grade 7</p>
@@ -145,8 +155,9 @@
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-1">Learning Objectives</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Represent addition and subtraction of rational numbers on a number line.</li>
-            <li>Add and subtract rational numbers using common denominators including using LCM to find common denominators for fractions.</li>
+            <li>Represent addition and subtraction of rational numbers (integers, fractions, and decimals) on a number line.</li>
+            <li>Use subtraction as adding the additive inverse: \(p-q = p + (-q)\) to make sense of negative results.</li>
+            <li>Add and subtract rational numbers using strategies such as common denominators and decimal place‑value alignment, including using LCM to find common denominators for fractions.</li>
             <li>Solve and explain real‑life problems in a Qatar context that involve sums and differences of rational numbers.</li>
           </ul>
           <div class="note mt-3 hidden teacher-note">Emphasize “why”: number line → symbolic → explanation, and connect to Qatar‑based contexts.</div>
@@ -160,6 +171,16 @@
             <li>Students solving at the interactive board &amp; explaining to classmates</li>
           </ul>
         </div>
+      </div>
+
+      <!-- Keywords card -->
+      <div class="card p-4 mt-4 w-full max-w-5xl text-left">
+        <h3 class="text-xl font-bold text-maroon mb-1">Keywords</h3>
+        <p class="text-lg">
+          rational numbers, integers, fractions, decimals, number line,
+          additive inverse, opposite, common denominator, least common multiple (LCM),
+          ordering, error analysis, real-life context (Qatar)
+        </p>
       </div>
     </section>
 
@@ -990,7 +1011,6 @@ document.getElementById('errCheck')&&document.getElementById('errCheck').addEven
   else { document.getElementById('errFb').textContent='❌ Not quite. Try again or reveal the correct work.'; }
 });
 document.getElementById('errReveal')&&document.getElementById('errReveal').addEventListener('click',()=>{
-  const bankText=document.getElementById('errBox').textContent; const match=bankText?true:false;
   const reveal = document.getElementById('errRevealBox');
   const key=document.getElementById('errBox').dataset.key;
   const map={A:'Use a common denominator and add numerators.',C:'Check signs and the direction of subtraction.',D:'Align decimal places before adding/subtracting.'};
