@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>G7 • Unit 2 • Rules for Writing Algebraic Expressions</title>
+
+<!-- Fonts & Tailwind -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- KaTeX (robust auto-render) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const run = (root = document.body) => {
+      if (!window.renderMathInElement) return;
+      window.renderMathInElement(root, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '\\[', right: '\\]', display: true },
+          { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+      });
+    };
+    if (window.renderMathInElement) run();
+    else {
+      const t = setInterval(() => { if (window.renderMathInElement) { clearInterval(t); run(); } }, 25);
+      setTimeout(() => clearInterval(t), 6000);
+    }
+    window._rerenderMath = run;
+  });
+</script>
+
+<style>
+  :root{--maroon:#6C1D45;--gold:#C7A34F;--dark:#2C2C2E;--light:#F5F5F5;--accent:#E8D5B7}
+  html,body{height:100%;background:#2d3748;color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+  /* Stage */
+  #deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
+  #slides{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
+  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
+  .slide.active{opacity:1;transform:none;pointer-events:auto}
+  .bg-maroon{background-color:var(--maroon)} .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
+  .banner{width:100%;height:120px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
+  .card{border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
+  .chip{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.05);border-radius:9999px;padding:.35rem .75rem;cursor:pointer}
+  .chip:hover{outline:2px solid var(--gold)}
+  .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
+  .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+  .btn:hover{filter:brightness(0.98)}
+  #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
+  #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700}
+  #controls button:hover{transform:scale(1.06)}
+  #counter{color:#fff;font-weight:700;min-width:84px;text-align:center}
+  #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:30;transition:width .35s ease}
+  #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
+
+  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
+  .confetti{position:fixed;pointer-events:none;z-index:50}
+
+  .iconbox{width:100%;height:150px;border-radius:10px;border:1px dashed #cbd5e1;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,#fafafa)}
+  .pill{display:inline-flex;align-items:center;gap:.35rem;border:1px solid #e5e7eb;border-radius:999px;padding:.35rem .75rem;background:#fff;cursor:pointer}
+  .pill.active{border-color:#22c55e;box-shadow:0 0 0 2px rgba(34,197,94,.15)}
+
+  /* Popover */
+  #pop{position:fixed;display:none;max-width:420px;z-index:60;background:#fff;border:1px solid #e5e7eb;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.22);padding:12px}
+  #pop .close{float:right;cursor:pointer;font-weight:800;padding:2px 6px;border-radius:8px}
+  #pop .close:hover{background:#f3f4f6}
+</style>
+</head>
+<body>
+
+<div id="deck" aria-live="polite">
+  <div id="slides" class="relative">
+    <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
+
+    <!-- 0 • Title -->
+    <section class="slide active bg-maroon text-white">
+      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="QLA Partner Banner"></div>
+      <div class="flex items-center gap-8">
+        <img src="qla_logo.png" alt="QLA Logo" class="h-24 w-auto" onerror="this.style.display='none'"/>
+        <div class="text-left">
+          <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Unit 2 — Expressions (Linear Expressions)</h1>
+          <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Lesson: Rules for Writing Algebraic Expressions</p>
+          <p class="mt-2 text-lg">Qatar Leadership Academy — Grade 7</p>
+        </div>
+      </div>
+      <div class="absolute bottom-6 text-sm text-gray-100">
+        Aligned to expression-writing &amp; simplification expectations (7.EE style: form expressions, interpret coefficients, evaluate).
+        Member of Qatar Foundation.
+      </div>
+    </section>
+
+    <!-- 1 • Learning Outcomes & Keywords -->
+    <section class="slide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Learning Outcomes &amp; Keywords</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Translate words and phrases into algebraic expressions using variables.</li>
+            <li>Use correct operation words (sum, difference, product, quotient) and grouping (parentheses).</li>
+            <li>Distinguish “a number” vs “the number” vs “a number, \(n\)”.</li>
+            <li>Write expressions for multi-step statements and interpret the structure (what happens first).</li>
+            <li>Evaluate an expression for a given value and check reasonableness.</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <div class="flex flex-wrap gap-2 text-lg">
+            <span class="chip" data-key="variable">variable</span>
+            <span class="chip" data-key="coefficient">coefficient</span>
+            <span class="chip" data-key="term">term</span>
+            <span class="chip" data-key="expression">expression</span>
+            <span class="chip" data-key="sum">sum</span>
+            <span class="chip" data-key="difference">difference</span>
+            <span class="chip" data-key="product">product</span>
+            <span class="chip" data-key="quotient">quotient</span>
+            <span class="chip" data-key="factor">factor</span>
+            <span class="chip" data-key="parentheses">parentheses</span>
+            <span class="chip" data-key="evaluate">evaluate</span>
+          </div>
+          <div class="text-xs text-gray-500 mt-3">
+            Watch for common traps: “less than”, “subtracted from”, and “twice the sum” → parentheses matter.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 • Warm-Up: Phrase → Operation Classifier -->
+    <section class="slide" id="opWarmSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm-Up: What Operation Does the Phrase Mean?</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="opLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="opNew" class="btn">New set</button>
+        <button id="opCheck" class="btn maroon">Check</button>
+        <button id="opExportCSV" class="btn">Export CSV</button>
+        <button id="opExportJSON" class="btn">Export JSON</button>
+      </div>
+
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div class="grid lg:grid-cols-2 gap-3" id="opWarmList"></div>
+      </div>
+
+      <div id="opFb" class="mt-2 h-6 font-semibold"></div>
+
+      <div class="hint mt-3 text-sm max-w-4xl text-left">
+        Tip: “less than” and “subtracted from” reverse the order.
+        Example: “3 less than \(x\)” → \(x-3\) (not \(3-x\)).
+      </div>
+    </section>
+
+    <!-- 3 • The Rules: Quick Anchor Chart -->
+    <section class="slide" id="rulesSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-3">Rules for Writing Algebraic Expressions</h2>
+
+      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-6xl text-left">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-2">1) Keyword → Operation</h3>
+          <div class="space-y-2 text-lg">
+            <div><span class="font-bold">Sum</span>: \(a+b\) — “plus”, “added to”, “total”, “increased by”</div>
+            <div><span class="font-bold">Difference</span>: \(a-b\) — “minus”, “decreased by”, “fewer than”</div>
+            <div><span class="font-bold">Product</span>: \(ab\) — “times”, “of”, “double/triple”, “twice”</div>
+            <div><span class="font-bold">Quotient</span>: \(\frac{a}{b}\) — “divided by”, “per”, “ratio”</div>
+          </div>
+        </div>
+
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-2">2) Order &amp; Grouping</h3>
+          <div class="space-y-2 text-lg">
+            <div><span class="font-bold">Sum / difference first</span>: “twice <em>the sum</em>” → \(2(x+y)\)</div>
+            <div><span class="font-bold">Less than / from</span>: “5 less than \(n\)” → \(n-5\)</div>
+            <div><span class="font-bold">Each</span>: “\$3 each for \(n\) items” → \(3n\)</div>
+            <div><span class="font-bold">Then</span>: do actions in order → use parentheses if needed</div>
+          </div>
+        </div>
+
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-2">3) Algebra Style</h3>
+          <div class="space-y-2 text-lg">
+            <div>Write multiplication without “×”: \(4n\), \(n(3)\), \(\frac{n}{5}\)</div>
+            <div>Put coefficient first: \(7x\) not \(x7\)</div>
+            <div>Use parentheses for substitution: if \(x=-2\), then \(3x+1=3(-2)+1\)</div>
+          </div>
+        </div>
+
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-2">4) Check Yourself</h3>
+          <div class="space-y-2 text-lg">
+            <div>Does it match the story? (order matters)</div>
+            <div>Try a quick value, e.g. \(x=10\). Does it make sense?</div>
+            <div>Look for the trap words: “less than”, “from”, “twice the sum”</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 • Guided Practice: Phrase → Expression (single-step) -->
+    <section class="slide" id="phrSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice A — Translate: Phrase → Expression</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="phLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="phNew" class="btn">New set</button>
+        <button id="phCheck" class="btn maroon">Check</button>
+        <button id="phExportCSV" class="btn">Export CSV</button>
+        <button id="phExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="phList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
+      <div id="phFb" class="mt-2 h-6 font-semibold"></div>
+      <div class="hint mt-3 text-left text-sm max-w-5xl">
+        Enter expressions like: <span class="font-mono">3x+5</span>, <span class="font-mono">x-7</span>, <span class="font-mono">2(x+4)</span>, <span class="font-mono">(x-3)/5</span>.
+      </div>
+    </section>
+
+    <!-- 5 • Parentheses Focus: “sum/difference” inside -->
+    <section class="slide" id="parSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice B — Parentheses Matter</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="paLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="paNew" class="btn">New set</button>
+        <button id="paCheck" class="btn maroon">Check</button>
+        <button id="paHint" class="btn">Hint</button>
+        <button id="paExportCSV" class="btn">Export CSV</button>
+        <button id="paExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="paList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
+      <div id="paHintBox" class="mt-2 text-sm max-w-5xl"></div>
+      <div id="paFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- 6 • Evaluate Expressions -->
+    <section class="slide" id="evalSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice C — Evaluate</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="evLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="evNew" class="btn">New set</button>
+        <button id="evCheck" class="btn maroon">Check</button>
+        <button id="evExportCSV" class="btn">Export CSV</button>
+        <button id="evExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="evList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
+      <div id="evFb" class="mt-2 h-6 font-semibold"></div>
+      <div class="hint mt-3 text-left text-sm max-w-5xl">
+        Rule: substitute using parentheses. Example: if \(x=-3\), then \(2x+5=2(-3)+5\).
+      </div>
+    </section>
+
+    <!-- 7 • Match: Words ↔ Expressions -->
+    <section class="slide" id="matchSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice D — Match the Pair</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="mtLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="mtNew" class="btn">New set</button>
+        <button id="mtCheck" class="btn maroon">Check</button>
+        <button id="mtExportCSV" class="btn">Export CSV</button>
+        <button id="mtExportJSON" class="btn">Export JSON</button>
+      </div>
+
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <h3 class="text-xl font-bold text-maroon mb-2">Phrases (choose expression)</h3>
+            <div id="mtLeft" class="space-y-3"></div>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-maroon mb-2">Expression Bank</h3>
+            <div id="mtBank" class="grid grid-cols-2 gap-2 text-lg"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="mtFb" class="mt-2 h-6 font-semibold"></div>
+    </section>
+
+    <!-- 8 • Error Analysis -->
+    <section class="slide" id="errSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Error Analysis — What Went Wrong?</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="errLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="errNew" class="btn">New example</button>
+        <button id="errReveal" class="btn">Reveal correct work</button>
+      </div>
+
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div id="errBox" class="text-lg"></div>
+        <div class="mt-2">
+          <label class="mr-2"><input type="radio" name="errChoice" value="A"> Reversed order (“less than / from”)</label><br/>
+          <label class="mr-2"><input type="radio" name="errChoice" value="B"> Missing parentheses (“twice the sum”)</label><br/>
+          <label class="mr-2"><input type="radio" name="errChoice" value="C"> Wrong operation keyword (sum/product/quotient)</label><br/>
+          <label class="mr-2"><input type="radio" name="errChoice" value="D"> Substitution/evaluation mistake</label>
+        </div>
+        <div class="mt-2 flex gap-2">
+          <button id="errCheck" class="btn maroon">Check</button>
+          <button id="errExportCSV" class="btn">Export CSV</button>
+          <button id="errExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="errFb" class="mt-2 h-6 font-semibold"></div>
+        <div id="errRevealBox" class="mt-2 text-sm"></div>
+      </div>
+    </section>
+
+    <!-- 9 • Mixed Generator -->
+    <section class="slide" id="mixSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Mixed Generator — Write or Evaluate</h2>
+      <div class="card p-5 w-full max-w-3xl text-left">
+        <div class="flex items-center gap-3">
+          <span>Level:</span>
+          <select id="mixLevel" class="border rounded px-2 py-1">
+            <option value="easy" selected>easy</option>
+            <option value="med">medium</option>
+            <option value="hard">hard</option>
+          </select>
+          <button id="mixNew" class="btn">New question</button>
+        </div>
+
+        <div class="mt-3 text-2xl">Task: <span id="mixQ" class="font-extrabold"></span></div>
+        <div class="mt-2">
+          <input id="mixAns" class="border rounded px-3 py-2 w-[420px] max-w-full" placeholder="enter expression or value">
+          <button id="mixCheck" class="btn maroon">Check</button>
+          <button id="mixHint" class="btn">Hint</button>
+          <button id="mixExportCSV" class="btn">Export CSV</button>
+          <button id="mixExportJSON" class="btn">Export JSON</button>
+        </div>
+        <div id="mixHintBox" class="mt-3 text-sm"></div>
+        <div id="mixFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- 10 • Exit Ticket -->
+    <section class="slide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">3–2–1 Reflect</h3>
+          <ul class="list-disc list-inside">
+            <li>3 “trigger words” that tell you which operation to use</li>
+            <li>2 times you <strong>must</strong> use parentheses</li>
+            <li>1 mistake you will avoid next time</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">Up Next</h3>
+          <p>We’ll simplify linear expressions using like terms and the distributive property.</p>
+        </div>
+      </div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[110px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Controls -->
+<div id="controls" role="group" aria-label="Slideshow controls">
+  <button id="prev" title="Previous (←)">&laquo;</button>
+  <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
+  <div id="counter">1 / 11</div>
+  <button id="next" title="Next (→)">&raquo;</button>
+</div>
+<div id="progress"></div>
+
+<!-- Glossary popover -->
+<div id="pop" role="dialog" aria-modal="true" aria-live="polite">
+  <span class="close" title="Close">✕</span>
+  <div id="popBody"></div>
+</div>
+
+<script>
+/* --------------------- Core shell & utilities --------------------- */
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
+  const deckTitle='G7_U2_Rules_Writing_Algebraic_Expressions';
+  let i=0;
+
+  function show(k){
+    i=(k+slides.length)%slides.length;
+    slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
+    counter.textContent=(i+1)+' / '+slides.length;
+    progress.style.width=((i+1)/slides.length*100)+'%';
+    renderMath(slides[i]);
+  }
+  prev.addEventListener('click',()=>show(i-1));
+  next.addEventListener('click',()=>show(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight') show(i+1);
+    if(e.key==='ArrowLeft') show(i-1);
+    if(e.key.toLowerCase()==='f') toggleFS();
+  });
+  function toggleFS(){
+    const el=id('slides');
+    if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);}
+    else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(el);}
+  }
+  fsBtn.addEventListener('click',toggleFS);
+
+  function id(x){return document.getElementById(x)}
+  function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
+  function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
+    for(let k=0;k<18;k++){
+      const d=document.createElement('div'); d.className='confetti';
+      d.style.left=x+'px'; d.style.top=y+'px'; d.style.width='8px'; d.style.height='8px';
+      d.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8a3d64'][k%4];
+      document.body.appendChild(d);
+      const dx=(Math.random()*2-1)*240, dy=(Math.random()*-1-0.3)*300, rot=Math.random()*720;
+      d.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],
+                {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
+    }
+  }
+  function downloadJSON(filename, data){
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob); const a=document.createElement('a');
+    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+  function downloadCSV(filename, rows){
+    const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
+    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+
+  /* ---------- Glossary ---------- */
+  const POP=id('pop'), POP_BODY=id('popBody');
+  const GLOS={
+    variable:'<strong>Variable</strong>: a letter that represents an unknown number (e.g., \(x\), \(n\)).',
+    coefficient:'<strong>Coefficient</strong>: the number multiplying a variable (in \(7x\), the coefficient is 7).',
+    term:'<strong>Term</strong>: a part separated by +/− (e.g., in \(3x+5\), terms are \(3x\) and 5).',
+    expression:'<strong>Expression</strong>: numbers/variables/operations without an equals sign.',
+    sum:'<strong>Sum</strong>: the result of adding, \(a+b\).',
+    difference:'<strong>Difference</strong>: the result of subtracting, \(a-b\).',
+    product:'<strong>Product</strong>: the result of multiplying, \(ab\).',
+    quotient:'<strong>Quotient</strong>: the result of dividing, \(\frac{a}{b}\).',
+    factor:'<strong>Factor</strong>: a quantity being multiplied (in \(2(x+3)\), 2 and \((x+3)\) are factors).',
+    parentheses:'<strong>Parentheses</strong>: used to group so something happens first.',
+    evaluate:'<strong>Evaluate</strong>: substitute a value and compute.'
+  };
+  function showPop(html,anchor){
+    POP_BODY.innerHTML=html; POP.style.display='block';
+    const r=anchor?anchor.getBoundingClientRect():{left:20,top:window.innerHeight-120};
+    POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px';
+    POP.style.bottom=(window.innerHeight - r.top + 10)+'px';
+  }
+  POP.querySelector('.close').addEventListener('click',()=>POP.style.display='none');
+  document.addEventListener('click',e=>{
+    const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]) showPop(GLOS[key], el);}
+  });
+
+  /* -------------------- Expression normalization (for checking) -------------------- */
+  function normExpr(s){
+    if(s==null) return '';
+    s = String(s).trim();
+    s = s.replace(/−/g,'-').replace(/\s+/g,'');
+    // common notations:
+    s = s.replace(/×/g,'*').replace(/·/g,'*');
+    // allow "2x" -> "2*x", "x(y)" -> "x*(y)"
+    s = s.replace(/(\d)([a-zA-Z(])/g,'$1*$2');
+    s = s.replace(/([a-zA-Z])(\d)/g,'$1*$2');
+    s = s.replace(/([a-zA-Z])\(/g,'$1*(');
+    s = s.replace(/\)([a-zA-Z0-9])/g,')*$1');
+    // safe: don't allow other chars
+    s = s.replace(/[^0-9a-zA-Z+\-*/().]/g,'');
+    return s;
+  }
+  function isSafeExpr(s){
+    // allow only numbers, letters, + - * / ( ) and dots
+    return /^[0-9a-zA-Z+\-*/().]*$/.test(s);
+  }
+  function evalAt(expr, vars){
+    // expr is normalized; vars is object {x: number, n: number, ...}
+    if(!isSafeExpr(expr)) return NaN;
+    // block dangerous keywords (even though regex blocks most)
+    const bad = ['constructor','__proto__','prototype','window','document','Function','eval'];
+    for(const b of bad){ if(expr.toLowerCase().includes(b)) return NaN; }
+    // build function args
+    const keys=Object.keys(vars);
+    const vals=keys.map(k=>vars[k]);
+    try{
+      // eslint-disable-next-line no-new-func
+      const f = new Function(...keys, `return (${expr});`);
+      const v = f(...vals);
+      return (typeof v==='number' && isFinite(v)) ? v : NaN;
+    }catch(e){ return NaN; }
+  }
+  function approxEq(a,b){ return Math.abs(a-b) < 1e-9; }
+
+  function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+  function choice(arr){ return arr[rand(0,arr.length-1)] }
+
+  /* -------------------- Slide 2: Operation classifier -------------------- */
+  const opLabels = {
+    add:'Addition (+)',
+    sub:'Subtraction (−)',
+    mul:'Multiplication (×)',
+    div:'Division (÷)',
+    group:'Needs parentheses'
+  };
+
+  const opBank = {
+    easy: () => ([
+      {text:`"the sum of \\(x\\) and 7"`, op:'add'},
+      {text:`"9 less than \\(n\\)"`, op:'sub'},
+      {text:`"the product of 5 and \\(x\\)"`, op:'mul'},
+      {text:`"\\(m\\) divided by 4"`, op:'div'},
+      {text:`"twice the sum of \\(x\\) and 3"`, op:'group'}
+    ]),
+    med: () => ([
+      {text:`"the difference between \\(a\\) and 12"`, op:'sub'},
+      {text:`"three more than \\(2x\\)"`, op:'add'},
+      {text:`"half of \\(y\\)"`, op:'div'},
+      {text:`"five times the difference of \\(n\\) and 1"`, op:'group'},
+      {text:`"the quotient of \\(p+6\\) and 3"`, op:'group'}
+    ]),
+    hard: () => ([
+      {text:`"7 less than twice \\(x\\)"`, op:'sub'},
+      {text:`"twice the difference of \\(x\\) and 4"`, op:'group'},
+      {text:`"the sum of \\(3n\\) and \\(\\tfrac{1}{2}\\)"`, op:'add'},
+      {text:`"\\(k\\) divided by the sum of \\(x\\) and 2"`, op:'group'},
+      {text:`"the product of \\((x-5)\\) and \\((x+5)\\)"`, op:'group'}
+    ])
+  };
+
+  const opWarmState={items:[]};
+  function opWarmNew(){
+    const lvl=id('opLevel').value; const box=id('opWarmList'); box.innerHTML=''; opWarmState.items=[];
+    const items = opBank[lvl]();
+    items.forEach((o)=>{
+      const row=document.createElement('div'); row.className='card p-4';
+      row.innerHTML=`<div class="text-lg mb-1">${o.text}</div>
+        <select class="opsel border rounded px-2 py-1">
+          <option value="">— choose —</option>
+          ${Object.entries(opLabels).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}
+        </select>`;
+      row.dataset.op=o.op; box.appendChild(row);
+      opWarmState.items.push(o);
+    });
+    id('opFb').textContent='';
+    renderMath(id('opWarmSlide'));
+  }
+  id('opNew').addEventListener('click',opWarmNew); opWarmNew();
+  id('opCheck').addEventListener('click',()=>{
+    let total=0,ok=0; [...id('opWarmList').children].forEach(row=>{
+      total++; const sel=row.querySelector('.opsel'); const good=sel.value && sel.value===row.dataset.op;
+      sel.style.borderColor = good? '#22c55e':'#ef4444'; if(good) ok++;
+    });
+    id('opFb').textContent = ok===total? '✅ Perfect reading of phrases.' : 'Score: '+ok+'/'+total;
+    if(ok===total) confetti();
+  });
+  id('opExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','correct','user']];
+    [...id('opWarmList').children].forEach(row=>rows.push([
+      row.querySelector('div').textContent.trim(),
+      row.dataset.op,
+      row.querySelector('.opsel').value||''
+    ]));
+    downloadCSV(`${deckTitle}_warmup_phrase_ops.csv`, rows);
+  });
+  id('opExportJSON').addEventListener('click',()=>{
+    const data=[...id('opWarmList').children].map(row=>({
+      prompt:row.querySelector('div').textContent.trim(),
+      correct:row.dataset.op,
+      user:row.querySelector('.opsel').value||''
+    }));
+    downloadJSON(`${deckTitle}_warmup_phrase_ops.json`, data);
+  });
+
+  /* -------------------- Slide 4: Phrase -> Expression -------------------- */
+  const phState={items:[]};
+
+  function makePhraseItems(level){
+    const V = choice(['x','n','m','y']);
+    const a=rand(2,9), b=rand(1,12), c=rand(2,6);
+    const d=choice([2,3,4,5]);
+    if(level==='easy'){
+      return [
+        {prompt:`Write an expression for: "a number \\(${V}\\) plus ${b}"`, key:`${V}+${b}`},
+        {prompt:`Write an expression for: "${b} less than \\(${V}\\)"`, key:`${V}-${b}`},
+        {prompt:`Write an expression for: "${a} times \\(${V}\\)"`, key:`${a}${V}`},
+        {prompt:`Write an expression for: "\\(${V}\\) divided by ${d}"`, key:`${V}/${d}`},
+        {prompt:`Write an expression for: "the sum of \\(${V}\\) and ${b}"`, key:`${V}+${b}`},
+        {prompt:`Write an expression for: "the difference of \\(${V}\\) and ${b}"`, key:`${V}-${b}`}
+      ];
+    }
+    if(level==='med'){
+      return [
+        {prompt:`Write an expression for: "three more than twice \\(${V}\\)"`, key:`2${V}+3`},
+        {prompt:`Write an expression for: "half of \\(${V}\\), then add ${b}"`, key:`${V}/2+${b}`},
+        {prompt:`Write an expression for: "the quotient of \\(${V}\\) and ${d}, plus ${a}"`, key:`${V}/${d}+${a}`},
+        {prompt:`Write an expression for: "${b} decreased by \\(${V}\\)"`, key:`${b}-${V}`},
+        {prompt:`Write an expression for: "the product of ${c} and \\(${V}\\), minus ${a}"`, key:`${c}${V}-${a}`},
+        {prompt:`Write an expression for: "the sum of \\(${V}\\) and ${a}, divided by ${d}"`, key:`(${V}+${a})/${d}`}
+      ];
+    }
+    // hard
+    const p=rand(1,9), q=rand(1,9);
+    return [
+      {prompt:`Write an expression for: "twice the sum of \\(${V}\\) and ${b}"`, key:`2(${V}+${b})`},
+      {prompt:`Write an expression for: "${a} less than the product of ${c} and \\(${V}\\)"`, key:`${c}${V}-${a}`},
+      {prompt:`Write an expression for: "the quotient of the difference of \\(${V}\\) and ${p} and ${d}"`, key:`(${V}-${p})/${d}`},
+      {prompt:`Write an expression for: "the sum of \\(${V}\\) and ${p}, then multiply by ${q}"`, key:`(${V}+${p})*${q}`},
+      {prompt:`Write an expression for: "three times \\(${V}\\) minus the sum of ${p} and ${q}"`, key:`3${V}-(${p}+${q})`},
+      {prompt:`Write an expression for: "the number \\(${V}\\) increased by ${p}, then decreased by ${q}"`, key:`${V}+${p}-${q}`}
+    ];
+  }
+
+  function phNew(){
+    const lvl=id('phLevel').value; const box=id('phList'); box.innerHTML=''; phState.items=[];
+    const items = makePhraseItems(lvl);
+    items.forEach((o)=>{
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML = `
+        <div class="text-lg">${o.prompt}</div>
+        <div class="mt-2">Expression: <input class="phin border rounded px-2 py-1 w-[260px] max-w-full" placeholder="e.g., 2(x+3)"></div>
+        <div class="mt-2 text-xs text-gray-500">Use parentheses when the phrase says “sum/difference” first.</div>
+      `;
+      row.dataset.key = o.key;
+      box.appendChild(row);
+      phState.items.push(o);
+    });
+    id('phFb').textContent='';
+    renderMath(id('phrSlide'));
+  }
+  id('phNew').addEventListener('click',phNew); phNew();
+
+  function checkExpressionRow(userRaw, keyRaw){
+    const user = normExpr(userRaw);
+    const key  = normExpr(keyRaw);
+
+    // test equivalence by random substitution
+    const vars = {};
+    const letters = new Set((key.match(/[a-zA-Z]/g) || []));
+    [...letters].forEach(L => { vars[L] = rand(-5, 6); });
+
+    const u = evalAt(user, vars);
+    const k = evalAt(key, vars);
+    if(isNaN(u) || isNaN(k)) return {ok:false, reason:'parse'};
+    // stronger: test multiple times
+    for(let t=0;t<5;t++){
+      [...letters].forEach(L => { vars[L] = rand(-7, 9); });
+      const uu = evalAt(user, vars);
+      const kk = evalAt(key, vars);
+      if(isNaN(uu) || isNaN(kk) || !approxEq(uu, kk)) return {ok:false, reason:'neq'};
+    }
+    return {ok:true};
+  }
+
+  id('phCheck').addEventListener('click',()=>{
+    let ok=0; const rows=[...id('phList').children];
+    rows.forEach((row)=>{
+      const inp=row.querySelector('.phin');
+      const res = checkExpressionRow(inp.value, row.dataset.key);
+      if(res.ok){ inp.style.borderColor='#22c55e'; ok++; }
+      else { inp.style.borderColor='#ef4444'; }
+    });
+    const total=rows.length;
+    id('phFb').textContent = ok===total ? '✅ Excellent translation.' : `Score: ${ok}/${total}`;
+    if(ok===total) confetti();
+  });
+  id('phExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','correct','user']];
+    [...id('phList').children].forEach((row)=>{
+      rows.push([
+        row.querySelector('.text-lg').textContent.trim(),
+        row.dataset.key,
+        row.querySelector('.phin').value||''
+      ]);
+    });
+    downloadCSV(`${deckTitle}_phrase_to_expr.csv`, rows);
+  });
+  id('phExportJSON').addEventListener('click',()=>{
+    const data=[...id('phList').children].map((row)=>({
+      prompt:row.querySelector('.text-lg').textContent.trim(),
+      correct:row.dataset.key,
+      user:row.querySelector('.phin').value||''
+    }));
+    downloadJSON(`${deckTitle}_phrase_to_expr.json`, data);
+  });
+
+  /* -------------------- Slide 5: Parentheses practice -------------------- */
+  const paState={items:[]};
+
+  function makeParenItems(level){
+    const V = choice(['x','n','m','y']);
+    const a=rand(2,8), b=rand(1,9), c=rand(2,6), d=choice([2,3,4,5]);
+    if(level==='easy'){
+      return [
+        {prompt:`Write: "twice the sum of \\(${V}\\) and ${b}"`, key:`2(${V}+${b})`},
+        {prompt:`Write: "three times the difference of \\(${V}\\) and ${b}"`, key:`3(${V}-${b})`},
+        {prompt:`Write: "the sum of \\(${V}\\) and ${a}, divided by ${d}"`, key:`(${V}+${a})/${d}`},
+        {prompt:`Write: "${c} added to the quotient of \\(${V}\\) and ${d}"`, key:`${V}/${d}+${c}`}
+      ];
+    }
+    if(level==='med'){
+      return [
+        {prompt:`Write: "5 less than twice the sum of \\(${V}\\) and ${b}"`, key:`2(${V}+${b})-5`},
+        {prompt:`Write: "the quotient of \\(${V}\\) minus ${a} and ${d}"`, key:`(${V}-${a})/${d}`},
+        {prompt:`Write: "the product of ${c} and the sum of \\(${V}\\) and ${b}"`, key:`${c}(${V}+${b})`},
+        {prompt:`Write: "half of the difference of \\(${V}\\) and ${b}"`, key:`(${V}-${b})/2`}
+      ];
+    }
+    // hard
+    const p=rand(1,9), q=rand(1,9);
+    return [
+      {prompt:`Write: "the product of ${c} and the sum of \\(${V}\\) and ${p}, then minus ${q}"`, key:`${c}(${V}+${p})-${q}`},
+      {prompt:`Write: "the quotient of the sum of \\(${V}\\) and ${p} and the difference of \\(${V}\\) and ${q}"`, key:`(${V}+${p})/(${V}-${q})`},
+      {prompt:`Write: "three less than the quotient of \\(${V}\\) plus ${p} and ${d}"`, key:`(${V}+${p})/${d}-3`},
+      {prompt:`Write: "twice the difference between the sum of \\(${V}\\) and ${p} and ${q}"`, key:`2((${V}+${p})-${q})`}
+    ];
+  }
+
+  function paNew(){
+    const lvl=id('paLevel').value; const box=id('paList'); box.innerHTML=''; paState.items=[];
+    const items = makeParenItems(lvl);
+    items.forEach((o)=>{
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML = `
+        <div class="text-lg">${o.prompt}</div>
+        <div class="mt-2">Expression: <input class="pain border rounded px-2 py-1 w-[280px] max-w-full" placeholder="use parentheses"></div>
+        <div class="mt-2 text-xs text-gray-500">Check: what must happen first in the phrase?</div>
+      `;
+      row.dataset.key=o.key;
+      box.appendChild(row); paState.items.push(o);
+    });
+    id('paFb').textContent=''; id('paHintBox').textContent='';
+    renderMath(id('parSlide'));
+  }
+  id('paNew').addEventListener('click',paNew); paNew();
+  id('paHint').addEventListener('click',()=>{
+    id('paHintBox').innerHTML = `<div class="hint">
+      Parentheses are needed when the phrase contains “sum of…”, “difference of…”, or “the quantity …”.
+      Example: “twice the sum” → \(2(x+3)\), not \(2x+3\).
+    </div>`;
+    renderMath(id('parSlide'));
+  });
+  id('paCheck').addEventListener('click',()=>{
+    let ok=0; const rows=[...id('paList').children];
+    rows.forEach((row)=>{
+      const inp=row.querySelector('.pain');
+      const res = checkExpressionRow(inp.value, row.dataset.key);
+      if(res.ok){ inp.style.borderColor='#22c55e'; ok++; }
+      else { inp.style.borderColor='#ef4444'; }
+    });
+    const total=rows.length;
+    id('paFb').textContent = ok===total ? '✅ Parentheses mastery.' : `Score: ${ok}/${total}`;
+    if(ok===total) confetti();
+  });
+  id('paExportCSV').addEventListener('click',()=>{
+    const rows=[['prompt','correct','user']];
+    [...id('paList').children].forEach((row)=>{
+      rows.push([
+        row.querySelector('.text-lg').textContent.trim(),
+        row.dataset.key,
+        row.querySelector('.pain').value||''
+      ]);
+    });
+    downloadCSV(`${deckTitle}_parentheses.csv`, rows);
+  });
+  id('paExportJSON').addEventListener('click',()=>{
+    const data=[...id('paList').children].map((row)=>({
+      prompt:row.querySelector('.text-lg').textContent.trim(),
+      correct:row.dataset.key,
+      user:row.querySelector('.pain').value||''
+    }));
+    downloadJSON(`${deckTitle}_parentheses.json`, data);
+  });
+
+  /* -------------------- Slide 6: Evaluate -------------------- */
+  const evState={items:[]};
+
+  function makeEvalItems(level){
+    const V=choice(['x','n','m','y']);
+    const a=rand(2,9), b=rand(1,10), c=rand(2,6);
+    const val = level==='easy' ? rand(0,8) : level==='med' ? rand(-5,7) : rand(-8,10);
+    if(level==='easy'){
+      return [
+        {expr:`${a}${V}+${b}`, V, val, ans:a*val+b},
+        {expr:`${V}-${b}`, V, val, ans:val-b},
+        {expr:`${c}(${V}+${b})`, V, val, ans:c*(val+b)},
+        {expr:`(${V}+${a})/2`, V, val, ans:(val+a)/2}
+      ];
+    }
+    if(level==='med'){
+      const d=choice([2,3,4,5]);
+      return [
+        {expr:`2${V}-3`, V, val, ans:2*val-3},
+        {expr:`${c}(${V}-${b})`, V, val, ans:c*(val-b)},
+        {expr:`(${V}+${a})/${d}+${b}`, V, val, ans:(val+a)/d+b},
+        {expr:`${a}-(${V}+${b})`, V, val, ans:a-(val+b)}
+      ];
+    }
+    // hard
+    const d=choice([2,3,4,5]);
+    return [
+      {expr:`2(${V}+${b})-5`, V, val, ans:2*(val+b)-5},
+      {expr:`(${V}-${a})/${d}`, V, val, ans:(val-a)/d},
+      {expr:`3${V}-(${a}+${b})`, V, val, ans:3*val-(a+b)},
+      {expr:`${c}(${V}+${a})-(${V}-${b})`, V, val, ans:c*(val+a)-(val-b)}
+    ];
+  }
+
+  function evNew(){
+    const lvl=id('evLevel').value; const box=id('evList'); box.innerHTML=''; evState.items=[];
+    const items=makeEvalItems(lvl);
+    items.forEach((o)=>{
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML = `
+        <div class="text-lg">Evaluate \( ${o.expr} \) when \( ${o.V}=${o.val} \).</div>
+        <div class="mt-2">Value: <input class="evin border rounded px-2 py-1 w-40" placeholder="number"></div>
+        <div class="mt-2 text-xs text-gray-500">Write substitution with parentheses: ${o.expr.replaceAll(o.V, `(${o.val})`)}</div>
+      `;
+      row.dataset.ans = String(o.ans);
+      row.dataset.expr = o.expr;
+      row.dataset.var = o.V;
+      row.dataset.val = String(o.val);
+      box.appendChild(row);
+      evState.items.push(o);
+    });
+    id('evFb').textContent='';
+    renderMath(id('evalSlide'));
+  }
+  id('evNew').addEventListener('click',evNew); evNew();
+
+  id('evCheck').addEventListener('click',()=>{
+    let ok=0; const rows=[...id('evList').children];
+    rows.forEach((row)=>{
+      const inp=row.querySelector('.evin');
+      const got=Number(String(inp.value).trim());
+      const want=Number(row.dataset.ans);
+      if(isFinite(got) && approxEq(got,want)){ inp.style.borderColor='#22c55e'; ok++; }
+      else { inp.style.borderColor='#ef4444'; }
+    });
+    const total=rows.length;
+    id('evFb').textContent = ok===total ? '✅ Clean evaluation.' : `Score: ${ok}/${total}`;
+    if(ok===total) confetti();
+  });
+
+  id('evExportCSV').addEventListener('click',()=>{
+    const rows=[['expression','variable','value','correct','user']];
+    [...id('evList').children].forEach((row)=>{
+      rows.push([
+        row.dataset.expr,
+        row.dataset.var,
+        row.dataset.val,
+        row.dataset.ans,
+        row.querySelector('.evin').value||''
+      ]);
+    });
+    downloadCSV(`${deckTitle}_evaluate.csv`, rows);
+  });
+  id('evExportJSON').addEventListener('click',()=>{
+    const data=[...id('evList').children].map(row=>({
+      expr:row.dataset.expr,
+      variable:row.dataset.var,
+      value:Number(row.dataset.val),
+      correct:Number(row.dataset.ans),
+      user:row.querySelector('.evin').value||''
+    }));
+    downloadJSON(`${deckTitle}_evaluate.json`, data);
+  });
+
+  /* -------------------- Slide 7: Matching -------------------- */
+  const mtState={pairs:[], bank:[]};
+
+  function makeMatchPairs(level){
+    const V=choice(['x','n','m','y']);
+    const a=rand(2,9), b=rand(1,9), c=rand(2,6), d=choice([2,3,4,5]);
+    if(level==='easy'){
+      return [
+        {phrase:`"${b} more than \\(${V}\\)"`, expr:`${V}+${b}`},
+        {phrase:`"${b} less than \\(${V}\\)"`, expr:`${V}-${b}`},
+        {phrase:`"the product of ${a} and \\(${V}\\)"`, expr:`${a}${V}`},
+        {phrase:`"\\(${V}\\) divided by ${d}"`, expr:`${V}/${d}`}
+      ];
+    }
+    if(level==='med'){
+      return [
+        {phrase:`"twice \\(${V}\\) plus 3"`, expr:`2${V}+3`},
+        {phrase:`"the sum of \\(${V}\\) and ${a}, divided by ${d}"`, expr:`(${V}+${a})/${d}`},
+        {phrase:`"five times the difference of \\(${V}\\) and ${b}"`, expr:`5(${V}-${b})`},
+        {phrase:`"${a} decreased by \\(${V}\\)"`, expr:`${a}-${V}`}
+      ];
+    }
+    // hard
+    const p=rand(1,9), q=rand(1,9);
+    return [
+      {phrase:`"7 less than twice \\(${V}\\)"`, expr:`2${V}-7`},
+      {phrase:`"twice the sum of \\(${V}\\) and ${p}"`, expr:`2(${V}+${p})`},
+      {phrase:`"the quotient of \\(${V}\\) minus ${q} and ${d}"`, expr:`(${V}-${q})/${d}`},
+      {phrase:`"three times \\(${V}\\) minus the sum of ${p} and ${q}"`, expr:`3${V}-(${p}+${q})`}
+    ];
+  }
+
+  function shuffle(arr){
+    for(let j=arr.length-1;j>0;j--){
+      const k=Math.floor(Math.random()*(j+1));
+      [arr[j],arr[k]]=[arr[k],arr[j]];
+    }
+    return arr;
+  }
+
+  function mtNew(){
+    const lvl=id('mtLevel').value;
+    mtState.pairs = makeMatchPairs(lvl);
+    mtState.bank  = shuffle(mtState.pairs.map(p=>p.expr).slice());
+
+    const left=id('mtLeft'); const bank=id('mtBank');
+    left.innerHTML=''; bank.innerHTML=''; id('mtFb').textContent='';
+
+    mtState.bank.forEach((e,idx)=>{
+      const pill=document.createElement('div');
+      pill.className='pill justify-center';
+      pill.textContent=e;
+      pill.dataset.expr=e;
+      bank.appendChild(pill);
+    });
+
+    mtState.pairs.forEach((p,idx)=>{
+      const row=document.createElement('div');
+      row.className='card p-4';
+      row.innerHTML = `
+        <div class="text-lg mb-2">${p.phrase}</div>
+        <select class="mtsel border rounded px-2 py-1 w-full">
+          <option value="">— choose expression —</option>
+          ${mtState.bank.map(e=>`<option value="${e}">${e}</option>`).join('')}
+        </select>
+      `;
+      row.dataset.key=p.expr;
+      left.appendChild(row);
+    });
+
+    renderMath(id('matchSlide'));
+  }
+  id('mtNew').addEventListener('click',mtNew); mtNew();
+
+  id('mtCheck').addEventListener('click',()=>{
+    let ok=0; const rows=[...id('mtLeft').children];
+    rows.forEach((row)=>{
+      const sel=row.querySelector('.mtsel');
+      const user = normExpr(sel.value);
+      const key  = normExpr(row.dataset.key);
+      const good = user && user===key;
+      sel.style.borderColor = good ? '#22c55e' : '#ef4444';
+      if(good) ok++;
+    });
+    const total=rows.length;
+    id('mtFb').textContent = ok===total ? '✅ Perfect matching.' : `Score: ${ok}/${total}`;
+    if(ok===total) confetti();
+  });
+
+  id('mtExportCSV').addEventListener('click',()=>{
+    const rows=[['phrase','correct','user']];
+    [...id('mtLeft').children].forEach((row)=>{
+      rows.push([
+        row.querySelector('.text-lg').textContent.trim(),
+        row.dataset.key,
+        row.querySelector('.mtsel').value||''
+      ]);
+    });
+    downloadCSV(`${deckTitle}_matching.csv`, rows);
+  });
+  id('mtExportJSON').addEventListener('click',()=>{
+    const data=[...id('mtLeft').children].map(row=>({
+      phrase:row.querySelector('.text-lg').textContent.trim(),
+      correct:row.dataset.key,
+      user:row.querySelector('.mtsel').value||''
+    }));
+    downloadJSON(`${deckTitle}_matching.json`, data);
+  });
+
+  /* -------------------- Slide 8: Error analysis -------------------- */
+  function errBank(level){
+    const easy=[
+      {
+        prompt:`Student writes: "3 less than \(x\)" as \(3-x\).`,
+        correct:`Correct: \(x-3\). “Less than” reverses the order.`,
+        key:'A'
+      },
+      {
+        prompt:`Student writes: "twice the sum of \(x\) and 5" as \(2x+5\).`,
+        correct:`Correct: \(2(x+5)\). “Sum” must be grouped first.`,
+        key:'B'
+      },
+      {
+        prompt:`Student writes: "the product of 4 and \(x\)" as \(4+x\).`,
+        correct:`Correct: \(4x\). “Product” means multiply.`,
+        key:'C'
+      }
+    ];
+    const med=[
+      {
+        prompt:`Student writes: "8 decreased by \(n\)" as \(n-8\).`,
+        correct:`Correct: \(8-n\). “Decreased by” keeps order: first 8, then subtract \(n\).`,
+        key:'A'
+      },
+      {
+        prompt:`Evaluate \(3x+2\) at \(x=-4\): student does \(3(-4+2)=-6\).`,
+        correct:`Correct substitution: \(3(-4)+2=-12+2=-10\). Parentheses must wrap only \(x\) when substituting.`,
+        key:'D'
+      }
+    ];
+    const hard=[
+      {
+        prompt:`Student writes: "the quotient of the difference of \(x\) and 6 and 3" as \(x-6/3\).`,
+        correct:`Correct: \((x-6)/3\). “Difference” first → parentheses.`,
+        key:'B'
+      },
+      {
+        prompt:`Student writes: "7 less than twice \(x\)" as \(2(x-7)\).`,
+        correct:`Correct: \(2x-7\). Only \(x\) is doubled; the “less than 7” happens after.`,
+        key:'B'
+      }
+    ];
+    return level==='easy'?easy:level==='med'?med:hard;
+  }
+  const errState={item:null};
+
+  function errNew(){
+    const bank=errBank(id('errLevel').value);
+    errState.item=choice(bank);
+    id('errBox').innerHTML=`<div class="text-gray-700">Student work:</div><div class="mt-1 text-maroon">${errState.item.prompt}</div>`;
+    id('errFb').textContent=''; id('errRevealBox').textContent='';
+    // clear radio
+    [...document.querySelectorAll('input[name="errChoice"]')].forEach(r=>r.checked=false);
+    renderMath(id('errSlide'));
+  }
+  id('errNew').addEventListener('click',errNew); errNew();
+
+  id('errCheck').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    if(!sel){ id('errFb').textContent='Choose a diagnosis.'; return; }
+    if(sel.value===errState.item.key){ id('errFb').textContent='✅ Correct diagnosis.'; confetti(); }
+    else { id('errFb').textContent='❌ Not quite. Try again or reveal the correct work.'; }
+  });
+  id('errReveal').addEventListener('click',()=>{
+    id('errRevealBox').innerHTML=`<div class="hint">${errState.item.correct}</div>`;
+    renderMath(id('errSlide'));
+  });
+  id('errExportCSV').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    downloadCSV(`${deckTitle}_error_analysis.csv`, [
+      ['student_work','correct_explanation','answer_key','user_choice'],
+      [id('errBox').innerText.trim(), errState.item.correct, errState.item.key, sel?sel.value:'']
+    ]);
+  });
+  id('errExportJSON').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    downloadJSON(`${deckTitle}_error_analysis.json`, {
+      student_work:id('errBox').innerText.trim(),
+      correct:errState.item.correct,
+      key:errState.item.key,
+      user: sel?sel.value:''
+    });
+  });
+
+  /* -------------------- Slide 9: Mixed generator -------------------- */
+  const mixState={cur:null};
+
+  function mixNew(){
+    const lvl=id('mixLevel').value;
+    const V=choice(['x','n','m','y']);
+    const t = rand(0,5);
+
+    let task='', mode='expr', key='', vars={}, ansNum=null;
+
+    if(t===0){ // phrase -> expression
+      const b=rand(1,9);
+      task=`Write an expression for: "${b} less than ${V}".`;
+      mode='expr';
+      key=`${V}-${b}`;
+    } else if(t===1){
+      const a=rand(2,6), b=rand(1,9);
+      task=`Write an expression for: "twice the sum of ${V} and ${b}".`;
+      mode='expr';
+      key=`2(${V}+${b})`;
+    } else if(t===2){
+      const a=rand(2,9), b=rand(1,10), val = lvl==='easy'?rand(0,7):lvl==='med'?rand(-5,8):rand(-8,10);
+      task=`Evaluate: \( ${a}${V}+${b} \) when \( ${V}=${val} \).`;
+      mode='num';
+      key=`${a}${V}+${b}`;
+      vars={[V]:val};
+      ansNum = a*val+b;
+    } else if(t===3){
+      const b=rand(1,9), d=choice([2,3,4,5]), val = lvl==='easy'?rand(0,8):lvl==='med'?rand(-5,7):rand(-8,10);
+      task=`Evaluate: \( (${V}+${b})/${d} \) when \( ${V}=${val} \).`;
+      mode='num';
+      key=`(${V}+${b})/${d}`;
+      vars={[V]:val};
+      ansNum = (val+b)/d;
+    } else if(t===4){
+      const a=rand(2,6), b=rand(1,9);
+      task=`Write an expression for: "the product of ${a} and the difference of ${V} and ${b}".`;
+      mode='expr';
+      key=`${a}(${V}-${b})`;
+    } else {
+      const p=rand(1,9), q=rand(1,9);
+      task=`Write an expression for: "three times ${V} minus the sum of ${p} and ${q}".`;
+      mode='expr';
+      key=`3${V}-(${p}+${q})`;
+    }
+
+    mixState.cur = {task, mode, key, vars, ansNum};
+    id('mixQ').innerHTML = task;
+    id('mixAns').value='';
+    id('mixHintBox').textContent='';
+    id('mixFb').textContent='';
+    renderMath(id('mixSlide'));
+  }
+  id('mixNew').addEventListener('click',mixNew); mixNew();
+
+  id('mixHint').addEventListener('click',()=>{
+    const t=id('mixQ').textContent.toLowerCase();
+    const msg =
+      t.includes('less than') ? '“less than” reverses order: “b less than x” → x−b.' :
+      t.includes('twice the sum') ? '“sum” first → parentheses: 2(x+b).' :
+      t.includes('difference') ? '“difference of x and b” is (x−b). Multiply after: a(x−b).' :
+      t.includes('evaluate') ? 'Substitute with parentheses: if x=-3, write 2(-3)+5.' :
+      'Look for the main operation word and any “sum/difference” that needs grouping.';
+    id('mixHintBox').innerHTML=`<div class="hint">${msg}</div>`;
+    renderMath(id('mixSlide'));
+  });
+
+  id('mixCheck').addEventListener('click',()=>{
+    const cur=mixState.cur;
+    const user=id('mixAns').value;
+
+    if(cur.mode==='num'){
+      const got=Number(String(user).trim());
+      const want=Number(cur.ansNum);
+      const ok=isFinite(got) && approxEq(got,want);
+      if(ok){
+        id('mixFb').textContent=`✅ Correct! Value = ${want}`;
+        id('mixFb').className='mt-2 h-6 font-semibold text-green-700';
+        confetti();
+      } else {
+        id('mixFb').textContent='❌ Not quite. Try again.';
+        id('mixFb').className='mt-2 h-6 font-semibold text-red-700';
+      }
+      return;
+    }
+
+    // expression mode: equivalence by substitution
+    const res = checkExpressionRow(user, cur.key);
+    if(res.ok){
+      id('mixFb').textContent=`✅ Correct! One valid form: ${cur.key}`;
+      id('mixFb').className='mt-2 h-6 font-semibold text-green-700';
+      confetti();
+    } else {
+      id('mixFb').textContent='❌ Not quite. Watch order/parentheses.';
+      id('mixFb').className='mt-2 h-6 font-semibold text-red-700';
+    }
+  });
+
+  id('mixExportCSV').addEventListener('click',()=>{
+    downloadCSV(`${deckTitle}_mixed_current.csv`, [['task','mode','correct','user'], [id('mixQ').textContent, mixState.cur.mode, mixState.cur.mode==='num'?String(mixState.cur.ansNum):mixState.cur.key, id('mixAns').value||'']]);
+  });
+  id('mixExportJSON').addEventListener('click',()=>{
+    downloadJSON(`${deckTitle}_mixed_current.json`, {task:id('mixQ').textContent, mode:mixState.cur.mode, correct: mixState.cur.mode==='num'?mixState.cur.ansNum:mixState.cur.key, user:id('mixAns').value||''});
+  });
+
+  /* -------------------- Init -------------------- */
+  show(0);
+
+})();
+</script>
+</body>
+</html>
