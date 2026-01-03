@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>G8 • Unit 3 • Lesson 1 — Translations</title>
+
+<!-- Fonts & Tailwind -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- KaTeX (robust auto-render) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const run = (root = document.body) => {
+      if (!window.renderMathInElement) return;
+      window.renderMathInElement(root, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '\\[', right: '\\]', display: true },
+          { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+      });
+    };
+    if (window.renderMathInElement) run();
+    else {
+      const t = setInterval(() => { if (window.renderMathInElement) { clearInterval(t); run(); } }, 25);
+      setTimeout(() => clearInterval(t), 6000);
+    }
+    window._rerenderMath = run;
+  });
+</script>
+
+<style>
+  :root{--maroon:#6C1D45;--gold:#C7A34F;--dark:#2C2C2E;--light:#F5F5F5;--accent:#E8D5B7}
+  html,body{height:100%;background:#2d3748;color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+
+  /* Stage */
+  #deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
+  #slides{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
+  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
+  .slide.active{opacity:1;transform:none;pointer-events:auto}
+
+  .bg-maroon{background-color:var(--maroon)} .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
+  .banner{width:100%;height:120px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
+  .card{border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
+  .chip{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.05);border-radius:9999px;padding:.35rem .75rem;cursor:pointer}
+  .chip:hover{outline:2px solid var(--gold)}
+  .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
+  .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+  .btn:hover{filter:brightness(0.98)}
+  #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
+  #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700}
+  #controls button:hover{transform:scale(1.06)}
+  #counter{color:#fff;font-weight:700;min-width:84px;text-align:center}
+  #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:30;transition:width .35s ease}
+  #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
+
+  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
+  .confetti{position:fixed;pointer-events:none;z-index:50}
+
+  /* Popover */
+  #pop{position:fixed;display:none;max-width:440px;z-index:60;background:#fff;border:1px solid #e5e7eb;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.22);padding:12px}
+  #pop .close{float:right;cursor:pointer;font-weight:800;padding:2px 6px;border-radius:8px}
+  #pop .close:hover{background:#f3f4f6}
+
+  /* Coordinate plane */
+  .planeWrap{border:1px solid #e5e7eb;border-radius:14px;background:#fff;padding:10px}
+  svg.plane{width:100%;height:auto;display:block}
+  .tag{display:inline-flex;align-items:center;gap:.35rem;border:1px solid #e5e7eb;border-radius:999px;padding:.25rem .65rem;background:#fff}
+  .workstep{border-left:4px solid var(--gold);padding:.6rem .8rem;background:#fff;border-radius:12px;border:1px solid #e5e7eb}
+</style>
+</head>
+
+<body>
+<div id="deck" aria-live="polite">
+  <div id="slides" class="relative">
+    <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
+
+    <!-- 0 • Title -->
+    <section class="slide active bg-maroon text-white">
+      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="QLA Partner Banner"></div>
+      <div class="flex items-center gap-8">
+        <img src="qla_logo.png" alt="QLA Logo" class="h-24 w-auto" onerror="this.style.display='none'"/>
+        <div class="text-left">
+          <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Unit 3 — Transformations &amp; Congruence</h1>
+          <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Lesson 1 — Translations</p>
+          <p class="mt-2 text-lg">Grade 8</p>
+        </div>
+      </div>
+      <div class="absolute bottom-6 text-sm text-gray-100">
+        Big idea: a translation “slides” a figure — distance and angles stay the same (congruence preserved).
+      </div>
+    </section>
+
+    <!-- 1 • Learning Outcomes & Keywords -->
+    <section class="slide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Learning Outcomes &amp; Keywords</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes</h3>
+          <ul class="list-disc list-inside space-y-1 text-lg">
+            <li>Describe a translation using words, a vector, and coordinate rules.</li>
+            <li>Apply a translation to points and polygons on a coordinate plane.</li>
+            <li>Find the translation vector given an image and preimage.</li>
+            <li>Explain why translations preserve congruence (same lengths and angles).</li>
+            <li>Check work with substitution: translate → compare differences.</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
+          <div class="flex flex-wrap gap-2 text-lg">
+            <span class="chip" data-key="translation">translation</span>
+            <span class="chip" data-key="vector">vector</span>
+            <span class="chip" data-key="rule">coordinate rule</span>
+            <span class="chip" data-key="preimage">preimage</span>
+            <span class="chip" data-key="image">image</span>
+            <span class="chip" data-key="congruent">congruent</span>
+            <span class="chip" data-key="orientation">orientation</span>
+            <span class="chip" data-key="magnitude">magnitude</span>
+          </div>
+          <div class="text-xs text-gray-500 mt-3">
+            Trap alert: translation changes position only — not size, shape, or direction the figure faces.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 • Warm-Up: Direction & Units -->
+    <section class="slide" id="warmSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm-Up: Slide It!</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="wLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="wNew" class="btn">New set</button>
+        <button id="wCheck" class="btn maroon">Check</button>
+        <button id="wExportCSV" class="btn">Export CSV</button>
+        <button id="wExportJSON" class="btn">Export JSON</button>
+      </div>
+
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div class="grid lg:grid-cols-2 gap-3" id="wList"></div>
+      </div>
+      <div id="wFb" class="mt-2 h-6 font-semibold"></div>
+
+      <div class="hint mt-3 text-sm max-w-5xl text-left">
+        Right/left changes \(x\). Up/down changes \(y\). Right is \(+\), left is \(−\). Up is \(+\), down is \(−\).
+      </div>
+    </section>
+
+    <!-- 3 • Rule + Notation -->
+    <section class="slide" id="ruleSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-3">Translation Notation</h2>
+      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-6xl text-left">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-2">Coordinate Rule</h3>
+          <div class="text-lg space-y-2">
+            <div>If you translate <span class="tag">right \(a\)</span> and <span class="tag">up \(b\)</span>, then:</div>
+            <div class="text-xl font-extrabold">\( (x,y)\rightarrow(x+a,\;y+b) \)</div>
+            <div class="text-sm text-gray-600">Left means \(a\) is negative. Down means \(b\) is negative.</div>
+          </div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-2">Vector Form</h3>
+          <div class="text-lg space-y-2">
+            <div>Translation vector: \( \langle a,b\rangle \)</div>
+            <div>Meaning: move every point \(a\) horizontally and \(b\) vertically.</div>
+            <div class="hint text-sm mt-3">
+              Congruence check: distances and angles stay the same under translations, so figures remain congruent.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-5 card p-4 w-full max-w-6xl text-left">
+        <div class="text-lg">
+          Example: translate by \( \langle -3, 2\rangle \).<br/>
+          Point \(A(4,-1)\) goes to \(A'(4-3, -1+2)=(1,1)\).
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 • Worked Examples on a Plane -->
+    <section class="slide" id="wkSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Worked Examples (Step by Step)</h2>
+      <div class="grid lg:grid-cols-3 gap-4 w-full max-w-6xl text-left">
+        <div class="card p-4">
+          <h3 class="font-bold text-maroon text-xl">Example 1 (point)</h3>
+          <div id="ex1" class="mt-2 text-lg"></div>
+          <button id="ex1Next" class="btn mt-2">Another</button>
+        </div>
+        <div class="card p-4">
+          <h3 class="font-bold text-maroon text-xl">Example 2 (find vector)</h3>
+          <div id="ex2" class="mt-2 text-lg"></div>
+          <button id="ex2Next" class="btn mt-2">Another</button>
+        </div>
+        <div class="card p-4">
+          <h3 class="font-bold text-maroon text-xl">Example 3 (triangle)</h3>
+          <div id="ex3" class="mt-2 text-lg"></div>
+          <button id="ex3Next" class="btn mt-2">Another</button>
+        </div>
+      </div>
+      <div class="hint mt-4 text-left text-sm max-w-6xl">
+        Find vector quickly: \( \langle a,b\rangle = \langle x'-x,\; y'-y\rangle \).
+      </div>
+    </section>
+
+    <!-- 5 • Practice A: Translate Points -->
+    <section class="slide" id="ptSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice A — Translate Points</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="ptLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="ptNew" class="btn">New set</button>
+        <button id="ptCheck" class="btn maroon">Check</button>
+        <button id="ptExportCSV" class="btn">Export CSV</button>
+        <button id="ptExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="ptList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
+      <div id="ptFb" class="mt-2 h-6 font-semibold"></div>
+      <div class="hint mt-3 text-left text-sm max-w-5xl">
+        Answer format: <span class="font-mono">(x,y)</span> or <span class="font-mono">x,y</span>.
+      </div>
+    </section>
+
+    <!-- 6 • Practice B: Find the Translation Vector -->
+    <section class="slide" id="vecSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice B — Find the Translation Vector</h2>
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="vcLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="vcNew" class="btn">New set</button>
+        <button id="vcCheck" class="btn maroon">Check</button>
+        <button id="vcExportCSV" class="btn">Export CSV</button>
+        <button id="vcExportJSON" class="btn">Export JSON</button>
+      </div>
+      <div id="vcList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
+      <div id="vcFb" class="mt-2 h-6 font-semibold"></div>
+      <div class="hint mt-3 text-left text-sm max-w-5xl">
+        Compute: \(a=x'-x\), \(b=y'-y\). Vector is \(\langle a,b\rangle\).
+      </div>
+    </section>
+
+    <!-- 7 • Practice C: Translate a Polygon (with plane) -->
+    <section class="slide" id="polySlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice C — Translate a Polygon</h2>
+
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="plLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="plNew" class="btn">New polygon</button>
+        <button id="plCheck" class="btn maroon">Check</button>
+        <button id="plHint" class="btn">Hint</button>
+        <button id="plExportCSV" class="btn">Export CSV</button>
+        <button id="plExportJSON" class="btn">Export JSON</button>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-5 w-full max-w-6xl text-left">
+        <div class="planeWrap">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-lg font-bold text-maroon">Coordinate Plane</div>
+            <div class="text-sm text-gray-600">Preimage (solid) • Image (dashed after you check)</div>
+          </div>
+          <div id="planeBox"></div>
+        </div>
+
+        <div class="card p-5">
+          <div class="text-lg">
+            Translation vector: <span class="tag" id="plVec"></span>
+          </div>
+          <div class="text-sm text-gray-600 mt-1">Translate every vertex by the same \(\langle a,b\rangle\).</div>
+
+          <div class="mt-3 grid grid-cols-2 gap-3">
+            <div class="card p-3 bg-white">
+              <div class="font-bold text-maroon">A′</div>
+              <input id="A1" class="border rounded px-2 py-2 w-full" placeholder="(x,y)">
+            </div>
+            <div class="card p-3 bg-white">
+              <div class="font-bold text-maroon">B′</div>
+              <input id="B1" class="border rounded px-2 py-2 w-full" placeholder="(x,y)">
+            </div>
+            <div class="card p-3 bg-white">
+              <div class="font-bold text-maroon">C′</div>
+              <input id="C1" class="border rounded px-2 py-2 w-full" placeholder="(x,y)">
+            </div>
+            <div class="card p-3 bg-white">
+              <div class="font-bold text-maroon">D′ (if shown)</div>
+              <input id="D1" class="border rounded px-2 py-2 w-full" placeholder="(x,y)">
+            </div>
+          </div>
+
+          <div id="plHintBox" class="mt-3 text-sm"></div>
+          <div id="plFb" class="mt-2 h-6 font-semibold"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 • Congruence Check (Lengths & Angles) -->
+    <section class="slide" id="congSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Why Translations Preserve Congruence</h2>
+      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-6xl text-left">
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-2">Distance</h3>
+          <div class="text-lg">
+            If \(P(x_1,y_1)\) and \(Q(x_2,y_2)\), distance depends on differences:
+            \[
+              \Delta x = x_2-x_1,\quad \Delta y = y_2-y_1.
+            \]
+            Translating by \(\langle a,b\rangle\) gives
+            \[
+              (x_1+a, y_1+b),\ (x_2+a, y_2+b)
+            \]
+            so differences stay the same:
+            \[
+              (x_2+a)-(x_1+a)=x_2-x_1.
+            \]
+          </div>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-2xl font-bold text-maroon mb-2">Angles &amp; Orientation</h3>
+          <div class="text-lg">
+            A translation slides a figure without turning it.
+            So angle measures and “clockwise/counterclockwise” orientation stay the same.
+            <div class="hint mt-3 text-sm">
+              Therefore: translations map figures to <strong>congruent</strong> figures.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 • Error Analysis -->
+    <section class="slide" id="errSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Error Analysis — Diagnose the Mistake</h2>
+
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="errLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="errNew" class="btn">New example</button>
+        <button id="errReveal" class="btn">Reveal correct work</button>
+      </div>
+
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div id="errBox" class="text-lg"></div>
+        <div class="mt-2">
+          <label><input type="radio" name="errChoice" value="A"> Added vector to the wrong coordinate (mixed \(x\) and \(y\))</label><br/>
+          <label><input type="radio" name="errChoice" value="B"> Sign error (right/left or up/down flipped)</label><br/>
+          <label><input type="radio" name="errChoice" value="C"> Only moved one point / not all points</label><br/>
+          <label><input type="radio" name="errChoice" value="D"> Found vector using \(x-x'\) instead of \(x'-x\)</label>
+        </div>
+
+        <div class="mt-2 flex gap-2">
+          <button id="errCheck" class="btn maroon">Check</button>
+          <button id="errExportCSV" class="btn">Export CSV</button>
+          <button id="errExportJSON" class="btn">Export JSON</button>
+        </div>
+
+        <div id="errFb" class="mt-2 h-6 font-semibold"></div>
+        <div id="errRevealBox" class="mt-2 text-sm"></div>
+      </div>
+    </section>
+
+    <!-- 10 • Mixed Generator -->
+    <section class="slide" id="mixSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Mixed Generator — Translations</h2>
+      <div class="card p-5 w-full max-w-3xl text-left">
+        <div class="flex items-center gap-3">
+          <span>Level:</span>
+          <select id="mixLevel" class="border rounded px-2 py-1">
+            <option value="easy" selected>easy</option>
+            <option value="med">medium</option>
+            <option value="hard">hard</option>
+          </select>
+          <button id="mixNew" class="btn">New question</button>
+        </div>
+
+        <div class="mt-3 text-2xl">
+          Task: <span id="mixQ" class="font-extrabold"></span>
+        </div>
+        <div class="mt-2">
+          <input id="mixAns" class="border rounded px-3 py-2 w-[460px] max-w-full" placeholder="enter (x,y) or ⟨a,b⟩">
+          <button id="mixCheck" class="btn maroon">Check</button>
+          <button id="mixHint" class="btn">Hint</button>
+          <button id="mixExportCSV" class="btn">Export CSV</button>
+          <button id="mixExportJSON" class="btn">Export JSON</button>
+        </div>
+
+        <div id="mixHintBox" class="mt-3 text-sm"></div>
+        <div id="mixFb" class="mt-2 h-6 font-semibold"></div>
+      </div>
+    </section>
+
+    <!-- 11 • Exit Ticket -->
+    <section class="slide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
+      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">3–2–1 Reflect</h3>
+          <ul class="list-disc list-inside">
+            <li>3 clues that tell you a transformation is a translation</li>
+            <li>2 ways to describe a translation (rule / vector / words)</li>
+            <li>1 check you can do to verify your answer</li>
+          </ul>
+        </div>
+        <div class="card p-5">
+          <h3 class="text-xl font-bold text-maroon">Up Next</h3>
+          <p>Reflections: flip over a line and analyze symmetry.</p>
+        </div>
+      </div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[110px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Controls -->
+<div id="controls" role="group" aria-label="Slideshow controls">
+  <button id="prev" title="Previous (←)">&laquo;</button>
+  <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
+  <div id="counter">1 / 12</div>
+  <button id="next" title="Next (→)">&raquo;</button>
+</div>
+<div id="progress"></div>
+
+<!-- Glossary popover -->
+<div id="pop" role="dialog" aria-modal="true" aria-live="polite">
+  <span class="close" title="Close">✕</span>
+  <div id="popBody"></div>
+</div>
+
+<script>
+/* --------------------- Core shell & utilities --------------------- */
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
+  const deckTitle='G8_U3_L1_Translations';
+  let i=0;
+
+  function show(k){
+    i=(k+slides.length)%slides.length;
+    slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
+    counter.textContent=(i+1)+' / '+slides.length;
+    progress.style.width=((i+1)/slides.length*100)+'%';
+    renderMath(slides[i]);
+  }
+  prev.addEventListener('click',()=>show(i-1));
+  next.addEventListener('click',()=>show(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight') show(i+1);
+    if(e.key==='ArrowLeft') show(i-1);
+    if(e.key.toLowerCase()==='f') toggleFS();
+  });
+  function toggleFS(){
+    const el=id('slides');
+    if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);}
+    else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(el);}
+  }
+  fsBtn.addEventListener('click',toggleFS);
+
+  function id(x){return document.getElementById(x)}
+  function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
+  function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
+    for(let k=0;k<18;k++){
+      const d=document.createElement('div'); d.className='confetti';
+      d.style.left=x+'px'; d.style.top=y+'px'; d.style.width='8px'; d.style.height='8px';
+      d.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8a3d64'][k%4];
+      document.body.appendChild(d);
+      const dx=(Math.random()*2-1)*240, dy=(Math.random()*-1-0.3)*300, rot=Math.random()*720;
+      d.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],
+                {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
+    }
+  }
+  function downloadJSON(filename, data){
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob); const a=document.createElement('a');
+    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+  function downloadCSV(filename, rows){
+    const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
+    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+
+  /* ---------- Glossary ---------- */
+  const POP=id('pop'), POP_BODY=id('popBody');
+  const GLOS={
+    translation:'<strong>Translation</strong>: a transformation that slides a figure without turning or resizing it.',
+    vector:'<strong>Vector</strong> \\(\\langle a,b\\rangle\\): tells the horizontal change \\(a\\) and vertical change \\(b\\).',
+    rule:'<strong>Coordinate rule</strong>: \\((x,y)\\to(x+a,\\ y+b)\\).',
+    preimage:'<strong>Preimage</strong>: the original figure before the transformation.',
+    image:'<strong>Image</strong>: the new figure after the transformation.',
+    congruent:'<strong>Congruent</strong>: same size and shape; translations preserve congruence.',
+    orientation:'<strong>Orientation</strong>: the “direction” a figure faces (clockwise order); translations keep it.',
+    magnitude:'<strong>Magnitude</strong>: the length/size of the move described by the vector.'
+  };
+  function showPop(html,anchor){
+    POP_BODY.innerHTML=html; POP.style.display='block';
+    const r=anchor?anchor.getBoundingClientRect():{left:20,top:window.innerHeight-120};
+    POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px';
+    POP.style.bottom=(window.innerHeight - r.top + 10)+'px';
+  }
+  POP.querySelector('.close').addEventListener('click',()=>POP.style.display='none');
+  document.addEventListener('click',e=>{
+    const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]) showPop(GLOS[key], el);}
+  });
+
+  /* -------------------- Helpers -------------------- */
+  const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+  const choice=(arr)=>arr[rand(0,arr.length-1)];
+  const approxEq=(a,b)=>Math.abs(a-b)<1e-9;
+
+  function parsePair(s){
+    if(s==null) return null;
+    s=String(s).trim().replace(/\s+/g,'').replace(/[⟨⟩<>]/g,'').replace(/[()]/g,'');
+    s=s.replace(/−/g,'-');
+    if(!s) return null;
+    const parts=s.split(',');
+    if(parts.length!==2) return null;
+    const x=Number(parts[0]), y=Number(parts[1]);
+    if(!isFinite(x)||!isFinite(y)) return null;
+    return [x,y];
+  }
+  const fmtPt=([x,y])=>`(${x},${y})`;
+  const fmtVec=([a,b])=>`⟨${a},${b}⟩`;
+
+  /* -------------------- Slide 2: Warm-up list -------------------- */
+  const wState={items:[]};
+  function wMake(level){
+    // tasks: give vector; choose statement describing it OR compute new point quick
+    const v = level==='easy' ? [choice([1,2,3,4]), choice([1,2,3,4])]
+            : level==='med'  ? [rand(-5,5)||2, rand(-5,5)||-3]
+            : [rand(-8,8)||-4, rand(-8,8)||5];
+    const A = [rand(-6,6), rand(-6,6)];
+    const A1 = [A[0]+v[0], A[1]+v[1]];
+    const mode = choice(['desc','point','desc','point']); // mix
+    if(mode==='desc'){
+      const opts=[
+        {t:`right ${Math.abs(v[0])} and up ${Math.abs(v[1])}`, ok: (v[0]>0 && v[1]>0)},
+        {t:`left ${Math.abs(v[0])} and up ${Math.abs(v[1])}`, ok: (v[0]<0 && v[1]>0)},
+        {t:`right ${Math.abs(v[0])} and down ${Math.abs(v[1])}`, ok: (v[0]>0 && v[1]<0)},
+        {t:`left ${Math.abs(v[0])} and down ${Math.abs(v[1])}`, ok: (v[0]<0 && v[1]<0)},
+      ];
+      // handle zeros (avoid)
+      if(v[0]===0) v[0]=level==='easy'?2:choice([-3,3]);
+      if(v[1]===0) v[1]=level==='easy'?1:choice([-2,2]);
+      const correct = opts.find(o=>o.ok) || {t:`right ${v[0]} and up ${v[1]}`, ok:true};
+      const pool = [correct.t, ...opts.filter(o=>o.t!==correct.t).map(o=>o.t)];
+      const unique=[...new Set(pool)].slice(0,4);
+      return {type:'desc', vec:v, prompt:`Vector \( ${fmtVec(v)} \) means:`, options:unique, key:correct.t};
+    }
+    return {type:'point', vec:v, A, A1, prompt:`Translate \(A${fmtPt(A)}\) by \( ${fmtVec(v)} \). Find \(A' \):`, key:fmtPt(A1)};
+  }
+
+  function wNew(){
+    const lvl=id('wLevel').value; const box=id('wList'); box.innerHTML=''; wState.items=[];
+    for(let k=0;k<6;k++){
+      const it=wMake(lvl);
+      const row=document.createElement('div'); row.className='card p-4';
+      if(it.type==='desc'){
+        row.innerHTML = `
+          <div class="text-lg mb-2">${it.prompt}</div>
+          <select class="win border rounded px-2 py-1 w-full">
+            <option value="">— choose —</option>
+            ${it.options.map(o=>`<option value="${o}">${o}</option>`).join('')}
+          </select>
+          <div class="text-xs text-gray-500 mt-2">Hint: sign of \(a\) tells left/right; sign of \(b\) tells up/down.</div>
+        `;
+        row.dataset.key=it.key;
+        row.dataset.type='desc';
+        row.dataset.vec=JSON.stringify(it.vec);
+      } else {
+        row.innerHTML = `
+          <div class="text-lg mb-2">${it.prompt}</div>
+          <input class="win border rounded px-2 py-2 w-48" placeholder="(x,y)">
+          <div class="text-xs text-gray-500 mt-2">Use rule: \( (x,y)\to(x+a,\ y+b) \).</div>
+        `;
+        row.dataset.key=it.key;
+        row.dataset.type='point';
+        row.dataset.vec=JSON.stringify(it.vec);
+        row.dataset.A=JSON.stringify(it.A);
+      }
+      box.appendChild(row); wState.items.push(it);
+    }
+    id('wFb').textContent='';
+    renderMath(id('warmSlide'));
+  }
+  id('wNew').addEventListener('click',wNew); wNew();
+
+  id('wCheck').addEventListener('click',()=>{
+    let ok=0; const rows=[...id('wList').children];
+    rows.forEach(row=>{
+      const inp=row.querySelector('.win');
+      const key=row.dataset.key;
+      if(row.dataset.type==='desc'){
+        const good=inp.value && inp.value===key;
+        inp.style.borderColor = good ? '#22c55e' : '#ef4444';
+        if(good) ok++;
+      } else {
+        const got=parsePair(inp.value);
+        const want=parsePair(key);
+        const good=got && want && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
+        inp.style.borderColor = good ? '#22c55e' : '#ef4444';
+        if(good) ok++;
+      }
+    });
+    id('wFb').textContent = ok===rows.length ? '✅ Warm-up complete.' : `Score: ${ok}/${rows.length}`;
+    if(ok===rows.length) confetti();
+  });
+
+  id('wExportCSV').addEventListener('click',()=>{
+    const rows=[['type','prompt','correct','user']];
+    [...id('wList').children].forEach(row=>{
+      const prompt=row.querySelector('.text-lg').textContent.trim();
+      const user=row.querySelector('.win').value||'';
+      rows.push([row.dataset.type, prompt, row.dataset.key, user]);
+    });
+    downloadCSV(`${deckTitle}_warmup.csv`, rows);
+  });
+  id('wExportJSON').addEventListener('click',()=>{
+    const data=[...id('wList').children].map(row=>({
+      type:row.dataset.type,
+      prompt:row.querySelector('.text-lg').textContent.trim(),
+      correct:row.dataset.key,
+      user:row.querySelector('.win').value||''
+    }));
+    downloadJSON(`${deckTitle}_warmup.json`, data);
+  });
+
+  /* -------------------- Slide 4: Worked Examples -------------------- */
+  function exPoint(){
+    const a=rand(-6,6)||3, b=rand(-6,6)||-2;
+    const P=[rand(-7,7), rand(-7,7)];
+    const P1=[P[0]+a, P[1]+b];
+    id('ex1').innerHTML = `
+      <div class="workstep">Translate by \(\\langle ${a},${b}\\rangle\).</div>
+      <div class="workstep mt-2">\(P${fmtPt(P)}\\to P'(${P[0]}+${a}, ${P[1]}+${b})=${fmtPt(P1)}\)</div>
+    `;
+    renderMath(id('wkSlide'));
+  }
+  function exVector(){
+    const A=[rand(-6,6), rand(-6,6)];
+    const a=rand(-6,6)||-4, b=rand(-6,6)||2;
+    const A1=[A[0]+a, A[1]+b];
+    id('ex2').innerHTML = `
+      <div class="workstep">Given \(A${fmtPt(A)}\\) and \(A'${fmtPt(A1)}\).</div>
+      <div class="workstep mt-2">
+        \(\\langle a,b\\rangle=\\langle x'-x,\\ y'-y\\rangle=\\langle ${A1[0]}-${A[0]},\\ ${A1[1]}-${A[1]}\\rangle=\\langle ${a},${b}\\rangle\)
+      </div>
+    `;
+    renderMath(id('wkSlide'));
+  }
+  function exTriangle(){
+    const v=[rand(-4,4)||2, rand(-4,4)||-1];
+    const A=[rand(-5,0), rand(-3,3)];
+    const B=[A[0]+rand(2,5), A[1]+rand(0,4)];
+    const C=[A[0]+rand(1,4), A[1]-rand(2,5)];
+    const A1=[A[0]+v[0], A[1]+v[1]];
+    const B1=[B[0]+v[0], B[1]+v[1]];
+    const C1=[C[0]+v[0], C[1]+v[1]];
+    id('ex3').innerHTML = `
+      <div class="workstep">Translate triangle by \(\\langle ${v[0]},${v[1]}\\rangle\).</div>
+      <div class="workstep mt-2">
+        \(A${fmtPt(A)}\\to A'${fmtPt(A1)}\\) <br/>
+        \(B${fmtPt(B)}\\to B'${fmtPt(B1)}\\) <br/>
+        \(C${fmtPt(C)}\\to C'${fmtPt(C1)}\\)
+      </div>
+      <div class="text-xs text-gray-500 mt-2">All side lengths stay the same → congruent.</div>
+    `;
+    renderMath(id('wkSlide'));
+  }
+  id('ex1Next').addEventListener('click',exPoint); exPoint();
+  id('ex2Next').addEventListener('click',exVector); exVector();
+  id('ex3Next').addEventListener('click',exTriangle); exTriangle();
+
+  /* -------------------- Slide 5: Translate points practice -------------------- */
+  const ptState={items:[]};
+  function ptItem(level){
+    const v = level==='easy' ? [choice([1,2,3,4]), choice([1,2,3,4])]
+            : level==='med'  ? [rand(-5,5)||2, rand(-5,5)||-3]
+            : [rand(-8,8)||-5, rand(-8,8)||4];
+    const P=[rand(-8,8), rand(-8,8)];
+    const P1=[P[0]+v[0], P[1]+v[1]];
+    return {P, v, P1};
+  }
+  function ptNew(){
+    const lvl=id('ptLevel').value; const box=id('ptList'); box.innerHTML=''; ptState.items=[];
+    for(let k=0;k<6;k++){
+      const o=ptItem(lvl);
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML = `
+        <div class="text-lg">Translate \(P${fmtPt(o.P)}\) by \( ${fmtVec(o.v)} \). Find \(P'\).</div>
+        <div class="mt-2">\(P'=\) <input class="ptin border rounded px-2 py-1 w-44" placeholder="(x,y)"></div>
+        <div class="text-xs text-gray-500 mt-2">Rule: \( (x,y)\to(x+${o.v[0]},\ y+${o.v[1]}) \)</div>
+      `;
+      row.dataset.key=JSON.stringify(o.P1);
+      row.dataset.P=JSON.stringify(o.P);
+      row.dataset.v=JSON.stringify(o.v);
+      box.appendChild(row); ptState.items.push(o);
+    }
+    id('ptFb').textContent='';
+    renderMath(id('ptSlide'));
+  }
+  id('ptNew').addEventListener('click',ptNew); ptNew();
+
+  id('ptCheck').addEventListener('click',()=>{
+    let ok=0; const rows=[...id('ptList').children];
+    rows.forEach(row=>{
+      const got=parsePair(row.querySelector('.ptin').value);
+      const want=JSON.parse(row.dataset.key);
+      const good=got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
+      row.querySelector('.ptin').style.borderColor = good ? '#22c55e' : '#ef4444';
+      if(good) ok++;
+    });
+    id('ptFb').textContent = ok===rows.length ? '✅ Points translated correctly.' : `Score: ${ok}/${rows.length}`;
+    if(ok===rows.length) confetti();
+  });
+
+  id('ptExportCSV').addEventListener('click',()=>{
+    const rows=[['point','vector','correct_Pprime','user_Pprime']];
+    [...id('ptList').children].forEach(row=>{
+      rows.push([
+        fmtPt(JSON.parse(row.dataset.P)),
+        fmtVec(JSON.parse(row.dataset.v)),
+        fmtPt(JSON.parse(row.dataset.key)),
+        row.querySelector('.ptin').value||''
+      ]);
+    });
+    downloadCSV(`${deckTitle}_practice_points.csv`, rows);
+  });
+  id('ptExportJSON').addEventListener('click',()=>{
+    const data=[...id('ptList').children].map(row=>({
+      P:JSON.parse(row.dataset.P),
+      vector:JSON.parse(row.dataset.v),
+      correct:JSON.parse(row.dataset.key),
+      user:row.querySelector('.ptin').value||''
+    }));
+    downloadJSON(`${deckTitle}_practice_points.json`, data);
+  });
+
+  /* -------------------- Slide 6: Find vector practice -------------------- */
+  const vcState={items:[]};
+  function vcItem(level){
+    const a = level==='easy' ? choice([1,2,3,4]) : level==='med' ? (rand(-5,5)||-2) : (rand(-8,8)||5);
+    const b = level==='easy' ? choice([1,2,3,4]) : level==='med' ? (rand(-5,5)||3) : (rand(-8,8)||-6);
+    const A=[rand(-8,8), rand(-8,8)];
+    const A1=[A[0]+a, A[1]+b];
+    return {A, A1, v:[a,b]};
+  }
+  function vcNew(){
+    const lvl=id('vcLevel').value; const box=id('vcList'); box.innerHTML=''; vcState.items=[];
+    for(let k=0;k<6;k++){
+      const o=vcItem(lvl);
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML = `
+        <div class="text-lg">From \(A${fmtPt(o.A)}\) to \(A'${fmtPt(o.A1)}\). Find \(\\langle a,b\\rangle\).</div>
+        <div class="mt-2">Vector: <input class="vcin border rounded px-2 py-1 w-44" placeholder="⟨a,b⟩"></div>
+        <div class="text-xs text-gray-500 mt-2">Compute \(x'-x\) and \(y'-y\).</div>
+      `;
+      row.dataset.key=JSON.stringify(o.v);
+      row.dataset.A=JSON.stringify(o.A);
+      row.dataset.A1=JSON.stringify(o.A1);
+      box.appendChild(row); vcState.items.push(o);
+    }
+    id('vcFb').textContent='';
+    renderMath(id('vecSlide'));
+  }
+  id('vcNew').addEventListener('click',vcNew); vcNew();
+
+  id('vcCheck').addEventListener('click',()=>{
+    let ok=0; const rows=[...id('vcList').children];
+    rows.forEach(row=>{
+      const got=parsePair(row.querySelector('.vcin').value);
+      const want=JSON.parse(row.dataset.key);
+      const good=got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
+      row.querySelector('.vcin').style.borderColor = good ? '#22c55e' : '#ef4444';
+      if(good) ok++;
+    });
+    id('vcFb').textContent = ok===rows.length ? '✅ Vectors found correctly.' : `Score: ${ok}/${rows.length}`;
+    if(ok===rows.length) confetti();
+  });
+
+  id('vcExportCSV').addEventListener('click',()=>{
+    const rows=[['A','Aprime','correct_vector','user_vector']];
+    [...id('vcList').children].forEach(row=>{
+      rows.push([
+        fmtPt(JSON.parse(row.dataset.A)),
+        fmtPt(JSON.parse(row.dataset.A1)),
+        fmtVec(JSON.parse(row.dataset.key)),
+        row.querySelector('.vcin').value||''
+      ]);
+    });
+    downloadCSV(`${deckTitle}_practice_vectors.csv`, rows);
+  });
+  id('vcExportJSON').addEventListener('click',()=>{
+    const data=[...id('vcList').children].map(row=>({
+      A:JSON.parse(row.dataset.A),
+      Aprime:JSON.parse(row.dataset.A1),
+      correct:JSON.parse(row.dataset.key),
+      user:row.querySelector('.vcin').value||''
+    }));
+    downloadJSON(`${deckTitle}_practice_vectors.json`, data);
+  });
+
+  /* -------------------- Slide 7: Polygon + plane -------------------- */
+  const plState={poly:[], poly1:[], v:[0,0], type:'tri'};
+  function toSvgPoint([x,y], size, min=-10, max=10){
+    // map coordinate plane to svg pixels
+    const pad=20;
+    const W=size, H=size;
+    const sx = pad + (x-min)/(max-min)*(W-2*pad);
+    const sy = pad + (max-y)/(max-min)*(H-2*pad);
+    return [sx,sy];
+  }
+  function planeSvg(poly, poly1, showImage){
+    const size=420;
+    const min=-10, max=10;
+    const pad=20;
+
+    // grid lines
+    let grid='';
+    for(let t=min;t<=max;t++){
+      const p1=toSvgPoint([t,min],size,min,max), p2=toSvgPoint([t,max],size,min,max);
+      const q1=toSvgPoint([min,t],size,min,max), q2=toSvgPoint([max,t],size,min,max);
+      const major = (t===0);
+      grid += `<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="${major?'#6C1D45':'#e5e7eb'}" stroke-width="${major?2:1}" />`;
+      grid += `<line x1="${q1[0]}" y1="${q1[1]}" x2="${q2[0]}" y2="${q2[1]}" stroke="${major?'#6C1D45':'#e5e7eb'}" stroke-width="${major?2:1}" />`;
+    }
+
+    function polyPath(points){
+      return points.map((p,idx)=>{
+        const s=toSvgPoint(p,size,min,max);
+        return (idx===0?`M ${s[0]} ${s[1]}`:`L ${s[0]} ${s[1]}`);
+      }).join(' ')+' Z';
+    }
+
+    const path0=polyPath(poly);
+    const path1=polyPath(poly1);
+
+    function labelPt(name, p, color){
+      const [sx,sy]=toSvgPoint(p,size,min,max);
+      return `
+        <circle cx="${sx}" cy="${sy}" r="5" fill="${color}" />
+        <text x="${sx+8}" y="${sy-8}" font-size="14" fill="${color}" font-weight="800">${name}</text>
+      `;
+    }
+
+    const names = poly.length===3 ? ['A','B','C'] : ['A','B','C','D'];
+    const names1 = poly.length===3 ? ["A'","B'","C'"] : ["A'","B'","C'","D'"];
+
+    let labels0='', labels1='';
+    names.forEach((n,idx)=>labels0 += labelPt(n, poly[idx], '#6C1D45'));
+    if(showImage){
+      names1.forEach((n,idx)=>labels1 += labelPt(n, poly1[idx], '#0f766e'));
+    }
+
+    return `
+      <svg class="plane" viewBox="0 0 ${size} ${size}" role="img" aria-label="coordinate plane">
+        <rect x="0" y="0" width="${size}" height="${size}" fill="#ffffff" rx="12"></rect>
+        ${grid}
+        <path d="${path0}" fill="rgba(108,29,69,0.08)" stroke="#6C1D45" stroke-width="3"></path>
+        ${labels0}
+        ${showImage ? `<path d="${path1}" fill="rgba(15,118,110,0.08)" stroke="#0f766e" stroke-width="3" stroke-dasharray="8 6"></path>` : ``}
+        ${showImage ? labels1 : ``}
+      </svg>
+    `;
+  }
+
+  function makePoly(level){
+    const v = level==='easy' ? [choice([2,3,4]), choice([1,2,3])]
+            : level==='med'  ? [rand(-5,5)||-2, rand(-5,5)||3]
+            : [rand(-8,8)||5, rand(-8,8)||-6];
+
+    const type = (level==='hard' && Math.random()<0.5) ? 'quad' : 'tri';
+    let poly=[];
+    if(type==='tri'){
+      const A=[rand(-6,0), rand(-4,4)];
+      const B=[A[0]+rand(2,6), A[1]+rand(-1,4)];
+      const C=[A[0]+rand(1,5), A[1]-rand(2,6)];
+      poly=[A,B,C];
+    } else {
+      // simple convex-ish quad
+      const A=[rand(-6,-2), rand(-3,3)];
+      const B=[A[0]+rand(3,6), A[1]+rand(0,3)];
+      const C=[B[0]+rand(-1,2), B[1]-rand(3,6)];
+      const D=[A[0]+rand(-1,2), A[1]-rand(2,5)];
+      poly=[A,B,C,D];
+    }
+    const poly1=poly.map(p=>[p[0]+v[0], p[1]+v[1]]);
+    return {poly, poly1, v, type};
+  }
+
+  function plNew(){
+    const lvl=id('plLevel').value;
+    const o=makePoly(lvl);
+    plState.poly=o.poly; plState.poly1=o.poly1; plState.v=o.v; plState.type=o.type;
+
+    id('plVec').textContent = fmtVec(o.v);
+    id('planeBox').innerHTML = planeSvg(o.poly, o.poly1, false);
+
+    // clear inputs
+    ['A1','B1','C1','D1'].forEach(k=>{ const el=id(k); el.value=''; el.style.borderColor='#e5e7eb'; });
+    // hide D input if triangle (but keep visible label)
+    id('D1').disabled = (o.poly.length===3);
+    id('D1').placeholder = (o.poly.length===3) ? '— not used —' : '(x,y)';
+
+    id('plFb').textContent=''; id('plHintBox').textContent='';
+    renderMath(id('polySlide'));
+  }
+  id('plNew').addEventListener('click',plNew); plNew();
+
+  id('plHint').addEventListener('click',()=>{
+    const [a,b]=plState.v;
+    id('plHintBox').innerHTML = `<div class="hint">
+      Use \( (x,y)\\to(x+${a},\\ y+${b}) \).<br/>
+      Add ${a} to every \(x\) and add ${b} to every \(y\).
+    </div>`;
+    renderMath(id('polySlide'));
+  });
+
+  id('plCheck').addEventListener('click',()=>{
+    const poly1=plState.poly1;
+    const idsMap=['A1','B1','C1','D1'];
+    let ok=0, total=plState.poly.length;
+    for(let k=0;k<plState.poly.length;k++){
+      const got=parsePair(id(idsMap[k]).value);
+      const want=poly1[k];
+      const good=got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
+      id(idsMap[k]).style.borderColor = good ? '#22c55e' : '#ef4444';
+      if(good) ok++;
+    }
+    const allOk=(ok===total);
+    id('plFb').textContent = allOk ? '✅ Polygon translated correctly.' : `Score: ${ok}/${total}`;
+    id('planeBox').innerHTML = planeSvg(plState.poly, plState.poly1, true);
+    if(allOk) confetti();
+  });
+
+  id('plExportCSV').addEventListener('click',()=>{
+    const rows=[['vertex','preimage','vector','correct_image','user_image']];
+    const names=plState.poly.length===3 ? ['A','B','C'] : ['A','B','C','D'];
+    const idsMap=['A1','B1','C1','D1'];
+    for(let k=0;k<plState.poly.length;k++){
+      rows.push([
+        names[k],
+        fmtPt(plState.poly[k]),
+        fmtVec(plState.v),
+        fmtPt(plState.poly1[k]),
+        id(idsMap[k]).value||''
+      ]);
+    }
+    downloadCSV(`${deckTitle}_polygon.csv`, rows);
+  });
+  id('plExportJSON').addEventListener('click',()=>{
+    const idsMap=['A1','B1','C1','D1'];
+    const user = plState.poly.map((_,k)=>parsePair(id(idsMap[k]).value));
+    downloadJSON(`${deckTitle}_polygon.json`, {
+      vector:plState.v,
+      preimage:plState.poly,
+      correct_image:plState.poly1,
+      user_image:user
+    });
+  });
+
+  /* -------------------- Slide 9: Error analysis -------------------- */
+  function errBank(level){
+    const easy=[
+      {
+        work:`Translate by \\(\\langle 3,-2\\rangle\\). Student says \\((x,y)\\to(x-2,\\ y+3)\\).`,
+        correct:`Correct rule: \\((x,y)\\to(x+3,\\ y-2)\\). They swapped \(x\) and \(y\) changes.`,
+        key:'A'
+      },
+      {
+        work:`Vector \\(\\langle -4, 1\\rangle\\). Student describes “right 4, up 1”.`,
+        correct:`Correct description: left 4, up 1. The sign on \(a\) controls left/right.`,
+        key:'B'
+      },
+      {
+        work:`Triangle \(A(1,2),B(4,2),C(2,5)\) by \\(\\langle 2,3\\rangle\\). Student only moves \(A\\).`,
+        correct:`Every point must move by the same vector. Translate \(A,B,C\).`,
+        key:'C'
+      }
+    ];
+    const med=[
+      {
+        work:`Given \(A(2,-1)\\to A'( -1, 3)\\). Student computes vector as \\(\\langle 2-(-1),\\ -1-3\\rangle=\\langle 3,-4\\rangle\\).`,
+        correct:`Use \(x'-x, y'-y\): \\(\\langle -1-2,\\ 3-(-1)\\rangle=\\langle -3,4\\rangle\\).`,
+        key:'D'
+      },
+      {
+        work:`Translate by \\(\\langle -2,-5\\rangle\\). Student rule: \\((x,y)\\to(x+2,\\ y-5)\\).`,
+        correct:`Both are negative: \\((x,y)\\to(x-2,\\ y-5)\\).`,
+        key:'B'
+      }
+    ];
+    const hard=[
+      {
+        work:`Vector from \(P(-3,7)\\) to \(P'(2,1)\\). Student gives \\(\\langle -5,6\\rangle\\).`,
+        correct:`Compute: \\(\\langle 2-(-3),\\ 1-7\\rangle=\\langle 5,-6\\rangle\\).`,
+        key:'D'
+      },
+      {
+        work:`Translate quadrilateral: student uses different vectors for different vertices.`,
+        correct:`A translation uses one fixed vector for all points.`,
+        key:'C'
+      }
+    ];
+    return level==='easy'?easy:level==='med'?med:hard;
+  }
+  const errState={item:null};
+  function errNew(){
+    const bank=errBank(id('errLevel').value);
+    errState.item=choice(bank);
+    id('errBox').innerHTML=`Student work:<br/><div class="mt-1 text-maroon">${errState.item.work}</div>`;
+    id('errFb').textContent=''; id('errRevealBox').textContent='';
+    [...document.querySelectorAll('input[name="errChoice"]')].forEach(r=>r.checked=false);
+    renderMath(id('errSlide'));
+  }
+  id('errNew').addEventListener('click',errNew); errNew();
+
+  id('errCheck').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    if(!sel){ id('errFb').textContent='Choose a diagnosis.'; return; }
+    if(sel.value===errState.item.key){ id('errFb').textContent='✅ Correct diagnosis.'; confetti(); }
+    else { id('errFb').textContent='❌ Not quite. Try again or reveal the correct work.'; }
+  });
+  id('errReveal').addEventListener('click',()=>{
+    id('errRevealBox').innerHTML=`<div class="hint">${errState.item.correct}</div>`;
+    renderMath(id('errSlide'));
+  });
+  id('errExportCSV').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    downloadCSV(`${deckTitle}_error_analysis.csv`, [['incorrect_work','correct_explanation','answer_key','user_choice'], [id('errBox').innerText.trim(), errState.item.correct, errState.item.key, sel?sel.value:'']]);
+  });
+  id('errExportJSON').addEventListener('click',()=>{
+    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
+    downloadJSON(`${deckTitle}_error_analysis.json`, {incorrect:id('errBox').innerText.trim(), correct:errState.item.correct, key:errState.item.key, user: sel?sel.value:''});
+  });
+
+  /* -------------------- Slide 10: Mixed generator -------------------- */
+  const mixState={cur:null};
+  function mixNew(){
+    const lvl=id('mixLevel').value;
+    const mode = choice(['point','vector','rule','point','vector']);
+    if(mode==='point'){
+      const v = lvl==='easy' ? [choice([1,2,3,4]), choice([1,2,3,4])]
+              : lvl==='med'  ? [rand(-5,5)||-2, rand(-5,5)||3]
+              : [rand(-8,8)||5, rand(-8,8)||-6];
+      const P=[rand(-8,8), rand(-8,8)];
+      const P1=[P[0]+v[0], P[1]+v[1]];
+      mixState.cur={mode, v, P, key:fmtPt(P1)};
+      id('mixQ').innerHTML = `Translate \(P${fmtPt(P)}\) by \( ${fmtVec(v)} \). Find \(P'\).`;
+    } else if(mode==='vector'){
+      const v = lvl==='easy' ? [choice([1,2,3,4]), choice([1,2,3,4])]
+              : lvl==='med'  ? [rand(-5,5)||-2, rand(-5,5)||3]
+              : [rand(-8,8)||5, rand(-8,8)||-6];
+      const A=[rand(-8,8), rand(-8,8)];
+      const A1=[A[0]+v[0], A[1]+v[1]];
+      mixState.cur={mode, A, A1, key:JSON.stringify(v)};
+      id('mixQ').innerHTML = `Given \(A${fmtPt(A)}\to A'${fmtPt(A1)}\). Find the vector \(\\langle a,b\\rangle\).`;
+    } else {
+      // ask for rule
+      const v = lvl==='easy' ? [choice([2,3,4]), choice([1,2,3])]
+              : lvl==='med'  ? [rand(-5,5)||-3, rand(-5,5)||2]
+              : [rand(-8,8)||6, rand(-8,8)||-4];
+      mixState.cur={mode, v, key:`(x,y)->(x+${v[0]},y+${v[1]})`};
+      id('mixQ').innerHTML = `Write the coordinate rule for translation by \( ${fmtVec(v)} \).`;
+    }
+
+    id('mixAns').value='';
+    id('mixHintBox').textContent='';
+    id('mixFb').textContent='';
+    renderMath(id('mixSlide'));
+  }
+  id('mixNew').addEventListener('click',mixNew); mixNew();
+
+  id('mixHint').addEventListener('click',()=>{
+    const cur=mixState.cur;
+    const msg = cur.mode==='point'
+      ? 'Add \(a\) to the x-coordinate and add \(b\) to the y-coordinate.'
+      : cur.mode==='vector'
+      ? 'Compute \(\\langle x'-x,\\ y'-y\\rangle\\).'
+      : 'Use: \((x,y)\\to(x+a,\\ y+b)\).';
+    id('mixHintBox').innerHTML = `<div class="hint">${msg}</div>`;
+    renderMath(id('mixSlide'));
+  });
+
+  id('mixCheck').addEventListener('click',()=>{
+    const cur=mixState.cur;
+    const user=id('mixAns').value;
+
+    let ok=false;
+    if(cur.mode==='point'){
+      const got=parsePair(user), want=parsePair(cur.key);
+      ok = !!(got && want && approxEq(got[0],want[0]) && approxEq(got[1],want[1]));
+    } else if(cur.mode==='vector'){
+      const got=parsePair(user), want=JSON.parse(cur.key);
+      ok = !!(got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]));
+    } else {
+      // rule mode: accept many equivalents by extracting numbers
+      const v=cur.v;
+      const s=String(user).replace(/\s+/g,'').replace(/−/g,'-');
+      const good1 = s.includes(`x+${v[0]}`) || (v[0]<0 && s.includes(`x${v[0]}`));
+      const good2 = s.includes(`y+${v[1]}`) || (v[1]<0 && s.includes(`y${v[1]}`));
+      ok = good1 && good2 && (s.includes('->') || s.includes('→') || s.includes('to') || s.includes('to(') || s.includes(')(') || s.includes('('));
+    }
+
+    if(ok){
+      id('mixFb').textContent = '✅ Correct!';
+      id('mixFb').className='mt-2 h-6 font-semibold text-green-700';
+      confetti();
+    } else {
+      id('mixFb').textContent = '❌ Not quite. Check signs and which coordinate changes.';
+      id('mixFb').className='mt-2 h-6 font-semibold text-red-700';
+    }
+  });
+
+  id('mixExportCSV').addEventListener('click',()=>{
+    downloadCSV(`${deckTitle}_mixed_current.csv`, [['task','correct','user'], [id('mixQ').textContent, curCorrectString(), id('mixAns').value||'']]);
+  });
+  id('mixExportJSON').addEventListener('click',()=>{
+    downloadJSON(`${deckTitle}_mixed_current.json`, {task:id('mixQ').textContent, correct:curCorrectString(), user:id('mixAns').value||''});
+  });
+  function curCorrectString(){
+    const cur=mixState.cur;
+    if(cur.mode==='point') return cur.key;
+    if(cur.mode==='vector') return fmtVec(JSON.parse(cur.key));
+    return cur.key;
+  }
+
+  /* -------------------- Init shell -------------------- */
+  show(0);
+})();
+</script>
+</body>
+</html>
