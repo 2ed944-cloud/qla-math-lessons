@@ -46,7 +46,6 @@
   #slides{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
   .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
   .slide.active{opacity:1;transform:none;pointer-events:auto}
-
   .bg-maroon{background-color:var(--maroon)} .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
   .banner{width:100%;height:120px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
   .card{border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
@@ -70,15 +69,15 @@
   #pop .close{float:right;cursor:pointer;font-weight:800;padding:2px 6px;border-radius:8px}
   #pop .close:hover{background:#f3f4f6}
 
-  /* Coordinate plane */
-  .planeWrap{border:1px solid #e5e7eb;border-radius:14px;background:#fff;padding:10px}
-  svg.plane{width:100%;height:auto;display:block}
-  .tag{display:inline-flex;align-items:center;gap:.35rem;border:1px solid #e5e7eb;border-radius:999px;padding:.25rem .65rem;background:#fff}
+  /* SVG board */
+  .board{width:100%;max-width:780px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;overflow:hidden}
   .workstep{border-left:4px solid var(--gold);padding:.6rem .8rem;background:#fff;border-radius:12px;border:1px solid #e5e7eb}
+  .pill{display:inline-flex;align-items:center;gap:.35rem;border:1px solid #e5e7eb;border-radius:999px;padding:.35rem .75rem;background:#fff;cursor:pointer}
+  .pill.active{border-color:#22c55e;box-shadow:0 0 0 2px rgba(34,197,94,.15)}
 </style>
 </head>
-
 <body>
+
 <div id="deck" aria-live="polite">
   <div id="slides" class="relative">
     <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
@@ -95,7 +94,7 @@
         </div>
       </div>
       <div class="absolute bottom-6 text-sm text-gray-100">
-        Big idea: a translation “slides” a figure — distance and angles stay the same (congruence preserved).
+        Focus: translate points and shapes using vectors and coordinate rules; translations are rigid motions (isometries).
       </div>
     </section>
 
@@ -106,11 +105,11 @@
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes</h3>
           <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Describe a translation using words, a vector, and coordinate rules.</li>
-            <li>Apply a translation to points and polygons on a coordinate plane.</li>
-            <li>Find the translation vector given an image and preimage.</li>
-            <li>Explain why translations preserve congruence (same lengths and angles).</li>
-            <li>Check work with substitution: translate → compare differences.</li>
+            <li>Describe a translation using a vector \(\langle a,b\rangle\) and direction (right/left, up/down).</li>
+            <li>Translate a point \((x,y)\) using \((x,y)\to(x+a,\,y+b)\).</li>
+            <li>Translate a polygon by translating every vertex.</li>
+            <li>Explain why translations preserve distance and angle (congruence / rigid motion).</li>
+            <li>Check your work by comparing side lengths or by reversing the translation.</li>
           </ul>
         </div>
         <div class="card p-5">
@@ -118,99 +117,93 @@
           <div class="flex flex-wrap gap-2 text-lg">
             <span class="chip" data-key="translation">translation</span>
             <span class="chip" data-key="vector">vector</span>
-            <span class="chip" data-key="rule">coordinate rule</span>
             <span class="chip" data-key="preimage">preimage</span>
             <span class="chip" data-key="image">image</span>
+            <span class="chip" data-key="rule">rule</span>
+            <span class="chip" data-key="isometry">rigid motion (isometry)</span>
             <span class="chip" data-key="congruent">congruent</span>
-            <span class="chip" data-key="orientation">orientation</span>
-            <span class="chip" data-key="magnitude">magnitude</span>
+            <span class="chip" data-key="component">components</span>
           </div>
           <div class="text-xs text-gray-500 mt-3">
-            Trap alert: translation changes position only — not size, shape, or direction the figure faces.
+            Big idea: translation = “slide” → same size, same shape, same orientation.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 2 • Warm-Up: Direction & Units -->
-    <section class="slide" id="warmSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm-Up: Slide It!</h2>
+    <!-- 2 • Warm-Up: Move a point -->
+    <section class="slide" id="wuSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm-Up: Translate a Point</h2>
       <div class="flex items-center gap-3 mb-2">
         <span>Level:</span>
-        <select id="wLevel" class="border rounded px-2 py-1">
+        <select id="wuLevel" class="border rounded px-2 py-1">
           <option value="easy" selected>easy</option>
           <option value="med">medium</option>
           <option value="hard">hard</option>
         </select>
-        <button id="wNew" class="btn">New set</button>
-        <button id="wCheck" class="btn maroon">Check</button>
-        <button id="wExportCSV" class="btn">Export CSV</button>
-        <button id="wExportJSON" class="btn">Export JSON</button>
+        <button id="wuNew" class="btn">New set</button>
+        <button id="wuCheck" class="btn maroon">Check</button>
+        <button id="wuExportCSV" class="btn">Export CSV</button>
+        <button id="wuExportJSON" class="btn">Export JSON</button>
       </div>
 
       <div class="card p-5 w-full max-w-5xl text-left">
-        <div class="grid lg:grid-cols-2 gap-3" id="wList"></div>
+        <div id="wuList" class="grid md:grid-cols-2 gap-3"></div>
       </div>
-      <div id="wFb" class="mt-2 h-6 font-semibold"></div>
+      <div id="wuFb" class="mt-2 h-6 font-semibold"></div>
 
       <div class="hint mt-3 text-sm max-w-5xl text-left">
-        Right/left changes \(x\). Up/down changes \(y\). Right is \(+\), left is \(−\). Up is \(+\), down is \(−\).
+        Translation vector \(\langle a,b\rangle\): add \(a\) to \(x\) and add \(b\) to \(y\).
+        Right/Up are positive; Left/Down are negative.
       </div>
     </section>
 
-    <!-- 3 • Rule + Notation -->
-    <section class="slide" id="ruleSlide">
-      <h2 class="text-4xl font-extrabold text-maroon mb-3">Translation Notation</h2>
+    <!-- 3 • Rules & Notation -->
+    <section class="slide" id="rulesSlide">
+      <h2 class="text-4xl font-extrabold text-maroon mb-3">Translation Rules &amp; Notation</h2>
       <div class="grid lg:grid-cols-2 gap-6 w-full max-w-6xl text-left">
         <div class="card p-5">
           <h3 class="text-2xl font-bold text-maroon mb-2">Coordinate Rule</h3>
           <div class="text-lg space-y-2">
-            <div>If you translate <span class="tag">right \(a\)</span> and <span class="tag">up \(b\)</span>, then:</div>
-            <div class="text-xl font-extrabold">\( (x,y)\rightarrow(x+a,\;y+b) \)</div>
-            <div class="text-sm text-gray-600">Left means \(a\) is negative. Down means \(b\) is negative.</div>
+            <div>Translate by vector \(\langle a,b\rangle\):</div>
+            <div class="workstep">\((x,y)\rightarrow(x+a,\;y+b)\)</div>
+            <div class="text-sm text-gray-600">Example: \(\langle 3,-2\rangle\) means right 3, down 2.</div>
           </div>
         </div>
         <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-2">Vector Form</h3>
+          <h3 class="text-2xl font-bold text-maroon mb-2">What a Translation Preserves</h3>
           <div class="text-lg space-y-2">
-            <div>Translation vector: \( \langle a,b\rangle \)</div>
-            <div>Meaning: move every point \(a\) horizontally and \(b\) vertically.</div>
-            <div class="hint text-sm mt-3">
-              Congruence check: distances and angles stay the same under translations, so figures remain congruent.
-            </div>
+            <div>Distances stay the same.</div>
+            <div>Angles stay the same.</div>
+            <div>Orientation stays the same (no “flip”).</div>
+            <div class="hint text-sm mt-2">So the image is <strong>congruent</strong> to the preimage.</div>
           </div>
-        </div>
-      </div>
-      <div class="mt-5 card p-4 w-full max-w-6xl text-left">
-        <div class="text-lg">
-          Example: translate by \( \langle -3, 2\rangle \).<br/>
-          Point \(A(4,-1)\) goes to \(A'(4-3, -1+2)=(1,1)\).
         </div>
       </div>
     </section>
 
-    <!-- 4 • Worked Examples on a Plane -->
+    <!-- 4 • Worked Examples -->
     <section class="slide" id="wkSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Worked Examples (Step by Step)</h2>
       <div class="grid lg:grid-cols-3 gap-4 w-full max-w-6xl text-left">
         <div class="card p-4">
-          <h3 class="font-bold text-maroon text-xl">Example 1 (point)</h3>
+          <h3 class="font-bold text-maroon text-xl">Example 1 — Point</h3>
           <div id="ex1" class="mt-2 text-lg"></div>
           <button id="ex1Next" class="btn mt-2">Another</button>
         </div>
         <div class="card p-4">
-          <h3 class="font-bold text-maroon text-xl">Example 2 (find vector)</h3>
+          <h3 class="font-bold text-maroon text-xl">Example 2 — Triangle</h3>
           <div id="ex2" class="mt-2 text-lg"></div>
           <button id="ex2Next" class="btn mt-2">Another</button>
         </div>
         <div class="card p-4">
-          <h3 class="font-bold text-maroon text-xl">Example 3 (triangle)</h3>
+          <h3 class="font-bold text-maroon text-xl">Example 3 — Write the Rule</h3>
           <div id="ex3" class="mt-2 text-lg"></div>
           <button id="ex3Next" class="btn mt-2">Another</button>
         </div>
       </div>
       <div class="hint mt-4 text-left text-sm max-w-6xl">
-        Find vector quickly: \( \langle a,b\rangle = \langle x'-x,\; y'-y\rangle \).
+        Always translate every vertex using the same \(\langle a,b\rangle\).
       </div>
     </section>
 
@@ -229,128 +222,159 @@
         <button id="ptExportCSV" class="btn">Export CSV</button>
         <button id="ptExportJSON" class="btn">Export JSON</button>
       </div>
+
       <div id="ptList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
       <div id="ptFb" class="mt-2 h-6 font-semibold"></div>
+
       <div class="hint mt-3 text-left text-sm max-w-5xl">
-        Answer format: <span class="font-mono">(x,y)</span> or <span class="font-mono">x,y</span>.
+        Input format accepted: <span class="font-mono">(3,-2)</span> or <span class="font-mono">3,-2</span> or <span class="font-mono">3 -2</span>.
       </div>
     </section>
 
-    <!-- 6 • Practice B: Find the Translation Vector -->
-    <section class="slide" id="vecSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice B — Find the Translation Vector</h2>
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="vcLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="vcNew" class="btn">New set</button>
-        <button id="vcCheck" class="btn maroon">Check</button>
-        <button id="vcExportCSV" class="btn">Export CSV</button>
-        <button id="vcExportJSON" class="btn">Export JSON</button>
-      </div>
-      <div id="vcList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
-      <div id="vcFb" class="mt-2 h-6 font-semibold"></div>
-      <div class="hint mt-3 text-left text-sm max-w-5xl">
-        Compute: \(a=x'-x\), \(b=y'-y\). Vector is \(\langle a,b\rangle\).
-      </div>
-    </section>
-
-    <!-- 7 • Practice C: Translate a Polygon (with plane) -->
+    <!-- 6 • Practice B: Translate a Polygon -->
     <section class="slide" id="polySlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice C — Translate a Polygon</h2>
-
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice B — Translate a Polygon (Vertex Table)</h2>
       <div class="flex items-center gap-3 mb-2">
         <span>Level:</span>
-        <select id="plLevel" class="border rounded px-2 py-1">
+        <select id="pyLevel" class="border rounded px-2 py-1">
           <option value="easy" selected>easy</option>
           <option value="med">medium</option>
           <option value="hard">hard</option>
         </select>
-        <button id="plNew" class="btn">New polygon</button>
-        <button id="plCheck" class="btn maroon">Check</button>
-        <button id="plHint" class="btn">Hint</button>
-        <button id="plExportCSV" class="btn">Export CSV</button>
-        <button id="plExportJSON" class="btn">Export JSON</button>
+        <button id="pyNew" class="btn">New polygon</button>
+        <button id="pyCheck" class="btn maroon">Check</button>
+        <button id="pyExportCSV" class="btn">Export CSV</button>
+        <button id="pyExportJSON" class="btn">Export JSON</button>
       </div>
 
-      <div class="grid lg:grid-cols-2 gap-5 w-full max-w-6xl text-left">
-        <div class="planeWrap">
-          <div class="flex items-center justify-between mb-2">
-            <div class="text-lg font-bold text-maroon">Coordinate Plane</div>
-            <div class="text-sm text-gray-600">Preimage (solid) • Image (dashed after you check)</div>
-          </div>
-          <div id="planeBox"></div>
+      <div class="card p-5 w-full max-w-6xl text-left">
+        <div class="text-lg mb-2">
+          Translate by vector <span class="font-extrabold" id="pyVec"></span>
+          &nbsp; (rule: <span class="font-extrabold" id="pyRule"></span>)
         </div>
-
-        <div class="card p-5">
-          <div class="text-lg">
-            Translation vector: <span class="tag" id="plVec"></span>
+        <div class="grid lg:grid-cols-2 gap-4">
+          <div class="card p-4 bg-white">
+            <h3 class="font-bold text-maroon">Given vertices</h3>
+            <div id="pyGiven" class="mt-2 text-lg"></div>
           </div>
-          <div class="text-sm text-gray-600 mt-1">Translate every vertex by the same \(\langle a,b\rangle\).</div>
-
-          <div class="mt-3 grid grid-cols-2 gap-3">
-            <div class="card p-3 bg-white">
-              <div class="font-bold text-maroon">A′</div>
-              <input id="A1" class="border rounded px-2 py-2 w-full" placeholder="(x,y)">
-            </div>
-            <div class="card p-3 bg-white">
-              <div class="font-bold text-maroon">B′</div>
-              <input id="B1" class="border rounded px-2 py-2 w-full" placeholder="(x,y)">
-            </div>
-            <div class="card p-3 bg-white">
-              <div class="font-bold text-maroon">C′</div>
-              <input id="C1" class="border rounded px-2 py-2 w-full" placeholder="(x,y)">
-            </div>
-            <div class="card p-3 bg-white">
-              <div class="font-bold text-maroon">D′ (if shown)</div>
-              <input id="D1" class="border rounded px-2 py-2 w-full" placeholder="(x,y)">
-            </div>
+          <div class="card p-4 bg-white">
+            <h3 class="font-bold text-maroon">Image vertices (you)</h3>
+            <div id="pyInputs" class="mt-2"></div>
           </div>
+        </div>
+        <div id="pyFb" class="mt-3 h-6 font-semibold"></div>
+      </div>
 
-          <div id="plHintBox" class="mt-3 text-sm"></div>
-          <div id="plFb" class="mt-2 h-6 font-semibold"></div>
+      <div class="hint mt-3 text-left text-sm max-w-6xl">
+        Translate each vertex: if \(A(x,y)\) then \(A'(x+a,\;y+b)\).
+      </div>
+    </section>
+
+    <!-- 7 • Practice C: Write the Translation (vector + rule) -->
+    <section class="slide" id="wrSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice C — Write the Translation Vector &amp; Rule</h2>
+
+      <div class="flex items-center gap-3 mb-2">
+        <span>Level:</span>
+        <select id="wrLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="wrNew" class="btn">New set</button>
+        <button id="wrCheck" class="btn maroon">Check</button>
+        <button id="wrHint" class="btn">Hint</button>
+        <button id="wrExportCSV" class="btn">Export CSV</button>
+        <button id="wrExportJSON" class="btn">Export JSON</button>
+      </div>
+
+      <div id="wrList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
+      <div id="wrHintBox" class="mt-2 text-sm max-w-5xl"></div>
+      <div id="wrFb" class="mt-2 h-6 font-semibold"></div>
+
+      <div class="hint mt-3 text-left text-sm max-w-5xl">
+        Rule format example: <span class="font-mono">(x,y) → (x+3, y-2)</span>. Vector format: <span class="font-mono">&lt;3, -2&gt;</span>.
+      </div>
+    </section>
+
+    <!-- 8 • Visual Translation (SVG) -->
+    <section class="slide" id="vizSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Visual: Identify the Translation</h2>
+
+      <div class="flex items-center gap-3 mb-2">
+        <span class="pill active" id="vizShow" role="button" aria-pressed="true">Show image</span>
+        <span>Level:</span>
+        <select id="vzLevel" class="border rounded px-2 py-1">
+          <option value="easy" selected>easy</option>
+          <option value="med">medium</option>
+          <option value="hard">hard</option>
+        </select>
+        <button id="vzNew" class="btn">New diagram</button>
+        <button id="vzCheck" class="btn maroon">Check</button>
+        <button id="vzExportCSV" class="btn">Export CSV</button>
+        <button id="vzExportJSON" class="btn">Export JSON</button>
+      </div>
+
+      <div class="board card p-4">
+        <div id="vzSvgWrap"></div>
+        <div class="mt-3 text-left">
+          <div class="text-lg">What translation vector maps the preimage to the image?</div>
+          <div class="mt-2 flex items-center gap-2">
+            <span class="font-bold">&lt;</span>
+            <input id="vzA" class="border rounded px-2 py-1 w-20" placeholder="a">
+            <span class="font-bold">,</span>
+            <input id="vzB" class="border rounded px-2 py-1 w-20" placeholder="b">
+            <span class="font-bold">&gt;</span>
+            <span class="text-sm text-gray-500 ml-2">(a = change in x, b = change in y)</span>
+          </div>
+          <div id="vzFb" class="mt-2 h-6 font-semibold"></div>
         </div>
       </div>
     </section>
 
-    <!-- 8 • Congruence Check (Lengths & Angles) -->
-    <section class="slide" id="congSlide">
-      <h2 class="text-4xl font-extrabold text-maroon mb-2">Why Translations Preserve Congruence</h2>
-      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-6xl text-left">
-        <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-2">Distance</h3>
-          <div class="text-lg">
-            If \(P(x_1,y_1)\) and \(Q(x_2,y_2)\), distance depends on differences:
-            \[
-              \Delta x = x_2-x_1,\quad \Delta y = y_2-y_1.
-            \]
-            Translating by \(\langle a,b\rangle\) gives
-            \[
-              (x_1+a, y_1+b),\ (x_2+a, y_2+b)
-            \]
-            so differences stay the same:
-            \[
-              (x_2+a)-(x_1+a)=x_2-x_1.
-            \]
-          </div>
-        </div>
-        <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-2">Angles &amp; Orientation</h3>
-          <div class="text-lg">
-            A translation slides a figure without turning it.
-            So angle measures and “clockwise/counterclockwise” orientation stay the same.
-            <div class="hint mt-3 text-sm">
-              Therefore: translations map figures to <strong>congruent</strong> figures.
+    <!-- 9 • Challenge: Compose Translations -->
+    <section class="slide" id="chSlide">
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Challenge — Compose Translations</h2>
+
+      <div class="card p-5 w-full max-w-5xl text-left">
+        <div class="text-lg" id="chPrompt"></div>
+
+        <div class="mt-3 grid md:grid-cols-2 gap-4">
+          <div class="card p-4 bg-white">
+            <h3 class="font-bold text-maroon">Resulting single translation</h3>
+            <div class="mt-2 flex items-center gap-2">
+              <span class="font-bold">&lt;</span>
+              <input id="chA" class="border rounded px-2 py-1 w-24" placeholder="a">
+              <span class="font-bold">,</span>
+              <input id="chB" class="border rounded px-2 py-1 w-24" placeholder="b">
+              <span class="font-bold">&gt;</span>
             </div>
+            <div class="mt-2 text-sm text-gray-600">Add vectors: \(\langle a_1,b_1\rangle+\langle a_2,b_2\rangle=\langle a_1+a_2,\;b_1+b_2\rangle\).</div>
+          </div>
+
+          <div class="card p-4 bg-white">
+            <h3 class="font-bold text-maroon">Final image of the point</h3>
+            <div class="mt-2">
+              <input id="chPt" class="border rounded px-2 py-2 w-60" placeholder="(x,y)">
+            </div>
+            <div class="mt-2 text-sm text-gray-600">Translate the point using the combined vector.</div>
           </div>
         </div>
+
+        <div class="mt-3 flex gap-2">
+          <button id="chNew" class="btn">New challenge</button>
+          <button id="chCheck" class="btn maroon">Check</button>
+          <button id="chHint" class="btn">Hints</button>
+          <button id="chExportCSV" class="btn">Export CSV</button>
+          <button id="chExportJSON" class="btn">Export JSON</button>
+        </div>
+
+        <div id="chHintBox" class="mt-2 text-sm"></div>
+        <div id="chFb" class="mt-2 h-6 font-semibold"></div>
       </div>
     </section>
 
-    <!-- 9 • Error Analysis -->
+    <!-- 10 • Error Analysis -->
     <section class="slide" id="errSlide">
       <h2 class="text-3xl font-extrabold text-maroon mb-2">Error Analysis — Diagnose the Mistake</h2>
 
@@ -368,10 +392,10 @@
       <div class="card p-5 w-full max-w-5xl text-left">
         <div id="errBox" class="text-lg"></div>
         <div class="mt-2">
-          <label><input type="radio" name="errChoice" value="A"> Added vector to the wrong coordinate (mixed \(x\) and \(y\))</label><br/>
-          <label><input type="radio" name="errChoice" value="B"> Sign error (right/left or up/down flipped)</label><br/>
-          <label><input type="radio" name="errChoice" value="C"> Only moved one point / not all points</label><br/>
-          <label><input type="radio" name="errChoice" value="D"> Found vector using \(x-x'\) instead of \(x'-x\)</label>
+          <label><input type="radio" name="errChoice" value="A"> Added to the wrong coordinate (x vs y)</label><br/>
+          <label><input type="radio" name="errChoice" value="B"> Sign error (left/right or up/down)</label><br/>
+          <label><input type="radio" name="errChoice" value="C"> Did not translate every vertex the same way</label><br/>
+          <label><input type="radio" name="errChoice" value="D"> Mixed up vector \(\langle a,b\rangle\) with point \((a,b)\)</label>
         </div>
 
         <div class="mt-2 flex gap-2">
@@ -385,9 +409,9 @@
       </div>
     </section>
 
-    <!-- 10 • Mixed Generator -->
+    <!-- 11 • Mixed Generator -->
     <section class="slide" id="mixSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Mixed Generator — Translations</h2>
+      <h2 class="text-3xl font-extrabold text-maroon mb-2">Mixed Practice Generator</h2>
       <div class="card p-5 w-full max-w-3xl text-left">
         <div class="flex items-center gap-3">
           <span>Level:</span>
@@ -399,11 +423,9 @@
           <button id="mixNew" class="btn">New question</button>
         </div>
 
-        <div class="mt-3 text-2xl">
-          Task: <span id="mixQ" class="font-extrabold"></span>
-        </div>
+        <div class="mt-3 text-2xl">Task: <span id="mixQ" class="font-extrabold"></span></div>
         <div class="mt-2">
-          <input id="mixAns" class="border rounded px-3 py-2 w-[460px] max-w-full" placeholder="enter (x,y) or ⟨a,b⟩">
+          <input id="mixAns" class="border rounded px-3 py-2 w-[440px] max-w-full" placeholder="answer (coord / vector / rule)">
           <button id="mixCheck" class="btn maroon">Check</button>
           <button id="mixHint" class="btn">Hint</button>
           <button id="mixExportCSV" class="btn">Export CSV</button>
@@ -415,21 +437,21 @@
       </div>
     </section>
 
-    <!-- 11 • Exit Ticket -->
+    <!-- 12 • Exit Ticket -->
     <section class="slide">
       <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
       <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon">3–2–1 Reflect</h3>
           <ul class="list-disc list-inside">
-            <li>3 clues that tell you a transformation is a translation</li>
-            <li>2 ways to describe a translation (rule / vector / words)</li>
-            <li>1 check you can do to verify your answer</li>
+            <li>3 things translations preserve</li>
+            <li>2 ways to describe a translation (vector + rule)</li>
+            <li>1 quick check you use to verify your answer</li>
           </ul>
         </div>
         <div class="card p-5">
           <h3 class="text-xl font-bold text-maroon">Up Next</h3>
-          <p>Reflections: flip over a line and analyze symmetry.</p>
+          <p>We’ll move from translations to other rigid motions: reflections and rotations (and compare congruence).</p>
         </div>
       </div>
       <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[110px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
@@ -442,7 +464,7 @@
 <div id="controls" role="group" aria-label="Slideshow controls">
   <button id="prev" title="Previous (←)">&laquo;</button>
   <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
-  <div id="counter">1 / 12</div>
+  <div id="counter">1 / 13</div>
   <button id="next" title="Next (→)">&raquo;</button>
 </div>
 <div id="progress"></div>
@@ -509,14 +531,14 @@
   /* ---------- Glossary ---------- */
   const POP=id('pop'), POP_BODY=id('popBody');
   const GLOS={
-    translation:'<strong>Translation</strong>: a transformation that slides a figure without turning or resizing it.',
-    vector:'<strong>Vector</strong> \\(\\langle a,b\\rangle\\): tells the horizontal change \\(a\\) and vertical change \\(b\\).',
-    rule:'<strong>Coordinate rule</strong>: \\((x,y)\\to(x+a,\\ y+b)\\).',
-    preimage:'<strong>Preimage</strong>: the original figure before the transformation.',
-    image:'<strong>Image</strong>: the new figure after the transformation.',
-    congruent:'<strong>Congruent</strong>: same size and shape; translations preserve congruence.',
-    orientation:'<strong>Orientation</strong>: the “direction” a figure faces (clockwise order); translations keep it.',
-    magnitude:'<strong>Magnitude</strong>: the length/size of the move described by the vector.'
+    translation:'<strong>Translation</strong>: a slide of every point by the same amount and direction.',
+    vector:'<strong>Vector</strong> \\(\\langle a,b\\rangle\\): tells how far to move in x (a) and y (b).',
+    preimage:'<strong>Preimage</strong>: the original figure (before the transformation).',
+    image:'<strong>Image</strong>: the new figure (after the transformation).',
+    rule:'<strong>Rule</strong>: a coordinate description like \\((x,y)\\to(x+a,\\;y+b)\\).',
+    isometry:'<strong>Rigid motion (isometry)</strong>: a transformation that preserves distances and angles.',
+    congruent:'<strong>Congruent</strong>: same size and same shape.',
+    component:'<strong>Components</strong>: the x-change and y-change in the vector.'
   };
   function showPop(html,anchor){
     POP_BODY.innerHTML=html; POP.style.display='block';
@@ -530,197 +552,181 @@
   });
 
   /* -------------------- Helpers -------------------- */
-  const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
-  const choice=(arr)=>arr[rand(0,arr.length-1)];
-  const approxEq=(a,b)=>Math.abs(a-b)<1e-9;
+  function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+  function choice(arr){ return arr[rand(0,arr.length-1)] }
+  function approxEq(a,b){ return Math.abs(a-b) < 1e-9; }
 
-  function parsePair(s){
-    if(s==null) return null;
-    s=String(s).trim().replace(/\s+/g,'').replace(/[⟨⟩<>]/g,'').replace(/[()]/g,'');
-    s=s.replace(/−/g,'-');
+  function parseCoord(s){
     if(!s) return null;
-    const parts=s.split(',');
-    if(parts.length!==2) return null;
-    const x=Number(parts[0]), y=Number(parts[1]);
-    if(!isFinite(x)||!isFinite(y)) return null;
+    s = String(s).trim().replace(/[()]/g,'').replace(/\s+/g,' ');
+    // accept "x,y" or "x y"
+    const m = s.match(/^(-?\d+(?:\.\d+)?)\s*(?:,|\s)\s*(-?\d+(?:\.\d+)?)$/);
+    if(!m) return null;
+    const x=Number(m[1]), y=Number(m[2]);
+    if(!isFinite(x) || !isFinite(y)) return null;
     return [x,y];
   }
-  const fmtPt=([x,y])=>`(${x},${y})`;
-  const fmtVec=([a,b])=>`⟨${a},${b}⟩`;
+  function fmtCoord(p){ return `(${p[0]}, ${p[1]})`; }
+  function addVec(p, v){ return [p[0]+v[0], p[1]+v[1]]; }
 
-  /* -------------------- Slide 2: Warm-up list -------------------- */
-  const wState={items:[]};
-  function wMake(level){
-    // tasks: give vector; choose statement describing it OR compute new point quick
-    const v = level==='easy' ? [choice([1,2,3,4]), choice([1,2,3,4])]
-            : level==='med'  ? [rand(-5,5)||2, rand(-5,5)||-3]
-            : [rand(-8,8)||-4, rand(-8,8)||5];
-    const A = [rand(-6,6), rand(-6,6)];
-    const A1 = [A[0]+v[0], A[1]+v[1]];
-    const mode = choice(['desc','point','desc','point']); // mix
-    if(mode==='desc'){
-      const opts=[
-        {t:`right ${Math.abs(v[0])} and up ${Math.abs(v[1])}`, ok: (v[0]>0 && v[1]>0)},
-        {t:`left ${Math.abs(v[0])} and up ${Math.abs(v[1])}`, ok: (v[0]<0 && v[1]>0)},
-        {t:`right ${Math.abs(v[0])} and down ${Math.abs(v[1])}`, ok: (v[0]>0 && v[1]<0)},
-        {t:`left ${Math.abs(v[0])} and down ${Math.abs(v[1])}`, ok: (v[0]<0 && v[1]<0)},
-      ];
-      // handle zeros (avoid)
-      if(v[0]===0) v[0]=level==='easy'?2:choice([-3,3]);
-      if(v[1]===0) v[1]=level==='easy'?1:choice([-2,2]);
-      const correct = opts.find(o=>o.ok) || {t:`right ${v[0]} and up ${v[1]}`, ok:true};
-      const pool = [correct.t, ...opts.filter(o=>o.t!==correct.t).map(o=>o.t)];
-      const unique=[...new Set(pool)].slice(0,4);
-      return {type:'desc', vec:v, prompt:`Vector \( ${fmtVec(v)} \) means:`, options:unique, key:correct.t};
-    }
-    return {type:'point', vec:v, A, A1, prompt:`Translate \(A${fmtPt(A)}\) by \( ${fmtVec(v)} \). Find \(A' \):`, key:fmtPt(A1)};
+  function parseVector(sA, sB){
+    const a=Number(String(sA).trim());
+    const b=Number(String(sB).trim());
+    if(!isFinite(a)||!isFinite(b)) return null;
+    return [a,b];
+  }
+  function parseVectorInline(s){
+    if(!s) return null;
+    s=String(s).trim().replace(/[<>]/g,'').replace(/[()]/g,'').replace(/\s+/g,' ');
+    const m=s.match(/^(-?\d+(?:\.\d+)?)\s*(?:,|\s)\s*(-?\d+(?:\.\d+)?)$/);
+    if(!m) return null;
+    const a=Number(m[1]), b=Number(m[2]);
+    if(!isFinite(a)||!isFinite(b)) return null;
+    return [a,b];
+  }
+  function fmtVec(v){ return `\\(\\langle ${v[0]},${v[1]}\\rangle\\)`; }
+
+  function parseRule(s){
+    // Accept: (x,y)->(x+3,y-2) OR x+3,y-2 OR (x-5, y+1)
+    if(!s) return null;
+    let t=String(s).toLowerCase().replace(/\s+/g,'');
+    t=t.replace(/→/g,'->');
+    // keep only rhs if arrow present
+    const parts=t.split('->');
+    if(parts.length>1) t=parts[parts.length-1];
+    t=t.replace(/[()]/g,'');
+    // allow "x+3,y-2"
+    const m=t.match(/^x([+-]\d+(?:\.\d+)?)?,y([+-]\d+(?:\.\d+)?)?$/);
+    if(!m) return null;
+    const a = m[1] ? Number(m[1]) : 0;
+    const b = m[2] ? Number(m[2]) : 0;
+    if(!isFinite(a)||!isFinite(b)) return null;
+    return [a,b];
   }
 
-  function wNew(){
-    const lvl=id('wLevel').value; const box=id('wList'); box.innerHTML=''; wState.items=[];
+  /* -------------------- Slide 2: Warm-up -------------------- */
+  const wuState={items:[]};
+  function pickVec(level){
+    if(level==='easy') return [choice([1,2,3,4]), choice([-3,-2,-1,1,2,3])];
+    if(level==='med') return [choice([-6,-5,-4,-3,3,4,5,6]), choice([-6,-5,-4,-3,3,4,5,6])];
+    return [rand(-9,9)||7, rand(-9,9)||-6];
+  }
+  function pickPt(level){
+    if(level==='easy') return [rand(-5,5), rand(-5,5)];
+    if(level==='med') return [rand(-8,8), rand(-8,8)];
+    return [rand(-10,10), rand(-10,10)];
+  }
+  function makeMovePhrase(v){
+    const [a,b]=v;
+    const horiz = a===0? '' : (a>0? `right ${a}` : `left ${Math.abs(a)}`);
+    const vert  = b===0? '' : (b>0? `up ${b}` : `down ${Math.abs(b)}`);
+    if(horiz && vert) return `${horiz} and ${vert}`;
+    return horiz || vert || 'nowhere';
+  }
+
+  function wuNew(){
+    const lvl=id('wuLevel').value; const box=id('wuList'); box.innerHTML=''; wuState.items=[];
     for(let k=0;k<6;k++){
-      const it=wMake(lvl);
+      const p=pickPt(lvl), v=pickVec(lvl), ans=addVec(p,v);
       const row=document.createElement('div'); row.className='card p-4';
-      if(it.type==='desc'){
-        row.innerHTML = `
-          <div class="text-lg mb-2">${it.prompt}</div>
-          <select class="win border rounded px-2 py-1 w-full">
-            <option value="">— choose —</option>
-            ${it.options.map(o=>`<option value="${o}">${o}</option>`).join('')}
-          </select>
-          <div class="text-xs text-gray-500 mt-2">Hint: sign of \(a\) tells left/right; sign of \(b\) tells up/down.</div>
-        `;
-        row.dataset.key=it.key;
-        row.dataset.type='desc';
-        row.dataset.vec=JSON.stringify(it.vec);
-      } else {
-        row.innerHTML = `
-          <div class="text-lg mb-2">${it.prompt}</div>
-          <input class="win border rounded px-2 py-2 w-48" placeholder="(x,y)">
-          <div class="text-xs text-gray-500 mt-2">Use rule: \( (x,y)\to(x+a,\ y+b) \).</div>
-        `;
-        row.dataset.key=it.key;
-        row.dataset.type='point';
-        row.dataset.vec=JSON.stringify(it.vec);
-        row.dataset.A=JSON.stringify(it.A);
-      }
-      box.appendChild(row); wState.items.push(it);
+      row.innerHTML=`
+        <div class="text-lg">
+          Start at <span class="font-extrabold">\\(${fmtCoord(p)}\\)</span>.
+          Translate ${makeMovePhrase(v)} (vector ${fmtVec(v)}).
+        </div>
+        <div class="mt-2">New point = <input class="wuin border rounded px-2 py-1 w-56" placeholder="(x,y)"></div>
+      `;
+      row.dataset.p=JSON.stringify(p);
+      row.dataset.v=JSON.stringify(v);
+      row.dataset.ans=JSON.stringify(ans);
+      box.appendChild(row); wuState.items.push({p,v,ans});
     }
-    id('wFb').textContent='';
-    renderMath(id('warmSlide'));
+    id('wuFb').textContent='';
+    renderMath(id('wuSlide'));
   }
-  id('wNew').addEventListener('click',wNew); wNew();
+  id('wuNew').addEventListener('click',wuNew); wuNew();
 
-  id('wCheck').addEventListener('click',()=>{
-    let ok=0; const rows=[...id('wList').children];
+  id('wuCheck').addEventListener('click',()=>{
+    let ok=0; const rows=[...id('wuList').children];
     rows.forEach(row=>{
-      const inp=row.querySelector('.win');
-      const key=row.dataset.key;
-      if(row.dataset.type==='desc'){
-        const good=inp.value && inp.value===key;
-        inp.style.borderColor = good ? '#22c55e' : '#ef4444';
-        if(good) ok++;
-      } else {
-        const got=parsePair(inp.value);
-        const want=parsePair(key);
-        const good=got && want && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
-        inp.style.borderColor = good ? '#22c55e' : '#ef4444';
-        if(good) ok++;
-      }
+      const got=parseCoord(row.querySelector('.wuin').value);
+      const want=JSON.parse(row.dataset.ans);
+      const good=got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
+      row.querySelector('.wuin').style.borderColor = good ? '#22c55e' : '#ef4444';
+      if(good) ok++;
     });
-    id('wFb').textContent = ok===rows.length ? '✅ Warm-up complete.' : `Score: ${ok}/${rows.length}`;
+    id('wuFb').textContent = ok===rows.length ? '✅ Warm-up complete.' : `Score: ${ok}/${rows.length}`;
     if(ok===rows.length) confetti();
   });
 
-  id('wExportCSV').addEventListener('click',()=>{
-    const rows=[['type','prompt','correct','user']];
-    [...id('wList').children].forEach(row=>{
-      const prompt=row.querySelector('.text-lg').textContent.trim();
-      const user=row.querySelector('.win').value||'';
-      rows.push([row.dataset.type, prompt, row.dataset.key, user]);
+  id('wuExportCSV').addEventListener('click',()=>{
+    const rows=[['start','vector','correct','user']];
+    [...id('wuList').children].forEach(row=>{
+      const p=JSON.parse(row.dataset.p), v=JSON.parse(row.dataset.v), ans=JSON.parse(row.dataset.ans);
+      rows.push([fmtCoord(p), `<${v[0]},${v[1]}>`, fmtCoord(ans), row.querySelector('.wuin').value||'']);
     });
-    downloadCSV(`${deckTitle}_warmup.csv`, rows);
+    downloadCSV(`${deckTitle}_warmup_translate_points.csv`, rows);
   });
-  id('wExportJSON').addEventListener('click',()=>{
-    const data=[...id('wList').children].map(row=>({
-      type:row.dataset.type,
-      prompt:row.querySelector('.text-lg').textContent.trim(),
-      correct:row.dataset.key,
-      user:row.querySelector('.win').value||''
-    }));
-    downloadJSON(`${deckTitle}_warmup.json`, data);
+  id('wuExportJSON').addEventListener('click',()=>{
+    const data=[...id('wuList').children].map(row=>{
+      const p=JSON.parse(row.dataset.p), v=JSON.parse(row.dataset.v), ans=JSON.parse(row.dataset.ans);
+      return {start:p, vector:v, correct:ans, user:row.querySelector('.wuin').value||''};
+    });
+    downloadJSON(`${deckTitle}_warmup_translate_points.json`, data);
   });
 
-  /* -------------------- Slide 4: Worked Examples -------------------- */
+  /* -------------------- Slide 4: Worked examples -------------------- */
   function exPoint(){
-    const a=rand(-6,6)||3, b=rand(-6,6)||-2;
-    const P=[rand(-7,7), rand(-7,7)];
-    const P1=[P[0]+a, P[1]+b];
-    id('ex1').innerHTML = `
-      <div class="workstep">Translate by \(\\langle ${a},${b}\\rangle\).</div>
-      <div class="workstep mt-2">\(P${fmtPt(P)}\\to P'(${P[0]}+${a}, ${P[1]}+${b})=${fmtPt(P1)}\)</div>
-    `;
-    renderMath(id('wkSlide'));
-  }
-  function exVector(){
-    const A=[rand(-6,6), rand(-6,6)];
-    const a=rand(-6,6)||-4, b=rand(-6,6)||2;
-    const A1=[A[0]+a, A[1]+b];
-    id('ex2').innerHTML = `
-      <div class="workstep">Given \(A${fmtPt(A)}\\) and \(A'${fmtPt(A1)}\).</div>
-      <div class="workstep mt-2">
-        \(\\langle a,b\\rangle=\\langle x'-x,\\ y'-y\\rangle=\\langle ${A1[0]}-${A[0]},\\ ${A1[1]}-${A[1]}\\rangle=\\langle ${a},${b}\\rangle\)
-      </div>
+    const p=pickPt('med'), v=pickVec('med'), ans=addVec(p,v);
+    id('ex1').innerHTML=`
+      <div class="workstep">Given \(P${fmtCoord(p)}\) and vector ${fmtVec(v)}.</div>
+      <div class="workstep mt-2">Rule: \((x,y)\to(x+${v[0]},\,y+${v[1]})\)</div>
+      <div class="workstep mt-2">So \(P'(${p[0]}+${v[0]},\,${p[1]}+${v[1]})=P'${fmtCoord(ans)}\).</div>
     `;
     renderMath(id('wkSlide'));
   }
   function exTriangle(){
-    const v=[rand(-4,4)||2, rand(-4,4)||-1];
-    const A=[rand(-5,0), rand(-3,3)];
-    const B=[A[0]+rand(2,5), A[1]+rand(0,4)];
-    const C=[A[0]+rand(1,4), A[1]-rand(2,5)];
-    const A1=[A[0]+v[0], A[1]+v[1]];
-    const B1=[B[0]+v[0], B[1]+v[1]];
-    const C1=[C[0]+v[0], C[1]+v[1]];
-    id('ex3').innerHTML = `
-      <div class="workstep">Translate triangle by \(\\langle ${v[0]},${v[1]}\\rangle\).</div>
+    const A=pickPt('easy'), B=addVec(A,[choice([2,3,4]), choice([0,1,2])]), C=addVec(A,[choice([0,1,2]), choice([2,3,4])]);
+    const v=pickVec('easy');
+    const Ap=addVec(A,v), Bp=addVec(B,v), Cp=addVec(C,v);
+    id('ex2').innerHTML=`
+      <div class="workstep">Triangle \(ABC\): \(A${fmtCoord(A)},\,B${fmtCoord(B)},\,C${fmtCoord(C)}\).</div>
+      <div class="workstep mt-2">Translate by ${fmtVec(v)}.</div>
       <div class="workstep mt-2">
-        \(A${fmtPt(A)}\\to A'${fmtPt(A1)}\\) <br/>
-        \(B${fmtPt(B)}\\to B'${fmtPt(B1)}\\) <br/>
-        \(C${fmtPt(C)}\\to C'${fmtPt(C1)}\\)
+        \(A'${fmtCoord(Ap)},\;B'${fmtCoord(Bp)},\;C'${fmtCoord(Cp)}\)
       </div>
-      <div class="text-xs text-gray-500 mt-2">All side lengths stay the same → congruent.</div>
+      <div class="text-xs text-gray-600 mt-2">Same vector for every vertex → congruent image.</div>
+    `;
+    renderMath(id('wkSlide'));
+  }
+  function exRule(){
+    const v=pickVec('med');
+    id('ex3').innerHTML=`
+      <div class="workstep">Vector ${fmtVec(v)} means:</div>
+      <div class="workstep mt-2">Add ${v[0]} to \(x\) and add ${v[1]} to \(y\).</div>
+      <div class="workstep mt-2">Rule: \((x,y)\to(x+${v[0]},\;y+${v[1]})\).</div>
     `;
     renderMath(id('wkSlide'));
   }
   id('ex1Next').addEventListener('click',exPoint); exPoint();
-  id('ex2Next').addEventListener('click',exVector); exVector();
-  id('ex3Next').addEventListener('click',exTriangle); exTriangle();
+  id('ex2Next').addEventListener('click',exTriangle); exTriangle();
+  id('ex3Next').addEventListener('click',exRule); exRule();
 
-  /* -------------------- Slide 5: Translate points practice -------------------- */
+  /* -------------------- Slide 5: Practice points -------------------- */
   const ptState={items:[]};
-  function ptItem(level){
-    const v = level==='easy' ? [choice([1,2,3,4]), choice([1,2,3,4])]
-            : level==='med'  ? [rand(-5,5)||2, rand(-5,5)||-3]
-            : [rand(-8,8)||-5, rand(-8,8)||4];
-    const P=[rand(-8,8), rand(-8,8)];
-    const P1=[P[0]+v[0], P[1]+v[1]];
-    return {P, v, P1};
-  }
   function ptNew(){
     const lvl=id('ptLevel').value; const box=id('ptList'); box.innerHTML=''; ptState.items=[];
     for(let k=0;k<6;k++){
-      const o=ptItem(lvl);
+      const p=pickPt(lvl), v=pickVec(lvl), ans=addVec(p,v);
       const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML = `
-        <div class="text-lg">Translate \(P${fmtPt(o.P)}\) by \( ${fmtVec(o.v)} \). Find \(P'\).</div>
-        <div class="mt-2">\(P'=\) <input class="ptin border rounded px-2 py-1 w-44" placeholder="(x,y)"></div>
-        <div class="text-xs text-gray-500 mt-2">Rule: \( (x,y)\to(x+${o.v[0]},\ y+${o.v[1]}) \)</div>
+      row.innerHTML=`
+        <div class="text-lg">Translate \(P${fmtCoord(p)}\) by ${fmtVec(v)}.</div>
+        <div class="mt-2">\(P'=\) <input class="ptin border rounded px-2 py-1 w-56" placeholder="(x,y)"></div>
       `;
-      row.dataset.key=JSON.stringify(o.P1);
-      row.dataset.P=JSON.stringify(o.P);
-      row.dataset.v=JSON.stringify(o.v);
-      box.appendChild(row); ptState.items.push(o);
+      row.dataset.p=JSON.stringify(p);
+      row.dataset.v=JSON.stringify(v);
+      row.dataset.ans=JSON.stringify(ans);
+      box.appendChild(row); ptState.items.push({p,v,ans});
     }
     id('ptFb').textContent='';
     renderMath(id('ptSlide'));
@@ -730,307 +736,448 @@
   id('ptCheck').addEventListener('click',()=>{
     let ok=0; const rows=[...id('ptList').children];
     rows.forEach(row=>{
-      const got=parsePair(row.querySelector('.ptin').value);
-      const want=JSON.parse(row.dataset.key);
+      const got=parseCoord(row.querySelector('.ptin').value);
+      const want=JSON.parse(row.dataset.ans);
       const good=got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
       row.querySelector('.ptin').style.borderColor = good ? '#22c55e' : '#ef4444';
       if(good) ok++;
     });
-    id('ptFb').textContent = ok===rows.length ? '✅ Points translated correctly.' : `Score: ${ok}/${rows.length}`;
+    id('ptFb').textContent = ok===rows.length ? '✅ Great work.' : `Score: ${ok}/${rows.length}`;
     if(ok===rows.length) confetti();
   });
 
   id('ptExportCSV').addEventListener('click',()=>{
-    const rows=[['point','vector','correct_Pprime','user_Pprime']];
+    const rows=[['point','vector','correct','user']];
     [...id('ptList').children].forEach(row=>{
-      rows.push([
-        fmtPt(JSON.parse(row.dataset.P)),
-        fmtVec(JSON.parse(row.dataset.v)),
-        fmtPt(JSON.parse(row.dataset.key)),
-        row.querySelector('.ptin').value||''
-      ]);
+      const p=JSON.parse(row.dataset.p), v=JSON.parse(row.dataset.v), ans=JSON.parse(row.dataset.ans);
+      rows.push([fmtCoord(p), `<${v[0]},${v[1]}>`, fmtCoord(ans), row.querySelector('.ptin').value||'']);
     });
     downloadCSV(`${deckTitle}_practice_points.csv`, rows);
   });
   id('ptExportJSON').addEventListener('click',()=>{
-    const data=[...id('ptList').children].map(row=>({
-      P:JSON.parse(row.dataset.P),
-      vector:JSON.parse(row.dataset.v),
-      correct:JSON.parse(row.dataset.key),
-      user:row.querySelector('.ptin').value||''
-    }));
+    const data=[...id('ptList').children].map(row=>{
+      const p=JSON.parse(row.dataset.p), v=JSON.parse(row.dataset.v), ans=JSON.parse(row.dataset.ans);
+      return {point:p, vector:v, correct:ans, user:row.querySelector('.ptin').value||''};
+    });
     downloadJSON(`${deckTitle}_practice_points.json`, data);
   });
 
-  /* -------------------- Slide 6: Find vector practice -------------------- */
-  const vcState={items:[]};
-  function vcItem(level){
-    const a = level==='easy' ? choice([1,2,3,4]) : level==='med' ? (rand(-5,5)||-2) : (rand(-8,8)||5);
-    const b = level==='easy' ? choice([1,2,3,4]) : level==='med' ? (rand(-5,5)||3) : (rand(-8,8)||-6);
-    const A=[rand(-8,8), rand(-8,8)];
-    const A1=[A[0]+a, A[1]+b];
-    return {A, A1, v:[a,b]};
-  }
-  function vcNew(){
-    const lvl=id('vcLevel').value; const box=id('vcList'); box.innerHTML=''; vcState.items=[];
-    for(let k=0;k<6;k++){
-      const o=vcItem(lvl);
-      const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML = `
-        <div class="text-lg">From \(A${fmtPt(o.A)}\) to \(A'${fmtPt(o.A1)}\). Find \(\\langle a,b\\rangle\).</div>
-        <div class="mt-2">Vector: <input class="vcin border rounded px-2 py-1 w-44" placeholder="⟨a,b⟩"></div>
-        <div class="text-xs text-gray-500 mt-2">Compute \(x'-x\) and \(y'-y\).</div>
-      `;
-      row.dataset.key=JSON.stringify(o.v);
-      row.dataset.A=JSON.stringify(o.A);
-      row.dataset.A1=JSON.stringify(o.A1);
-      box.appendChild(row); vcState.items.push(o);
+  /* -------------------- Slide 6: Polygon table -------------------- */
+  const pyState={cur:null};
+  function makePolygon(level){
+    // simple non-self-intersecting shapes on integer grid
+    const base=[pickPt('easy'), pickPt('easy'), pickPt('easy'), pickPt('easy')];
+    // prefer a rectangle-like quadrilateral
+    let A=[rand(-5,5), rand(-5,5)];
+    let w=choice([2,3,4,5]), h=choice([2,3,4,5]);
+    let B=[A[0]+w, A[1]];
+    let C=[A[0]+w, A[1]+h];
+    let D=[A[0], A[1]+h];
+    if(level==='hard'){
+      // skewed quad / triangle mix
+      A=[rand(-7,7), rand(-7,7)];
+      B=[A[0]+choice([3,4,5]), A[1]+choice([1,2])];
+      C=[A[0]+choice([1,2]), A[1]+choice([4,5])];
+      D=[A[0]-choice([1,2]), A[1]+choice([2,3])];
     }
-    id('vcFb').textContent='';
-    renderMath(id('vecSlide'));
+    const poly = level==='easy' ? [['A',A],['B',B],['C',C],['D',D]] : level==='med' ? [['A',A],['B',B],['C',C]] : [['A',A],['B',B],['C',C],['D',D]];
+    return poly;
   }
-  id('vcNew').addEventListener('click',vcNew); vcNew();
 
-  id('vcCheck').addEventListener('click',()=>{
-    let ok=0; const rows=[...id('vcList').children];
-    rows.forEach(row=>{
-      const got=parsePair(row.querySelector('.vcin').value);
-      const want=JSON.parse(row.dataset.key);
+  function pyNew(){
+    const lvl=id('pyLevel').value;
+    const v=pickVec(lvl==='easy'?'easy':lvl==='med'?'med':'hard');
+    const poly=makePolygon(lvl);
+    const image=poly.map(([name,p])=>[name+"'", addVec(p,v)]);
+    pyState.cur={lvl, v, poly, image};
+
+    id('pyVec').innerHTML = fmtVec(v);
+    id('pyRule').innerHTML = `\\((x,y)\\to(x+${v[0]},\\;y+${v[1]})\\)`;
+
+    id('pyGiven').innerHTML = `
+      <table class="w-full text-lg">
+        <tr class="text-gray-500"><th class="text-left">Vertex</th><th class="text-left">Coordinates</th></tr>
+        ${poly.map(([n,p])=>`<tr><td class="font-bold">${n}</td><td>\\(${fmtCoord(p)}\\)</td></tr>`).join('')}
+      </table>
+    `;
+
+    const inputs = document.createElement('div');
+    inputs.innerHTML = `
+      <table class="w-full text-lg">
+        <tr class="text-gray-500"><th class="text-left">Vertex</th><th class="text-left">Your answer</th></tr>
+        ${image.map(([n,p],idx)=>`
+          <tr>
+            <td class="font-bold">${n}</td>
+            <td><input class="pyin border rounded px-2 py-1 w-56" data-idx="${idx}" placeholder="(x,y)"></td>
+          </tr>`).join('')}
+      </table>
+    `;
+    const wrap=id('pyInputs'); wrap.innerHTML=''; wrap.appendChild(inputs);
+
+    id('pyFb').textContent='';
+    renderMath(id('polySlide'));
+  }
+  id('pyNew').addEventListener('click',pyNew); pyNew();
+
+  id('pyCheck').addEventListener('click',()=>{
+    const cur=pyState.cur;
+    let ok=0;
+    const ins=[...document.querySelectorAll('.pyin')];
+    ins.forEach(inp=>{
+      const idx=Number(inp.dataset.idx);
+      const want=cur.image[idx][1];
+      const got=parseCoord(inp.value);
       const good=got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
-      row.querySelector('.vcin').style.borderColor = good ? '#22c55e' : '#ef4444';
+      inp.style.borderColor = good ? '#22c55e' : '#ef4444';
       if(good) ok++;
     });
-    id('vcFb').textContent = ok===rows.length ? '✅ Vectors found correctly.' : `Score: ${ok}/${rows.length}`;
+    const total=cur.image.length;
+    id('pyFb').textContent = ok===total ? '✅ Polygon translated correctly.' : `Score: ${ok}/${total}`;
+    if(ok===total) confetti();
+  });
+
+  id('pyExportCSV').addEventListener('click',()=>{
+    const cur=pyState.cur;
+    const rows=[['vertex','preimage','vector','correct_image','user_image']];
+    const ins=[...document.querySelectorAll('.pyin')];
+    cur.poly.forEach(([n,p],i)=>{
+      rows.push([
+        n,
+        fmtCoord(p),
+        `<${cur.v[0]},${cur.v[1]}>`,
+        fmtCoord(cur.image[i][1]),
+        ins[i] ? (ins[i].value||'') : ''
+      ]);
+    });
+    downloadCSV(`${deckTitle}_polygon_table.csv`, rows);
+  });
+  id('pyExportJSON').addEventListener('click',()=>{
+    const cur=pyState.cur;
+    const ins=[...document.querySelectorAll('.pyin')];
+    const data=cur.poly.map(([n,p],i)=>({
+      vertex:n,
+      preimage:p,
+      vector:cur.v,
+      correct:cur.image[i][1],
+      user: ins[i] ? (ins[i].value||'') : ''
+    }));
+    downloadJSON(`${deckTitle}_polygon_table.json`, data);
+  });
+
+  /* -------------------- Slide 7: Write vector & rule -------------------- */
+  const wrState={items:[]};
+  function wrNew(){
+    const lvl=id('wrLevel').value; const box=id('wrList'); box.innerHTML=''; wrState.items=[];
+    for(let k=0;k<4;k++){
+      const v=pickVec(lvl==='easy'?'easy':lvl==='med'?'med':'hard');
+      const p=pickPt('med'); const ans=addVec(p,v);
+      const row=document.createElement('div'); row.className='card p-4 text-left';
+      row.innerHTML=`
+        <div class="text-lg">
+          Point \(P${fmtCoord(p)}\) maps to \(P'${fmtCoord(ans)}\).
+          Find the translation vector and write the rule.
+        </div>
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          <span class="font-bold">Vector:</span>
+          <input class="wrvec border rounded px-2 py-1 w-36" placeholder="<a,b>">
+          <span class="font-bold ml-2">Rule:</span>
+          <input class="wrrule border rounded px-2 py-1 w-[320px] max-w-full" placeholder="(x,y)->(x+a,y+b)">
+        </div>
+        <div class="mt-2 text-xs text-gray-500">Tip: vector \(a=x'-x\), \(b=y'-y\).</div>
+      `;
+      row.dataset.p=JSON.stringify(p);
+      row.dataset.ans=JSON.stringify(ans);
+      row.dataset.v=JSON.stringify(v);
+      box.appendChild(row); wrState.items.push({p,ans,v});
+    }
+    id('wrHintBox').textContent=''; id('wrFb').textContent='';
+    renderMath(id('wrSlide'));
+  }
+  id('wrNew').addEventListener('click',wrNew); wrNew();
+
+  id('wrHint').addEventListener('click',()=>{
+    id('wrHintBox').innerHTML = `<div class="hint">
+      Compute the vector from \(P\) to \(P'\): \(a=x'-x\), \(b=y'-y\).<br/>
+      Then rule is \((x,y)\to(x+a,\;y+b)\).
+    </div>`;
+    renderMath(id('wrSlide'));
+  });
+
+  id('wrCheck').addEventListener('click',()=>{
+    let ok=0; const rows=[...id('wrList').children];
+    rows.forEach(row=>{
+      const p=JSON.parse(row.dataset.p);
+      const ans=JSON.parse(row.dataset.ans);
+      const want=[ans[0]-p[0], ans[1]-p[1]];
+
+      const vUser=parseVectorInline(row.querySelector('.wrvec').value);
+      const rUser=parseRule(row.querySelector('.wrrule').value);
+
+      const goodV = vUser && approxEq(vUser[0],want[0]) && approxEq(vUser[1],want[1]);
+      const goodR = rUser && approxEq(rUser[0],want[0]) && approxEq(rUser[1],want[1]);
+
+      row.querySelector('.wrvec').style.borderColor = goodV ? '#22c55e' : '#ef4444';
+      row.querySelector('.wrrule').style.borderColor = goodR ? '#22c55e' : '#ef4444';
+
+      if(goodV && goodR) ok++;
+    });
+    id('wrFb').textContent = ok===rows.length ? '✅ Vector and rule correct.' : `Score: ${ok}/${rows.length}`;
     if(ok===rows.length) confetti();
   });
 
-  id('vcExportCSV').addEventListener('click',()=>{
-    const rows=[['A','Aprime','correct_vector','user_vector']];
-    [...id('vcList').children].forEach(row=>{
+  id('wrExportCSV').addEventListener('click',()=>{
+    const rows=[['P','Pprime','vector_correct','rule_correct','vector_user','rule_user']];
+    [...id('wrList').children].forEach(row=>{
+      const p=JSON.parse(row.dataset.p);
+      const ans=JSON.parse(row.dataset.ans);
+      const want=[ans[0]-p[0], ans[1]-p[1]];
       rows.push([
-        fmtPt(JSON.parse(row.dataset.A)),
-        fmtPt(JSON.parse(row.dataset.A1)),
-        fmtVec(JSON.parse(row.dataset.key)),
-        row.querySelector('.vcin').value||''
+        fmtCoord(p),
+        fmtCoord(ans),
+        `<${want[0]},${want[1]}>`,
+        `(x,y)->(x+${want[0]},y+${want[1]})`,
+        row.querySelector('.wrvec').value||'',
+        row.querySelector('.wrrule').value||''
       ]);
     });
-    downloadCSV(`${deckTitle}_practice_vectors.csv`, rows);
+    downloadCSV(`${deckTitle}_write_vector_rule.csv`, rows);
   });
-  id('vcExportJSON').addEventListener('click',()=>{
-    const data=[...id('vcList').children].map(row=>({
-      A:JSON.parse(row.dataset.A),
-      Aprime:JSON.parse(row.dataset.A1),
-      correct:JSON.parse(row.dataset.key),
-      user:row.querySelector('.vcin').value||''
-    }));
-    downloadJSON(`${deckTitle}_practice_vectors.json`, data);
+  id('wrExportJSON').addEventListener('click',()=>{
+    const data=[...id('wrList').children].map(row=>{
+      const p=JSON.parse(row.dataset.p), ans=JSON.parse(row.dataset.ans);
+      const want=[ans[0]-p[0], ans[1]-p[1]];
+      return {
+        P:p, Pprime:ans,
+        correct:{vector:want, rule:[want[0],want[1]]},
+        user:{vector:row.querySelector('.wrvec').value||'', rule:row.querySelector('.wrrule').value||''}
+      };
+    });
+    downloadJSON(`${deckTitle}_write_vector_rule.json`, data);
   });
 
-  /* -------------------- Slide 7: Polygon + plane -------------------- */
-  const plState={poly:[], poly1:[], v:[0,0], type:'tri'};
-  function toSvgPoint([x,y], size, min=-10, max=10){
-    // map coordinate plane to svg pixels
-    const pad=20;
-    const W=size, H=size;
-    const sx = pad + (x-min)/(max-min)*(W-2*pad);
-    const sy = pad + (max-y)/(max-min)*(H-2*pad);
-    return [sx,sy];
-  }
-  function planeSvg(poly, poly1, showImage){
-    const size=420;
-    const min=-10, max=10;
-    const pad=20;
+  /* -------------------- Slide 8: Visual SVG -------------------- */
+  let vizShow=true;
+  id('vizShow').addEventListener('click',()=>{
+    vizShow=!vizShow;
+    id('vizShow').classList.toggle('active', vizShow);
+    id('vizShow').setAttribute('aria-pressed', String(vizShow));
+    drawViz();
+  });
+
+  const vzState={cur:null};
+  function gridSvg(pointsA, pointsB, v){
+    // coordinate system: map [-10,10] to 520x520
+    const W=520,H=520, pad=30;
+    const xmin=-10,xmax=10,ymin=-10,ymax=10;
+    const sx=(W-2*pad)/(xmax-xmin);
+    const sy=(H-2*pad)/(ymax-ymin);
+    const X=x=>pad+(x-xmin)*sx;
+    const Y=y=>H-pad-(y-ymin)*sy;
+
+    const polyPath = pts => pts.map((p,i)=>`${i===0?'M':'L'} ${X(p[0])} ${Y(p[1])}`).join(' ')+' Z';
 
     // grid lines
-    let grid='';
-    for(let t=min;t<=max;t++){
-      const p1=toSvgPoint([t,min],size,min,max), p2=toSvgPoint([t,max],size,min,max);
-      const q1=toSvgPoint([min,t],size,min,max), q2=toSvgPoint([max,t],size,min,max);
-      const major = (t===0);
-      grid += `<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="${major?'#6C1D45':'#e5e7eb'}" stroke-width="${major?2:1}" />`;
-      grid += `<line x1="${q1[0]}" y1="${q1[1]}" x2="${q2[0]}" y2="${q2[1]}" stroke="${major?'#6C1D45':'#e5e7eb'}" stroke-width="${major?2:1}" />`;
+    let lines='';
+    for(let k=xmin;k<=xmax;k++){
+      const xx=X(k);
+      lines += `<line x1="${xx}" y1="${Y(ymin)}" x2="${xx}" y2="${Y(ymax)}" stroke="#e5e7eb" stroke-width="1"/>`;
+    }
+    for(let k=ymin;k<=ymax;k++){
+      const yy=Y(k);
+      lines += `<line x1="${X(xmin)}" y1="${yy}" x2="${X(xmax)}" y2="${yy}" stroke="#e5e7eb" stroke-width="1"/>`;
+    }
+    // axes
+    lines += `<line x1="${X(0)}" y1="${Y(ymin)}" x2="${X(0)}" y2="${Y(ymax)}" stroke="#111827" stroke-width="2"/>`;
+    lines += `<line x1="${X(xmin)}" y1="${Y(0)}" x2="${X(xmax)}" y2="${Y(0)}" stroke="#111827" stroke-width="2"/>`;
+
+    // label a few ticks
+    let ticks='';
+    for(let k=-10;k<=10;k+=5){
+      ticks += `<text x="${X(k)+2}" y="${Y(0)-6}" font-size="12" fill="#6b7280">${k}</text>`;
+      ticks += `<text x="${X(0)+6}" y="${Y(k)-2}" font-size="12" fill="#6b7280">${k}</text>`;
     }
 
-    function polyPath(points){
-      return points.map((p,idx)=>{
-        const s=toSvgPoint(p,size,min,max);
-        return (idx===0?`M ${s[0]} ${s[1]}`:`L ${s[0]} ${s[1]}`);
-      }).join(' ')+' Z';
-    }
+    // arrow showing translation vector (from one vertex)
+    const A0=pointsA[0], B0=pointsB[0];
+    const ax=X(A0[0]), ay=Y(A0[1]);
+    const bx=X(B0[0]), by=Y(B0[1]);
+    const arrow = `
+      <defs>
+        <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <polygon points="0 0, 6 3, 0 6" fill="#6C1D45"/>
+        </marker>
+      </defs>
+      <line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="#6C1D45" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <text x="${(ax+bx)/2+6}" y="${(ay+by)/2-6}" font-size="14" fill="#6C1D45" font-weight="700">?</text>
+    `;
 
-    const path0=polyPath(poly);
-    const path1=polyPath(poly1);
+    const shapeA = `<path d="${polyPath(pointsA)}" fill="rgba(199,163,79,.25)" stroke="#C7A34F" stroke-width="3"/>`;
+    const shapeB = vizShow ? `<path d="${polyPath(pointsB)}" fill="rgba(108,29,69,.15)" stroke="#6C1D45" stroke-width="3" stroke-dasharray="8 5"/>` : '';
 
-    function labelPt(name, p, color){
-      const [sx,sy]=toSvgPoint(p,size,min,max);
-      return `
-        <circle cx="${sx}" cy="${sy}" r="5" fill="${color}" />
-        <text x="${sx+8}" y="${sy-8}" font-size="14" fill="${color}" font-weight="800">${name}</text>
-      `;
-    }
-
-    const names = poly.length===3 ? ['A','B','C'] : ['A','B','C','D'];
-    const names1 = poly.length===3 ? ["A'","B'","C'"] : ["A'","B'","C'","D'"];
-
-    let labels0='', labels1='';
-    names.forEach((n,idx)=>labels0 += labelPt(n, poly[idx], '#6C1D45'));
-    if(showImage){
-      names1.forEach((n,idx)=>labels1 += labelPt(n, poly1[idx], '#0f766e'));
-    }
+    // mark vertices
+    const dots = pts => pts.map(p=>`<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="5" fill="#111827"/>`).join('');
+    const dotsB = vizShow ? pointsB.map(p=>`<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="5" fill="#6C1D45"/>`).join('') : '';
 
     return `
-      <svg class="plane" viewBox="0 0 ${size} ${size}" role="img" aria-label="coordinate plane">
-        <rect x="0" y="0" width="${size}" height="${size}" fill="#ffffff" rx="12"></rect>
-        ${grid}
-        <path d="${path0}" fill="rgba(108,29,69,0.08)" stroke="#6C1D45" stroke-width="3"></path>
-        ${labels0}
-        ${showImage ? `<path d="${path1}" fill="rgba(15,118,110,0.08)" stroke="#0f766e" stroke-width="3" stroke-dasharray="8 6"></path>` : ``}
-        ${showImage ? labels1 : ``}
+      <svg width="100%" viewBox="0 0 ${W} ${H}" role="img" aria-label="coordinate grid translation diagram">
+        <rect x="0" y="0" width="${W}" height="${H}" fill="#ffffff"/>
+        ${lines}
+        ${ticks}
+        ${shapeA}
+        ${shapeB}
+        ${dots(pointsA)}
+        ${dotsB}
+        ${arrow}
+        <text x="${pad}" y="${pad-8}" font-size="14" fill="#6b7280">Preimage (solid) → Image (dashed)</text>
       </svg>
     `;
   }
 
-  function makePoly(level){
-    const v = level==='easy' ? [choice([2,3,4]), choice([1,2,3])]
-            : level==='med'  ? [rand(-5,5)||-2, rand(-5,5)||3]
-            : [rand(-8,8)||5, rand(-8,8)||-6];
-
-    const type = (level==='hard' && Math.random()<0.5) ? 'quad' : 'tri';
-    let poly=[];
-    if(type==='tri'){
-      const A=[rand(-6,0), rand(-4,4)];
-      const B=[A[0]+rand(2,6), A[1]+rand(-1,4)];
-      const C=[A[0]+rand(1,5), A[1]-rand(2,6)];
-      poly=[A,B,C];
-    } else {
-      // simple convex-ish quad
-      const A=[rand(-6,-2), rand(-3,3)];
-      const B=[A[0]+rand(3,6), A[1]+rand(0,3)];
-      const C=[B[0]+rand(-1,2), B[1]-rand(3,6)];
-      const D=[A[0]+rand(-1,2), A[1]-rand(2,5)];
-      poly=[A,B,C,D];
+  function pickViz(level){
+    const v=pickVec(level==='easy'?'easy':level==='med'?'med':'hard');
+    // triangle in bounds
+    let A=[rand(-6,2), rand(-2,6)];
+    let B=[A[0]+choice([2,3,4]), A[1]+choice([0,1,2])];
+    let C=[A[0]+choice([0,1,2]), A[1]-choice([2,3,4])];
+    // keep inside after translation: adjust if needed
+    const pts=[A,B,C];
+    const pts2=pts.map(p=>addVec(p,v));
+    const all=[...pts,...pts2].flat();
+    const xs=[...pts.map(p=>p[0]),...pts2.map(p=>p[0])];
+    const ys=[...pts.map(p=>p[1]),...pts2.map(p=>p[1])];
+    const inBounds = xs.every(x=>x>=-9 && x<=9) && ys.every(y=>y>=-9 && y<=9);
+    if(!inBounds){
+      A=[rand(-2,2), rand(-2,2)];
+      B=[A[0]+2, A[1]+1];
+      C=[A[0]+1, A[1]-2];
     }
-    const poly1=poly.map(p=>[p[0]+v[0], p[1]+v[1]]);
-    return {poly, poly1, v, type};
+    const P=[A,B,C];
+    const Q=P.map(p=>addVec(p,v));
+    return {P,Q,v};
   }
 
-  function plNew(){
-    const lvl=id('plLevel').value;
-    const o=makePoly(lvl);
-    plState.poly=o.poly; plState.poly1=o.poly1; plState.v=o.v; plState.type=o.type;
-
-    id('plVec').textContent = fmtVec(o.v);
-    id('planeBox').innerHTML = planeSvg(o.poly, o.poly1, false);
-
-    // clear inputs
-    ['A1','B1','C1','D1'].forEach(k=>{ const el=id(k); el.value=''; el.style.borderColor='#e5e7eb'; });
-    // hide D input if triangle (but keep visible label)
-    id('D1').disabled = (o.poly.length===3);
-    id('D1').placeholder = (o.poly.length===3) ? '— not used —' : '(x,y)';
-
-    id('plFb').textContent=''; id('plHintBox').textContent='';
-    renderMath(id('polySlide'));
+  function drawViz(){
+    const cur=vzState.cur;
+    if(!cur) return;
+    id('vzSvgWrap').innerHTML = gridSvg(cur.P, cur.Q, cur.v);
+    renderMath(id('vizSlide'));
   }
-  id('plNew').addEventListener('click',plNew); plNew();
 
-  id('plHint').addEventListener('click',()=>{
-    const [a,b]=plState.v;
-    id('plHintBox').innerHTML = `<div class="hint">
-      Use \( (x,y)\\to(x+${a},\\ y+${b}) \).<br/>
-      Add ${a} to every \(x\) and add ${b} to every \(y\).
-    </div>`;
-    renderMath(id('polySlide'));
+  function vzNew(){
+    const lvl=id('vzLevel').value;
+    vzState.cur = pickViz(lvl);
+    id('vzA').value=''; id('vzB').value='';
+    id('vzFb').textContent='';
+    drawViz();
+  }
+  id('vzNew').addEventListener('click',vzNew); vzNew();
+
+  id('vzCheck').addEventListener('click',()=>{
+    const cur=vzState.cur;
+    const vUser=parseVector(id('vzA').value, id('vzB').value);
+    const good = vUser && approxEq(vUser[0],cur.v[0]) && approxEq(vUser[1],cur.v[1]);
+    id('vzA').style.borderColor = good ? '#22c55e' : '#ef4444';
+    id('vzB').style.borderColor = good ? '#22c55e' : '#ef4444';
+    id('vzFb').textContent = good ? '✅ Correct vector.' : '❌ Check your x-change and y-change.';
+    if(good) confetti();
   });
 
-  id('plCheck').addEventListener('click',()=>{
-    const poly1=plState.poly1;
-    const idsMap=['A1','B1','C1','D1'];
-    let ok=0, total=plState.poly.length;
-    for(let k=0;k<plState.poly.length;k++){
-      const got=parsePair(id(idsMap[k]).value);
-      const want=poly1[k];
-      const good=got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
-      id(idsMap[k]).style.borderColor = good ? '#22c55e' : '#ef4444';
-      if(good) ok++;
-    }
-    const allOk=(ok===total);
-    id('plFb').textContent = allOk ? '✅ Polygon translated correctly.' : `Score: ${ok}/${total}`;
-    id('planeBox').innerHTML = planeSvg(plState.poly, plState.poly1, true);
-    if(allOk) confetti();
+  id('vzExportCSV').addEventListener('click',()=>{
+    const cur=vzState.cur;
+    downloadCSV(`${deckTitle}_visual_translation.csv`, [
+      ['preimage_vertices','image_vertices','vector_correct','user_a','user_b'],
+      [JSON.stringify(cur.P), JSON.stringify(cur.Q), `<${cur.v[0]},${cur.v[1]}>`, id('vzA').value||'', id('vzB').value||'']
+    ]);
   });
-
-  id('plExportCSV').addEventListener('click',()=>{
-    const rows=[['vertex','preimage','vector','correct_image','user_image']];
-    const names=plState.poly.length===3 ? ['A','B','C'] : ['A','B','C','D'];
-    const idsMap=['A1','B1','C1','D1'];
-    for(let k=0;k<plState.poly.length;k++){
-      rows.push([
-        names[k],
-        fmtPt(plState.poly[k]),
-        fmtVec(plState.v),
-        fmtPt(plState.poly1[k]),
-        id(idsMap[k]).value||''
-      ]);
-    }
-    downloadCSV(`${deckTitle}_polygon.csv`, rows);
-  });
-  id('plExportJSON').addEventListener('click',()=>{
-    const idsMap=['A1','B1','C1','D1'];
-    const user = plState.poly.map((_,k)=>parsePair(id(idsMap[k]).value));
-    downloadJSON(`${deckTitle}_polygon.json`, {
-      vector:plState.v,
-      preimage:plState.poly,
-      correct_image:plState.poly1,
-      user_image:user
+  id('vzExportJSON').addEventListener('click',()=>{
+    const cur=vzState.cur;
+    downloadJSON(`${deckTitle}_visual_translation.json`, {
+      preimage:cur.P, image:cur.Q, correct_vector:cur.v,
+      user:{a:id('vzA').value||'', b:id('vzB').value||''}
     });
   });
 
-  /* -------------------- Slide 9: Error analysis -------------------- */
+  /* -------------------- Slide 9: Challenge compose -------------------- */
+  const chState={cur:null};
+  function chNew(){
+    const p=pickPt('med');
+    const v1=pickVec('med');
+    const v2=pickVec('med');
+    const v=[v1[0]+v2[0], v1[1]+v2[1]];
+    const ansPt=addVec(addVec(p,v1),v2);
+    chState.cur={p,v1,v2,v,ansPt};
+
+    id('chPrompt').innerHTML = `
+      Start with point \(P${fmtCoord(p)}\). Apply translation \(T_1\) by ${fmtVec(v1)} then translation \(T_2\) by ${fmtVec(v2)}.
+      <br/>1) What is the single translation equivalent to doing both?
+      <br/>2) What is the final image \(P''\)?
+    `;
+    id('chA').value=''; id('chB').value=''; id('chPt').value='';
+    id('chHintBox').textContent=''; id('chFb').textContent='';
+    renderMath(id('chSlide'));
+  }
+  id('chNew').addEventListener('click',chNew); chNew();
+
+  id('chHint').addEventListener('click',()=>{
+    id('chHintBox').innerHTML = `<div class="hint">
+      Add the vectors: \(\langle a_1,b_1\rangle+\langle a_2,b_2\rangle=\langle a_1+a_2,\;b_1+b_2\rangle\).<br/>
+      Then \(P''=P+\langle a,b\rangle\).
+    </div>`;
+    renderMath(id('chSlide'));
+  });
+
+  id('chCheck').addEventListener('click',()=>{
+    const cur=chState.cur;
+    const vUser=parseVector(id('chA').value, id('chB').value);
+    const ptUser=parseCoord(id('chPt').value);
+
+    const goodV = vUser && approxEq(vUser[0],cur.v[0]) && approxEq(vUser[1],cur.v[1]);
+    const goodP = ptUser && approxEq(ptUser[0],cur.ansPt[0]) && approxEq(ptUser[1],cur.ansPt[1]);
+
+    id('chA').style.borderColor = goodV ? '#22c55e' : '#ef4444';
+    id('chB').style.borderColor = goodV ? '#22c55e' : '#ef4444';
+    id('chPt').style.borderColor = goodP ? '#22c55e' : '#ef4444';
+
+    const all=goodV && goodP;
+    id('chFb').textContent = all ? '✅ Challenge solved.' : '❌ Re-check vector addition and point translation.';
+    if(all) confetti();
+  });
+
+  id('chExportCSV').addEventListener('click',()=>{
+    const cur=chState.cur;
+    downloadCSV(`${deckTitle}_challenge_compose.csv`, [
+      ['P','T1','T2','combined_correct','Ppp_correct','combined_user','Ppp_user'],
+      [fmtCoord(cur.p), `<${cur.v1[0]},${cur.v1[1]}>`, `<${cur.v2[0]},${cur.v2[1]}>`, `<${cur.v[0]},${cur.v[1]}>`, fmtCoord(cur.ansPt),
+       `<${id('chA').value||''},${id('chB').value||''}>`, id('chPt').value||'']
+    ]);
+  });
+  id('chExportJSON').addEventListener('click',()=>{
+    const cur=chState.cur;
+    downloadJSON(`${deckTitle}_challenge_compose.json`, {
+      P:cur.p, T1:cur.v1, T2:cur.v2, correct:{combined:cur.v, Ppp:cur.ansPt},
+      user:{combined:[id('chA').value||'', id('chB').value||''], Ppp:id('chPt').value||''}
+    });
+  });
+
+  /* -------------------- Slide 10: Error analysis -------------------- */
   function errBank(level){
     const easy=[
-      {
-        work:`Translate by \\(\\langle 3,-2\\rangle\\). Student says \\((x,y)\\to(x-2,\\ y+3)\\).`,
-        correct:`Correct rule: \\((x,y)\\to(x+3,\\ y-2)\\). They swapped \(x\) and \(y\) changes.`,
-        key:'A'
-      },
-      {
-        work:`Vector \\(\\langle -4, 1\\rangle\\). Student describes “right 4, up 1”.`,
-        correct:`Correct description: left 4, up 1. The sign on \(a\) controls left/right.`,
-        key:'B'
-      },
-      {
-        work:`Triangle \(A(1,2),B(4,2),C(2,5)\) by \\(\\langle 2,3\\rangle\\). Student only moves \(A\\).`,
-        correct:`Every point must move by the same vector. Translate \(A,B,C\).`,
-        key:'C'
-      }
+      {work:`Translate \(P(2,-1)\) by \\(\\langle 3,-2\\rangle\\). Student: \(P'(5,1)\).`, correct:`Correct: add 3 to x and add -2 to y: \(P'(2+3,\,-1-2)=(5,-3)\).`, key:'B'},
+      {work:`Translate by \\(\\langle -4,2\\rangle\\). Student writes rule \((x,y)\\to(x+4,y+2)\).`, correct:`Sign error for x: should be \(x-4\). Vector components keep their signs.`, key:'B'},
+      {work:`Triangle vertices A(0,0),B(2,0),C(0,3). Translate by \\(\\langle 1,2\\rangle\\). Student only moves A.`, correct:`Every vertex must be translated by the same vector: A', B', and C'.`, key:'C'}
     ];
     const med=[
-      {
-        work:`Given \(A(2,-1)\\to A'( -1, 3)\\). Student computes vector as \\(\\langle 2-(-1),\\ -1-3\\rangle=\\langle 3,-4\\rangle\\).`,
-        correct:`Use \(x'-x, y'-y\): \\(\\langle -1-2,\\ 3-(-1)\\rangle=\\langle -3,4\\rangle\\).`,
-        key:'D'
-      },
-      {
-        work:`Translate by \\(\\langle -2,-5\\rangle\\). Student rule: \\((x,y)\\to(x+2,\\ y-5)\\).`,
-        correct:`Both are negative: \\((x,y)\\to(x-2,\\ y-5)\\).`,
-        key:'B'
-      }
+      {work:`Vector \\(\\langle 2,-5\\rangle\\). Student adds 2 to y and -5 to x.`, correct:`Mixed x and y: first component affects x, second affects y.`, key:'A'},
+      {work:`Student treats \\(\\langle 3,-2\\rangle\\) as the point \\((3,-2)\\) and “plots it” as the image.`, correct:`A vector is a change, not the destination point. Add it to the original point(s).`, key:'D'}
     ];
     const hard=[
-      {
-        work:`Vector from \(P(-3,7)\\) to \(P'(2,1)\\). Student gives \\(\\langle -5,6\\rangle\\).`,
-        correct:`Compute: \\(\\langle 2-(-3),\\ 1-7\\rangle=\\langle 5,-6\\rangle\\).`,
-        key:'D'
-      },
-      {
-        work:`Translate quadrilateral: student uses different vectors for different vertices.`,
-        correct:`A translation uses one fixed vector for all points.`,
-        key:'C'
-      }
+      {work:`Square vertices translated, but one vertex moved by a different vector than the others.`, correct:`That breaks rigidity: all points must move the same amount and direction.`, key:'C'},
+      {work:`Rule written as \((x,y)\\to(x-(-3),y+(-4))\) for \\(\\langle -3,-4\\rangle\\).`, correct:`Simplify signs: \(x+(-3)=x-3\) and \(y+(-4)=y-4\). Be careful with negatives.`, key:'B'}
     ];
     return level==='easy'?easy:level==='med'?med:hard;
   }
   const errState={item:null};
+
   function errNew(){
     const bank=errBank(id('errLevel').value);
     errState.item=choice(bank);
@@ -1060,51 +1207,53 @@
     downloadJSON(`${deckTitle}_error_analysis.json`, {incorrect:id('errBox').innerText.trim(), correct:errState.item.correct, key:errState.item.key, user: sel?sel.value:''});
   });
 
-  /* -------------------- Slide 10: Mixed generator -------------------- */
+  /* -------------------- Slide 11: Mixed generator -------------------- */
   const mixState={cur:null};
   function mixNew(){
     const lvl=id('mixLevel').value;
-    const mode = choice(['point','vector','rule','point','vector']);
-    if(mode==='point'){
-      const v = lvl==='easy' ? [choice([1,2,3,4]), choice([1,2,3,4])]
-              : lvl==='med'  ? [rand(-5,5)||-2, rand(-5,5)||3]
-              : [rand(-8,8)||5, rand(-8,8)||-6];
-      const P=[rand(-8,8), rand(-8,8)];
-      const P1=[P[0]+v[0], P[1]+v[1]];
-      mixState.cur={mode, v, P, key:fmtPt(P1)};
-      id('mixQ').innerHTML = `Translate \(P${fmtPt(P)}\) by \( ${fmtVec(v)} \). Find \(P'\).`;
-    } else if(mode==='vector'){
-      const v = lvl==='easy' ? [choice([1,2,3,4]), choice([1,2,3,4])]
-              : lvl==='med'  ? [rand(-5,5)||-2, rand(-5,5)||3]
-              : [rand(-8,8)||5, rand(-8,8)||-6];
-      const A=[rand(-8,8), rand(-8,8)];
-      const A1=[A[0]+v[0], A[1]+v[1]];
-      mixState.cur={mode, A, A1, key:JSON.stringify(v)};
-      id('mixQ').innerHTML = `Given \(A${fmtPt(A)}\to A'${fmtPt(A1)}\). Find the vector \(\\langle a,b\\rangle\).`;
+    const t=rand(0,4);
+    if(t===0){
+      const p=pickPt(lvl==='easy'?'easy':lvl==='med'?'med':'hard');
+      const v=pickVec(lvl==='easy'?'easy':lvl==='med'?'med':'hard');
+      mixState.cur={type:'pt', p,v, ans:addVec(p,v)};
+      id('mixQ').innerHTML = `Translate \(P${fmtCoord(p)}\) by ${fmtVec(v)}. Give \(P'\).`;
+      id('mixHintBox').textContent='';
+    } else if(t===1){
+      const v=pickVec(lvl==='easy'?'easy':lvl==='med'?'med':'hard');
+      mixState.cur={type:'rule', v};
+      id('mixQ').innerHTML = `Write the rule for translation by ${fmtVec(v)}.`;
+      id('mixHintBox').textContent='';
+    } else if(t===2){
+      const p=pickPt('med'); const v1=pickVec('med'); const v2=pickVec('med');
+      const v=[v1[0]+v2[0], v1[1]+v2[1]];
+      mixState.cur={type:'vec', v};
+      id('mixQ').innerHTML = `Combine translations ${fmtVec(v1)} and ${fmtVec(v2)}. Give the single vector.`;
+      id('mixHintBox').textContent='';
+    } else if(t===3){
+      const p=pickPt('med'); const v=pickVec('med'); const ans=addVec(p,v);
+      mixState.cur={type:'findvec', p, ans, v};
+      id('mixQ').innerHTML = `Point \(P${fmtCoord(p)}\) maps to \(P'${fmtCoord(ans)}\). Find the vector.`;
+      id('mixHintBox').textContent='';
     } else {
-      // ask for rule
-      const v = lvl==='easy' ? [choice([2,3,4]), choice([1,2,3])]
-              : lvl==='med'  ? [rand(-5,5)||-3, rand(-5,5)||2]
-              : [rand(-8,8)||6, rand(-8,8)||-4];
-      mixState.cur={mode, v, key:`(x,y)->(x+${v[0]},y+${v[1]})`};
-      id('mixQ').innerHTML = `Write the coordinate rule for translation by \( ${fmtVec(v)} \).`;
+      const cur=pickViz(lvl);
+      mixState.cur={type:'viz', v:cur.v};
+      id('mixQ').innerHTML = `In words: move right/left and up/down for vector ${fmtVec(cur.v)}. Type the vector &lt;a,b&gt;.`;
+      id('mixHintBox').textContent='';
     }
-
-    id('mixAns').value='';
-    id('mixHintBox').textContent='';
-    id('mixFb').textContent='';
+    id('mixAns').value=''; id('mixFb').textContent='';
     renderMath(id('mixSlide'));
   }
   id('mixNew').addEventListener('click',mixNew); mixNew();
 
   id('mixHint').addEventListener('click',()=>{
     const cur=mixState.cur;
-    const msg = cur.mode==='point'
-      ? 'Add \(a\) to the x-coordinate and add \(b\) to the y-coordinate.'
-      : cur.mode==='vector'
-      ? 'Compute \(\\langle x'-x,\\ y'-y\\rangle\\).'
-      : 'Use: \((x,y)\\to(x+a,\\ y+b)\).';
-    id('mixHintBox').innerHTML = `<div class="hint">${msg}</div>`;
+    const msg =
+      cur.type==='pt' ? 'Add a to x and add b to y.' :
+      cur.type==='rule' ? 'Rule is (x,y) → (x+a, y+b).' :
+      cur.type==='vec' ? 'Add vectors component-wise: <a1+a2, b1+b2>.' :
+      cur.type==='findvec' ? 'Vector is <x′−x, y′−y>.' :
+      'Remember: <a,b> means x changes by a, y changes by b.';
+    id('mixHintBox').innerHTML=`<div class="hint">${msg}</div>`;
     renderMath(id('mixSlide'));
   });
 
@@ -1113,46 +1262,38 @@
     const user=id('mixAns').value;
 
     let ok=false;
-    if(cur.mode==='point'){
-      const got=parsePair(user), want=parsePair(cur.key);
-      ok = !!(got && want && approxEq(got[0],want[0]) && approxEq(got[1],want[1]));
-    } else if(cur.mode==='vector'){
-      const got=parsePair(user), want=JSON.parse(cur.key);
+    if(cur.type==='pt'){
+      const got=parseCoord(user);
+      ok = !!(got && approxEq(got[0],cur.ans[0]) && approxEq(got[1],cur.ans[1]));
+    } else if(cur.type==='rule'){
+      const got=parseRule(user);
+      ok = !!(got && approxEq(got[0],cur.v[0]) && approxEq(got[1],cur.v[1]));
+    } else if(cur.type==='vec' || cur.type==='findvec' || cur.type==='viz'){
+      const got=parseVectorInline(user);
+      const want = cur.type==='findvec' ? [cur.ans[0]-cur.p[0], cur.ans[1]-cur.p[1]] : cur.v;
       ok = !!(got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]));
-    } else {
-      // rule mode: accept many equivalents by extracting numbers
-      const v=cur.v;
-      const s=String(user).replace(/\s+/g,'').replace(/−/g,'-');
-      const good1 = s.includes(`x+${v[0]}`) || (v[0]<0 && s.includes(`x${v[0]}`));
-      const good2 = s.includes(`y+${v[1]}`) || (v[1]<0 && s.includes(`y${v[1]}`));
-      ok = good1 && good2 && (s.includes('->') || s.includes('→') || s.includes('to') || s.includes('to(') || s.includes(')(') || s.includes('('));
     }
 
     if(ok){
-      id('mixFb').textContent = '✅ Correct!';
+      id('mixFb').textContent='✅ Correct!';
       id('mixFb').className='mt-2 h-6 font-semibold text-green-700';
       confetti();
     } else {
-      id('mixFb').textContent = '❌ Not quite. Check signs and which coordinate changes.';
+      id('mixFb').textContent='❌ Not quite. Check components and signs.';
       id('mixFb').className='mt-2 h-6 font-semibold text-red-700';
     }
   });
 
   id('mixExportCSV').addEventListener('click',()=>{
-    downloadCSV(`${deckTitle}_mixed_current.csv`, [['task','correct','user'], [id('mixQ').textContent, curCorrectString(), id('mixAns').value||'']]);
+    downloadCSV(`${deckTitle}_mixed_current.csv`, [['task','user'], [id('mixQ').textContent, id('mixAns').value||'']]);
   });
   id('mixExportJSON').addEventListener('click',()=>{
-    downloadJSON(`${deckTitle}_mixed_current.json`, {task:id('mixQ').textContent, correct:curCorrectString(), user:id('mixAns').value||''});
+    downloadJSON(`${deckTitle}_mixed_current.json`, {task:id('mixQ').textContent, user:id('mixAns').value||''});
   });
-  function curCorrectString(){
-    const cur=mixState.cur;
-    if(cur.mode==='point') return cur.key;
-    if(cur.mode==='vector') return fmtVec(JSON.parse(cur.key));
-    return cur.key;
-  }
 
-  /* -------------------- Init shell -------------------- */
+  /* -------------------- Init slideshow -------------------- */
   show(0);
+
 })();
 </script>
 </body>
