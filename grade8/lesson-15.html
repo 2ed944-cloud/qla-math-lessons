@@ -1,279 +1,574 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Grade 8 Transformations — Lesson 1: Translations</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Grade 8 — Transformations (Reflections) — Interactive</title>
   <style>
     :root{
       --bg:#0b1020; --card:#111a33; --ink:#eaf0ff; --muted:#b9c5ff;
       --accent:#ffd166; --accent2:#7bdff2; --good:#4ade80; --bad:#fb7185;
-      --shadow: 0 10px 30px rgba(0,0,0,.35); --radius: 18px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --shadow:0 10px 30px rgba(0,0,0,.35); --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:var(--sans);background:radial-gradient(1200px 800px at 20% 10%, #162457 0%, var(--bg) 55%);color:var(--ink);line-height:1.45;}
-    header{padding:26px 18px 10px;max-width:1060px;margin:0 auto;}
-    .topbar{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;padding:18px;background:linear-gradient(135deg, rgba(255,209,102,.16), rgba(123,223,242,.10));border:1px solid rgba(255,255,255,.10);border-radius:var(--radius);box-shadow:var(--shadow);}
-    .title h1{margin:0;font-size:1.15rem;letter-spacing:.2px;}
-    .title p{margin:6px 0 0;color:var(--muted);font-size:.95rem;}
-    .meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:.92rem;}
-    .pill{border:1px solid rgba(255,255,255,.14);background:rgba(17,26,51,.65);padding:8px 10px;border-radius:999px;}
-    main{max-width:1060px;margin:10px auto 70px;padding:0 18px;}
-    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;}
-    @media (max-width:940px){.grid{grid-template-columns:1fr;}}
-    .card{background:rgba(17,26,51,.78);border:1px solid rgba(255,255,255,.10);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;}
-    h2{margin:0 0 10px;font-size:1.1rem}
-    h3{margin:14px 0 8px;font-size:1rem}
+    body{margin:0;font-family:var(--sans);color:var(--ink);
+      background: radial-gradient(1200px 800px at 20% 10%, #162457 0%, var(--bg) 55%);}
+    header{max-width:1200px;margin:0 auto;padding:22px 16px 10px;}
+    .topbar{
+      background: linear-gradient(135deg, rgba(255,209,102,.16), rgba(123,223,242,.10));
+      border:1px solid rgba(255,255,255,.10); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding:16px;
+      display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
+    }
+    h1{margin:0;font-size:1.1rem}
+    .sub{margin:6px 0 0;color:var(--muted);font-size:.95rem}
+    .pill{border:1px solid rgba(255,255,255,.14);background: rgba(17,26,51,.65);
+      padding:8px 10px; border-radius:999px; color:var(--muted); font-size:.92rem;}
+    main{max-width:1200px;margin:10px auto 50px;padding:0 16px;}
+    .layout{display:grid;grid-template-columns: 290px 1fr; gap:14px;}
+    @media (max-width: 980px){ .layout{grid-template-columns:1fr;} }
+    .card{
+      background: rgba(17,26,51,.78);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:14px;
+    }
+    .sideTop{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .sideTop h2{margin:0;font-size:1rem}
+    .list{margin-top:10px;display:grid; grid-template-columns: repeat(6, 1fr); gap:8px;}
+    .qbtn{
+      cursor:pointer;border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.20);color: var(--ink);
+      padding:10px 0;border-radius: 12px;text-align:center;font-weight:700;font-family:var(--mono);
+    }
+    .qbtn.active{background: rgba(123,223,242,.18); border-color: rgba(123,223,242,.35);}
+    .qbtn.done{outline: 2px solid rgba(74,222,128,.30);}
+    .hint{margin-top:10px;color:var(--muted);font-size:.9rem;line-height:1.35}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;}
+    .titleLine{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    .tag{
+      font-family:var(--mono); font-size:.9rem; color:var(--muted);
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:999px; padding:6px 10px; background: rgba(0,0,0,.16);
+    }
+    .controls{display:flex; gap:8px; flex-wrap:wrap;}
+    button{
+      cursor:pointer;border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,209,102,.14); color: var(--ink);
+      padding: 10px 12px; border-radius: 12px; font-weight: 700;
+    }
+    button.secondary{background: rgba(123,223,242,.12);}
+    button.ghost{background: rgba(0,0,0,.18);}
+    .questionBox{margin-top:12px;border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:12px;background: rgba(0,0,0,.16);}
+    .qtext{font-family:var(--mono); font-size:1rem;}
     .muted{color:var(--muted)}
-    ul{margin:8px 0 0 18px;}
-    li{margin:6px 0}
-    .rule{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
-    .chip{display:inline-flex;align-items:center;gap:8px;border:1px dashed rgba(255,255,255,.18);padding:8px 10px;border-radius:999px;background:rgba(0,0,0,.18);color:var(--muted);font-size:.92rem;}
-    code.kbd{font-family:var(--mono);font-size:.92rem;padding:2px 6px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.22);color:var(--ink);}
-    .example{border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);padding:12px;border-radius:14px;margin-top:10px;}
-    .math{font-family:var(--mono);font-size:1.02rem;letter-spacing:.2px;white-space:nowrap;}
-    .steps{margin:8px 0 0 0;padding-left:18px;color:var(--muted)}
-    .steps li{margin:6px 0}
-    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    button{cursor:pointer;border:1px solid rgba(255,255,255,.14);background:rgba(255,209,102,.14);color:var(--ink);padding:10px 12px;border-radius:12px;font-weight:600;}
-    button.secondary{background:rgba(123,223,242,.12);}
-    button.ghost{background:rgba(0,0,0,.18);}
-    button:active{transform:translateY(1px)}
-    .practice-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px;}
-    .score{color:var(--muted);font-size:.95rem;}
-    .section{margin-top:14px;border-top:1px solid rgba(255,255,255,.10);padding-top:12px;}
-    details{border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:10px 12px;background:rgba(0,0,0,.16);margin:10px 0;}
-    summary{cursor:pointer;font-weight:700;color:var(--ink);list-style:none;}
-    summary::-webkit-details-marker{display:none}
-    .q{display:grid;grid-template-columns:60px 1fr 220px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07);}
-    @media (max-width:720px){.q{grid-template-columns:60px 1fr;}.q .ans{grid-column:1 / -1;}}
-    .q:last-child{border-bottom:none}
-    .num{color:var(--accent2);font-weight:800;font-family:var(--mono);}
-    .expr{font-family:var(--mono);font-size:1.02rem;}
-    input{width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(17,26,51,.55);color:var(--ink);font-family:var(--mono);font-size:.98rem;outline:none;}
-    input::placeholder{color:rgba(185,197,255,.55)}
-    .mark{display:inline-block;min-width:18px;text-align:center;margin-left:8px;font-weight:900;}
-    .ok{color:var(--good)} .no{color:var(--bad)}
-    .note{border-left:4px solid rgba(255,209,102,.55);padding:10px 12px;background:rgba(255,209,102,.08);border-radius:12px;margin-top:10px;color:var(--muted);}
-    .tiny{font-size:.9rem}
+    .small{font-size:.9rem}
+    .gridWrap{margin-top:12px;display:grid;grid-template-columns: 1fr 340px;gap:12px;}
+    @media (max-width: 980px){ .gridWrap{grid-template-columns:1fr;} }
+    .panel{border:1px solid rgba(255,255,255,.10);border-radius: 14px;background: rgba(0,0,0,.16);padding:12px;}
+    .panel h3{margin:0 0 8px; font-size:1rem;}
+    textarea{
+      width:100%; min-height: 120px; resize: vertical;
+      border-radius: 12px;border:1px solid rgba(255,255,255,.14);
+      background: rgba(17,26,51,.55);color: var(--ink);
+      font-family: var(--mono);padding:10px;outline:none;
+    }
+    .statusLine{margin-top:10px;font-family:var(--mono);font-size:.92rem;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    .ok{color:var(--good);font-weight:900;}
+    .no{color:var(--bad);font-weight:900;}
+    .note{
+      border-left:4px solid rgba(255,209,102,.55);
+      padding:10px 12px;background: rgba(255,209,102,.08);
+      border-radius: 12px;color: var(--muted);margin-top:12px;font-size:.92rem;line-height:1.35;
+    }
+    .svgShell{width:100%;overflow:hidden;border-radius: 14px;border: 1px solid rgba(255,255,255,.10);background: rgba(7,10,20,.65);}
+    .legend{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:8px;color: var(--muted); font-size:.9rem;}
+    .dot{width:12px; height:12px; border-radius:999px; display:inline-block;}
   </style>
 </head>
-
 <body>
 <header>
   <div class="topbar">
-    <div class="title">
-      <h1>Grade 8 — Transformations</h1>
-      <p>Worksheet 1: Translations (Sliding a Figure)</p>
+    <div>
+      <h1>Grade 8 — Transformations — Reflections (Interactive, No Photos)</h1>
+      <div class="sub">Blue = original. Drag red points to the reflected position (snap-to-grid).</div>
     </div>
-    <div class="meta">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <span class="pill">Name: <span contenteditable="true" style="outline:none">__________</span></span>
       <span class="pill">Date: <span contenteditable="true" style="outline:none">__________</span></span>
-      <span class="pill">Class/Period: <span contenteditable="true" style="outline:none">__________</span></span>
+      <span class="pill">Class: <span contenteditable="true" style="outline:none">__________</span></span>
     </div>
   </div>
 </header>
 
 <main>
-  <div class="grid">
-
-    <section class="card">
-      <h2>Key Concepts</h2>
-      <ul>
-        <li>A <b>translation</b> is a slide. Every point moves the same amount horizontally and vertically.</li>
-        <li>Rule form: if you move <span class="math">a</span> horizontally and <span class="math">b</span> vertically, then <span class="math">(x, y) → (x + a, y + b)</span>.</li>
-        <li>Right/up are positive; left/down are negative.</li>
-        <li>Translations preserve size and shape (lengths, angles, area stay the same).</li>
-        <li>Two translations combine by adding the horizontal changes and adding the vertical changes.</li>
-      </ul>
-
-      <div class="rule">
-        <span class="chip">Rule: <code class="kbd">(x,y)→(x+a,y+b)</code></span>
-        <span class="chip">Right/Up = +</span>
-        <span class="chip">Left/Down = −</span>
-      </div>
-
-      <h3>Worked Examples</h3>
-      <div class="example">
-        <div class="math"><b>Example A:</b> Translate A(−3, 4) right 5 and down 2</div>
-        <ol class="steps">
-          <li><span class="math">x′ = −3 + 5 = 2</span></li>
-          <li><span class="math">y′ = 4 − 2 = 2</span></li>
-          <li>So <span class="math">A′(2, 2)</span></li>
-        </ol>
-      </div>
-
-      <div class="example">
-        <div class="math"><b>Example B:</b> Rule (x, y) → (x − 6, y + 2)</div>
-        <ol class="steps">
-          <li>“−6” means 6 left; “+2” means 2 up.</li>
-        </ol>
-      </div>
-
-      <div class="btnrow">
-        <button class="secondary" onclick="openAll()">Open all practice</button>
-        <button class="ghost" onclick="closeAll()">Close all practice</button>
-      </div>
-
-      <div class="note tiny">
-        Tip: Always compute the translation vector (Δx, Δy). If every point uses the same (Δx, Δy), it’s a translation.
-      </div>
-    </section>
-
+  <div class="layout">
     <aside class="card">
-      <div class="practice-head">
-        <h2 style="margin:0">Practice</h2>
-        <div class="score" id="scoreBox">Score: 0 / 30</div>
+      <div class="sideTop">
+        <h2>Questions</h2>
+        <button class="ghost" onclick="resetAll()">Reset all</button>
       </div>
-
-      <p class="muted tiny" style="margin-top:0">
-        Enter answers like <span class="math">(2,2)</span>, or for word answers: <span class="math">right 5, down 2</span>.
-        Spaces/case don’t matter.
-      </p>
-
-      <div class="btnrow" style="margin-top:10px">
-        <button onclick="checkAll()">Check all</button>
-        <button class="secondary" onclick="revealAll()">Reveal</button>
-        <button class="ghost" onclick="resetAll()">Reset</button>
+      <div class="list" id="qList"></div>
+      <div class="hint">
+        <b>Reflection reminders:</b><br/>
+        • x-axis: (x,y)→(x,−y)<br/>
+        • y-axis: (x,y)→(−x,y)<br/>
+        • y=x: (x,y)→(y,x)<br/>
+        • x=a: x′=2a−x<br/>
+        • y=b: y′=2b−y
       </div>
-
-      <details open class="section"><summary>Level 1 — Foundations (1–10)</summary><div id="sec1"></div></details>
-      <details class="section"><summary>Level 2 — Skills (11–20)</summary><div id="sec2"></div></details>
-      <details class="section"><summary>Level 3 — Challenge (21–30)</summary><div id="sec3"></div></details>
     </aside>
 
+    <section class="card">
+      <div class="row">
+        <div class="titleLine">
+          <div class="tag" id="qTag">#1</div>
+          <div class="tag" id="qTypeTag">Reflection (drag on graph)</div>
+          <div class="tag" id="qRuleTag">Rule: —</div>
+        </div>
+        <div class="controls">
+          <button class="ghost" onclick="prevQ()">Prev</button>
+          <button class="ghost" onclick="nextQ()">Next</button>
+          <button onclick="checkQ()">Check</button>
+          <button class="secondary" onclick="showAnswer()">Show answer</button>
+        </div>
+      </div>
+
+      <div class="questionBox">
+        <div class="qtext" id="qText"></div>
+        <div class="muted small" id="qHelp" style="margin-top:8px"></div>
+      </div>
+
+      <div class="gridWrap">
+        <div class="panel">
+          <h3>Graph</h3>
+          <div class="svgShell">
+            <svg id="svg" viewBox="0 0 720 520" width="100%" height="520"></svg>
+          </div>
+          <div class="legend">
+            <span class="dot" style="background:#7bdff2"></span> Original (blue)
+            <span class="dot" style="background:#fb7185"></span> Image (red, draggable)
+            <span class="dot" style="background:#ffd166"></span> Mirror line
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Answers / Notes</h3>
+          <textarea id="notes" placeholder="Write your answers or working here…"></textarea>
+          <div class="statusLine" id="statusLine">Status: <span class="muted">Not checked yet.</span></div>
+
+          <div class="note">
+            A reflection keeps distance to the mirror line the same, but flips to the other side.
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </main>
 
 <script>
-  // From the uploaded worksheet (Worksheet 1: Translations), problems 1–30.
-  const KEY = [
-    {n:1, expr:"A(−3,4) right 5, down 2 → A′", ans:["(2,2)"]},
-    {n:2, expr:"B(2,−5) left 7, up 3 → B′", ans:["(-5,-2)"]},
-    {n:3, expr:"P(−1,2),Q(4,1),R(0,−3) left 2, up 6 → P′,Q′,R′", ans:["p'(-3,8),q'(2,7),r'(-2,3)","(-3,8),(2,7),(-2,3)"]},
-    {n:4, expr:"Move 4 right, 6 up: (a) rule (b) T(−2,3) → T′", ans:["(x,y)->(x+4,y+6);(2,9)","(2,9)"]},
-    {n:5, expr:"A(−5,−1),B(−2,3),C(1,0) right 3, down 4 → A′,B′,C′", ans:["(-2,-5),(1,-1),(4,-4)"]},
-    {n:6, expr:"J(−6,4),K(−2,4),L(−2,1),M(−6,1) left 5, down 2 → J′K′L′M′", ans:["(-11,2),(-7,2),(-7,-1),(-11,-1)"]},
-    {n:7, expr:"(Diagram) Slide 4 left, 1 up: list new coordinates", ans:["varies","answers vary"]},
-    {n:8, expr:"A(1,−2) → A′(6,4). Describe move", ans:["right 5, up 6","5 right, 6 up"]},
-    {n:9, expr:"M(−5,0): + (right2,down1) then (right4,up3). Final? Net move?", ans:["(1,2);right 6, up 2","(1,2);(6,2)"]},
-    {n:10, expr:"Is mapping a translation? P(−1,3)->(2,8) and Q(4,−2)->(7,3)", ans:["yes;right 3, up 5","yes"]},
+/* ---------- Question Bank (Reflections) ----------
+   Types:
+   - "dragPoints": reflect given points/shape using rule; student drags red image points.
+   - "word": written response checked by keywords
+   - "varies": open tasks
 
-    {n:11, expr:"W(−6,2) to origin: move? and W′X′Y′Z′", ans:["right 6, down 2;(0,0),(4,0),(5,-3),(1,-3)","(0,0),(4,0),(5,-3),(1,-3)"]},
-    {n:12, expr:"N(3,−6) up to x-axis: N′? moved how many?", ans:["(3,0);6","(3,0),6"]},
-    {n:13, expr:"Rule (x,y)->(x−6,y+2): describe + image of P(5,−1)", ans:["left 6, up 2;(-1,1)","(-1,1)"]},
-    {n:14, expr:"A(−4,0) → A′(2,−1): find B′,C′ for B(−1,5), C(2,1)", ans:["(5,4),(8,0)","b'(5,4),c'(8,0)"]},
-    {n:15, expr:"A(−4,−4)->A′(1,0), B(2,−1)->B′(7,3): describe move", ans:["right 5, up 4","(5,4)"]},
-    {n:16, expr:"Robot R(−3,2) moves 6 east, 5 south. New location", ans:["(3,-3)"]},
-    {n:17, expr:"Smallest translation to move triangle P(−6,−2),Q(−4,1),R(−2,−3) into Quadrant I", ans:["right 7, up 4;(1,2),(3,5),(5,1)","(1,2),(3,5),(5,1)"]},
-    {n:18, expr:"Move 3 left, 5 down sends M to M′(2,−1). Find M", ans:["(5,4)"]},
-    {n:19, expr:"S(−7,6) + (right8,down10) then (left3,up4). Final? Net move?", ans:["(-2,0);right 5, down 6","(-2,0);(5,-6)"]},
-    {n:20, expr:"Error check: (−2,7) left 5 gives (3,7). Correct?", ans:["no;(-7,7)","(-7,7)"]},
+   You can edit any point set to match your exact worksheet.
+*/
+const QUESTIONS = [
+  {n:1,type:"dragPoints", text:"Reflect A(−3,4) across the x-axis. Place A′.", rule:{kind:"xAxis"}, points:{A:[-3,4]}},
+  {n:2,type:"dragPoints", text:"Reflect B(5,−2) across the y-axis. Place B′.", rule:{kind:"yAxis"}, points:{B:[5,-2]}},
+  {n:3,type:"dragPoints", text:"Reflect C(−4,−1) across the origin. Place C′.", rule:{kind:"origin"}, points:{C:[-4,-1]}},
+  {n:4,type:"dragPoints", text:"Reflect D(2,7) across the line y=x. Place D′.", rule:{kind:"yEqX"}, points:{D:[2,7]}},
+  {n:5,type:"dragPoints", text:"Reflect E(−6,1) across the line y=−x. Place E′.", rule:{kind:"yEqNegX"}, points:{E:[-6,1]}},
+  {n:6,type:"dragPoints", text:"Reflect P(6,−5) across the vertical line x=−3. Place P′.", rule:{kind:"xEqA", a:-3}, points:{P:[6,-5]}},
+  {n:7,type:"dragPoints", text:"Reflect Q(−2,6) across the horizontal line y=2. Place Q′.", rule:{kind:"yEqB", b:2}, points:{Q:[-2,6]}},
+  {n:8,type:"dragPoints", text:"Reflect triangle A(−4,1), B(−1,4), C(2,1) across x-axis. Place A′B′C′.", rule:{kind:"xAxis"},
+    points:{A:[-4,1],B:[-1,4],C:[2,1]}},
+  {n:9,type:"dragPoints", text:"Reflect rectangle J(−5,5), K(−1,5), L(−1,3), M(−5,3) across y-axis. Place J′K′L′M′.", rule:{kind:"yAxis"},
+    points:{J:[-5,5],K:[-1,5],L:[-1,3],M:[-5,3]}},
+  {n:10,type:"dragPoints", text:"Reflect R(−7,−1) across x=2. Place R′.", rule:{kind:"xEqA", a:2}, points:{R:[-7,-1]}},
 
-    {n:21, expr:"A(−2,5)->(x,1) and B(4,−1)->(10,y) by same translation. Find x,y", ans:["4,3","x=4,y=3"]},
-    {n:22, expr:"A(x,4) right 3, up 2 becomes (7,6). Find x", ans:["4"]},
-    {n:23, expr:"Is this a translation? A(0,0)->(2,1), B(3,0)->(5,1), C(1,2)->(3,4)", ans:["no;c breaks","not;point c"]},
-    {n:24, expr:"Move (right5,down2) then unknown = net (left1,up6). Find unknown", ans:["left 6, up 8","(-6,8)"]},
-    {n:25, expr:"Can one translation send A(1,2)→B(5,6) and B→A? yes/no", ans:["no"]},
-    {n:26, expr:"Nonzero triangle translated lands exactly on itself. What translation?", ans:["zero translation","(0,0)"]},
-    {n:27, expr:"(Diagram) Describe translation from blue to red", ans:["varies"]},
-    {n:28, expr:"All translations moving P(3,−2) onto y-axis", ans:["move left 3 and any vertical move","dx=-3"]},
-    {n:29, expr:"All translations moving Q(−6,5) onto line y=4", ans:["move down 1 and any horizontal move","dy=-1"]},
-    {n:30, expr:"Create your own triangle then translate 4 left, 3 up", ans:["varies"]}
-  ];
+  {n:11,type:"dragPoints", text:"Reflect A(−5,5), B(−2,6), C(−1,3) across y=2. Place A′B′C′.", rule:{kind:"yEqB", b:2},
+    points:{A:[-5,5],B:[-2,6],C:[-1,3]}},
+  {n:12,type:"varies", text:"(Diagram) Reflect the shape across x=1. Use the graph to draw and label new coordinates.", rule:{kind:"xEqA", a:1},
+    points:{A:[-1,3],B:[0,5],C:[2,4],D:[1,2]}},
+  {n:13,type:"word", text:"A(−4,1) reflects to (4,1) and B(−1,−3) reflects to (1,−3). What is the line of reflection?",
+    expectKeywords:["x=0"], helper:"It’s the y-axis, x = 0."},
+  {n:14,type:"word", text:"A(2,3)→(2,−5) and B(−4,0)→(−4,−2). Is this a reflection? If yes, what line?",
+    expectKeywords:["y=-1","yes"], helper:"Both are symmetric about y = −1."},
+  {n:15,type:"dragPoints", text:"Reflect P(2,1), Q(5,3), R(3,6) across y=x. Place P′Q′R′.", rule:{kind:"yEqX"},
+    points:{P:[2,1],Q:[5,3],R:[3,6]}},
 
-  const norm = s => (s ?? "")
-    .toLowerCase()
-    .replaceAll("−","-")
-    .replaceAll(" ", "")
-    .replaceAll("\t","")
-    .replaceAll("\n","");
+  {n:16,type:"word", text:"Transformation T(x,y)=(4−x, y). Is it a reflection? If yes, give mirror line.",
+    expectKeywords:["yes","x=2"], helper:"x′=4−x means reflection across x=2."},
 
-  function okMatch(user, answers){
-    const u = norm(user);
-    if(!u) return false;
-    return answers.some(a => {
-      const na = norm(a);
-      if(na==="varies" || na==="answersvary") return true; // teacher-created / diagram tasks
-      // allow just "(x,y)" if key includes extra text:
-      return na===u;
-    });
+  {n:17,type:"dragPoints", text:"Reflect S(7,−1) across y=−3. Place S′.", rule:{kind:"yEqB", b:-3}, points:{S:[7,-1]}},
+  {n:18,type:"word", text:"P(1,5) reflects to P′(7,5). Find the line of reflection.",
+    expectKeywords:["x=4"], helper:"Midpoint x is 4, so mirror line is x=4."},
+
+  {n:19,type:"dragPoints", text:"Reflect segment A(−6,2), B(−2,6) across y-axis. Place A′B′.", rule:{kind:"yAxis"},
+    points:{A:[-6,2],B:[-2,6]}},
+
+  {n:20,type:"word", text:"Reflect across x-axis then across y-axis. Give the combined single transformation.",
+    expectKeywords:["(-x,-y)","origin"], helper:"It’s equivalent to a 180° rotation about origin: (x,y)→(−x,−y)."},
+
+  {n:21,type:"word", text:"Which points stay fixed under reflection across y=2?",
+    expectKeywords:["y=2"], helper:"Exactly the points on the mirror line y=2."},
+
+  {n:22,type:"word", text:"Reflect across x=−1 then across x=3. What single transformation results?",
+    expectKeywords:["right8","translation"], helper:"Two parallel reflections give a translation: 8 units to the right."},
+
+  {n:23,type:"word", text:"A(1,4)→(5,4) and B(2,−1)→(6,−1). Find the mirror line.",
+    expectKeywords:["x=3"], helper:"Midpoint x is 3 → x=3."},
+
+  {n:24,type:"word", text:"Reflect across y=x then across y-axis. What equivalent transformation is this?",
+    expectKeywords:["90","clockwise"], helper:"Equivalent to a 90° clockwise rotation about origin."},
+
+  {n:25,type:"word", text:"Q(−2,6) reflects to (4,0). Find the mirror line (equation).",
+    expectKeywords:["y=-x+4"], helper:"Midpoint is (1,3) and slope of Q→Q′ is −1, so mirror line slope is +1? Actually mirror line is y=−x+4."},
+
+  {n:26,type:"dragPoints", text:"Reflect P(4,−2) across the line y=x+2. Place P′ (use drag).", rule:{kind:"yEqXPlusC", c:2}, points:{P:[4,-2]}},
+
+  {n:27,type:"word", text:"A(0,3)→(0,−1) and B(5,3)→(5,−1). Is it a reflection? If yes, which line?",
+    expectKeywords:["yes","y=1"], helper:"Midpoint y is 1 → y=1."},
+
+  {n:28,type:"varies", text:"(Diagram) Decide if the red figure is a reflection of the blue. If yes, state the mirror line; if not, explain.",
+    rule:{kind:"xAxis"}, points:{A:[-2,2],B:[2,2],C:[2,0],D:[-2,0]}},
+
+  {n:29,type:"word", text:"Why can two different points not reflect to the same image point?",
+    expectKeywords:["one-to-one","injective","unique"], helper:"A reflection is one-to-one: each point has exactly one image."},
+
+  {n:30,type:"varies", text:"Create your own shape and reflect across the y-axis. Record original and image coordinates.", rule:{kind:"yAxis"},
+    points:{A:[-1,1],B:[-3,2],C:[-2,-1]}}
+];
+
+/* ---------- SVG graph engine ---------- */
+const svg = document.getElementById("svg");
+const qList = document.getElementById("qList");
+const qText = document.getElementById("qText");
+const qHelp = document.getElementById("qHelp");
+const qTag = document.getElementById("qTag");
+const qTypeTag = document.getElementById("qTypeTag");
+const qRuleTag = document.getElementById("qRuleTag");
+const notes = document.getElementById("notes");
+const statusLine = document.getElementById("statusLine");
+
+let current = 1;
+let dragState = null;
+
+const GRID = { xmin:-12, xmax:12, ymin:-8, ymax:8, w:720, h:520, pad:40 };
+
+function xToSvg(x){ const {xmin,xmax,w,pad}=GRID; const innerW=w-2*pad; return pad+(x-xmin)*innerW/(xmax-xmin); }
+function yToSvg(y){ const {ymin,ymax,h,pad}=GRID; const innerH=h-2*pad; return pad+(ymax-y)*innerH/(ymax-ymin); }
+function svgToX(px){ const {xmin,xmax,w,pad}=GRID; const innerW=w-2*pad; return xmin+(px-pad)*(xmax-xmin)/innerW; }
+function svgToY(py){ const {ymin,ymax,h,pad}=GRID; const innerH=h-2*pad; return ymax-(py-pad)*(ymax-ymin)/innerH; }
+function snapInt(v){ return Math.round(v); }
+
+function clearSvg(){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+function el(name, attrs={}){ const e=document.createElementNS("http://www.w3.org/2000/svg", name); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+function drawGrid(){
+  const {xmin,xmax,ymin,ymax,w,h,pad}=GRID;
+  svg.appendChild(el("rect",{x:0,y:0,width:w,height:h,fill:"transparent"}));
+  for(let x=xmin;x<=xmax;x++){
+    const X=xToSvg(x);
+    svg.appendChild(el("line",{x1:X,y1:yToSvg(ymin),x2:X,y2:yToSvg(ymax),stroke:"rgba(255,255,255,.08)","stroke-width":(x===0?2:1)}));
+  }
+  for(let y=ymin;y<=ymax;y++){
+    const Y=yToSvg(y);
+    svg.appendChild(el("line",{x1:xToSvg(xmin),y1:Y,x2:xToSvg(xmax),y2:Y,stroke:"rgba(255,255,255,.08)","stroke-width":(y===0?2:1)}));
+  }
+  for(let x=xmin;x<=xmax;x++){
+    if(x===0) continue;
+    const t=el("text",{x:xToSvg(x),y:yToSvg(0)+18,fill:"rgba(185,197,255,.75)","font-size":"12","text-anchor":"middle","font-family":"var(--mono)"});
+    t.textContent=x; svg.appendChild(t);
+  }
+  for(let y=ymin;y<=ymax;y++){
+    if(y===0) continue;
+    const t=el("text",{x:xToSvg(0)-12,y:yToSvg(y)+4,fill:"rgba(185,197,255,.75)","font-size":"12","text-anchor":"end","font-family":"var(--mono)"});
+    t.textContent=y; svg.appendChild(t);
+  }
+}
+
+function pointCircle(name, pt, color, draggable=false){
+  const [x,y]=pt;
+  const g=el("g",{"data-name":name});
+  const c=el("circle",{cx:xToSvg(x),cy:yToSvg(y),r:7,fill:color,stroke:"rgba(255,255,255,.25)","stroke-width":1});
+  if(draggable){ c.style.cursor="grab"; c.addEventListener("pointerdown",(ev)=>startDrag(ev,name)); }
+  const label=el("text",{x:xToSvg(x)+10,y:yToSvg(y)-10,fill:"rgba(234,240,255,.95)","font-size":"13","font-family":"var(--mono)"});
+  label.textContent=name;
+  g.appendChild(c); g.appendChild(label);
+  return g;
+}
+function polylineFromPoints(pts, stroke, fill){
+  const d=pts.map(p=>`${xToSvg(p[0])},${yToSvg(p[1])}`).join(" ");
+  return el("polyline",{points:d,fill:fill??"none",stroke:stroke,"stroke-width":3,"stroke-linejoin":"round","stroke-linecap":"round",opacity:0.9});
+}
+
+function isPolygon(pointsObj){ return Object.keys(pointsObj).length>=3; }
+
+/* ---------- Reflection math ---------- */
+function reflectPoint([x,y], rule){
+  const k = rule.kind;
+  if(k==="xAxis") return [x, -y];
+  if(k==="yAxis") return [-x, y];
+  if(k==="origin") return [-x, -y];
+  if(k==="yEqX") return [y, x];
+  if(k==="yEqNegX") return [-y, -x];
+  if(k==="xEqA"){ const a=rule.a; return [2*a - x, y]; }
+  if(k==="yEqB"){ const b=rule.b; return [x, 2*b - y]; }
+  if(k==="yEqXPlusC"){
+    // reflect across y = x + c
+    // translate down by c: y1=y-c, reflect across y=x: swap, translate up by c
+    const c=rule.c;
+    const y1 = y - c;
+    const xr = y1;
+    const yr = x + c;
+    return [xr, yr];
+  }
+  // fallback
+  return [x,y];
+}
+
+function ruleLabel(rule){
+  const k=rule.kind;
+  if(k==="xAxis") return "across x-axis";
+  if(k==="yAxis") return "across y-axis";
+  if(k==="origin") return "across origin";
+  if(k==="yEqX") return "across y = x";
+  if(k==="yEqNegX") return "across y = −x";
+  if(k==="xEqA") return `across x = ${rule.a}`;
+  if(k==="yEqB") return `across y = ${rule.b}`;
+  if(k==="yEqXPlusC") return `across y = x + ${rule.c}`;
+  return "—";
+}
+
+function drawMirrorLine(rule){
+  // Draw mirror line in yellow (only for the most common ones)
+  const k=rule.kind;
+  const xmin=GRID.xmin, xmax=GRID.xmax, ymin=GRID.ymin, ymax=GRID.ymax;
+  let p1=null,p2=null;
+
+  if(k==="xAxis"){ p1=[xmin,0]; p2=[xmax,0]; }
+  else if(k==="yAxis"){ p1=[0,ymin]; p2=[0,ymax]; }
+  else if(k==="yEqX"){ p1=[xmin,xmin]; p2=[xmax,xmax]; }
+  else if(k==="yEqNegX"){ p1=[xmin,-xmin]; p2=[xmax,-xmax]; }
+  else if(k==="xEqA"){ p1=[rule.a,ymin]; p2=[rule.a,ymax]; }
+  else if(k==="yEqB"){ p1=[xmin,rule.b]; p2=[xmax,rule.b]; }
+  else if(k==="yEqXPlusC"){
+    // y=x+c within view
+    p1=[xmin, xmin+rule.c];
+    p2=[xmax, xmax+rule.c];
   }
 
-  function makeRow(q){
-    const id = "q" + q.n;
-    const row = document.createElement("div");
-    row.className = "q";
-    row.innerHTML = `
-      <div class="num">#${q.n}</div>
-      <div>
-        <div class="expr">${q.expr}</div>
-        <div class="muted tiny" id="${id}-reveal" style="display:none;margin-top:6px">
-          <b>Sample:</b> <span class="math">${q.ans[0]}</span>
-        </div>
-      </div>
-      <div class="ans">
-        <input id="${id}" placeholder="Type answer…" autocomplete="off" />
-        <span class="mark" id="${id}-mark"></span>
-      </div>`;
-    return row;
+  if(!p1||!p2) return;
+  svg.appendChild(el("line",{
+    x1:xToSvg(p1[0]), y1:yToSvg(p1[1]),
+    x2:xToSvg(p2[0]), y2:yToSvg(p2[1]),
+    stroke:"rgba(255,209,102,.95)", "stroke-width":4
+  }));
+}
+
+/* ---------- Build UI ---------- */
+function clearAndBuild(q){
+  clearSvg(); drawGrid();
+  qTag.textContent = `#${q.n}`;
+  qTypeTag.textContent = q.type==="dragPoints" ? "Reflection (drag on graph)" : (q.type==="word" ? "Reflection (written)" : "Teacher-created (open)");
+  qRuleTag.textContent = `Rule: ${ruleLabel(q.rule)}`;
+  qText.textContent = q.text;
+
+  if(q.type==="word"){
+    qHelp.innerHTML = `Type your answer in the <b>Answers / Notes</b> box. ${q.helper ? `<span class="muted">Hint: ${q.helper}</span>` : ""}`;
+  } else if(q.type==="varies"){
+    qHelp.innerHTML = `Open task — use the graph and notes. (No strict auto-check for this one.)`;
+  } else {
+    qHelp.innerHTML = `Drag the <b>red</b> points to the reflected location. Snap-to-grid is on.`;
   }
 
-  function render(){
-    const s1=document.getElementById("sec1"), s2=document.getElementById("sec2"), s3=document.getElementById("sec3");
-    KEY.forEach(q=>{
-      const row = makeRow(q);
-      if(q.n<=10) s1.appendChild(row);
-      else if(q.n<=20) s2.appendChild(row);
-      else s3.appendChild(row);
-      document.getElementById("q"+q.n).addEventListener("keydown", e=>{ if(e.key==="Enter") checkOne(q.n); });
-    });
-    updateScore();
+  notes.value = loadNotes(q.n);
+  drawMirrorLine(q.rule);
+
+  const orig = q.points || {};
+  const names = Object.keys(orig);
+
+  if(names.length>=3){
+    const ordered = names.slice().sort();
+    const pts = ordered.map(k=>orig[k]);
+    const closed = pts.concat([pts[0]]);
+    svg.appendChild(polylineFromPoints(closed, "rgba(123,223,242,.9)", "rgba(123,223,242,.10)"));
+  }
+  for(const name of names){
+    svg.appendChild(pointCircle(name, orig[name], "rgba(123,223,242,.95)", false));
   }
 
-  function checkOne(n){
-    const q = KEY.find(x=>x.n===n);
-    const input = document.getElementById("q"+n);
-    const mark = document.getElementById("q"+n+"-mark");
-    const ok = okMatch(input.value, q.ans);
-    mark.textContent = ok ? "✓" : "✗";
-    mark.className = "mark " + (ok ? "ok" : "no");
-    updateScore();
+  if(q.type==="dragPoints"){
+    const imgPts = {};
+    for(const name of names) imgPts[name+"'"] = [...orig[name]];
+    window.__imgPts = imgPts;
+
+    if(names.length>=3){
+      const ordered = names.slice().sort();
+      const pts = ordered.map(k=>imgPts[k+"'"]);
+      const closed = pts.concat([pts[0]]);
+      const poly = polylineFromPoints(closed, "rgba(251,113,133,.9)", "rgba(251,113,133,.10)");
+      poly.setAttribute("id","imgPoly");
+      svg.appendChild(poly);
+    }
+    for(const name of names){
+      svg.appendChild(pointCircle(name+"'", imgPts[name+"'"], "rgba(251,113,133,.95)", true));
+    }
+  } else {
+    window.__imgPts = null;
   }
 
-  function checkAll(){ KEY.forEach(q=>checkOne(q.n)); }
+  setStatus("Not checked yet.", "muted");
+}
 
-  function revealAll(){
-    KEY.forEach(q=>{
-      document.getElementById("q"+q.n+"-reveal").style.display = "block";
-    });
+function updateImagePolygon(){
+  const poly=document.getElementById("imgPoly");
+  if(!poly || !window.__imgPts) return;
+  const q = QUESTIONS[current-1];
+  const ordered = Object.keys(q.points).slice().sort();
+  const pts = ordered.map(k => window.__imgPts[k+"'"]);
+  const closed = pts.concat([pts[0]]);
+  const d = closed.map(p=>`${xToSvg(p[0])},${yToSvg(p[1])}`).join(" ");
+  poly.setAttribute("points", d);
+}
+
+function startDrag(ev, name){
+  if(!window.__imgPts) return;
+  const target = ev.target;
+  target.setPointerCapture(ev.pointerId);
+  target.style.cursor="grabbing";
+  dragState = { name, target };
+  svg.addEventListener("pointermove", onDragMove);
+  svg.addEventListener("pointerup", onDragEnd, {once:true});
+}
+
+function onDragMove(ev){
+  if(!dragState) return;
+  const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+  const loc = pt.matrixTransform(svg.getScreenCTM().inverse());
+  const x = snapInt(svgToX(loc.x));
+  const y = snapInt(svgToY(loc.y));
+  const cx = Math.max(GRID.xmin, Math.min(GRID.xmax, x));
+  const cy = Math.max(GRID.ymin, Math.min(GRID.ymax, y));
+  window.__imgPts[dragState.name] = [cx, cy];
+  dragState.target.setAttribute("cx", xToSvg(cx));
+  dragState.target.setAttribute("cy", yToSvg(cy));
+  const g = dragState.target.parentNode;
+  const label = g.querySelector("text");
+  label.setAttribute("x", xToSvg(cx)+10);
+  label.setAttribute("y", yToSvg(cy)-10);
+  updateImagePolygon();
+}
+function onDragEnd(){
+  if(!dragState) return;
+  dragState.target.style.cursor="grab";
+  svg.removeEventListener("pointermove", onDragMove);
+  dragState = null;
+}
+
+/* ---------- Checking ---------- */
+function expectedImagePoints(q){
+  const out = {};
+  for(const k in q.points){
+    out[k+"'"] = reflectPoint(q.points[k], q.rule);
+  }
+  return out;
+}
+function checkQ(){
+  const q = QUESTIONS[current-1];
+  markDone(q.n);
+
+  if(q.type==="dragPoints"){
+    const exp = expectedImagePoints(q);
+    const got = window.__imgPts;
+    let ok = true;
+    for(const k in exp){
+      const e=exp[k], g=got[k];
+      if(!g || g[0]!==e[0] || g[1]!==e[1]) { ok=false; break; }
+    }
+    setStatus(ok ? "Correct ✓" : "Not correct yet ✗ (adjust the red points)", ok ? "ok" : "no");
+    saveNotes(q.n, notes.value);
+    return;
   }
 
-  function resetAll(){
-    KEY.forEach(q=>{
-      document.getElementById("q"+q.n).value = "";
-      const mark=document.getElementById("q"+q.n+"-mark");
-      mark.textContent=""; mark.className="mark";
-      document.getElementById("q"+q.n+"-reveal").style.display = "none";
-    });
-    updateScore();
+  if(q.type==="word"){
+    const text = (notes.value||"").toLowerCase().replaceAll("−","-").replaceAll(" ","");
+    const keys = q.expectKeywords || [];
+    const hit = keys.some(k => text.includes(k));
+    setStatus(hit ? "Looks correct ✓" : "Not sure / missing key idea ✗ (see hint)", hit ? "ok" : "no");
+    saveNotes(q.n, notes.value);
+    return;
   }
 
-  function updateScore(){
-    let correct=0;
-    KEY.forEach(q=>{
-      const mark=document.getElementById("q"+q.n+"-mark");
-      if(mark && mark.textContent==="✓") correct++;
-    });
-    document.getElementById("scoreBox").textContent = `Score: ${correct} / 30`;
+  setStatus("Saved (teacher check).", "ok");
+  saveNotes(q.n, notes.value);
+}
+function showAnswer(){
+  const q = QUESTIONS[current-1];
+  if(q.type==="dragPoints"){
+    const exp = expectedImagePoints(q);
+    for(const k in exp){
+      window.__imgPts[k] = [...exp[k]];
+      const g = [...svg.querySelectorAll("g")].find(gg => gg.getAttribute("data-name") === k);
+      if(g){
+        const c=g.querySelector("circle"), t=g.querySelector("text");
+        c.setAttribute("cx", xToSvg(exp[k][0])); c.setAttribute("cy", yToSvg(exp[k][1]));
+        t.setAttribute("x", xToSvg(exp[k][0])+10); t.setAttribute("y", yToSvg(exp[k][1])-10);
+      }
+    }
+    updateImagePolygon();
+    setStatus("Answer shown (red points set).", "ok");
+    markDone(q.n);
+    return;
   }
+  if(q.type==="word"){
+    const hint = q.helper ? `Hint: ${q.helper}` : "";
+    notes.value = (notes.value||"") + (notes.value ? "\n\n" : "") + "— ANSWER GUIDE —\n" + (hint || "See teacher notes.");
+    saveNotes(q.n, notes.value);
+    setStatus("Answer guide inserted into notes.", "ok");
+    markDone(q.n);
+    return;
+  }
+  setStatus("Open task — no single answer.", "muted");
+}
 
-  function openAll(){ document.querySelectorAll("details").forEach(d=>d.open=true); }
-  function closeAll(){ document.querySelectorAll("details").forEach(d=>d.open=false); }
+/* ---------- Navigation + sidebar ---------- */
+function renderSidebar(){
+  qList.innerHTML="";
+  for(let i=1;i<=QUESTIONS.length;i++){
+    const b=document.createElement("div");
+    b.className="qbtn"; b.textContent=i; b.onclick=()=>goTo(i);
+    if(i===current) b.classList.add("active");
+    if(isDone(i)) b.classList.add("done");
+    qList.appendChild(b);
+  }
+}
+function goTo(n){ current=n; renderSidebar(); clearAndBuild(QUESTIONS[current-1]); }
+function prevQ(){ if(current>1) goTo(current-1); }
+function nextQ(){ if(current<QUESTIONS.length) goTo(current+1); }
+function setStatus(msg, cls){ statusLine.innerHTML = `Status: <span class="${cls}">${msg}</span>`; }
 
-  render();
+/* ---------- Local save ---------- */
+const STORE_KEY = "g8_reflections_noPhotos_v1";
+function loadStore(){ try{return JSON.parse(localStorage.getItem(STORE_KEY)||"{}");}catch{return {};} }
+function saveStore(o){ localStorage.setItem(STORE_KEY, JSON.stringify(o)); }
+function loadNotes(n){ const st=loadStore(); return st["notes_"+n]||""; }
+function saveNotes(n,val){ const st=loadStore(); st["notes_"+n]=val||""; saveStore(st); }
+function markDone(n){ const st=loadStore(); st["done_"+n]=true; saveStore(st); renderSidebar(); }
+function isDone(n){ const st=loadStore(); return !!st["done_"+n]; }
+function resetAll(){ localStorage.removeItem(STORE_KEY); renderSidebar(); clearAndBuild(QUESTIONS[current-1]); setStatus("Reset complete.","muted"); }
+notes.addEventListener("input", ()=>saveNotes(current, notes.value));
+
+/* init */
+renderSidebar();
+clearAndBuild(QUESTIONS[0]);
 </script>
 </body>
 </html>
