@@ -1,96 +1,83 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Grade 7 — Unit 2 | Lesson 3: Algebraic Products</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Grade 8 — Transformations (Translations) — Interactive</title>
   <style>
     :root{
-      --bg:#0b1020;
-      --card:#111a33;
-      --ink:#eaf0ff;
-      --muted:#b9c5ff;
-      --line:#24315e;
-      --accent:#ffd166;
-      --accent2:#7bdff2;
-      --good:#4ade80;
-      --bad:#fb7185;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 18px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --bg:#0b1020; --card:#111a33; --ink:#eaf0ff; --muted:#b9c5ff;
+      --line:#24315e; --accent:#ffd166; --accent2:#7bdff2;
+      --good:#4ade80; --bad:#fb7185;
+      --shadow:0 10px 30px rgba(0,0,0,.35); --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
     *{box-sizing:border-box}
     body{
-      margin:0;
-      font-family:var(--sans);
+      margin:0; font-family:var(--sans); color:var(--ink);
       background: radial-gradient(1200px 800px at 20% 10%, #162457 0%, var(--bg) 55%);
-      color:var(--ink);
-      line-height:1.45;
     }
-    header{padding: 26px 18px 10px; max-width: 1060px; margin: 0 auto;}
+    header{max-width:1200px;margin:0 auto;padding:22px 16px 10px;}
     .topbar{
-      display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
-      padding:18px 18px;
       background: linear-gradient(135deg, rgba(255,209,102,.16), rgba(123,223,242,.10));
       border:1px solid rgba(255,255,255,.10);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      padding:16px;
+      display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
     }
-    .title h1{margin:0; font-size: 1.15rem; letter-spacing:.2px;}
-    .title p{margin:6px 0 0; color: var(--muted); font-size:.95rem;}
-    .meta{display:flex; gap:10px; flex-wrap:wrap; align-items:center; color: var(--muted); font-size:.92rem;}
+    h1{margin:0;font-size:1.1rem}
+    .sub{margin:6px 0 0;color:var(--muted);font-size:.95rem}
     .pill{
       border:1px solid rgba(255,255,255,.14);
       background: rgba(17,26,51,.65);
-      padding:8px 10px;
-      border-radius: 999px;
+      padding:8px 10px; border-radius:999px; color:var(--muted); font-size:.92rem;
     }
-    main{max-width:1060px; margin: 10px auto 70px; padding: 0 18px;}
-    .grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:16px;}
-    @media (max-width: 940px){ .grid{grid-template-columns: 1fr;} }
+    main{max-width:1200px;margin:10px auto 50px;padding:0 16px;}
+    .layout{display:grid;grid-template-columns: 290px 1fr; gap:14px;}
+    @media (max-width: 980px){ .layout{grid-template-columns:1fr;} }
 
     .card{
       background: rgba(17,26,51,.78);
-      border: 1px solid rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.10);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 18px;
+      padding:14px;
     }
-    h2{margin:0 0 10px; font-size:1.1rem}
-    h3{margin:14px 0 8px; font-size:1rem}
-    .muted{color:var(--muted)}
-    ul{margin:8px 0 0 18px;}
-    li{margin:6px 0}
-    .rule{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      border:1px dashed rgba(255,255,255,.18);
-      padding:8px 10px; border-radius:999px;
-      background: rgba(0,0,0,.18);
-      color: var(--muted);
-      font-size: .92rem;
-    }
-    code.kbd{
-      font-family: var(--mono);
-      font-size:.92rem;
-      padding:2px 6px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.22);
-      color: var(--ink);
-    }
-    .example{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      padding: 12px 12px;
-      border-radius: 14px;
+
+    /* Sidebar */
+    .sideTop{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .sideTop h2{margin:0;font-size:1rem}
+    .list{
       margin-top:10px;
+      display:grid; grid-template-columns: repeat(6, 1fr);
+      gap:8px;
     }
-    .math{font-family: var(--mono); font-size: 1.02rem; letter-spacing:.2px; white-space: nowrap;}
-    .steps{margin:8px 0 0 0; padding-left: 18px; color:var(--muted)}
-    .steps li{margin:6px 0}
-    .btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .qbtn{
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.20);
+      color: var(--ink);
+      padding:10px 0;
+      border-radius: 12px;
+      text-align:center;
+      font-weight:700;
+      font-family:var(--mono);
+    }
+    .qbtn.active{background: rgba(123,223,242,.18); border-color: rgba(123,223,242,.35);}
+    .qbtn.done{outline: 2px solid rgba(74,222,128,.30);}
+    .hint{margin-top:10px;color:var(--muted);font-size:.9rem;line-height:1.35}
+
+    /* Main panel */
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;}
+    .titleLine{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    .tag{
+      font-family:var(--mono); font-size:.9rem; color:var(--muted);
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:999px; padding:6px 10px; background: rgba(0,0,0,.16);
+    }
+    .controls{display:flex; gap:8px; flex-wrap:wrap;}
     button{
       cursor:pointer;
       border: 1px solid rgba(255,255,255,.14);
@@ -98,342 +85,711 @@
       color: var(--ink);
       padding: 10px 12px;
       border-radius: 12px;
-      font-weight: 600;
+      font-weight: 700;
     }
     button.secondary{background: rgba(123,223,242,.12);}
     button.ghost{background: rgba(0,0,0,.18);}
-    button:active{transform: translateY(1px)}
+    button:active{transform: translateY(1px);}
 
-    .practice-head{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
-      margin-bottom: 10px;
-    }
-    .score{color: var(--muted); font-size:.95rem;}
-    .section{margin-top: 14px; border-top: 1px solid rgba(255,255,255,.10); padding-top: 12px;}
-    details{
-      border: 1px solid rgba(255,255,255,.10);
+    .questionBox{margin-top:12px; border:1px solid rgba(255,255,255,.10); border-radius:14px; padding:12px; background: rgba(0,0,0,.16);}
+    .qtext{font-family:var(--mono); font-size:1rem;}
+    .muted{color:var(--muted)}
+    .small{font-size:.9rem}
+    .gridWrap{margin-top:12px; display:grid; grid-template-columns: 1fr 340px; gap:12px;}
+    @media (max-width: 980px){ .gridWrap{grid-template-columns:1fr;} }
+
+    .panel{
+      border:1px solid rgba(255,255,255,.10);
       border-radius: 14px;
-      padding: 10px 12px;
       background: rgba(0,0,0,.16);
-      margin: 10px 0;
+      padding:12px;
     }
-    summary{
-      cursor:pointer;
-      font-weight:700;
-      color: var(--ink);
-      list-style:none;
-    }
-    summary::-webkit-details-marker{display:none}
-    .q{
-      display:grid;
-      grid-template-columns: 60px 1fr 220px;
-      gap: 10px;
-      align-items:center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,.07);
-    }
-    @media (max-width: 720px){
-      .q{grid-template-columns: 60px 1fr;}
-      .q .ans{grid-column: 1 / -1;}
-    }
-    .q:last-child{border-bottom:none}
-    .num{color: var(--accent2); font-weight: 800; font-family: var(--mono);}
-    .expr{font-family: var(--mono); font-size: 1.02rem;}
-    input{
-      width: 100%;
-      padding: 10px 10px;
+    .panel h3{margin:0 0 8px; font-size:1rem;}
+    textarea{
+      width:100%;
+      min-height: 120px;
+      resize: vertical;
       border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.14);
       background: rgba(17,26,51,.55);
       color: var(--ink);
       font-family: var(--mono);
-      font-size: .98rem;
-      outline: none;
+      padding:10px;
+      outline:none;
     }
-    input::placeholder{color: rgba(185,197,255,.55)}
-    .mark{
-      display:inline-block;
-      min-width: 18px;
-      text-align:center;
-      margin-left:8px;
-      font-weight: 900;
+    .statusLine{
+      margin-top:10px; font-family:var(--mono); font-size:.92rem;
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
     }
-    .ok{color: var(--good)}
-    .no{color: var(--bad)}
-    .tiny{font-size:.9rem}
+    .ok{color:var(--good); font-weight:900;}
+    .no{color:var(--bad); font-weight:900;}
     .note{
-      border-left: 4px solid rgba(255,209,102,.55);
-      padding: 10px 12px;
+      border-left:4px solid rgba(255,209,102,.55);
+      padding:10px 12px;
       background: rgba(255,209,102,.08);
       border-radius: 12px;
-      margin-top:10px;
       color: var(--muted);
+      margin-top:12px;
+      font-size:.92rem;
+      line-height:1.35;
     }
-    .footer{margin-top: 18px; color: rgba(185,197,255,.75); font-size: .92rem;}
+
+    /* SVG */
+    .svgShell{
+      width:100%;
+      overflow:hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(7,10,20,.65);
+    }
+    .legend{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:8px;
+      color: var(--muted); font-size:.9rem;
+    }
+    .dot{width:12px; height:12px; border-radius:999px; display:inline-block;}
   </style>
 </head>
-
 <body>
 <header>
   <div class="topbar">
-    <div class="title">
-      <h1>Grade 7 — Unit 2: Expressions (Linear Expressions)</h1>
-      <p>Lesson 3: Algebraic Products</p>
+    <div>
+      <h1>Grade 8 — Transformations — Translations (Interactive, No Photos)</h1>
+      <div class="sub">Drag the red image points to the translated position. Blue points are the original.</div>
     </div>
-    <div class="meta">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <span class="pill">Name: <span contenteditable="true" style="outline:none">__________</span></span>
       <span class="pill">Date: <span contenteditable="true" style="outline:none">__________</span></span>
-      <span class="pill">Class/Period: <span contenteditable="true" style="outline:none">__________</span></span>
+      <span class="pill">Class: <span contenteditable="true" style="outline:none">__________</span></span>
     </div>
   </div>
 </header>
 
 <main>
-  <div class="grid">
-
-    <!-- LEFT: TEACH -->
-    <section class="card">
-      <h2>Key Concepts</h2>
-      <ul>
-        <li><b>Product</b> means multiply. Example: <span class="math">4 · x = 4x</span>.</li>
-        <li><b>Distributive property:</b> <span class="math">a(b + c) = ab + ac</span> and <span class="math">a(b − c) = ab − ac</span>.</li>
-        <li>Negatives matter: <span class="math">−3(x − 2) = −3x + 6</span>.</li>
-        <li>After expanding, <b>collect like terms</b> to simplify.</li>
-        <li><b>Factoring</b> is the reverse of distributing: <span class="math">ax + ay = a(x + y)</span>.</li>
-      </ul>
-
-      <div class="rule">
-        <span class="chip">Product: <code class="kbd">4 · x = 4x</code></span>
-        <span class="chip">Distribute: <code class="kbd">2(x+5)=2x+10</code></span>
-        <span class="chip">Factor: <code class="kbd">6x+12=6(x+2)</code></span>
-      </div>
-
-      <h3>Mini Lesson (Worked Examples)</h3>
-
-      <div class="example">
-        <div class="math"><b>Example A:</b> Expand 2(x + 5)</div>
-        <ol class="steps">
-          <li>Multiply 2 by each term inside parentheses.</li>
-          <li><span class="math">2·x = 2x</span> and <span class="math">2·5 = 10</span></li>
-          <li>Answer: <span class="math">2x + 10</span></li>
-        </ol>
-      </div>
-
-      <div class="example">
-        <div class="math"><b>Example B:</b> Expand −3(p + 4)</div>
-        <ol class="steps">
-          <li>Multiply −3 by each term.</li>
-          <li><span class="math">−3·p = −3p</span> and <span class="math">−3·4 = −12</span></li>
-          <li>Answer: <span class="math">−3p − 12</span></li>
-        </ol>
-      </div>
-
-      <div class="example">
-        <div class="math"><b>Example C:</b> Factor 6x + 12</div>
-        <ol class="steps">
-          <li>Greatest common factor is 6.</li>
-          <li>Pull out 6: <span class="math">6x + 12 = 6(x + 2)</span></li>
-        </ol>
-      </div>
-
-      <div class="note">
-        <b>Common trap:</b> <span class="math">5(x − 3)</span> becomes <span class="math">5x − 15</span>, not <span class="math">5x − 3</span>. The 5 must multiply <u>both</u> terms.
-      </div>
-
-      <div class="btnrow">
-        <button class="secondary" onclick="openAll()">Open all practice sections</button>
-        <button class="ghost" onclick="closeAll()">Close all practice sections</button>
-      </div>
-
-      <div class="footer">
-        Interactive version of “Lesson 3: Algebraic Products” worksheet.
-      </div>
-    </section>
-
-    <!-- RIGHT: PRACTICE -->
+  <div class="layout">
+    <!-- Sidebar -->
     <aside class="card">
-      <div class="practice-head">
-        <h2 style="margin:0">Practice</h2>
-        <div class="score" id="scoreBox">Score: 0 / 30</div>
+      <div class="sideTop">
+        <h2>Questions</h2>
+        <button class="ghost" onclick="resetAll()">Reset all</button>
       </div>
-
-      <p class="muted tiny" style="margin-top:0">
-        Type your simplified answer, then press <b>Check</b>. Spaces don’t matter. Use parentheses only if needed.
-      </p>
-
-      <div class="btnrow" style="margin-top:10px">
-        <button onclick="checkAll()">Check all</button>
-        <button class="secondary" onclick="revealAll()">Reveal answers</button>
-        <button class="ghost" onclick="resetAll()">Reset</button>
-      </div>
-
-      <details open class="section">
-        <summary>Level 1 — Foundations (1–10)</summary>
-        <div id="sec1"></div>
-      </details>
-
-      <details class="section">
-        <summary>Level 2 — Practice (11–20)</summary>
-        <div id="sec2"></div>
-      </details>
-
-      <details class="section">
-        <summary>Level 3 — Challenge (21–30)</summary>
-        <div id="sec3"></div>
-      </details>
-
-      <div class="note tiny" style="margin-top:14px">
-        For #29 you’ll write an explanation; the checker focuses on the corrected expansion.
-        For #30, after expanding you also factor: both are accepted.
+      <div class="list" id="qList"></div>
+      <div class="hint">
+        <b>How it works:</b><br/>
+        • Click a number → see that question.<br/>
+        • For graph questions: drag <b>red</b> points.<br/>
+        • Press <b>Check</b> to score that question.<br/>
+        • Notes auto-save on this device.
       </div>
     </aside>
+
+    <!-- Main -->
+    <section class="card">
+      <div class="row">
+        <div class="titleLine">
+          <div class="tag" id="qTag">#1</div>
+          <div class="tag" id="qTypeTag">Translation (graph)</div>
+          <div class="tag" id="qMoveTag">Δx=?, Δy=?</div>
+        </div>
+        <div class="controls">
+          <button class="ghost" onclick="prevQ()">Prev</button>
+          <button class="ghost" onclick="nextQ()">Next</button>
+          <button onclick="checkQ()">Check</button>
+          <button class="secondary" onclick="showAnswer()">Show answer</button>
+        </div>
+      </div>
+
+      <div class="questionBox">
+        <div class="qtext" id="qText"></div>
+        <div class="muted small" id="qHelp" style="margin-top:8px"></div>
+      </div>
+
+      <div class="gridWrap">
+        <!-- Graph -->
+        <div class="panel">
+          <h3>Graph</h3>
+          <div class="svgShell">
+            <svg id="svg" viewBox="0 0 720 520" width="100%" height="520" aria-label="Coordinate grid"></svg>
+          </div>
+          <div class="legend">
+            <span class="dot" style="background:#7bdff2"></span> Original (blue)
+            <span class="dot" style="background:#fb7185"></span> Image (red, draggable)
+            <span class="dot" style="background:#ffd166"></span> Vector / hint
+          </div>
+        </div>
+
+        <!-- Student area -->
+        <div class="panel">
+          <h3>Answers / Notes</h3>
+          <textarea id="notes" placeholder="Write your answers or working here…"></textarea>
+          <div class="statusLine" id="statusLine">Status: <span class="muted">Not checked yet.</span></div>
+
+          <div class="note">
+            <b>Translation rule reminder:</b> (x, y) → (x + a, y + b).<br/>
+            Right/Up are positive; Left/Down are negative.
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </main>
 
 <script>
-  // Based directly on the worksheet problems.
-  // Normalization removes spaces; we also allow equivalent forms.
-  const KEY = [
-    // Level 1 (1-10)
-    {n:1,  expr:"Write as a single term: 4 · x",                 ans:["4x"]},
-    {n:2,  expr:"Write as a single term: 7a · 3",                ans:["21a","21a"]},
-    {n:3,  expr:"Write as a single term: 5m · 2",                ans:["10m"]},
-    {n:4,  expr:"Write as a single term: (−3) · y",              ans:["-3y"]},
-    {n:5,  expr:"Write as a single term: 2x · 6",                ans:["12x"]},
-    {n:6,  expr:"Write as a single term: 3b · (−4)",             ans:["-12b"]},
-    {n:7,  expr:"Expand: 2(x + 5)",                              ans:["2x+10","10+2x"]},
-    {n:8,  expr:"Expand: 5(n − 2)",                              ans:["5n-10","-10+5n"]},
-    {n:9,  expr:"Expand: −3(p + 4)",                             ans:["-3p-12","-12-3p"]},
-    {n:10, expr:"Write as a single term: x · 9",                 ans:["9x"]},
+/* ---------------------------
+   Question bank (Translations)
+   ---------------------------
 
-    // Level 2 (11-20)
-    {n:11, expr:"Expand & simplify: 4(2x + 3)",                  ans:["8x+12","12+8x"]},
-    {n:12, expr:"Expand & simplify: 6(x − 5)",                   ans:["6x-30","-30+6x"]},
-    {n:13, expr:"Expand & simplify: −2(3y − 7)",                 ans:["-6y+14","14-6y"]},
-    {n:14, expr:"Expand & simplify: 3(4a + 2) − 5a",             ans:["7a+6","6+7a"]},
-    {n:15, expr:"Expand & simplify: 2(x + 8) + 3(x − 1)",        ans:["5x+13","13+5x"]},
-    {n:16, expr:"Simplify: 7 − 3(x + 2)",                        ans:["1-3x","-3x+1"]},
-    {n:17, expr:"Expand & simplify: 5(2m − 1) − 2(3m + 4)",      ans:["4m-13","-13+4m"]},
-    {n:18, expr:"Simplify: 4x + 2(x − 3)",                       ans:["6x-6","-6+6x"]},
-    {n:19, expr:"Expand & simplify: (1/2)(6n + 8)",              ans:["3n+4","4+3n"]},
-    {n:20, expr:"Expand & simplify: 0.2(10p + 15)",              ans:["2p+3","3+2p"]},
+   Types:
+   - "dragPoints": show original points (blue), student drags image points (red) to correct translated coordinates.
+   - "word": student types a response in notes; checker looks for keywords.
+   - "varies": teacher-created / diagram tasks — no strict check.
 
-    // Level 3 (21-30)
-    {n:21, expr:"Factor: 6x + 12",                                ans:["6(x+2)","6(x+2)","6x+12"]},
-    {n:22, expr:"Factor: 9a − 3",                                 ans:["3(3a-1)","3(3a-1)","9a-3"]},
-    {n:23, expr:"Factor: 8y + 4x",                                ans:["4(2y+x)","4(x+2y)","4(2y+x)","8y+4x"]},
-    {n:24, expr:"Expand & simplify: 3(x − 4) − 2(x + 5)",         ans:["x-22","-22+x"]},
-    {n:25, expr:"Factor: 15m − 10",                               ans:["5(3m-2)","5(3m-2)","15m-10"]},
-    {n:26, expr:"Rectangle sides (x + 3) and 4: area, simplify",  ans:["4(x+3)","4x+12","12+4x"]},
-    {n:27, expr:"Increased by 5 then multiplied by −2: product then expand",
-                                                                   ans:["-2(x+5)","-2x-10","-(2x+10)"]},
-    {n:28, expr:"Solve: 3(x − 2) = 2(x + 4)",                     ans:["x=14","14"]},
-    {n:29, expr:"Error check: 5(x − 3) as 5x − 3. Correct it.",   ans:["5x-15","-15+5x"]},
-    {n:30, expr:"Expand: 2(3x + 1) + 4(x − 2). Then factor.",     ans:["10x-6","2(5x-3)","2(5x-3)","10x-6"]}
-  ];
+   NOTE:
+   These are mathematically faithful translation questions. If you want them to match
+   your PDF *exactly*, share the exact coordinate lists for each diagram-based item.
+*/
+const QUESTIONS = [
+  // Level 1-ish (graph-friendly)
+  { n:1, type:"dragPoints", text:"A(−3, 4) translated right 5 and down 2. Place A′.",
+    move:{dx:5, dy:-2}, points:{A:[-3,4]} },
 
-  const normalize = s => (s ?? "")
-    .toLowerCase()
-    .replaceAll("−","-")
-    .replaceAll(" ", "")
-    .replaceAll("\t","")
-    .replaceAll("\n","");
+  { n:2, type:"dragPoints", text:"B(2, −5) translated left 7 and up 3. Place B′.",
+    move:{dx:-7, dy:3}, points:{B:[2,-5]} },
 
-  function makeQuestionRow(q){
-    const id = "q" + q.n;
-    const row = document.createElement("div");
-    row.className = "q";
-    row.innerHTML = `
-      <div class="num">#${q.n}</div>
-      <div>
-        <div class="expr">${q.expr}</div>
-        <div class="muted tiny" id="${id}-reveal" style="display:none;margin-top:6px">
-          <b>Answer:</b> <span class="math">${q.ans[0]}</span>
-        </div>
-      </div>
-      <div class="ans">
-        <input id="${id}" placeholder="Type answer…" inputmode="text" autocomplete="off" />
-        <span class="mark" id="${id}-mark"></span>
-      </div>
-    `;
-    return row;
+  { n:3, type:"dragPoints", text:"Triangle P(−1,2), Q(4,1), R(0,−3) translated left 2 and up 6. Place P′, Q′, R′.",
+    move:{dx:-2, dy:6}, points:{P:[-1,2], Q:[4,1], R:[0,-3]} },
+
+  { n:4, type:"dragPoints", text:"Move 4 right and 6 up. Start with T(−2,3). Place T′.",
+    move:{dx:4, dy:6}, points:{T:[-2,3]} },
+
+  { n:5, type:"dragPoints", text:"Triangle A(−5,−1), B(−2,3), C(1,0) translated right 3 and down 4. Place A′, B′, C′.",
+    move:{dx:3, dy:-4}, points:{A:[-5,-1], B:[-2,3], C:[1,0]} },
+
+  { n:6, type:"dragPoints", text:"Rectangle J(−6,4), K(−2,4), L(−2,1), M(−6,1) translated left 5 and down 2. Place J′K′L′M′.",
+    move:{dx:-5, dy:-2}, points:{J:[-6,4], K:[-2,4], L:[-2,1], M:[-6,1]} },
+
+  // Diagram / “varies” style — keep interactive but not strict
+  { n:7, type:"varies", text:"(Teacher/diagram) Slide the figure 4 left and 1 up. Use the graph to sketch and label the new coordinates.",
+    move:{dx:-4, dy:1}, points:{A:[-2,2], B:[2,2], C:[2,-1], D:[-2,-1]} },
+
+  { n:8, type:"word", text:"A(1,−2) maps to A′(6,4). Describe the translation.",
+    expectKeywords:["right5","up6"], helper:"Write something like: right 5, up 6." },
+
+  { n:9, type:"word", text:"Start at M(−5,0). Apply translation (right 2, down 1) then (right 4, up 3). Give final point and net translation.",
+    expectKeywords:["(1,2)","right6","up2"], helper:"Final should be (1,2), net move (6,2)." },
+
+  { n:10, type:"word", text:"Check if mapping is a translation: P(−1,3)→(2,8) and Q(4,−2)→(7,3). If yes, state the translation.",
+    expectKeywords:["yes","right3","up5"], helper:"Both move by (3,5)." },
+
+  // Level 2-ish
+  { n:11, type:"dragPoints", text:"Translate WXYZ so that W(−6,2) moves to the origin. Points: W(−6,2), X(−2,2), Y(−1,−1), Z(−5,−1). Place W′X′Y′Z′.",
+    move:{dx:6, dy:-2}, points:{W:[-6,2], X:[-2,2], Y:[-1,-1], Z:[-5,-1]} },
+
+  { n:12, type:"dragPoints", text:"N(3,−6) translated onto the x-axis with the smallest move. Place N′.",
+    move:{dx:0, dy:6}, points:{N:[3,-6]} },
+
+  { n:13, type:"dragPoints", text:"Rule: (x,y) → (x−6, y+2). Start with P(5,−1). Place P′.",
+    move:{dx:-6, dy:2}, points:{P:[5,-1]} },
+
+  { n:14, type:"word", text:"A(−4,0) maps to A′(2,−1) by a translation. Apply the same translation to B(−1,5) and C(2,1). Give B′ and C′.",
+    expectKeywords:["(5,4)","(8,0)"], helper:"Translation is ( +6, −1 )." },
+
+  { n:15, type:"word", text:"A(−4,−4)→A′(1,0) and B(2,−1)→B′(7,3). Describe the translation.",
+    expectKeywords:["right5","up4"], helper:"Both move by (5,4)." },
+
+  { n:16, type:"dragPoints", text:"Robot at R(−3,2) moves 6 east and 5 south. Place R′.",
+    move:{dx:6, dy:-5}, points:{R:[-3,2]} },
+
+  { n:17, type:"dragPoints", text:"Triangle P(−6,−2), Q(−4,1), R(−2,−3). Find a translation that moves it into Quadrant I (smallest integer move). Place P′Q′R′.",
+    move:{dx:7, dy:4}, points:{P:[-6,-2], Q:[-4,1], R:[-2,-3]} },
+
+  { n:18, type:"word", text:"A translation 3 left and 5 down sends M to M′(2,−1). Find M.",
+    expectKeywords:["(5,4)"], helper:"Reverse the move: right 3, up 5." },
+
+  { n:19, type:"word", text:"S(−7,6) translated by (right 8, down 10) then (left 3, up 4). Give final point and net translation.",
+    expectKeywords:["(-2,0)","right5","down6"], helper:"Net move is ( +5, −6 )." },
+
+  { n:20, type:"word", text:"Error check: (−2,7) translated left 5 becomes (3,7). Correct? Give correct image.",
+    expectKeywords:["no","(-7,7)"], helper:"Left means x decreases." },
+
+  // Level 3-ish (more reasoning)
+  { n:21, type:"word", text:"A(−2,5)→(x,1) and B(4,−1)→(10,y) by the same translation. Find x and y.",
+    expectKeywords:["x=4","y=3","4,3"], helper:"From B: dx=+6; from A: x=−2+6=4; y=−1+4=3." },
+
+  { n:22, type:"word", text:"A(x,4) translated right 3 and up 2 becomes (7,6). Find x.",
+    expectKeywords:["4"], helper:"x+3=7 → x=4." },
+
+  { n:23, type:"word", text:"Is this a translation? A(0,0)→(2,1), B(3,0)→(5,1), C(1,2)→(3,4). Explain.",
+    expectKeywords:["no"], helper:"C moves by (2,2) not (2,1)." },
+
+  { n:24, type:"word", text:"Translate by (right 5, down 2) then by an unknown translation to get net (left 1, up 6). Find the unknown translation.",
+    expectKeywords:["left6","up8","(-6,8)"], helper:"Unknown = net − first = (−1−5, 6−(−2)) = (−6,8)." },
+
+  { n:25, type:"word", text:"Can one translation send A(1,2)→B(5,6) and also B→A? yes/no, why.",
+    expectKeywords:["no"], helper:"Would require opposite translations at once." },
+
+  { n:26, type:"word", text:"A nonzero figure is translated and lands exactly on itself. What translation vector must it be?",
+    expectKeywords:["(0,0)","zero"], helper:"Only the zero translation." },
+
+  { n:27, type:"varies", text:"(Teacher/diagram) Describe the translation from the blue figure to the red figure.",
+    move:{dx:3, dy:-2}, points:{A:[-4,4], B:[-2,1], C:[-6,1]} },
+
+  { n:28, type:"word", text:"Describe all translations that move P(3,−2) onto the y-axis.",
+    expectKeywords:["left3","dx=-3"], helper:"Any translation with dx = −3; dy can be anything." },
+
+  { n:29, type:"word", text:"Describe all translations that move Q(−6,5) onto the line y=4.",
+    expectKeywords:["down1","dy=-1"], helper:"Any translation with dy = −1; dx can be anything." },
+
+  { n:30, type:"varies", text:"Create your own triangle and translate it 4 left and 3 up. Record original and image coordinates.",
+    move:{dx:-4, dy:3}, points:{A:[-1,-1], B:[2,0], C:[1,3]} }
+];
+
+/* ---------------------------
+   SVG graph engine
+   --------------------------- */
+const svg = document.getElementById("svg");
+const qList = document.getElementById("qList");
+const qText = document.getElementById("qText");
+const qHelp = document.getElementById("qHelp");
+const qTag = document.getElementById("qTag");
+const qTypeTag = document.getElementById("qTypeTag");
+const qMoveTag = document.getElementById("qMoveTag");
+const notes = document.getElementById("notes");
+const statusLine = document.getElementById("statusLine");
+
+let current = 1; // question number
+let dragState = null;
+
+const GRID = {
+  xmin:-12, xmax:12,
+  ymin:-8, ymax:8,
+  w:720, h:520,
+  pad:40
+};
+
+function xToSvg(x){
+  const {xmin,xmax,w,pad} = GRID;
+  const innerW = w - 2*pad;
+  return pad + (x - xmin) * innerW / (xmax - xmin);
+}
+function yToSvg(y){
+  const {ymin,ymax,h,pad} = GRID;
+  const innerH = h - 2*pad;
+  return pad + (ymax - y) * innerH / (ymax - ymin);
+}
+function svgToX(px){
+  const {xmin,xmax,w,pad} = GRID;
+  const innerW = w - 2*pad;
+  return xmin + (px - pad) * (xmax - xmin) / innerW;
+}
+function svgToY(py){
+  const {ymin,ymax,h,pad} = GRID;
+  const innerH = h - 2*pad;
+  return ymax - (py - pad) * (ymax - ymin) / innerH;
+}
+function snapInt(v){ return Math.round(v); }
+
+function clearSvg(){
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+}
+
+function el(name, attrs={}){
+  const e = document.createElementNS("http://www.w3.org/2000/svg", name);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+function drawGrid(){
+  const {xmin,xmax,ymin,ymax,w,h,pad} = GRID;
+
+  // background
+  svg.appendChild(el("rect",{x:0,y:0,width:w,height:h,fill:"transparent"}));
+
+  // grid lines
+  for(let x=xmin; x<=xmax; x++){
+    const X = xToSvg(x);
+    svg.appendChild(el("line",{
+      x1:X,y1:yToSvg(ymin), x2:X,y2:yToSvg(ymax),
+      stroke:"rgba(255,255,255,.08)", "stroke-width": (x===0?2:1)
+    }));
+  }
+  for(let y=ymin; y<=ymax; y++){
+    const Y = yToSvg(y);
+    svg.appendChild(el("line",{
+      x1:xToSvg(xmin), y1:Y, x2:xToSvg(xmax), y2:Y,
+      stroke:"rgba(255,255,255,.08)", "stroke-width": (y===0?2:1)
+    }));
   }
 
-  function render(){
-    const sec1 = document.getElementById("sec1");
-    const sec2 = document.getElementById("sec2");
-    const sec3 = document.getElementById("sec3");
-
-    KEY.forEach(q=>{
-      const row = makeQuestionRow(q);
-      if(q.n <= 10) sec1.appendChild(row);
-      else if(q.n <= 20) sec2.appendChild(row);
-      else sec3.appendChild(row);
-    });
-
-    KEY.forEach(q=>{
-      const input = document.getElementById("q"+q.n);
-      input.addEventListener("keydown", (e)=>{
-        if(e.key === "Enter"){ checkOne(q.n); }
-      });
-    });
-
-    updateScore();
+  // axis labels ticks
+  for(let x=xmin; x<=xmax; x++){
+    if(x===0) continue;
+    const t = el("text",{x:xToSvg(x), y:yToSvg(0)+18, fill:"rgba(185,197,255,.75)", "font-size":"12", "text-anchor":"middle", "font-family":"var(--mono)"});
+    t.textContent = x;
+    svg.appendChild(t);
+  }
+  for(let y=ymin; y<=ymax; y++){
+    if(y===0) continue;
+    const t = el("text",{x:xToSvg(0)-12, y:yToSvg(y)+4, fill:"rgba(185,197,255,.75)", "font-size":"12", "text-anchor":"end", "font-family":"var(--mono)"});
+    t.textContent = y;
+    svg.appendChild(t);
   }
 
-  function checkOne(n){
-    const q = KEY.find(x=>x.n===n);
-    const input = document.getElementById("q"+n);
-    const mark = document.getElementById("q"+n+"-mark");
-    const val = normalize(input.value);
+  // axis labels
+  const tx = el("text",{x:xToSvg(xmax)-6, y:yToSvg(0)-8, fill:"rgba(185,197,255,.9)", "font-size":"13","text-anchor":"end","font-family":"var(--mono)"});
+  tx.textContent="x";
+  svg.appendChild(tx);
+  const ty = el("text",{x:xToSvg(0)+10, y:yToSvg(ymax)+16, fill:"rgba(185,197,255,.9)", "font-size":"13","text-anchor":"start","font-family":"var(--mono)"});
+  ty.textContent="y";
+  svg.appendChild(ty);
+}
 
-    const ok = q.ans.some(a => normalize(a) === val);
+function pointCircle(name, pt, color, draggable=false){
+  const [x,y]=pt;
+  const g = el("g", {"data-name": name});
+  const c = el("circle",{
+    cx:xToSvg(x), cy:yToSvg(y), r:7,
+    fill:color, stroke:"rgba(255,255,255,.25)", "stroke-width":1
+  });
+  if(draggable){
+    c.style.cursor = "grab";
+    c.addEventListener("pointerdown", (ev)=>startDrag(ev, name));
+  }
+  const label = el("text",{
+    x:xToSvg(x)+10, y:yToSvg(y)-10,
+    fill:"rgba(234,240,255,.95)",
+    "font-size":"13",
+    "font-family":"var(--mono)"
+  });
+  label.textContent = name;
+  g.appendChild(c);
+  g.appendChild(label);
+  return g;
+}
 
-    if(ok){
-      mark.textContent = "✓";
-      mark.className = "mark ok";
-    }else{
-      mark.textContent = "✗";
-      mark.className = "mark no";
+function polylineFromPoints(pts, stroke, fill){
+  const d = pts.map(p=>`${xToSvg(p[0])},${yToSvg(p[1])}`).join(" ");
+  return el("polyline",{
+    points:d,
+    fill: fill ?? "none",
+    stroke: stroke,
+    "stroke-width": 3,
+    "stroke-linejoin":"round",
+    "stroke-linecap":"round",
+    opacity: 0.9
+  });
+}
+
+function drawVector(dx,dy){
+  // draw a small vector arrow near bottom-left
+  const base = [-10, -7];
+  const tip = [base[0]+dx, base[1]+dy];
+  svg.appendChild(el("line",{
+    x1:xToSvg(base[0]), y1:yToSvg(base[1]),
+    x2:xToSvg(tip[0]), y2:yToSvg(tip[1]),
+    stroke:"rgba(255,209,102,.95)", "stroke-width":4
+  }));
+  svg.appendChild(el("circle",{cx:xToSvg(base[0]),cy:yToSvg(base[1]),r:4,fill:"rgba(255,209,102,.95)"}));
+  svg.appendChild(el("circle",{cx:xToSvg(tip[0]),cy:yToSvg(tip[1]),r:4,fill:"rgba(255,209,102,.95)"}));
+  const t = el("text",{
+    x:xToSvg(base[0])+6, y:yToSvg(base[1])+18,
+    fill:"rgba(255,209,102,.95)", "font-size":"13", "font-family":"var(--mono)"
+  });
+  t.textContent = `vector (Δx,Δy)=(${dx},${dy})`;
+  svg.appendChild(t);
+}
+
+function isPolygon(pointsObj){
+  // If 3+ points and names appear to form shape, we draw polyline in name order.
+  return Object.keys(pointsObj).length >= 3;
+}
+
+function buildQuestionUI(q){
+  clearSvg();
+  drawGrid();
+
+  qTag.textContent = `#${q.n}`;
+  qTypeTag.textContent = q.type === "dragPoints" ? "Translation (drag on graph)" : (q.type==="word" ? "Translation (written)" : "Teacher-created (open)");
+  const dx = q.move?.dx ?? "?";
+  const dy = q.move?.dy ?? "?";
+  qMoveTag.textContent = `Δx=${dx}, Δy=${dy}`;
+
+  qText.textContent = q.text;
+
+  if(q.type==="word"){
+    qHelp.innerHTML = `Type your answer in the <b>Answers / Notes</b> box.`;
+    if(q.helper) qHelp.innerHTML += ` <span class="muted">Hint: ${q.helper}</span>`;
+  } else if(q.type==="varies"){
+    qHelp.innerHTML = `Open task — use the graph and notes. (No strict auto-check for this one.)`;
+  } else {
+    qHelp.innerHTML = `Drag the <b>red</b> points to the translated location. Snap-to-grid is on.`;
+  }
+
+  // Load saved notes for this question
+  notes.value = loadNotes(q.n);
+
+  // draw original points (blue)
+  const origPts = q.points || {};
+  const names = Object.keys(origPts);
+
+  // If it's a polygon (3+), draw connecting polyline in alphabetical order.
+  if(names.length >= 3){
+    const ordered = names.slice().sort();
+    const pts = ordered.map(k => origPts[k]);
+    // close polygon by repeating first
+    const closed = pts.concat([pts[0]]);
+    svg.appendChild(polylineFromPoints(closed, "rgba(123,223,242,.9)", "rgba(123,223,242,.10)"));
+  }
+
+  for(const name of names){
+    svg.appendChild(pointCircle(name, origPts[name], "rgba(123,223,242,.95)", false));
+  }
+
+  // vector hint
+  if(q.move) drawVector(q.move.dx, q.move.dy);
+
+  // draw draggable image points (red) only for dragPoints
+  if(q.type==="dragPoints"){
+    // initial image points start stacked on original (student drags to correct)
+    const imgPts = {};
+    for(const name of names) imgPts[name+"'"] = [...origPts[name]];
+    window.__imgPts = imgPts; // store globally for checks and dragging
+
+    // polygon outline for image
+    if(names.length >= 3){
+      const ordered = names.slice().sort();
+      const pts = ordered.map(k => imgPts[k+"'"]);
+      const closed = pts.concat([pts[0]]);
+      const poly = polylineFromPoints(closed, "rgba(251,113,133,.9)", "rgba(251,113,133,.10)");
+      poly.setAttribute("id","imgPoly");
+      svg.appendChild(poly);
     }
-    updateScore();
+
+    for(const name of names){
+      svg.appendChild(pointCircle(name+"'", imgPts[name+"'"], "rgba(251,113,133,.95)", true));
+    }
+  } else {
+    window.__imgPts = null;
   }
 
-  function checkAll(){ KEY.forEach(q=>checkOne(q.n)); }
+  setStatus("Not checked yet.", "muted");
+}
 
-  function revealAll(){
-    KEY.forEach(q=>{
-      const reveal = document.getElementById("q"+q.n+"-reveal");
-      reveal.style.display = "block";
-    });
+function updateImagePolygon(){
+  const poly = document.getElementById("imgPoly");
+  if(!poly || !window.__imgPts) return;
+  // rebuild points from current imgPts in alphabetical of originals
+  const q = QUESTIONS[current-1];
+  const ordered = Object.keys(q.points).slice().sort();
+  const pts = ordered.map(k => window.__imgPts[k+"'"]);
+  const closed = pts.concat([pts[0]]);
+  const d = closed.map(p=>`${xToSvg(p[0])},${yToSvg(p[1])}`).join(" ");
+  poly.setAttribute("points", d);
+}
+
+function startDrag(ev, name){
+  if(!window.__imgPts) return;
+  const target = ev.target;
+  target.setPointerCapture(ev.pointerId);
+  target.style.cursor = "grabbing";
+  dragState = { name, target };
+  svg.addEventListener("pointermove", onDragMove);
+  svg.addEventListener("pointerup", onDragEnd, {once:true});
+}
+
+function onDragMove(ev){
+  if(!dragState) return;
+  const pt = svg.createSVGPoint();
+  pt.x = ev.clientX; pt.y = ev.clientY;
+  const ctm = svg.getScreenCTM().inverse();
+  const loc = pt.matrixTransform(ctm);
+
+  const x = snapInt(svgToX(loc.x));
+  const y = snapInt(svgToY(loc.y));
+
+  // clamp to grid bounds
+  const cx = Math.max(GRID.xmin, Math.min(GRID.xmax, x));
+  const cy = Math.max(GRID.ymin, Math.min(GRID.ymax, y));
+
+  // update model
+  window.__imgPts[dragState.name] = [cx, cy];
+
+  // update circle position
+  dragState.target.setAttribute("cx", xToSvg(cx));
+  dragState.target.setAttribute("cy", yToSvg(cy));
+
+  // update label (sibling text)
+  const g = dragState.target.parentNode;
+  const label = g.querySelector("text");
+  label.setAttribute("x", xToSvg(cx)+10);
+  label.setAttribute("y", yToSvg(cy)-10);
+
+  updateImagePolygon();
+}
+
+function onDragEnd(){
+  if(!dragState) return;
+  dragState.target.style.cursor = "grab";
+  svg.removeEventListener("pointermove", onDragMove);
+  dragState = null;
+}
+
+/* ---------------------------
+   Checking / answers
+   --------------------------- */
+function expectedImagePoints(q){
+  const out = {};
+  const dx = q.move.dx, dy = q.move.dy;
+  for(const k in q.points){
+    out[k+"'"] = [q.points[k][0] + dx, q.points[k][1] + dy];
+  }
+  return out;
+}
+
+function checkQ(){
+  const q = QUESTIONS[current-1];
+  markDone(q.n);
+
+  if(q.type==="dragPoints"){
+    const exp = expectedImagePoints(q);
+    const got = window.__imgPts;
+    let ok = true;
+    for(const k in exp){
+      const e = exp[k], g = got[k];
+      if(!g || g[0] !== e[0] || g[1] !== e[1]) { ok=false; break; }
+    }
+    if(ok) setStatus("Correct ✓", "ok");
+    else setStatus("Not correct yet ✗ (adjust the red points)", "no");
+    saveNotes(q.n, notes.value);
+    return;
   }
 
-  function resetAll(){
-    KEY.forEach(q=>{
-      const input = document.getElementById("q"+q.n);
-      const mark = document.getElementById("q"+q.n+"-mark");
-      const reveal = document.getElementById("q"+q.n+"-reveal");
-      input.value = "";
-      mark.textContent = "";
-      mark.className = "mark";
-      reveal.style.display = "none";
-    });
-    updateScore();
+  if(q.type==="word"){
+    const text = (notes.value || "").toLowerCase().replaceAll("−","-").replaceAll(" ", "");
+    const keys = q.expectKeywords || [];
+    const hit = keys.some(k => text.includes(k));
+    if(hit) setStatus("Looks correct ✓", "ok");
+    else setStatus("Not sure / missing key idea ✗ (see hint)", "no");
+    saveNotes(q.n, notes.value);
+    return;
   }
 
-  function updateScore(){
-    let correct = 0;
-    KEY.forEach(q=>{
-      const mark = document.getElementById("q"+q.n+"-mark");
-      if(mark && mark.textContent === "✓") correct++;
-    });
-    document.getElementById("scoreBox").textContent = `Score: ${correct} / 30`;
+  // varies
+  setStatus("Saved (teacher check).", "ok");
+  saveNotes(q.n, notes.value);
+}
+
+function showAnswer(){
+  const q = QUESTIONS[current-1];
+  if(q.type==="dragPoints"){
+    const exp = expectedImagePoints(q);
+    // place the red points exactly
+    for(const k in exp){
+      window.__imgPts[k] = [...exp[k]];
+      const g = [...svg.querySelectorAll("g")].find(gg => gg.getAttribute("data-name") === k);
+      if(g){
+        const c = g.querySelector("circle");
+        const t = g.querySelector("text");
+        c.setAttribute("cx", xToSvg(exp[k][0]));
+        c.setAttribute("cy", yToSvg(exp[k][1]));
+        t.setAttribute("x", xToSvg(exp[k][0])+10);
+        t.setAttribute("y", yToSvg(exp[k][1])-10);
+      }
+    }
+    updateImagePolygon();
+    setStatus("Answer shown (red points set).", "ok");
+    markDone(q.n);
+    return;
   }
 
-  function openAll(){ document.querySelectorAll("details").forEach(d=>d.open=true); }
-  function closeAll(){ document.querySelectorAll("details").forEach(d=>d.open=false); }
+  if(q.type==="word"){
+    // Append hint/expected keywords as a teacher-friendly reveal
+    const hint = q.helper ? `Hint: ${q.helper}` : "";
+    notes.value = (notes.value || "") + (notes.value ? "\n\n" : "") + "— ANSWER GUIDE —\n" + (hint || "See teacher notes.");
+    saveNotes(q.n, notes.value);
+    setStatus("Answer guide inserted into notes.", "ok");
+    markDone(q.n);
+    return;
+  }
 
-  render();
+  // varies
+  setStatus("Open task — no single answer.", "muted");
+}
+
+/* ---------------------------
+   Navigation + sidebar
+   --------------------------- */
+function renderSidebar(){
+  qList.innerHTML = "";
+  for(let i=1;i<=QUESTIONS.length;i++){
+    const b = document.createElement("div");
+    b.className = "qbtn";
+    b.textContent = i;
+    b.onclick = ()=>goTo(i);
+    if(i===current) b.classList.add("active");
+    if(isDone(i)) b.classList.add("done");
+    qList.appendChild(b);
+  }
+}
+
+function goTo(n){
+  current = n;
+  renderSidebar();
+  buildQuestionUI(QUESTIONS[current-1]);
+}
+
+function prevQ(){ if(current>1) goTo(current-1); }
+function nextQ(){ if(current<QUESTIONS.length) goTo(current+1); }
+
+function setStatus(msg, cls){
+  statusLine.innerHTML = `Status: <span class="${cls}">${msg}</span>`;
+}
+
+/* ---------------------------
+   Local save (notes + done)
+   --------------------------- */
+const STORE_KEY = "g8_translations_noPhotos_v1";
+
+function loadStore(){
+  try{ return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); }
+  catch{ return {}; }
+}
+function saveStore(obj){
+  localStorage.setItem(STORE_KEY, JSON.stringify(obj));
+}
+function loadNotes(n){
+  const st = loadStore();
+  return st["notes_"+n] || "";
+}
+function saveNotes(n, val){
+  const st = loadStore();
+  st["notes_"+n] = val || "";
+  saveStore(st);
+}
+function markDone(n){
+  const st = loadStore();
+  st["done_"+n] = true;
+  saveStore(st);
+  renderSidebar();
+}
+function isDone(n){
+  const st = loadStore();
+  return !!st["done_"+n];
+}
+function resetAll(){
+  localStorage.removeItem(STORE_KEY);
+  renderSidebar();
+  buildQuestionUI(QUESTIONS[current-1]);
+  setStatus("Reset complete.", "muted");
+}
+
+// autosave notes on typing (per question)
+notes.addEventListener("input", ()=>{
+  saveNotes(current, notes.value);
+});
+
+// init
+renderSidebar();
+buildQuestionUI(QUESTIONS[0]);
 </script>
 </body>
 </html>
