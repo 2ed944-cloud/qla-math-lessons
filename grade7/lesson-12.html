@@ -6,232 +6,151 @@
   <title>Grade 7 — Unit 2 | Lesson 3: Algebraic Products</title>
   <style>
     :root{
-      --bg:#ffffff;
-      --card:#ffffff;
-      --ink:#111827;      /* near-black */
-      --muted:#4b5563;    /* gray-600 */
-      --line:#e5e7eb;     /* gray-200 */
-      --soft:#f9fafb;     /* gray-50 */
-      --accent:#2563eb;   /* blue-600 */
-      --accent2:#059669;  /* emerald-600 */
-      --good:#16a34a;
-      --bad:#dc2626;
-      --radius: 14px;
-      --shadow: 0 8px 20px rgba(17,24,39,.08);
+      --bg:#0b1020;
+      --card:#111a33;
+      --ink:#eaf0ff;
+      --muted:#b9c5ff;
+      --line:#24315e;
+      --accent:#ffd166;
+      --accent2:#7bdff2;
+      --good:#4ade80;
+      --bad:#fb7185;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
-
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:var(--sans);
+      background: radial-gradient(1200px 800px at 20% 10%, #162457 0%, var(--bg) 55%);
       color:var(--ink);
-      background: var(--bg);
       line-height:1.45;
     }
-
-    header{
-      max-width: 1060px;
-      margin: 0 auto;
-      padding: 24px 18px 10px;
-    }
-
+    header{padding: 26px 18px 10px; max-width: 1060px; margin: 0 auto;}
     .topbar{
-      background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
-      border:1px solid var(--line);
+      display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
+      padding:18px 18px;
+      background: linear-gradient(135deg, rgba(255,209,102,.16), rgba(123,223,242,.10));
+      border:1px solid rgba(255,255,255,.10);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding:16px 16px;
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
     }
-
-    .title h1{
-      margin:0;
-      font-size: 1.15rem;
-      letter-spacing:.2px;
-    }
-    .title p{
-      margin:6px 0 0;
-      color: var(--muted);
-      font-size:.95rem;
-    }
-
-    .meta{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      color: var(--muted);
-      font-size:.92rem;
-    }
+    .title h1{margin:0; font-size: 1.15rem; letter-spacing:.2px;}
+    .title p{margin:6px 0 0; color: var(--muted); font-size:.95rem;}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; align-items:center; color: var(--muted); font-size:.92rem;}
     .pill{
-      border:1px solid var(--line);
-      background: var(--soft);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(17,26,51,.65);
       padding:8px 10px;
       border-radius: 999px;
     }
-    .editable{
-      padding:0 6px;
-      border-bottom: 1px dashed #cbd5e1;
-      outline:none;
-      display:inline-block;
-      min-width: 90px;
-    }
-
-    main{
-      max-width: 1060px;
-      margin: 10px auto 70px;
-      padding: 0 18px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:16px;
-    }
-    @media (max-width: 940px){
-      .grid{grid-template-columns:1fr;}
-    }
+    main{max-width:1060px; margin: 10px auto 70px; padding: 0 18px;}
+    .grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:16px;}
+    @media (max-width: 940px){ .grid{grid-template-columns: 1fr;} }
 
     .card{
-      background: var(--card);
-      border:1px solid var(--line);
+      background: rgba(17,26,51,.78);
+      border: 1px solid rgba(255,255,255,.10);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 18px;
     }
-
-    h2{margin:0 0 10px; font-size:1.05rem}
+    h2{margin:0 0 10px; font-size:1.1rem}
     h3{margin:14px 0 8px; font-size:1rem}
     .muted{color:var(--muted)}
-    ul{margin:8px 0 0 18px}
+    ul{margin:8px 0 0 18px;}
     li{margin:6px 0}
-
-    .rule{
-      display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;
-    }
+    .rule{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
     .chip{
       display:inline-flex; align-items:center; gap:8px;
-      border:1px dashed #cbd5e1;
+      border:1px dashed rgba(255,255,255,.18);
       padding:8px 10px; border-radius:999px;
-      background: #ffffff;
+      background: rgba(0,0,0,.18);
       color: var(--muted);
       font-size: .92rem;
     }
-
     code.kbd{
       font-family: var(--mono);
       font-size:.92rem;
       padding:2px 6px;
       border-radius:8px;
-      border:1px solid #d1d5db;
-      background: #ffffff;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
       color: var(--ink);
     }
-
     .example{
-      border:1px solid var(--line);
-      background: var(--soft);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
       padding: 12px 12px;
-      border-radius: 12px;
+      border-radius: 14px;
       margin-top:10px;
     }
-    .math{
-      font-family: var(--mono);
-      font-size: 1.02rem;
-      letter-spacing:.2px;
-      white-space: nowrap;
-    }
+    .math{font-family: var(--mono); font-size: 1.02rem; letter-spacing:.2px; white-space: nowrap;}
     .steps{margin:8px 0 0 0; padding-left: 18px; color:var(--muted)}
     .steps li{margin:6px 0}
-
     .btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
     button{
       cursor:pointer;
-      border: 1px solid var(--line);
-      background: #ffffff;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,209,102,.14);
       color: var(--ink);
       padding: 10px 12px;
       border-radius: 12px;
-      font-weight: 700;
+      font-weight: 600;
     }
-    button.primary{
-      background: rgba(37,99,235,.10);
-      border-color: rgba(37,99,235,.25);
-      color: #1e40af;
-    }
-    button.secondary{
-      background: rgba(5,150,105,.10);
-      border-color: rgba(5,150,105,.25);
-      color: #065f46;
-    }
-    button.ghost{
-      background: var(--soft);
-    }
+    button.secondary{background: rgba(123,223,242,.12);}
+    button.ghost{background: rgba(0,0,0,.18);}
     button:active{transform: translateY(1px)}
-
-    details{
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 10px 12px;
-      background: #ffffff;
-      margin: 10px 0;
-    }
-    summary{
-      cursor:pointer;
-      font-weight:800;
-      color: var(--ink);
-      list-style:none;
-    }
-    summary::-webkit-details-marker{display:none}
 
     .practice-head{
       display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
       margin-bottom: 10px;
     }
-    .score{ color: var(--muted); font-size:.95rem; }
-
+    .score{color: var(--muted); font-size:.95rem;}
+    .section{margin-top: 14px; border-top: 1px solid rgba(255,255,255,.10); padding-top: 12px;}
+    details{
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,.16);
+      margin: 10px 0;
+    }
+    summary{
+      cursor:pointer;
+      font-weight:700;
+      color: var(--ink);
+      list-style:none;
+    }
+    summary::-webkit-details-marker{display:none}
     .q{
       display:grid;
-      grid-template-columns: 60px 1fr 230px;
+      grid-template-columns: 60px 1fr 220px;
       gap: 10px;
       align-items:center;
       padding: 10px 0;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid rgba(255,255,255,.07);
     }
     @media (max-width: 720px){
       .q{grid-template-columns: 60px 1fr;}
       .q .ans{grid-column: 1 / -1;}
     }
     .q:last-child{border-bottom:none}
-
-    .num{
-      color: var(--accent);
-      font-weight: 900;
-      font-family: var(--mono);
-    }
-    .expr{
-      font-family: var(--mono);
-      font-size: 1.02rem;
-    }
+    .num{color: var(--accent2); font-weight: 800; font-family: var(--mono);}
+    .expr{font-family: var(--mono); font-size: 1.02rem;}
     input{
       width: 100%;
       padding: 10px 10px;
       border-radius: 12px;
-      border: 1px solid #d1d5db;
-      background: #ffffff;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(17,26,51,.55);
       color: var(--ink);
       font-family: var(--mono);
       font-size: .98rem;
       outline: none;
     }
-    input::placeholder{color: #9ca3af}
-
+    input::placeholder{color: rgba(185,197,255,.55)}
     .mark{
       display:inline-block;
       min-width: 18px;
@@ -242,28 +161,15 @@
     .ok{color: var(--good)}
     .no{color: var(--bad)}
     .tiny{font-size:.9rem}
-
     .note{
-      border-left: 4px solid rgba(37,99,235,.40);
+      border-left: 4px solid rgba(255,209,102,.55);
       padding: 10px 12px;
-      background: rgba(37,99,235,.06);
+      background: rgba(255,209,102,.08);
       border-radius: 12px;
       margin-top:10px;
       color: var(--muted);
     }
-
-    .footer{
-      margin-top: 18px;
-      color: #6b7280;
-      font-size: .92rem;
-    }
-
-    @media print{
-      .btnrow, .score { display:none !important; }
-      body{background:#fff}
-      .card{box-shadow:none}
-      details{break-inside: avoid}
-    }
+    .footer{margin-top: 18px; color: rgba(185,197,255,.75); font-size: .92rem;}
   </style>
 </head>
 
@@ -275,9 +181,9 @@
       <p>Lesson 3: Algebraic Products</p>
     </div>
     <div class="meta">
-      <span class="pill">Name: <span class="editable" contenteditable="true">__________</span></span>
-      <span class="pill">Date: <span class="editable" contenteditable="true">__________</span></span>
-      <span class="pill">Class/Period: <span class="editable" contenteditable="true">__________</span></span>
+      <span class="pill">Name: <span contenteditable="true" style="outline:none">__________</span></span>
+      <span class="pill">Date: <span contenteditable="true" style="outline:none">__________</span></span>
+      <span class="pill">Class/Period: <span contenteditable="true" style="outline:none">__________</span></span>
     </div>
   </div>
 </header>
@@ -289,58 +195,58 @@
     <section class="card">
       <h2>Key Concepts</h2>
       <ul>
-        <li><b>A product</b> means multiply. Example: <span class="math">4 · x = 4x</span>.</li>
+        <li><b>Product</b> means multiply. Example: <span class="math">4 · x = 4x</span>.</li>
         <li><b>Distributive property:</b> <span class="math">a(b + c) = ab + ac</span> and <span class="math">a(b − c) = ab − ac</span>.</li>
-        <li><b>Negatives matter:</b> <span class="math">−3(x − 2) = −3x + 6</span>.</li>
+        <li>Negatives matter: <span class="math">−3(x − 2) = −3x + 6</span>.</li>
         <li>After expanding, <b>collect like terms</b> to simplify.</li>
         <li><b>Factoring</b> is the reverse of distributing: <span class="math">ax + ay = a(x + y)</span>.</li>
       </ul>
 
       <div class="rule">
-        <span class="chip">Distribute: <code class="kbd">k(x + a) = kx + ka</code></span>
-        <span class="chip">Distribute: <code class="kbd">k(x − a) = kx − ka</code></span>
-        <span class="chip">Factor: <code class="kbd">kx + ka = k(x + a)</code></span>
+        <span class="chip">Product: <code class="kbd">4 · x = 4x</code></span>
+        <span class="chip">Distribute: <code class="kbd">2(x+5)=2x+10</code></span>
+        <span class="chip">Factor: <code class="kbd">6x+12=6(x+2)</code></span>
       </div>
 
       <h3>Mini Lesson (Worked Examples)</h3>
 
       <div class="example">
-        <div class="math"><b>Example A:</b> Write as a single term: 7a · 3</div>
+        <div class="math"><b>Example A:</b> Expand 2(x + 5)</div>
         <ol class="steps">
-          <li>Multiply coefficients: <span class="math">7 × 3 = 21</span>.</li>
-          <li>Keep the variable: <span class="math">a</span>.</li>
-          <li>Answer: <span class="math">21a</span>.</li>
+          <li>Multiply 2 by each term inside parentheses.</li>
+          <li><span class="math">2·x = 2x</span> and <span class="math">2·5 = 10</span></li>
+          <li>Answer: <span class="math">2x + 10</span></li>
         </ol>
       </div>
 
       <div class="example">
-        <div class="math"><b>Example B:</b> Expand: 2(x + 5)</div>
+        <div class="math"><b>Example B:</b> Expand −3(p + 4)</div>
         <ol class="steps">
-          <li>Distribute 2 to each term: <span class="math">2·x + 2·5</span>.</li>
-          <li>Simplify: <span class="math">2x + 10</span>.</li>
+          <li>Multiply −3 by each term.</li>
+          <li><span class="math">−3·p = −3p</span> and <span class="math">−3·4 = −12</span></li>
+          <li>Answer: <span class="math">−3p − 12</span></li>
         </ol>
       </div>
 
       <div class="example">
-        <div class="math"><b>Example C:</b> Expand: −3(p + 4)</div>
+        <div class="math"><b>Example C:</b> Factor 6x + 12</div>
         <ol class="steps">
-          <li>Distribute −3: <span class="math">−3p + (−3)·4</span>.</li>
-          <li>Answer: <span class="math">−3p − 12</span>.</li>
+          <li>Greatest common factor is 6.</li>
+          <li>Pull out 6: <span class="math">6x + 12 = 6(x + 2)</span></li>
         </ol>
       </div>
 
       <div class="note">
-        <b>Teacher tip:</b> When students miss negatives, ask them to rewrite the expression as
-        <span class="math">−3(p + 4) = (−3)·p + (−3)·4</span>.
+        <b>Common trap:</b> <span class="math">5(x − 3)</span> becomes <span class="math">5x − 15</span>, not <span class="math">5x − 3</span>. The 5 must multiply <u>both</u> terms.
       </div>
 
       <div class="btnrow">
-        <button class="ghost" onclick="openAll()">Open all practice</button>
-        <button class="ghost" onclick="closeAll()">Close all practice</button>
+        <button class="secondary" onclick="openAll()">Open all practice sections</button>
+        <button class="ghost" onclick="closeAll()">Close all practice sections</button>
       </div>
 
       <div class="footer">
-        Based on: “Grade 7 Unit 2 — Expressions | Lesson 3: Algebraic Products.” :contentReference[oaicite:1]{index=1}
+        Interactive version of “Lesson 3: Algebraic Products” worksheet.
       </div>
     </section>
 
@@ -352,82 +258,79 @@
       </div>
 
       <p class="muted tiny" style="margin-top:0">
-        Type your answer, then press <b>Check</b>. Spaces don’t matter. Examples: <span class="math">21a</span>, <span class="math">2x+10</span>, <span class="math">-3p-12</span>.
+        Type your simplified answer, then press <b>Check</b>. Spaces don’t matter. Use parentheses only if needed.
       </p>
 
       <div class="btnrow" style="margin-top:10px">
-        <button class="primary" onclick="checkAll()">Check all</button>
+        <button onclick="checkAll()">Check all</button>
         <button class="secondary" onclick="revealAll()">Reveal answers</button>
         <button class="ghost" onclick="resetAll()">Reset</button>
       </div>
 
-      <details open>
+      <details open class="section">
         <summary>Level 1 — Foundations (1–10)</summary>
         <div id="sec1"></div>
       </details>
 
-      <details>
+      <details class="section">
         <summary>Level 2 — Practice (11–20)</summary>
         <div id="sec2"></div>
       </details>
 
-      <details>
+      <details class="section">
         <summary>Level 3 — Challenge (21–30)</summary>
         <div id="sec3"></div>
       </details>
 
       <div class="note tiny" style="margin-top:14px">
-        Note: #29 is an “error check” question — you can type a short correction (the answer is shown when you reveal).
-        #30 asks for expanding, simplifying, and then factoring.
+        For #29 you’ll write an explanation; the checker focuses on the corrected expansion.
+        For #30, after expanding you also factor: both are accepted.
       </div>
     </aside>
-
   </div>
 </main>
 
 <script>
-  // Answer key reconstructed from the worksheet prompts.
-  // Normalization removes spaces; we also accept equivalent forms for some items.
+  // Based directly on the worksheet problems.
+  // Normalization removes spaces; we also allow equivalent forms.
   const KEY = [
-    // Level 1 (1–10)
-    {n:1,  expr:"Write the product as a single term: 4 · x",                    ans:["4x"]},
-    {n:2,  expr:"Write the product as a single term: 7a · 3",                   ans:["21a"]},
-    {n:3,  expr:"Write the product as a single term: 5m · 2",                   ans:["10m"]},
-    {n:4,  expr:"Write the product as a single term: (−3) · y",                 ans:["-3y"]},
-    {n:5,  expr:"Write the product as a single term: 2x · 6",                   ans:["12x"]},
-    {n:6,  expr:"Write the product as a single term: 3b · (−4)",                ans:["-12b"]},
-    {n:7,  expr:"Expand using the distributive property: 2(x + 5)",             ans:["2x+10","10+2x"]},
-    {n:8,  expr:"Expand: 5(n − 2)",                                              ans:["5n-10","-10+5n"]},
-    {n:9,  expr:"Expand: −3(p + 4)",                                             ans:["-3p-12","-(3p+12)"]},
-    {n:10, expr:"Write the product as a single term: x · 9",                    ans:["9x"]},
+    // Level 1 (1-10)
+    {n:1,  expr:"Write as a single term: 4 · x",                 ans:["4x"]},
+    {n:2,  expr:"Write as a single term: 7a · 3",                ans:["21a","21a"]},
+    {n:3,  expr:"Write as a single term: 5m · 2",                ans:["10m"]},
+    {n:4,  expr:"Write as a single term: (−3) · y",              ans:["-3y"]},
+    {n:5,  expr:"Write as a single term: 2x · 6",                ans:["12x"]},
+    {n:6,  expr:"Write as a single term: 3b · (−4)",             ans:["-12b"]},
+    {n:7,  expr:"Expand: 2(x + 5)",                              ans:["2x+10","10+2x"]},
+    {n:8,  expr:"Expand: 5(n − 2)",                              ans:["5n-10","-10+5n"]},
+    {n:9,  expr:"Expand: −3(p + 4)",                             ans:["-3p-12","-12-3p"]},
+    {n:10, expr:"Write as a single term: x · 9",                 ans:["9x"]},
 
-    // Level 2 (11–20)
-    {n:11, expr:"Expand and simplify: 4(2x + 3)",                                ans:["8x+12","12+8x"]},
-    {n:12, expr:"Expand and simplify: 6(x − 5)",                                 ans:["6x-30","-30+6x"]},
-    {n:13, expr:"Expand and simplify: −2(3y − 7)",                               ans:["-6y+14","14-6y"]},
-    {n:14, expr:"Expand and simplify: 3(4a + 2) − 5a",                           ans:["7a+6","6+7a"]},
-    {n:15, expr:"Expand and simplify: 2(x + 8) + 3(x − 1)",                      ans:["5x+13","13+5x"]},
-    {n:16, expr:"Simplify: 7 − 3(x + 2)",                                        ans:["1-3x","-3x+1"]},
-    {n:17, expr:"Expand and simplify: 5(2m − 1) − 2(3m + 4)",                    ans:["4m-13","-13+4m"]},
-    {n:18, expr:"Simplify: 4x + 2(x − 3)",                                       ans:["6x-6","-6+6x"]},
-    {n:19, expr:"Expand and simplify: (1/2)(6n + 8)",                            ans:["3n+4","4+3n"]},
-    {n:20, expr:"Expand and simplify: 0.2(10p + 15)",                            ans:["2p+3","3+2p"]},
+    // Level 2 (11-20)
+    {n:11, expr:"Expand & simplify: 4(2x + 3)",                  ans:["8x+12","12+8x"]},
+    {n:12, expr:"Expand & simplify: 6(x − 5)",                   ans:["6x-30","-30+6x"]},
+    {n:13, expr:"Expand & simplify: −2(3y − 7)",                 ans:["-6y+14","14-6y"]},
+    {n:14, expr:"Expand & simplify: 3(4a + 2) − 5a",             ans:["7a+6","6+7a"]},
+    {n:15, expr:"Expand & simplify: 2(x + 8) + 3(x − 1)",        ans:["5x+13","13+5x"]},
+    {n:16, expr:"Simplify: 7 − 3(x + 2)",                        ans:["1-3x","-3x+1"]},
+    {n:17, expr:"Expand & simplify: 5(2m − 1) − 2(3m + 4)",      ans:["4m-13","-13+4m"]},
+    {n:18, expr:"Simplify: 4x + 2(x − 3)",                       ans:["6x-6","-6+6x"]},
+    {n:19, expr:"Expand & simplify: (1/2)(6n + 8)",              ans:["3n+4","4+3n"]},
+    {n:20, expr:"Expand & simplify: 0.2(10p + 15)",              ans:["2p+3","3+2p"]},
 
-    // Level 3 (21–30)
-    {n:21, expr:"Factor (write as a product): 6x + 12",                          ans:["6(x+2)","6x+12"]},
-    {n:22, expr:"Factor: 9a − 3",                                                ans:["3(3a-1)","3(3a-1)"]},
-    {n:23, expr:"Factor: 8y + 4x",                                               ans:["4(2y+x)","4(x+2y)"]},
-    {n:24, expr:"Expand and simplify: 3(x − 4) − 2(x + 5)",                      ans:["x-22","-22+x"]},
-    {n:25, expr:"Factor: 15m − 10",                                              ans:["5(3m-2)"]},
-    {n:26, expr:"Rectangle sides (x + 3) and 4. Area (simplify).",               ans:["4x+12","12+4x"]},
-    {n:27, expr:"Increased by 5 then multiplied by −2. Write product, expand.",  ans:["-2(x+5)","-2x-10","-(2x+10)"]},
-    {n:28, expr:"Solve: 3(x − 2) = 2(x + 4)",                                    ans:["x=14","14"]},
-    {n:29, expr:"Error check: 5(x − 3) ≠ 5x − 3. Correct.",                      ans:["5x-15"]},
-    {n:30, expr:"Expand & simplify: 2(3x + 1) + 4(x − 2). Then factor.",          ans:["10x-6","2(5x-3)"]}
+    // Level 3 (21-30)
+    {n:21, expr:"Factor: 6x + 12",                                ans:["6(x+2)","6(x+2)","6x+12"]},
+    {n:22, expr:"Factor: 9a − 3",                                 ans:["3(3a-1)","3(3a-1)","9a-3"]},
+    {n:23, expr:"Factor: 8y + 4x",                                ans:["4(2y+x)","4(x+2y)","4(2y+x)","8y+4x"]},
+    {n:24, expr:"Expand & simplify: 3(x − 4) − 2(x + 5)",         ans:["x-22","-22+x"]},
+    {n:25, expr:"Factor: 15m − 10",                               ans:["5(3m-2)","5(3m-2)","15m-10"]},
+    {n:26, expr:"Rectangle sides (x + 3) and 4: area, simplify",  ans:["4(x+3)","4x+12","12+4x"]},
+    {n:27, expr:"Increased by 5 then multiplied by −2: product then expand",
+                                                                   ans:["-2(x+5)","-2x-10","-(2x+10)"]},
+    {n:28, expr:"Solve: 3(x − 2) = 2(x + 4)",                     ans:["x=14","14"]},
+    {n:29, expr:"Error check: 5(x − 3) as 5x − 3. Correct it.",   ans:["5x-15","-15+5x"]},
+    {n:30, expr:"Expand: 2(3x + 1) + 4(x − 2). Then factor.",     ans:["10x-6","2(5x-3)","2(5x-3)","10x-6"]}
   ];
-
-  // For factoring items, we can’t perfectly parse algebra without a CAS,
-  // so we accept common equivalent forms above (and keep it simple).
 
   const normalize = s => (s ?? "")
     .toLowerCase()
@@ -500,17 +403,20 @@
 
   function revealAll(){
     KEY.forEach(q=>{
-      document.getElementById("q"+q.n+"-reveal").style.display = "block";
+      const reveal = document.getElementById("q"+q.n+"-reveal");
+      reveal.style.display = "block";
     });
   }
 
   function resetAll(){
     KEY.forEach(q=>{
-      document.getElementById("q"+q.n).value = "";
+      const input = document.getElementById("q"+q.n);
       const mark = document.getElementById("q"+q.n+"-mark");
+      const reveal = document.getElementById("q"+q.n+"-reveal");
+      input.value = "";
       mark.textContent = "";
       mark.className = "mark";
-      document.getElementById("q"+q.n+"-reveal").style.display = "none";
+      reveal.style.display = "none";
     });
     updateScore();
   }
