@@ -1,1300 +1,439 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G8 • Unit 3 • Lesson 1 — Translations</title>
-
-<!-- Fonts & Tailwind -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-
-<!-- KaTeX (robust auto-render) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const run = (root = document.body) => {
-      if (!window.renderMathInElement) return;
-      window.renderMathInElement(root, {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '\\[', right: '\\]', display: true },
-          { left: '\\(', right: '\\)', display: false }
-        ],
-        throwOnError: false
-      });
-    };
-    if (window.renderMathInElement) run();
-    else {
-      const t = setInterval(() => { if (window.renderMathInElement) { clearInterval(t); run(); } }, 25);
-      setTimeout(() => clearInterval(t), 6000);
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grade 7 — Unit 2 | Lesson 3: Algebraic Products</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#111a33;
+      --ink:#eaf0ff;
+      --muted:#b9c5ff;
+      --line:#24315e;
+      --accent:#ffd166;
+      --accent2:#7bdff2;
+      --good:#4ade80;
+      --bad:#fb7185;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
-    window._rerenderMath = run;
-  });
-</script>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 800px at 20% 10%, #162457 0%, var(--bg) 55%);
+      color:var(--ink);
+      line-height:1.45;
+    }
+    header{padding: 26px 18px 10px; max-width: 1060px; margin: 0 auto;}
+    .topbar{
+      display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
+      padding:18px 18px;
+      background: linear-gradient(135deg, rgba(255,209,102,.16), rgba(123,223,242,.10));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .title h1{margin:0; font-size: 1.15rem; letter-spacing:.2px;}
+    .title p{margin:6px 0 0; color: var(--muted); font-size:.95rem;}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; align-items:center; color: var(--muted); font-size:.92rem;}
+    .pill{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(17,26,51,.65);
+      padding:8px 10px;
+      border-radius: 999px;
+    }
+    main{max-width:1060px; margin: 10px auto 70px; padding: 0 18px;}
+    .grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:16px;}
+    @media (max-width: 940px){ .grid{grid-template-columns: 1fr;} }
 
-<style>
-  :root{--maroon:#6C1D45;--gold:#C7A34F;--dark:#2C2C2E;--light:#F5F5F5;--accent:#E8D5B7}
-  html,body{height:100%;background:#2d3748;color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .card{
+      background: rgba(17,26,51,.78);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    h2{margin:0 0 10px; font-size:1.1rem}
+    h3{margin:14px 0 8px; font-size:1rem}
+    .muted{color:var(--muted)}
+    ul{margin:8px 0 0 18px;}
+    li{margin:6px 0}
+    .rule{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px dashed rgba(255,255,255,.18);
+      padding:8px 10px; border-radius:999px;
+      background: rgba(0,0,0,.18);
+      color: var(--muted);
+      font-size: .92rem;
+    }
+    code.kbd{
+      font-family: var(--mono);
+      font-size:.92rem;
+      padding:2px 6px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: var(--ink);
+    }
+    .example{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      padding: 12px 12px;
+      border-radius: 14px;
+      margin-top:10px;
+    }
+    .math{font-family: var(--mono); font-size: 1.02rem; letter-spacing:.2px; white-space: nowrap;}
+    .steps{margin:8px 0 0 0; padding-left: 18px; color:var(--muted)}
+    .steps li{margin:6px 0}
+    .btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    button{
+      cursor:pointer;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,209,102,.14);
+      color: var(--ink);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+    button.secondary{background: rgba(123,223,242,.12);}
+    button.ghost{background: rgba(0,0,0,.18);}
+    button:active{transform: translateY(1px)}
 
-  /* Stage */
-  #deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
-  #slides{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
-  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
-  .slide.active{opacity:1;transform:none;pointer-events:auto}
-  .bg-maroon{background-color:var(--maroon)} .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
-  .banner{width:100%;height:120px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
-  .card{border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
-  .chip{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.05);border-radius:9999px;padding:.35rem .75rem;cursor:pointer}
-  .chip:hover{outline:2px solid var(--gold)}
-  .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
-  .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
-  .btn:hover{filter:brightness(0.98)}
-  #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
-  #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700}
-  #controls button:hover{transform:scale(1.06)}
-  #counter{color:#fff;font-weight:700;min-width:84px;text-align:center}
-  #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:30;transition:width .35s ease}
-  #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
-
-  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
-  .confetti{position:fixed;pointer-events:none;z-index:50}
-
-  /* Popover */
-  #pop{position:fixed;display:none;max-width:440px;z-index:60;background:#fff;border:1px solid #e5e7eb;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.22);padding:12px}
-  #pop .close{float:right;cursor:pointer;font-weight:800;padding:2px 6px;border-radius:8px}
-  #pop .close:hover{background:#f3f4f6}
-
-  /* SVG board */
-  .board{width:100%;max-width:780px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;overflow:hidden}
-  .workstep{border-left:4px solid var(--gold);padding:.6rem .8rem;background:#fff;border-radius:12px;border:1px solid #e5e7eb}
-  .pill{display:inline-flex;align-items:center;gap:.35rem;border:1px solid #e5e7eb;border-radius:999px;padding:.35rem .75rem;background:#fff;cursor:pointer}
-  .pill.active{border-color:#22c55e;box-shadow:0 0 0 2px rgba(34,197,94,.15)}
-</style>
+    .practice-head{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      margin-bottom: 10px;
+    }
+    .score{color: var(--muted); font-size:.95rem;}
+    .section{margin-top: 14px; border-top: 1px solid rgba(255,255,255,.10); padding-top: 12px;}
+    details{
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,.16);
+      margin: 10px 0;
+    }
+    summary{
+      cursor:pointer;
+      font-weight:700;
+      color: var(--ink);
+      list-style:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    .q{
+      display:grid;
+      grid-template-columns: 60px 1fr 220px;
+      gap: 10px;
+      align-items:center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    @media (max-width: 720px){
+      .q{grid-template-columns: 60px 1fr;}
+      .q .ans{grid-column: 1 / -1;}
+    }
+    .q:last-child{border-bottom:none}
+    .num{color: var(--accent2); font-weight: 800; font-family: var(--mono);}
+    .expr{font-family: var(--mono); font-size: 1.02rem;}
+    input{
+      width: 100%;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(17,26,51,.55);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: .98rem;
+      outline: none;
+    }
+    input::placeholder{color: rgba(185,197,255,.55)}
+    .mark{
+      display:inline-block;
+      min-width: 18px;
+      text-align:center;
+      margin-left:8px;
+      font-weight: 900;
+    }
+    .ok{color: var(--good)}
+    .no{color: var(--bad)}
+    .tiny{font-size:.9rem}
+    .note{
+      border-left: 4px solid rgba(255,209,102,.55);
+      padding: 10px 12px;
+      background: rgba(255,209,102,.08);
+      border-radius: 12px;
+      margin-top:10px;
+      color: var(--muted);
+    }
+    .footer{margin-top: 18px; color: rgba(185,197,255,.75); font-size: .92rem;}
+  </style>
 </head>
+
 <body>
-
-<div id="deck" aria-live="polite">
-  <div id="slides" class="relative">
-    <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
-
-    <!-- 0 • Title -->
-    <section class="slide active bg-maroon text-white">
-      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="QLA Partner Banner"></div>
-      <div class="flex items-center gap-8">
-        <img src="qla_logo.png" alt="QLA Logo" class="h-24 w-auto" onerror="this.style.display='none'"/>
-        <div class="text-left">
-          <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Unit 3 — Transformations &amp; Congruence</h1>
-          <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Lesson 1 — Translations</p>
-          <p class="mt-2 text-lg">Grade 8</p>
-        </div>
-      </div>
-      <div class="absolute bottom-6 text-sm text-gray-100">
-        Focus: translate points and shapes using vectors and coordinate rules; translations are rigid motions (isometries).
-      </div>
-    </section>
-
-    <!-- 1 • Learning Outcomes & Keywords -->
-    <section class="slide">
-      <h2 class="text-4xl font-extrabold text-maroon mb-2">Learning Outcomes &amp; Keywords</h2>
-      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
-        <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes</h3>
-          <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Describe a translation using a vector \(\langle a,b\rangle\) and direction (right/left, up/down).</li>
-            <li>Translate a point \((x,y)\) using \((x,y)\to(x+a,\,y+b)\).</li>
-            <li>Translate a polygon by translating every vertex.</li>
-            <li>Explain why translations preserve distance and angle (congruence / rigid motion).</li>
-            <li>Check your work by comparing side lengths or by reversing the translation.</li>
-          </ul>
-        </div>
-        <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
-          <div class="flex flex-wrap gap-2 text-lg">
-            <span class="chip" data-key="translation">translation</span>
-            <span class="chip" data-key="vector">vector</span>
-            <span class="chip" data-key="preimage">preimage</span>
-            <span class="chip" data-key="image">image</span>
-            <span class="chip" data-key="rule">rule</span>
-            <span class="chip" data-key="isometry">rigid motion (isometry)</span>
-            <span class="chip" data-key="congruent">congruent</span>
-            <span class="chip" data-key="component">components</span>
-          </div>
-          <div class="text-xs text-gray-500 mt-3">
-            Big idea: translation = “slide” → same size, same shape, same orientation.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2 • Warm-Up: Move a point -->
-    <section class="slide" id="wuSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm-Up: Translate a Point</h2>
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="wuLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="wuNew" class="btn">New set</button>
-        <button id="wuCheck" class="btn maroon">Check</button>
-        <button id="wuExportCSV" class="btn">Export CSV</button>
-        <button id="wuExportJSON" class="btn">Export JSON</button>
-      </div>
-
-      <div class="card p-5 w-full max-w-5xl text-left">
-        <div id="wuList" class="grid md:grid-cols-2 gap-3"></div>
-      </div>
-      <div id="wuFb" class="mt-2 h-6 font-semibold"></div>
-
-      <div class="hint mt-3 text-sm max-w-5xl text-left">
-        Translation vector \(\langle a,b\rangle\): add \(a\) to \(x\) and add \(b\) to \(y\).
-        Right/Up are positive; Left/Down are negative.
-      </div>
-    </section>
-
-    <!-- 3 • Rules & Notation -->
-    <section class="slide" id="rulesSlide">
-      <h2 class="text-4xl font-extrabold text-maroon mb-3">Translation Rules &amp; Notation</h2>
-      <div class="grid lg:grid-cols-2 gap-6 w-full max-w-6xl text-left">
-        <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-2">Coordinate Rule</h3>
-          <div class="text-lg space-y-2">
-            <div>Translate by vector \(\langle a,b\rangle\):</div>
-            <div class="workstep">\((x,y)\rightarrow(x+a,\;y+b)\)</div>
-            <div class="text-sm text-gray-600">Example: \(\langle 3,-2\rangle\) means right 3, down 2.</div>
-          </div>
-        </div>
-        <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-2">What a Translation Preserves</h3>
-          <div class="text-lg space-y-2">
-            <div>Distances stay the same.</div>
-            <div>Angles stay the same.</div>
-            <div>Orientation stays the same (no “flip”).</div>
-            <div class="hint text-sm mt-2">So the image is <strong>congruent</strong> to the preimage.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4 • Worked Examples -->
-    <section class="slide" id="wkSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Worked Examples (Step by Step)</h2>
-      <div class="grid lg:grid-cols-3 gap-4 w-full max-w-6xl text-left">
-        <div class="card p-4">
-          <h3 class="font-bold text-maroon text-xl">Example 1 — Point</h3>
-          <div id="ex1" class="mt-2 text-lg"></div>
-          <button id="ex1Next" class="btn mt-2">Another</button>
-        </div>
-        <div class="card p-4">
-          <h3 class="font-bold text-maroon text-xl">Example 2 — Triangle</h3>
-          <div id="ex2" class="mt-2 text-lg"></div>
-          <button id="ex2Next" class="btn mt-2">Another</button>
-        </div>
-        <div class="card p-4">
-          <h3 class="font-bold text-maroon text-xl">Example 3 — Write the Rule</h3>
-          <div id="ex3" class="mt-2 text-lg"></div>
-          <button id="ex3Next" class="btn mt-2">Another</button>
-        </div>
-      </div>
-      <div class="hint mt-4 text-left text-sm max-w-6xl">
-        Always translate every vertex using the same \(\langle a,b\rangle\).
-      </div>
-    </section>
-
-    <!-- 5 • Practice A: Translate Points -->
-    <section class="slide" id="ptSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice A — Translate Points</h2>
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="ptLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="ptNew" class="btn">New set</button>
-        <button id="ptCheck" class="btn maroon">Check</button>
-        <button id="ptExportCSV" class="btn">Export CSV</button>
-        <button id="ptExportJSON" class="btn">Export JSON</button>
-      </div>
-
-      <div id="ptList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
-      <div id="ptFb" class="mt-2 h-6 font-semibold"></div>
-
-      <div class="hint mt-3 text-left text-sm max-w-5xl">
-        Input format accepted: <span class="font-mono">(3,-2)</span> or <span class="font-mono">3,-2</span> or <span class="font-mono">3 -2</span>.
-      </div>
-    </section>
-
-    <!-- 6 • Practice B: Translate a Polygon -->
-    <section class="slide" id="polySlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice B — Translate a Polygon (Vertex Table)</h2>
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="pyLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="pyNew" class="btn">New polygon</button>
-        <button id="pyCheck" class="btn maroon">Check</button>
-        <button id="pyExportCSV" class="btn">Export CSV</button>
-        <button id="pyExportJSON" class="btn">Export JSON</button>
-      </div>
-
-      <div class="card p-5 w-full max-w-6xl text-left">
-        <div class="text-lg mb-2">
-          Translate by vector <span class="font-extrabold" id="pyVec"></span>
-          &nbsp; (rule: <span class="font-extrabold" id="pyRule"></span>)
-        </div>
-        <div class="grid lg:grid-cols-2 gap-4">
-          <div class="card p-4 bg-white">
-            <h3 class="font-bold text-maroon">Given vertices</h3>
-            <div id="pyGiven" class="mt-2 text-lg"></div>
-          </div>
-          <div class="card p-4 bg-white">
-            <h3 class="font-bold text-maroon">Image vertices (you)</h3>
-            <div id="pyInputs" class="mt-2"></div>
-          </div>
-        </div>
-        <div id="pyFb" class="mt-3 h-6 font-semibold"></div>
-      </div>
-
-      <div class="hint mt-3 text-left text-sm max-w-6xl">
-        Translate each vertex: if \(A(x,y)\) then \(A'(x+a,\;y+b)\).
-      </div>
-    </section>
-
-    <!-- 7 • Practice C: Write the Translation (vector + rule) -->
-    <section class="slide" id="wrSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice C — Write the Translation Vector &amp; Rule</h2>
-
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="wrLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="wrNew" class="btn">New set</button>
-        <button id="wrCheck" class="btn maroon">Check</button>
-        <button id="wrHint" class="btn">Hint</button>
-        <button id="wrExportCSV" class="btn">Export CSV</button>
-        <button id="wrExportJSON" class="btn">Export JSON</button>
-      </div>
-
-      <div id="wrList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
-      <div id="wrHintBox" class="mt-2 text-sm max-w-5xl"></div>
-      <div id="wrFb" class="mt-2 h-6 font-semibold"></div>
-
-      <div class="hint mt-3 text-left text-sm max-w-5xl">
-        Rule format example: <span class="font-mono">(x,y) → (x+3, y-2)</span>. Vector format: <span class="font-mono">&lt;3, -2&gt;</span>.
-      </div>
-    </section>
-
-    <!-- 8 • Visual Translation (SVG) -->
-    <section class="slide" id="vizSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Visual: Identify the Translation</h2>
-
-      <div class="flex items-center gap-3 mb-2">
-        <span class="pill active" id="vizShow" role="button" aria-pressed="true">Show image</span>
-        <span>Level:</span>
-        <select id="vzLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="vzNew" class="btn">New diagram</button>
-        <button id="vzCheck" class="btn maroon">Check</button>
-        <button id="vzExportCSV" class="btn">Export CSV</button>
-        <button id="vzExportJSON" class="btn">Export JSON</button>
-      </div>
-
-      <div class="board card p-4">
-        <div id="vzSvgWrap"></div>
-        <div class="mt-3 text-left">
-          <div class="text-lg">What translation vector maps the preimage to the image?</div>
-          <div class="mt-2 flex items-center gap-2">
-            <span class="font-bold">&lt;</span>
-            <input id="vzA" class="border rounded px-2 py-1 w-20" placeholder="a">
-            <span class="font-bold">,</span>
-            <input id="vzB" class="border rounded px-2 py-1 w-20" placeholder="b">
-            <span class="font-bold">&gt;</span>
-            <span class="text-sm text-gray-500 ml-2">(a = change in x, b = change in y)</span>
-          </div>
-          <div id="vzFb" class="mt-2 h-6 font-semibold"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 9 • Challenge: Compose Translations -->
-    <section class="slide" id="chSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Challenge — Compose Translations</h2>
-
-      <div class="card p-5 w-full max-w-5xl text-left">
-        <div class="text-lg" id="chPrompt"></div>
-
-        <div class="mt-3 grid md:grid-cols-2 gap-4">
-          <div class="card p-4 bg-white">
-            <h3 class="font-bold text-maroon">Resulting single translation</h3>
-            <div class="mt-2 flex items-center gap-2">
-              <span class="font-bold">&lt;</span>
-              <input id="chA" class="border rounded px-2 py-1 w-24" placeholder="a">
-              <span class="font-bold">,</span>
-              <input id="chB" class="border rounded px-2 py-1 w-24" placeholder="b">
-              <span class="font-bold">&gt;</span>
-            </div>
-            <div class="mt-2 text-sm text-gray-600">Add vectors: \(\langle a_1,b_1\rangle+\langle a_2,b_2\rangle=\langle a_1+a_2,\;b_1+b_2\rangle\).</div>
-          </div>
-
-          <div class="card p-4 bg-white">
-            <h3 class="font-bold text-maroon">Final image of the point</h3>
-            <div class="mt-2">
-              <input id="chPt" class="border rounded px-2 py-2 w-60" placeholder="(x,y)">
-            </div>
-            <div class="mt-2 text-sm text-gray-600">Translate the point using the combined vector.</div>
-          </div>
-        </div>
-
-        <div class="mt-3 flex gap-2">
-          <button id="chNew" class="btn">New challenge</button>
-          <button id="chCheck" class="btn maroon">Check</button>
-          <button id="chHint" class="btn">Hints</button>
-          <button id="chExportCSV" class="btn">Export CSV</button>
-          <button id="chExportJSON" class="btn">Export JSON</button>
-        </div>
-
-        <div id="chHintBox" class="mt-2 text-sm"></div>
-        <div id="chFb" class="mt-2 h-6 font-semibold"></div>
-      </div>
-    </section>
-
-    <!-- 10 • Error Analysis -->
-    <section class="slide" id="errSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Error Analysis — Diagnose the Mistake</h2>
-
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="errLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="errNew" class="btn">New example</button>
-        <button id="errReveal" class="btn">Reveal correct work</button>
-      </div>
-
-      <div class="card p-5 w-full max-w-5xl text-left">
-        <div id="errBox" class="text-lg"></div>
-        <div class="mt-2">
-          <label><input type="radio" name="errChoice" value="A"> Added to the wrong coordinate (x vs y)</label><br/>
-          <label><input type="radio" name="errChoice" value="B"> Sign error (left/right or up/down)</label><br/>
-          <label><input type="radio" name="errChoice" value="C"> Did not translate every vertex the same way</label><br/>
-          <label><input type="radio" name="errChoice" value="D"> Mixed up vector \(\langle a,b\rangle\) with point \((a,b)\)</label>
-        </div>
-
-        <div class="mt-2 flex gap-2">
-          <button id="errCheck" class="btn maroon">Check</button>
-          <button id="errExportCSV" class="btn">Export CSV</button>
-          <button id="errExportJSON" class="btn">Export JSON</button>
-        </div>
-
-        <div id="errFb" class="mt-2 h-6 font-semibold"></div>
-        <div id="errRevealBox" class="mt-2 text-sm"></div>
-      </div>
-    </section>
-
-    <!-- 11 • Mixed Generator -->
-    <section class="slide" id="mixSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Mixed Practice Generator</h2>
-      <div class="card p-5 w-full max-w-3xl text-left">
-        <div class="flex items-center gap-3">
-          <span>Level:</span>
-          <select id="mixLevel" class="border rounded px-2 py-1">
-            <option value="easy" selected>easy</option>
-            <option value="med">medium</option>
-            <option value="hard">hard</option>
-          </select>
-          <button id="mixNew" class="btn">New question</button>
-        </div>
-
-        <div class="mt-3 text-2xl">Task: <span id="mixQ" class="font-extrabold"></span></div>
-        <div class="mt-2">
-          <input id="mixAns" class="border rounded px-3 py-2 w-[440px] max-w-full" placeholder="answer (coord / vector / rule)">
-          <button id="mixCheck" class="btn maroon">Check</button>
-          <button id="mixHint" class="btn">Hint</button>
-          <button id="mixExportCSV" class="btn">Export CSV</button>
-          <button id="mixExportJSON" class="btn">Export JSON</button>
-        </div>
-
-        <div id="mixHintBox" class="mt-3 text-sm"></div>
-        <div id="mixFb" class="mt-2 h-6 font-semibold"></div>
-      </div>
-    </section>
-
-    <!-- 12 • Exit Ticket -->
-    <section class="slide">
-      <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
-      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
-        <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon">3–2–1 Reflect</h3>
-          <ul class="list-disc list-inside">
-            <li>3 things translations preserve</li>
-            <li>2 ways to describe a translation (vector + rule)</li>
-            <li>1 quick check you use to verify your answer</li>
-          </ul>
-        </div>
-        <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon">Up Next</h3>
-          <p>We’ll move from translations to other rigid motions: reflections and rotations (and compare congruence).</p>
-        </div>
-      </div>
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[110px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
-    </section>
-
+<header>
+  <div class="topbar">
+    <div class="title">
+      <h1>Grade 7 — Unit 2: Expressions (Linear Expressions)</h1>
+      <p>Lesson 3: Algebraic Products</p>
+    </div>
+    <div class="meta">
+      <span class="pill">Name: <span contenteditable="true" style="outline:none">__________</span></span>
+      <span class="pill">Date: <span contenteditable="true" style="outline:none">__________</span></span>
+      <span class="pill">Class/Period: <span contenteditable="true" style="outline:none">__________</span></span>
+    </div>
   </div>
-</div>
+</header>
 
-<!-- Controls -->
-<div id="controls" role="group" aria-label="Slideshow controls">
-  <button id="prev" title="Previous (←)">&laquo;</button>
-  <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
-  <div id="counter">1 / 13</div>
-  <button id="next" title="Next (→)">&raquo;</button>
-</div>
-<div id="progress"></div>
+<main>
+  <div class="grid">
 
-<!-- Glossary popover -->
-<div id="pop" role="dialog" aria-modal="true" aria-live="polite">
-  <span class="close" title="Close">✕</span>
-  <div id="popBody"></div>
-</div>
+    <!-- LEFT: TEACH -->
+    <section class="card">
+      <h2>Key Concepts</h2>
+      <ul>
+        <li><b>Product</b> means multiply. Example: <span class="math">4 · x = 4x</span>.</li>
+        <li><b>Distributive property:</b> <span class="math">a(b + c) = ab + ac</span> and <span class="math">a(b − c) = ab − ac</span>.</li>
+        <li>Negatives matter: <span class="math">−3(x − 2) = −3x + 6</span>.</li>
+        <li>After expanding, <b>collect like terms</b> to simplify.</li>
+        <li><b>Factoring</b> is the reverse of distributing: <span class="math">ax + ay = a(x + y)</span>.</li>
+      </ul>
+
+      <div class="rule">
+        <span class="chip">Product: <code class="kbd">4 · x = 4x</code></span>
+        <span class="chip">Distribute: <code class="kbd">2(x+5)=2x+10</code></span>
+        <span class="chip">Factor: <code class="kbd">6x+12=6(x+2)</code></span>
+      </div>
+
+      <h3>Mini Lesson (Worked Examples)</h3>
+
+      <div class="example">
+        <div class="math"><b>Example A:</b> Expand 2(x + 5)</div>
+        <ol class="steps">
+          <li>Multiply 2 by each term inside parentheses.</li>
+          <li><span class="math">2·x = 2x</span> and <span class="math">2·5 = 10</span></li>
+          <li>Answer: <span class="math">2x + 10</span></li>
+        </ol>
+      </div>
+
+      <div class="example">
+        <div class="math"><b>Example B:</b> Expand −3(p + 4)</div>
+        <ol class="steps">
+          <li>Multiply −3 by each term.</li>
+          <li><span class="math">−3·p = −3p</span> and <span class="math">−3·4 = −12</span></li>
+          <li>Answer: <span class="math">−3p − 12</span></li>
+        </ol>
+      </div>
+
+      <div class="example">
+        <div class="math"><b>Example C:</b> Factor 6x + 12</div>
+        <ol class="steps">
+          <li>Greatest common factor is 6.</li>
+          <li>Pull out 6: <span class="math">6x + 12 = 6(x + 2)</span></li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <b>Common trap:</b> <span class="math">5(x − 3)</span> becomes <span class="math">5x − 15</span>, not <span class="math">5x − 3</span>. The 5 must multiply <u>both</u> terms.
+      </div>
+
+      <div class="btnrow">
+        <button class="secondary" onclick="openAll()">Open all practice sections</button>
+        <button class="ghost" onclick="closeAll()">Close all practice sections</button>
+      </div>
+
+      <div class="footer">
+        Interactive version of “Lesson 3: Algebraic Products” worksheet.
+      </div>
+    </section>
+
+    <!-- RIGHT: PRACTICE -->
+    <aside class="card">
+      <div class="practice-head">
+        <h2 style="margin:0">Practice</h2>
+        <div class="score" id="scoreBox">Score: 0 / 30</div>
+      </div>
+
+      <p class="muted tiny" style="margin-top:0">
+        Type your simplified answer, then press <b>Check</b>. Spaces don’t matter. Use parentheses only if needed.
+      </p>
+
+      <div class="btnrow" style="margin-top:10px">
+        <button onclick="checkAll()">Check all</button>
+        <button class="secondary" onclick="revealAll()">Reveal answers</button>
+        <button class="ghost" onclick="resetAll()">Reset</button>
+      </div>
+
+      <details open class="section">
+        <summary>Level 1 — Foundations (1–10)</summary>
+        <div id="sec1"></div>
+      </details>
+
+      <details class="section">
+        <summary>Level 2 — Practice (11–20)</summary>
+        <div id="sec2"></div>
+      </details>
+
+      <details class="section">
+        <summary>Level 3 — Challenge (21–30)</summary>
+        <div id="sec3"></div>
+      </details>
+
+      <div class="note tiny" style="margin-top:14px">
+        For #29 you’ll write an explanation; the checker focuses on the corrected expansion.
+        For #30, after expanding you also factor: both are accepted.
+      </div>
+    </aside>
+  </div>
+</main>
 
 <script>
-/* --------------------- Core shell & utilities --------------------- */
-(function(){
-  const slides=[...document.querySelectorAll('.slide')];
-  const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
-  const deckTitle='G8_U3_L1_Translations';
-  let i=0;
+  // Based directly on the worksheet problems.
+  // Normalization removes spaces; we also allow equivalent forms.
+  const KEY = [
+    // Level 1 (1-10)
+    {n:1,  expr:"Write as a single term: 4 · x",                 ans:["4x"]},
+    {n:2,  expr:"Write as a single term: 7a · 3",                ans:["21a","21a"]},
+    {n:3,  expr:"Write as a single term: 5m · 2",                ans:["10m"]},
+    {n:4,  expr:"Write as a single term: (−3) · y",              ans:["-3y"]},
+    {n:5,  expr:"Write as a single term: 2x · 6",                ans:["12x"]},
+    {n:6,  expr:"Write as a single term: 3b · (−4)",             ans:["-12b"]},
+    {n:7,  expr:"Expand: 2(x + 5)",                              ans:["2x+10","10+2x"]},
+    {n:8,  expr:"Expand: 5(n − 2)",                              ans:["5n-10","-10+5n"]},
+    {n:9,  expr:"Expand: −3(p + 4)",                             ans:["-3p-12","-12-3p"]},
+    {n:10, expr:"Write as a single term: x · 9",                 ans:["9x"]},
 
-  function show(k){
-    i=(k+slides.length)%slides.length;
-    slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
-    counter.textContent=(i+1)+' / '+slides.length;
-    progress.style.width=((i+1)/slides.length*100)+'%';
-    renderMath(slides[i]);
-  }
-  prev.addEventListener('click',()=>show(i-1));
-  next.addEventListener('click',()=>show(i+1));
-  document.addEventListener('keydown',e=>{
-    if(e.key==='ArrowRight') show(i+1);
-    if(e.key==='ArrowLeft') show(i-1);
-    if(e.key.toLowerCase()==='f') toggleFS();
-  });
-  function toggleFS(){
-    const el=id('slides');
-    if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);}
-    else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(el);}
-  }
-  fsBtn.addEventListener('click',toggleFS);
+    // Level 2 (11-20)
+    {n:11, expr:"Expand & simplify: 4(2x + 3)",                  ans:["8x+12","12+8x"]},
+    {n:12, expr:"Expand & simplify: 6(x − 5)",                   ans:["6x-30","-30+6x"]},
+    {n:13, expr:"Expand & simplify: −2(3y − 7)",                 ans:["-6y+14","14-6y"]},
+    {n:14, expr:"Expand & simplify: 3(4a + 2) − 5a",             ans:["7a+6","6+7a"]},
+    {n:15, expr:"Expand & simplify: 2(x + 8) + 3(x − 1)",        ans:["5x+13","13+5x"]},
+    {n:16, expr:"Simplify: 7 − 3(x + 2)",                        ans:["1-3x","-3x+1"]},
+    {n:17, expr:"Expand & simplify: 5(2m − 1) − 2(3m + 4)",      ans:["4m-13","-13+4m"]},
+    {n:18, expr:"Simplify: 4x + 2(x − 3)",                       ans:["6x-6","-6+6x"]},
+    {n:19, expr:"Expand & simplify: (1/2)(6n + 8)",              ans:["3n+4","4+3n"]},
+    {n:20, expr:"Expand & simplify: 0.2(10p + 15)",              ans:["2p+3","3+2p"]},
 
-  function id(x){return document.getElementById(x)}
-  function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
-  function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
-    for(let k=0;k<18;k++){
-      const d=document.createElement('div'); d.className='confetti';
-      d.style.left=x+'px'; d.style.top=y+'px'; d.style.width='8px'; d.style.height='8px';
-      d.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8a3d64'][k%4];
-      document.body.appendChild(d);
-      const dx=(Math.random()*2-1)*240, dy=(Math.random()*-1-0.3)*300, rot=Math.random()*720;
-      d.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],
-                {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
-    }
-  }
-  function downloadJSON(filename, data){
-    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    const url=URL.createObjectURL(blob); const a=document.createElement('a');
-    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  }
-  function downloadCSV(filename, rows){
-    const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
-    const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
-    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  }
+    // Level 3 (21-30)
+    {n:21, expr:"Factor: 6x + 12",                                ans:["6(x+2)","6(x+2)","6x+12"]},
+    {n:22, expr:"Factor: 9a − 3",                                 ans:["3(3a-1)","3(3a-1)","9a-3"]},
+    {n:23, expr:"Factor: 8y + 4x",                                ans:["4(2y+x)","4(x+2y)","4(2y+x)","8y+4x"]},
+    {n:24, expr:"Expand & simplify: 3(x − 4) − 2(x + 5)",         ans:["x-22","-22+x"]},
+    {n:25, expr:"Factor: 15m − 10",                               ans:["5(3m-2)","5(3m-2)","15m-10"]},
+    {n:26, expr:"Rectangle sides (x + 3) and 4: area, simplify",  ans:["4(x+3)","4x+12","12+4x"]},
+    {n:27, expr:"Increased by 5 then multiplied by −2: product then expand",
+                                                                   ans:["-2(x+5)","-2x-10","-(2x+10)"]},
+    {n:28, expr:"Solve: 3(x − 2) = 2(x + 4)",                     ans:["x=14","14"]},
+    {n:29, expr:"Error check: 5(x − 3) as 5x − 3. Correct it.",   ans:["5x-15","-15+5x"]},
+    {n:30, expr:"Expand: 2(3x + 1) + 4(x − 2). Then factor.",     ans:["10x-6","2(5x-3)","2(5x-3)","10x-6"]}
+  ];
 
-  /* ---------- Glossary ---------- */
-  const POP=id('pop'), POP_BODY=id('popBody');
-  const GLOS={
-    translation:'<strong>Translation</strong>: a slide of every point by the same amount and direction.',
-    vector:'<strong>Vector</strong> \\(\\langle a,b\\rangle\\): tells how far to move in x (a) and y (b).',
-    preimage:'<strong>Preimage</strong>: the original figure (before the transformation).',
-    image:'<strong>Image</strong>: the new figure (after the transformation).',
-    rule:'<strong>Rule</strong>: a coordinate description like \\((x,y)\\to(x+a,\\;y+b)\\).',
-    isometry:'<strong>Rigid motion (isometry)</strong>: a transformation that preserves distances and angles.',
-    congruent:'<strong>Congruent</strong>: same size and same shape.',
-    component:'<strong>Components</strong>: the x-change and y-change in the vector.'
-  };
-  function showPop(html,anchor){
-    POP_BODY.innerHTML=html; POP.style.display='block';
-    const r=anchor?anchor.getBoundingClientRect():{left:20,top:window.innerHeight-120};
-    POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px';
-    POP.style.bottom=(window.innerHeight - r.top + 10)+'px';
-  }
-  POP.querySelector('.close').addEventListener('click',()=>POP.style.display='none');
-  document.addEventListener('click',e=>{
-    const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]) showPop(GLOS[key], el);}
-  });
+  const normalize = s => (s ?? "")
+    .toLowerCase()
+    .replaceAll("−","-")
+    .replaceAll(" ", "")
+    .replaceAll("\t","")
+    .replaceAll("\n","");
 
-  /* -------------------- Helpers -------------------- */
-  function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
-  function choice(arr){ return arr[rand(0,arr.length-1)] }
-  function approxEq(a,b){ return Math.abs(a-b) < 1e-9; }
-
-  function parseCoord(s){
-    if(!s) return null;
-    s = String(s).trim().replace(/[()]/g,'').replace(/\s+/g,' ');
-    // accept "x,y" or "x y"
-    const m = s.match(/^(-?\d+(?:\.\d+)?)\s*(?:,|\s)\s*(-?\d+(?:\.\d+)?)$/);
-    if(!m) return null;
-    const x=Number(m[1]), y=Number(m[2]);
-    if(!isFinite(x) || !isFinite(y)) return null;
-    return [x,y];
-  }
-  function fmtCoord(p){ return `(${p[0]}, ${p[1]})`; }
-  function addVec(p, v){ return [p[0]+v[0], p[1]+v[1]]; }
-
-  function parseVector(sA, sB){
-    const a=Number(String(sA).trim());
-    const b=Number(String(sB).trim());
-    if(!isFinite(a)||!isFinite(b)) return null;
-    return [a,b];
-  }
-  function parseVectorInline(s){
-    if(!s) return null;
-    s=String(s).trim().replace(/[<>]/g,'').replace(/[()]/g,'').replace(/\s+/g,' ');
-    const m=s.match(/^(-?\d+(?:\.\d+)?)\s*(?:,|\s)\s*(-?\d+(?:\.\d+)?)$/);
-    if(!m) return null;
-    const a=Number(m[1]), b=Number(m[2]);
-    if(!isFinite(a)||!isFinite(b)) return null;
-    return [a,b];
-  }
-  function fmtVec(v){ return `\\(\\langle ${v[0]},${v[1]}\\rangle\\)`; }
-
-  function parseRule(s){
-    // Accept: (x,y)->(x+3,y-2) OR x+3,y-2 OR (x-5, y+1)
-    if(!s) return null;
-    let t=String(s).toLowerCase().replace(/\s+/g,'');
-    t=t.replace(/→/g,'->');
-    // keep only rhs if arrow present
-    const parts=t.split('->');
-    if(parts.length>1) t=parts[parts.length-1];
-    t=t.replace(/[()]/g,'');
-    // allow "x+3,y-2"
-    const m=t.match(/^x([+-]\d+(?:\.\d+)?)?,y([+-]\d+(?:\.\d+)?)?$/);
-    if(!m) return null;
-    const a = m[1] ? Number(m[1]) : 0;
-    const b = m[2] ? Number(m[2]) : 0;
-    if(!isFinite(a)||!isFinite(b)) return null;
-    return [a,b];
-  }
-
-  /* -------------------- Slide 2: Warm-up -------------------- */
-  const wuState={items:[]};
-  function pickVec(level){
-    if(level==='easy') return [choice([1,2,3,4]), choice([-3,-2,-1,1,2,3])];
-    if(level==='med') return [choice([-6,-5,-4,-3,3,4,5,6]), choice([-6,-5,-4,-3,3,4,5,6])];
-    return [rand(-9,9)||7, rand(-9,9)||-6];
-  }
-  function pickPt(level){
-    if(level==='easy') return [rand(-5,5), rand(-5,5)];
-    if(level==='med') return [rand(-8,8), rand(-8,8)];
-    return [rand(-10,10), rand(-10,10)];
-  }
-  function makeMovePhrase(v){
-    const [a,b]=v;
-    const horiz = a===0? '' : (a>0? `right ${a}` : `left ${Math.abs(a)}`);
-    const vert  = b===0? '' : (b>0? `up ${b}` : `down ${Math.abs(b)}`);
-    if(horiz && vert) return `${horiz} and ${vert}`;
-    return horiz || vert || 'nowhere';
-  }
-
-  function wuNew(){
-    const lvl=id('wuLevel').value; const box=id('wuList'); box.innerHTML=''; wuState.items=[];
-    for(let k=0;k<6;k++){
-      const p=pickPt(lvl), v=pickVec(lvl), ans=addVec(p,v);
-      const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML=`
-        <div class="text-lg">
-          Start at <span class="font-extrabold">\\(${fmtCoord(p)}\\)</span>.
-          Translate ${makeMovePhrase(v)} (vector ${fmtVec(v)}).
+  function makeQuestionRow(q){
+    const id = "q" + q.n;
+    const row = document.createElement("div");
+    row.className = "q";
+    row.innerHTML = `
+      <div class="num">#${q.n}</div>
+      <div>
+        <div class="expr">${q.expr}</div>
+        <div class="muted tiny" id="${id}-reveal" style="display:none;margin-top:6px">
+          <b>Answer:</b> <span class="math">${q.ans[0]}</span>
         </div>
-        <div class="mt-2">New point = <input class="wuin border rounded px-2 py-1 w-56" placeholder="(x,y)"></div>
-      `;
-      row.dataset.p=JSON.stringify(p);
-      row.dataset.v=JSON.stringify(v);
-      row.dataset.ans=JSON.stringify(ans);
-      box.appendChild(row); wuState.items.push({p,v,ans});
-    }
-    id('wuFb').textContent='';
-    renderMath(id('wuSlide'));
-  }
-  id('wuNew').addEventListener('click',wuNew); wuNew();
-
-  id('wuCheck').addEventListener('click',()=>{
-    let ok=0; const rows=[...id('wuList').children];
-    rows.forEach(row=>{
-      const got=parseCoord(row.querySelector('.wuin').value);
-      const want=JSON.parse(row.dataset.ans);
-      const good=got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
-      row.querySelector('.wuin').style.borderColor = good ? '#22c55e' : '#ef4444';
-      if(good) ok++;
-    });
-    id('wuFb').textContent = ok===rows.length ? '✅ Warm-up complete.' : `Score: ${ok}/${rows.length}`;
-    if(ok===rows.length) confetti();
-  });
-
-  id('wuExportCSV').addEventListener('click',()=>{
-    const rows=[['start','vector','correct','user']];
-    [...id('wuList').children].forEach(row=>{
-      const p=JSON.parse(row.dataset.p), v=JSON.parse(row.dataset.v), ans=JSON.parse(row.dataset.ans);
-      rows.push([fmtCoord(p), `<${v[0]},${v[1]}>`, fmtCoord(ans), row.querySelector('.wuin').value||'']);
-    });
-    downloadCSV(`${deckTitle}_warmup_translate_points.csv`, rows);
-  });
-  id('wuExportJSON').addEventListener('click',()=>{
-    const data=[...id('wuList').children].map(row=>{
-      const p=JSON.parse(row.dataset.p), v=JSON.parse(row.dataset.v), ans=JSON.parse(row.dataset.ans);
-      return {start:p, vector:v, correct:ans, user:row.querySelector('.wuin').value||''};
-    });
-    downloadJSON(`${deckTitle}_warmup_translate_points.json`, data);
-  });
-
-  /* -------------------- Slide 4: Worked examples -------------------- */
-  function exPoint(){
-    const p=pickPt('med'), v=pickVec('med'), ans=addVec(p,v);
-    id('ex1').innerHTML=`
-      <div class="workstep">Given \(P${fmtCoord(p)}\) and vector ${fmtVec(v)}.</div>
-      <div class="workstep mt-2">Rule: \((x,y)\to(x+${v[0]},\,y+${v[1]})\)</div>
-      <div class="workstep mt-2">So \(P'(${p[0]}+${v[0]},\,${p[1]}+${v[1]})=P'${fmtCoord(ans)}\).</div>
-    `;
-    renderMath(id('wkSlide'));
-  }
-  function exTriangle(){
-    const A=pickPt('easy'), B=addVec(A,[choice([2,3,4]), choice([0,1,2])]), C=addVec(A,[choice([0,1,2]), choice([2,3,4])]);
-    const v=pickVec('easy');
-    const Ap=addVec(A,v), Bp=addVec(B,v), Cp=addVec(C,v);
-    id('ex2').innerHTML=`
-      <div class="workstep">Triangle \(ABC\): \(A${fmtCoord(A)},\,B${fmtCoord(B)},\,C${fmtCoord(C)}\).</div>
-      <div class="workstep mt-2">Translate by ${fmtVec(v)}.</div>
-      <div class="workstep mt-2">
-        \(A'${fmtCoord(Ap)},\;B'${fmtCoord(Bp)},\;C'${fmtCoord(Cp)}\)
       </div>
-      <div class="text-xs text-gray-600 mt-2">Same vector for every vertex → congruent image.</div>
+      <div class="ans">
+        <input id="${id}" placeholder="Type answer…" inputmode="text" autocomplete="off" />
+        <span class="mark" id="${id}-mark"></span>
+      </div>
     `;
-    renderMath(id('wkSlide'));
+    return row;
   }
-  function exRule(){
-    const v=pickVec('med');
-    id('ex3').innerHTML=`
-      <div class="workstep">Vector ${fmtVec(v)} means:</div>
-      <div class="workstep mt-2">Add ${v[0]} to \(x\) and add ${v[1]} to \(y\).</div>
-      <div class="workstep mt-2">Rule: \((x,y)\to(x+${v[0]},\;y+${v[1]})\).</div>
-    `;
-    renderMath(id('wkSlide'));
-  }
-  id('ex1Next').addEventListener('click',exPoint); exPoint();
-  id('ex2Next').addEventListener('click',exTriangle); exTriangle();
-  id('ex3Next').addEventListener('click',exRule); exRule();
 
-  /* -------------------- Slide 5: Practice points -------------------- */
-  const ptState={items:[]};
-  function ptNew(){
-    const lvl=id('ptLevel').value; const box=id('ptList'); box.innerHTML=''; ptState.items=[];
-    for(let k=0;k<6;k++){
-      const p=pickPt(lvl), v=pickVec(lvl), ans=addVec(p,v);
-      const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML=`
-        <div class="text-lg">Translate \(P${fmtCoord(p)}\) by ${fmtVec(v)}.</div>
-        <div class="mt-2">\(P'=\) <input class="ptin border rounded px-2 py-1 w-56" placeholder="(x,y)"></div>
-      `;
-      row.dataset.p=JSON.stringify(p);
-      row.dataset.v=JSON.stringify(v);
-      row.dataset.ans=JSON.stringify(ans);
-      box.appendChild(row); ptState.items.push({p,v,ans});
-    }
-    id('ptFb').textContent='';
-    renderMath(id('ptSlide'));
-  }
-  id('ptNew').addEventListener('click',ptNew); ptNew();
+  function render(){
+    const sec1 = document.getElementById("sec1");
+    const sec2 = document.getElementById("sec2");
+    const sec3 = document.getElementById("sec3");
 
-  id('ptCheck').addEventListener('click',()=>{
-    let ok=0; const rows=[...id('ptList').children];
-    rows.forEach(row=>{
-      const got=parseCoord(row.querySelector('.ptin').value);
-      const want=JSON.parse(row.dataset.ans);
-      const good=got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
-      row.querySelector('.ptin').style.borderColor = good ? '#22c55e' : '#ef4444';
-      if(good) ok++;
+    KEY.forEach(q=>{
+      const row = makeQuestionRow(q);
+      if(q.n <= 10) sec1.appendChild(row);
+      else if(q.n <= 20) sec2.appendChild(row);
+      else sec3.appendChild(row);
     });
-    id('ptFb').textContent = ok===rows.length ? '✅ Great work.' : `Score: ${ok}/${rows.length}`;
-    if(ok===rows.length) confetti();
-  });
 
-  id('ptExportCSV').addEventListener('click',()=>{
-    const rows=[['point','vector','correct','user']];
-    [...id('ptList').children].forEach(row=>{
-      const p=JSON.parse(row.dataset.p), v=JSON.parse(row.dataset.v), ans=JSON.parse(row.dataset.ans);
-      rows.push([fmtCoord(p), `<${v[0]},${v[1]}>`, fmtCoord(ans), row.querySelector('.ptin').value||'']);
+    KEY.forEach(q=>{
+      const input = document.getElementById("q"+q.n);
+      input.addEventListener("keydown", (e)=>{
+        if(e.key === "Enter"){ checkOne(q.n); }
+      });
     });
-    downloadCSV(`${deckTitle}_practice_points.csv`, rows);
-  });
-  id('ptExportJSON').addEventListener('click',()=>{
-    const data=[...id('ptList').children].map(row=>{
-      const p=JSON.parse(row.dataset.p), v=JSON.parse(row.dataset.v), ans=JSON.parse(row.dataset.ans);
-      return {point:p, vector:v, correct:ans, user:row.querySelector('.ptin').value||''};
-    });
-    downloadJSON(`${deckTitle}_practice_points.json`, data);
-  });
 
-  /* -------------------- Slide 6: Polygon table -------------------- */
-  const pyState={cur:null};
-  function makePolygon(level){
-    // simple non-self-intersecting shapes on integer grid
-    const base=[pickPt('easy'), pickPt('easy'), pickPt('easy'), pickPt('easy')];
-    // prefer a rectangle-like quadrilateral
-    let A=[rand(-5,5), rand(-5,5)];
-    let w=choice([2,3,4,5]), h=choice([2,3,4,5]);
-    let B=[A[0]+w, A[1]];
-    let C=[A[0]+w, A[1]+h];
-    let D=[A[0], A[1]+h];
-    if(level==='hard'){
-      // skewed quad / triangle mix
-      A=[rand(-7,7), rand(-7,7)];
-      B=[A[0]+choice([3,4,5]), A[1]+choice([1,2])];
-      C=[A[0]+choice([1,2]), A[1]+choice([4,5])];
-      D=[A[0]-choice([1,2]), A[1]+choice([2,3])];
-    }
-    const poly = level==='easy' ? [['A',A],['B',B],['C',C],['D',D]] : level==='med' ? [['A',A],['B',B],['C',C]] : [['A',A],['B',B],['C',C],['D',D]];
-    return poly;
+    updateScore();
   }
 
-  function pyNew(){
-    const lvl=id('pyLevel').value;
-    const v=pickVec(lvl==='easy'?'easy':lvl==='med'?'med':'hard');
-    const poly=makePolygon(lvl);
-    const image=poly.map(([name,p])=>[name+"'", addVec(p,v)]);
-    pyState.cur={lvl, v, poly, image};
+  function checkOne(n){
+    const q = KEY.find(x=>x.n===n);
+    const input = document.getElementById("q"+n);
+    const mark = document.getElementById("q"+n+"-mark");
+    const val = normalize(input.value);
 
-    id('pyVec').innerHTML = fmtVec(v);
-    id('pyRule').innerHTML = `\\((x,y)\\to(x+${v[0]},\\;y+${v[1]})\\)`;
-
-    id('pyGiven').innerHTML = `
-      <table class="w-full text-lg">
-        <tr class="text-gray-500"><th class="text-left">Vertex</th><th class="text-left">Coordinates</th></tr>
-        ${poly.map(([n,p])=>`<tr><td class="font-bold">${n}</td><td>\\(${fmtCoord(p)}\\)</td></tr>`).join('')}
-      </table>
-    `;
-
-    const inputs = document.createElement('div');
-    inputs.innerHTML = `
-      <table class="w-full text-lg">
-        <tr class="text-gray-500"><th class="text-left">Vertex</th><th class="text-left">Your answer</th></tr>
-        ${image.map(([n,p],idx)=>`
-          <tr>
-            <td class="font-bold">${n}</td>
-            <td><input class="pyin border rounded px-2 py-1 w-56" data-idx="${idx}" placeholder="(x,y)"></td>
-          </tr>`).join('')}
-      </table>
-    `;
-    const wrap=id('pyInputs'); wrap.innerHTML=''; wrap.appendChild(inputs);
-
-    id('pyFb').textContent='';
-    renderMath(id('polySlide'));
-  }
-  id('pyNew').addEventListener('click',pyNew); pyNew();
-
-  id('pyCheck').addEventListener('click',()=>{
-    const cur=pyState.cur;
-    let ok=0;
-    const ins=[...document.querySelectorAll('.pyin')];
-    ins.forEach(inp=>{
-      const idx=Number(inp.dataset.idx);
-      const want=cur.image[idx][1];
-      const got=parseCoord(inp.value);
-      const good=got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]);
-      inp.style.borderColor = good ? '#22c55e' : '#ef4444';
-      if(good) ok++;
-    });
-    const total=cur.image.length;
-    id('pyFb').textContent = ok===total ? '✅ Polygon translated correctly.' : `Score: ${ok}/${total}`;
-    if(ok===total) confetti();
-  });
-
-  id('pyExportCSV').addEventListener('click',()=>{
-    const cur=pyState.cur;
-    const rows=[['vertex','preimage','vector','correct_image','user_image']];
-    const ins=[...document.querySelectorAll('.pyin')];
-    cur.poly.forEach(([n,p],i)=>{
-      rows.push([
-        n,
-        fmtCoord(p),
-        `<${cur.v[0]},${cur.v[1]}>`,
-        fmtCoord(cur.image[i][1]),
-        ins[i] ? (ins[i].value||'') : ''
-      ]);
-    });
-    downloadCSV(`${deckTitle}_polygon_table.csv`, rows);
-  });
-  id('pyExportJSON').addEventListener('click',()=>{
-    const cur=pyState.cur;
-    const ins=[...document.querySelectorAll('.pyin')];
-    const data=cur.poly.map(([n,p],i)=>({
-      vertex:n,
-      preimage:p,
-      vector:cur.v,
-      correct:cur.image[i][1],
-      user: ins[i] ? (ins[i].value||'') : ''
-    }));
-    downloadJSON(`${deckTitle}_polygon_table.json`, data);
-  });
-
-  /* -------------------- Slide 7: Write vector & rule -------------------- */
-  const wrState={items:[]};
-  function wrNew(){
-    const lvl=id('wrLevel').value; const box=id('wrList'); box.innerHTML=''; wrState.items=[];
-    for(let k=0;k<4;k++){
-      const v=pickVec(lvl==='easy'?'easy':lvl==='med'?'med':'hard');
-      const p=pickPt('med'); const ans=addVec(p,v);
-      const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML=`
-        <div class="text-lg">
-          Point \(P${fmtCoord(p)}\) maps to \(P'${fmtCoord(ans)}\).
-          Find the translation vector and write the rule.
-        </div>
-        <div class="mt-2 flex flex-wrap items-center gap-2">
-          <span class="font-bold">Vector:</span>
-          <input class="wrvec border rounded px-2 py-1 w-36" placeholder="<a,b>">
-          <span class="font-bold ml-2">Rule:</span>
-          <input class="wrrule border rounded px-2 py-1 w-[320px] max-w-full" placeholder="(x,y)->(x+a,y+b)">
-        </div>
-        <div class="mt-2 text-xs text-gray-500">Tip: vector \(a=x'-x\), \(b=y'-y\).</div>
-      `;
-      row.dataset.p=JSON.stringify(p);
-      row.dataset.ans=JSON.stringify(ans);
-      row.dataset.v=JSON.stringify(v);
-      box.appendChild(row); wrState.items.push({p,ans,v});
-    }
-    id('wrHintBox').textContent=''; id('wrFb').textContent='';
-    renderMath(id('wrSlide'));
-  }
-  id('wrNew').addEventListener('click',wrNew); wrNew();
-
-  id('wrHint').addEventListener('click',()=>{
-    id('wrHintBox').innerHTML = `<div class="hint">
-      Compute the vector from \(P\) to \(P'\): \(a=x'-x\), \(b=y'-y\).<br/>
-      Then rule is \((x,y)\to(x+a,\;y+b)\).
-    </div>`;
-    renderMath(id('wrSlide'));
-  });
-
-  id('wrCheck').addEventListener('click',()=>{
-    let ok=0; const rows=[...id('wrList').children];
-    rows.forEach(row=>{
-      const p=JSON.parse(row.dataset.p);
-      const ans=JSON.parse(row.dataset.ans);
-      const want=[ans[0]-p[0], ans[1]-p[1]];
-
-      const vUser=parseVectorInline(row.querySelector('.wrvec').value);
-      const rUser=parseRule(row.querySelector('.wrrule').value);
-
-      const goodV = vUser && approxEq(vUser[0],want[0]) && approxEq(vUser[1],want[1]);
-      const goodR = rUser && approxEq(rUser[0],want[0]) && approxEq(rUser[1],want[1]);
-
-      row.querySelector('.wrvec').style.borderColor = goodV ? '#22c55e' : '#ef4444';
-      row.querySelector('.wrrule').style.borderColor = goodR ? '#22c55e' : '#ef4444';
-
-      if(goodV && goodR) ok++;
-    });
-    id('wrFb').textContent = ok===rows.length ? '✅ Vector and rule correct.' : `Score: ${ok}/${rows.length}`;
-    if(ok===rows.length) confetti();
-  });
-
-  id('wrExportCSV').addEventListener('click',()=>{
-    const rows=[['P','Pprime','vector_correct','rule_correct','vector_user','rule_user']];
-    [...id('wrList').children].forEach(row=>{
-      const p=JSON.parse(row.dataset.p);
-      const ans=JSON.parse(row.dataset.ans);
-      const want=[ans[0]-p[0], ans[1]-p[1]];
-      rows.push([
-        fmtCoord(p),
-        fmtCoord(ans),
-        `<${want[0]},${want[1]}>`,
-        `(x,y)->(x+${want[0]},y+${want[1]})`,
-        row.querySelector('.wrvec').value||'',
-        row.querySelector('.wrrule').value||''
-      ]);
-    });
-    downloadCSV(`${deckTitle}_write_vector_rule.csv`, rows);
-  });
-  id('wrExportJSON').addEventListener('click',()=>{
-    const data=[...id('wrList').children].map(row=>{
-      const p=JSON.parse(row.dataset.p), ans=JSON.parse(row.dataset.ans);
-      const want=[ans[0]-p[0], ans[1]-p[1]];
-      return {
-        P:p, Pprime:ans,
-        correct:{vector:want, rule:[want[0],want[1]]},
-        user:{vector:row.querySelector('.wrvec').value||'', rule:row.querySelector('.wrrule').value||''}
-      };
-    });
-    downloadJSON(`${deckTitle}_write_vector_rule.json`, data);
-  });
-
-  /* -------------------- Slide 8: Visual SVG -------------------- */
-  let vizShow=true;
-  id('vizShow').addEventListener('click',()=>{
-    vizShow=!vizShow;
-    id('vizShow').classList.toggle('active', vizShow);
-    id('vizShow').setAttribute('aria-pressed', String(vizShow));
-    drawViz();
-  });
-
-  const vzState={cur:null};
-  function gridSvg(pointsA, pointsB, v){
-    // coordinate system: map [-10,10] to 520x520
-    const W=520,H=520, pad=30;
-    const xmin=-10,xmax=10,ymin=-10,ymax=10;
-    const sx=(W-2*pad)/(xmax-xmin);
-    const sy=(H-2*pad)/(ymax-ymin);
-    const X=x=>pad+(x-xmin)*sx;
-    const Y=y=>H-pad-(y-ymin)*sy;
-
-    const polyPath = pts => pts.map((p,i)=>`${i===0?'M':'L'} ${X(p[0])} ${Y(p[1])}`).join(' ')+' Z';
-
-    // grid lines
-    let lines='';
-    for(let k=xmin;k<=xmax;k++){
-      const xx=X(k);
-      lines += `<line x1="${xx}" y1="${Y(ymin)}" x2="${xx}" y2="${Y(ymax)}" stroke="#e5e7eb" stroke-width="1"/>`;
-    }
-    for(let k=ymin;k<=ymax;k++){
-      const yy=Y(k);
-      lines += `<line x1="${X(xmin)}" y1="${yy}" x2="${X(xmax)}" y2="${yy}" stroke="#e5e7eb" stroke-width="1"/>`;
-    }
-    // axes
-    lines += `<line x1="${X(0)}" y1="${Y(ymin)}" x2="${X(0)}" y2="${Y(ymax)}" stroke="#111827" stroke-width="2"/>`;
-    lines += `<line x1="${X(xmin)}" y1="${Y(0)}" x2="${X(xmax)}" y2="${Y(0)}" stroke="#111827" stroke-width="2"/>`;
-
-    // label a few ticks
-    let ticks='';
-    for(let k=-10;k<=10;k+=5){
-      ticks += `<text x="${X(k)+2}" y="${Y(0)-6}" font-size="12" fill="#6b7280">${k}</text>`;
-      ticks += `<text x="${X(0)+6}" y="${Y(k)-2}" font-size="12" fill="#6b7280">${k}</text>`;
-    }
-
-    // arrow showing translation vector (from one vertex)
-    const A0=pointsA[0], B0=pointsB[0];
-    const ax=X(A0[0]), ay=Y(A0[1]);
-    const bx=X(B0[0]), by=Y(B0[1]);
-    const arrow = `
-      <defs>
-        <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <polygon points="0 0, 6 3, 0 6" fill="#6C1D45"/>
-        </marker>
-      </defs>
-      <line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="#6C1D45" stroke-width="3" marker-end="url(#arrowhead)"/>
-      <text x="${(ax+bx)/2+6}" y="${(ay+by)/2-6}" font-size="14" fill="#6C1D45" font-weight="700">?</text>
-    `;
-
-    const shapeA = `<path d="${polyPath(pointsA)}" fill="rgba(199,163,79,.25)" stroke="#C7A34F" stroke-width="3"/>`;
-    const shapeB = vizShow ? `<path d="${polyPath(pointsB)}" fill="rgba(108,29,69,.15)" stroke="#6C1D45" stroke-width="3" stroke-dasharray="8 5"/>` : '';
-
-    // mark vertices
-    const dots = pts => pts.map(p=>`<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="5" fill="#111827"/>`).join('');
-    const dotsB = vizShow ? pointsB.map(p=>`<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="5" fill="#6C1D45"/>`).join('') : '';
-
-    return `
-      <svg width="100%" viewBox="0 0 ${W} ${H}" role="img" aria-label="coordinate grid translation diagram">
-        <rect x="0" y="0" width="${W}" height="${H}" fill="#ffffff"/>
-        ${lines}
-        ${ticks}
-        ${shapeA}
-        ${shapeB}
-        ${dots(pointsA)}
-        ${dotsB}
-        ${arrow}
-        <text x="${pad}" y="${pad-8}" font-size="14" fill="#6b7280">Preimage (solid) → Image (dashed)</text>
-      </svg>
-    `;
-  }
-
-  function pickViz(level){
-    const v=pickVec(level==='easy'?'easy':level==='med'?'med':'hard');
-    // triangle in bounds
-    let A=[rand(-6,2), rand(-2,6)];
-    let B=[A[0]+choice([2,3,4]), A[1]+choice([0,1,2])];
-    let C=[A[0]+choice([0,1,2]), A[1]-choice([2,3,4])];
-    // keep inside after translation: adjust if needed
-    const pts=[A,B,C];
-    const pts2=pts.map(p=>addVec(p,v));
-    const all=[...pts,...pts2].flat();
-    const xs=[...pts.map(p=>p[0]),...pts2.map(p=>p[0])];
-    const ys=[...pts.map(p=>p[1]),...pts2.map(p=>p[1])];
-    const inBounds = xs.every(x=>x>=-9 && x<=9) && ys.every(y=>y>=-9 && y<=9);
-    if(!inBounds){
-      A=[rand(-2,2), rand(-2,2)];
-      B=[A[0]+2, A[1]+1];
-      C=[A[0]+1, A[1]-2];
-    }
-    const P=[A,B,C];
-    const Q=P.map(p=>addVec(p,v));
-    return {P,Q,v};
-  }
-
-  function drawViz(){
-    const cur=vzState.cur;
-    if(!cur) return;
-    id('vzSvgWrap').innerHTML = gridSvg(cur.P, cur.Q, cur.v);
-    renderMath(id('vizSlide'));
-  }
-
-  function vzNew(){
-    const lvl=id('vzLevel').value;
-    vzState.cur = pickViz(lvl);
-    id('vzA').value=''; id('vzB').value='';
-    id('vzFb').textContent='';
-    drawViz();
-  }
-  id('vzNew').addEventListener('click',vzNew); vzNew();
-
-  id('vzCheck').addEventListener('click',()=>{
-    const cur=vzState.cur;
-    const vUser=parseVector(id('vzA').value, id('vzB').value);
-    const good = vUser && approxEq(vUser[0],cur.v[0]) && approxEq(vUser[1],cur.v[1]);
-    id('vzA').style.borderColor = good ? '#22c55e' : '#ef4444';
-    id('vzB').style.borderColor = good ? '#22c55e' : '#ef4444';
-    id('vzFb').textContent = good ? '✅ Correct vector.' : '❌ Check your x-change and y-change.';
-    if(good) confetti();
-  });
-
-  id('vzExportCSV').addEventListener('click',()=>{
-    const cur=vzState.cur;
-    downloadCSV(`${deckTitle}_visual_translation.csv`, [
-      ['preimage_vertices','image_vertices','vector_correct','user_a','user_b'],
-      [JSON.stringify(cur.P), JSON.stringify(cur.Q), `<${cur.v[0]},${cur.v[1]}>`, id('vzA').value||'', id('vzB').value||'']
-    ]);
-  });
-  id('vzExportJSON').addEventListener('click',()=>{
-    const cur=vzState.cur;
-    downloadJSON(`${deckTitle}_visual_translation.json`, {
-      preimage:cur.P, image:cur.Q, correct_vector:cur.v,
-      user:{a:id('vzA').value||'', b:id('vzB').value||''}
-    });
-  });
-
-  /* -------------------- Slide 9: Challenge compose -------------------- */
-  const chState={cur:null};
-  function chNew(){
-    const p=pickPt('med');
-    const v1=pickVec('med');
-    const v2=pickVec('med');
-    const v=[v1[0]+v2[0], v1[1]+v2[1]];
-    const ansPt=addVec(addVec(p,v1),v2);
-    chState.cur={p,v1,v2,v,ansPt};
-
-    id('chPrompt').innerHTML = `
-      Start with point \(P${fmtCoord(p)}\). Apply translation \(T_1\) by ${fmtVec(v1)} then translation \(T_2\) by ${fmtVec(v2)}.
-      <br/>1) What is the single translation equivalent to doing both?
-      <br/>2) What is the final image \(P''\)?
-    `;
-    id('chA').value=''; id('chB').value=''; id('chPt').value='';
-    id('chHintBox').textContent=''; id('chFb').textContent='';
-    renderMath(id('chSlide'));
-  }
-  id('chNew').addEventListener('click',chNew); chNew();
-
-  id('chHint').addEventListener('click',()=>{
-    id('chHintBox').innerHTML = `<div class="hint">
-      Add the vectors: \(\langle a_1,b_1\rangle+\langle a_2,b_2\rangle=\langle a_1+a_2,\;b_1+b_2\rangle\).<br/>
-      Then \(P''=P+\langle a,b\rangle\).
-    </div>`;
-    renderMath(id('chSlide'));
-  });
-
-  id('chCheck').addEventListener('click',()=>{
-    const cur=chState.cur;
-    const vUser=parseVector(id('chA').value, id('chB').value);
-    const ptUser=parseCoord(id('chPt').value);
-
-    const goodV = vUser && approxEq(vUser[0],cur.v[0]) && approxEq(vUser[1],cur.v[1]);
-    const goodP = ptUser && approxEq(ptUser[0],cur.ansPt[0]) && approxEq(ptUser[1],cur.ansPt[1]);
-
-    id('chA').style.borderColor = goodV ? '#22c55e' : '#ef4444';
-    id('chB').style.borderColor = goodV ? '#22c55e' : '#ef4444';
-    id('chPt').style.borderColor = goodP ? '#22c55e' : '#ef4444';
-
-    const all=goodV && goodP;
-    id('chFb').textContent = all ? '✅ Challenge solved.' : '❌ Re-check vector addition and point translation.';
-    if(all) confetti();
-  });
-
-  id('chExportCSV').addEventListener('click',()=>{
-    const cur=chState.cur;
-    downloadCSV(`${deckTitle}_challenge_compose.csv`, [
-      ['P','T1','T2','combined_correct','Ppp_correct','combined_user','Ppp_user'],
-      [fmtCoord(cur.p), `<${cur.v1[0]},${cur.v1[1]}>`, `<${cur.v2[0]},${cur.v2[1]}>`, `<${cur.v[0]},${cur.v[1]}>`, fmtCoord(cur.ansPt),
-       `<${id('chA').value||''},${id('chB').value||''}>`, id('chPt').value||'']
-    ]);
-  });
-  id('chExportJSON').addEventListener('click',()=>{
-    const cur=chState.cur;
-    downloadJSON(`${deckTitle}_challenge_compose.json`, {
-      P:cur.p, T1:cur.v1, T2:cur.v2, correct:{combined:cur.v, Ppp:cur.ansPt},
-      user:{combined:[id('chA').value||'', id('chB').value||''], Ppp:id('chPt').value||''}
-    });
-  });
-
-  /* -------------------- Slide 10: Error analysis -------------------- */
-  function errBank(level){
-    const easy=[
-      {work:`Translate \(P(2,-1)\) by \\(\\langle 3,-2\\rangle\\). Student: \(P'(5,1)\).`, correct:`Correct: add 3 to x and add -2 to y: \(P'(2+3,\,-1-2)=(5,-3)\).`, key:'B'},
-      {work:`Translate by \\(\\langle -4,2\\rangle\\). Student writes rule \((x,y)\\to(x+4,y+2)\).`, correct:`Sign error for x: should be \(x-4\). Vector components keep their signs.`, key:'B'},
-      {work:`Triangle vertices A(0,0),B(2,0),C(0,3). Translate by \\(\\langle 1,2\\rangle\\). Student only moves A.`, correct:`Every vertex must be translated by the same vector: A', B', and C'.`, key:'C'}
-    ];
-    const med=[
-      {work:`Vector \\(\\langle 2,-5\\rangle\\). Student adds 2 to y and -5 to x.`, correct:`Mixed x and y: first component affects x, second affects y.`, key:'A'},
-      {work:`Student treats \\(\\langle 3,-2\\rangle\\) as the point \\((3,-2)\\) and “plots it” as the image.`, correct:`A vector is a change, not the destination point. Add it to the original point(s).`, key:'D'}
-    ];
-    const hard=[
-      {work:`Square vertices translated, but one vertex moved by a different vector than the others.`, correct:`That breaks rigidity: all points must move the same amount and direction.`, key:'C'},
-      {work:`Rule written as \((x,y)\\to(x-(-3),y+(-4))\) for \\(\\langle -3,-4\\rangle\\).`, correct:`Simplify signs: \(x+(-3)=x-3\) and \(y+(-4)=y-4\). Be careful with negatives.`, key:'B'}
-    ];
-    return level==='easy'?easy:level==='med'?med:hard;
-  }
-  const errState={item:null};
-
-  function errNew(){
-    const bank=errBank(id('errLevel').value);
-    errState.item=choice(bank);
-    id('errBox').innerHTML=`Student work:<br/><div class="mt-1 text-maroon">${errState.item.work}</div>`;
-    id('errFb').textContent=''; id('errRevealBox').textContent='';
-    [...document.querySelectorAll('input[name="errChoice"]')].forEach(r=>r.checked=false);
-    renderMath(id('errSlide'));
-  }
-  id('errNew').addEventListener('click',errNew); errNew();
-
-  id('errCheck').addEventListener('click',()=>{
-    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    if(!sel){ id('errFb').textContent='Choose a diagnosis.'; return; }
-    if(sel.value===errState.item.key){ id('errFb').textContent='✅ Correct diagnosis.'; confetti(); }
-    else { id('errFb').textContent='❌ Not quite. Try again or reveal the correct work.'; }
-  });
-  id('errReveal').addEventListener('click',()=>{
-    id('errRevealBox').innerHTML=`<div class="hint">${errState.item.correct}</div>`;
-    renderMath(id('errSlide'));
-  });
-  id('errExportCSV').addEventListener('click',()=>{
-    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    downloadCSV(`${deckTitle}_error_analysis.csv`, [['incorrect_work','correct_explanation','answer_key','user_choice'], [id('errBox').innerText.trim(), errState.item.correct, errState.item.key, sel?sel.value:'']]);
-  });
-  id('errExportJSON').addEventListener('click',()=>{
-    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    downloadJSON(`${deckTitle}_error_analysis.json`, {incorrect:id('errBox').innerText.trim(), correct:errState.item.correct, key:errState.item.key, user: sel?sel.value:''});
-  });
-
-  /* -------------------- Slide 11: Mixed generator -------------------- */
-  const mixState={cur:null};
-  function mixNew(){
-    const lvl=id('mixLevel').value;
-    const t=rand(0,4);
-    if(t===0){
-      const p=pickPt(lvl==='easy'?'easy':lvl==='med'?'med':'hard');
-      const v=pickVec(lvl==='easy'?'easy':lvl==='med'?'med':'hard');
-      mixState.cur={type:'pt', p,v, ans:addVec(p,v)};
-      id('mixQ').innerHTML = `Translate \(P${fmtCoord(p)}\) by ${fmtVec(v)}. Give \(P'\).`;
-      id('mixHintBox').textContent='';
-    } else if(t===1){
-      const v=pickVec(lvl==='easy'?'easy':lvl==='med'?'med':'hard');
-      mixState.cur={type:'rule', v};
-      id('mixQ').innerHTML = `Write the rule for translation by ${fmtVec(v)}.`;
-      id('mixHintBox').textContent='';
-    } else if(t===2){
-      const p=pickPt('med'); const v1=pickVec('med'); const v2=pickVec('med');
-      const v=[v1[0]+v2[0], v1[1]+v2[1]];
-      mixState.cur={type:'vec', v};
-      id('mixQ').innerHTML = `Combine translations ${fmtVec(v1)} and ${fmtVec(v2)}. Give the single vector.`;
-      id('mixHintBox').textContent='';
-    } else if(t===3){
-      const p=pickPt('med'); const v=pickVec('med'); const ans=addVec(p,v);
-      mixState.cur={type:'findvec', p, ans, v};
-      id('mixQ').innerHTML = `Point \(P${fmtCoord(p)}\) maps to \(P'${fmtCoord(ans)}\). Find the vector.`;
-      id('mixHintBox').textContent='';
-    } else {
-      const cur=pickViz(lvl);
-      mixState.cur={type:'viz', v:cur.v};
-      id('mixQ').innerHTML = `In words: move right/left and up/down for vector ${fmtVec(cur.v)}. Type the vector &lt;a,b&gt;.`;
-      id('mixHintBox').textContent='';
-    }
-    id('mixAns').value=''; id('mixFb').textContent='';
-    renderMath(id('mixSlide'));
-  }
-  id('mixNew').addEventListener('click',mixNew); mixNew();
-
-  id('mixHint').addEventListener('click',()=>{
-    const cur=mixState.cur;
-    const msg =
-      cur.type==='pt' ? 'Add a to x and add b to y.' :
-      cur.type==='rule' ? 'Rule is (x,y) → (x+a, y+b).' :
-      cur.type==='vec' ? 'Add vectors component-wise: <a1+a2, b1+b2>.' :
-      cur.type==='findvec' ? 'Vector is <x′−x, y′−y>.' :
-      'Remember: <a,b> means x changes by a, y changes by b.';
-    id('mixHintBox').innerHTML=`<div class="hint">${msg}</div>`;
-    renderMath(id('mixSlide'));
-  });
-
-  id('mixCheck').addEventListener('click',()=>{
-    const cur=mixState.cur;
-    const user=id('mixAns').value;
-
-    let ok=false;
-    if(cur.type==='pt'){
-      const got=parseCoord(user);
-      ok = !!(got && approxEq(got[0],cur.ans[0]) && approxEq(got[1],cur.ans[1]));
-    } else if(cur.type==='rule'){
-      const got=parseRule(user);
-      ok = !!(got && approxEq(got[0],cur.v[0]) && approxEq(got[1],cur.v[1]));
-    } else if(cur.type==='vec' || cur.type==='findvec' || cur.type==='viz'){
-      const got=parseVectorInline(user);
-      const want = cur.type==='findvec' ? [cur.ans[0]-cur.p[0], cur.ans[1]-cur.p[1]] : cur.v;
-      ok = !!(got && approxEq(got[0],want[0]) && approxEq(got[1],want[1]));
-    }
+    const ok = q.ans.some(a => normalize(a) === val);
 
     if(ok){
-      id('mixFb').textContent='✅ Correct!';
-      id('mixFb').className='mt-2 h-6 font-semibold text-green-700';
-      confetti();
-    } else {
-      id('mixFb').textContent='❌ Not quite. Check components and signs.';
-      id('mixFb').className='mt-2 h-6 font-semibold text-red-700';
+      mark.textContent = "✓";
+      mark.className = "mark ok";
+    }else{
+      mark.textContent = "✗";
+      mark.className = "mark no";
     }
-  });
+    updateScore();
+  }
 
-  id('mixExportCSV').addEventListener('click',()=>{
-    downloadCSV(`${deckTitle}_mixed_current.csv`, [['task','user'], [id('mixQ').textContent, id('mixAns').value||'']]);
-  });
-  id('mixExportJSON').addEventListener('click',()=>{
-    downloadJSON(`${deckTitle}_mixed_current.json`, {task:id('mixQ').textContent, user:id('mixAns').value||''});
-  });
+  function checkAll(){ KEY.forEach(q=>checkOne(q.n)); }
 
-  /* -------------------- Init slideshow -------------------- */
-  show(0);
+  function revealAll(){
+    KEY.forEach(q=>{
+      const reveal = document.getElementById("q"+q.n+"-reveal");
+      reveal.style.display = "block";
+    });
+  }
 
-})();
+  function resetAll(){
+    KEY.forEach(q=>{
+      const input = document.getElementById("q"+q.n);
+      const mark = document.getElementById("q"+q.n+"-mark");
+      const reveal = document.getElementById("q"+q.n+"-reveal");
+      input.value = "";
+      mark.textContent = "";
+      mark.className = "mark";
+      reveal.style.display = "none";
+    });
+    updateScore();
+  }
+
+  function updateScore(){
+    let correct = 0;
+    KEY.forEach(q=>{
+      const mark = document.getElementById("q"+q.n+"-mark");
+      if(mark && mark.textContent === "✓") correct++;
+    });
+    document.getElementById("scoreBox").textContent = `Score: ${correct} / 30`;
+  }
+
+  function openAll(){ document.querySelectorAll("details").forEach(d=>d.open=true); }
+  function closeAll(){ document.querySelectorAll("details").forEach(d=>d.open=false); }
+
+  render();
 </script>
 </body>
 </html>
