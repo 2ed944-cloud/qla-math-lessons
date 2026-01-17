@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Grade 8 — Transformations (Rotations) — Interactive (No Photos)</title>
+  <title>Grade 8 — Transformations (Reflections) — Interactive (No Photos)</title>
   <style>
     :root{
       --bg:#0b1020; --card:#111a33; --ink:#eaf0ff; --muted:#b9c5ff;
@@ -13,8 +13,10 @@
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:var(--sans);color:var(--ink);
-      background: radial-gradient(1200px 800px at 20% 10%, #162457 0%, var(--bg) 55%);}
+    body{
+      margin:0; font-family:var(--sans); color:var(--ink);
+      background: radial-gradient(1200px 800px at 20% 10%, #162457 0%, var(--bg) 55%);
+    }
     header{max-width:1200px;margin:0 auto;padding:22px 16px 10px;}
     .topbar{
       background: linear-gradient(135deg, rgba(255,209,102,.16), rgba(123,223,242,.10));
@@ -54,6 +56,7 @@
       text-align:center;
       font-weight:700;
       font-family:var(--mono);
+      user-select:none;
     }
     .qbtn.active{background: rgba(123,223,242,.18); border-color: rgba(123,223,242,.35);}
     .qbtn.done{outline: 2px solid rgba(74,222,128,.30);}
@@ -137,8 +140,8 @@
 <header>
   <div class="topbar">
     <div>
-      <h1>Grade 8 — Transformations — Rotations (Interactive, No Photos)</h1>
-      <div class="sub">Drag the red image points. Rotation center is shown in gold (when given).</div>
+      <h1>Grade 8 — Transformations — Reflections (Interactive, No Photos) — FIXED</h1>
+      <div class="sub">Drag the red image points. Mirror line is shown in gold where applicable.</div>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <span class="pill">Name: <span contenteditable="true" style="outline:none">__________</span></span>
@@ -158,9 +161,8 @@
       <div class="list" id="qList"></div>
       <div class="hint">
         • Click a number → that problem appears.<br/>
-        • Graph problems: drag <b style="color:#fb7185">red</b> points.<br/>
-        • Reasoning problems: type in Notes and press <b>Check</b>.<br/>
-        • Work auto-saves on this device.
+        • Graph problems: drag <b style="color:#fb7185">red</b> points (snap-to-grid).<br/>
+        • Notes auto-save on this device.
       </div>
     </aside>
 
@@ -168,7 +170,7 @@
       <div class="row">
         <div class="titleLine">
           <div class="tag" id="qTag">#1</div>
-          <div class="tag" id="qTypeTag">Rotation (graph)</div>
+          <div class="tag" id="qTypeTag">Reflection</div>
           <div class="tag" id="qRuleTag">Rule</div>
         </div>
         <div class="controls">
@@ -193,7 +195,7 @@
           <div class="legend">
             <span class="dot" style="background:#7bdff2"></span> Original (blue)
             <span class="dot" style="background:#fb7185"></span> Image (red)
-            <span class="dot" style="background:#ffd166"></span> Center / hint
+            <span class="dot" style="background:#ffd166"></span> Mirror line (gold)
           </div>
         </div>
 
@@ -203,9 +205,10 @@
           <div class="statusLine" id="statusLine">Status: <span class="muted">Not checked yet.</span></div>
 
           <div class="note">
-            About the origin (from the worksheet):<br/>
-            90° CCW: <b>(x,y)→(−y,x)</b> • 90° CW: <b>(x,y)→(y,−x)</b> • 180°: <b>(x,y)→(−x,−y)</b><br/>
-            About center (a,b): shift to origin → rotate → shift back.
+            Quick rules:<br/>
+            x-axis: <b>(x,y)→(x,−y)</b> • y-axis: <b>(x,y)→(−x,y)</b><br/>
+            origin: <b>(x,y)→(−x,−y)</b> • y=x: <b>(x,y)→(y,x)</b><br/>
+            x=a: <b>x′=2a−x</b> • y=b: <b>y′=2b−y</b> • y=x+c: <b>(x,y)→(y−c, x+c)</b>
           </div>
         </div>
       </div>
@@ -214,67 +217,53 @@
 </main>
 
 <script>
-/* ===== Questions (Worksheet 3: Rotations) ===== */
+/* ===========================
+   Question bank (Reflections)
+   =========================== */
 const QUESTIONS = [
-  // Level 1 (1–10)
-  {n:1, type:"drag", text:"1) Rotate A(3,2) 90° counterclockwise about the origin. Write A′.", points:{A:[3,2]}, rot:{angle:90, dir:"ccw", center:[0,0]}},
-  {n:2, type:"drag", text:"2) Rotate B(−4,1) 90° clockwise about the origin. Write B′.", points:{B:[-4,1]}, rot:{angle:90, dir:"cw", center:[0,0]}},
-  {n:3, type:"drag", text:"3) Rotate C(5,−3) 180° about the origin. Write C′.", points:{C:[5,-3]}, rot:{angle:180, dir:"ccw", center:[0,0]}},
-  {n:4, type:"drag", text:"4) Rotate D(−2,−6) 90° counterclockwise about the origin. Write D′.", points:{D:[-2,-6]}, rot:{angle:90, dir:"ccw", center:[0,0]}},
-  {n:5, type:"drag", text:"5) Triangle ABC: A(−4,1), B(−1,4), C(2,1). Rotate 90° CCW about origin. List A′, B′, C′.", points:{A:[-4,1],B:[-1,4],C:[2,1]}, rot:{angle:90, dir:"ccw", center:[0,0]}},
-  {n:6, type:"drag", text:"6) Triangle DEF: D(3,1), E(6,1), F(4,4). Rotate 180° about origin. List D′, E′, F′.", points:{D:[3,1],E:[6,1],F:[4,4]}, rot:{angle:180, dir:"ccw", center:[0,0]}},
-  {n:7, type:"drag", text:"7) Quadrilateral JKLM: J(−6,−1), K(−3,3), L(0,2), M(−2,−2). Rotate 90° clockwise about origin. List new coordinates.",
-    points:{J:[-6,-1],K:[-3,3],L:[0,2],M:[-2,-2]}, rot:{angle:90, dir:"cw", center:[0,0]}},
-  {n:8, type:"drag", text:"8) Rotate P(6,−2) by 180° about center O(2,−1). Write P′.", points:{P:[6,-2]}, rot:{angle:180, dir:"ccw", center:[2,-1]}},
-  {n:9, type:"drag", text:"9) Rotate Q(4,1) by 90° CCW about center C(1,1). Write Q′.", points:{Q:[4,1]}, rot:{angle:90, dir:"ccw", center:[1,1]}},
-  {n:10, type:"word", text:"10) R(2,5) is rotated about the origin to R′(−5,2). What rotation (angle & direction)?",
-    show:{orig:{R:[2,5]}, img:{R1:[-5,2]}},
-    keywords:["90","ccw","counterclockwise","90°ccw"]},
+  // 1–11 are clean coordinate problems
+  {n:1,  type:"drag", text:"1) Reflect A(−3, 4) across the x-axis. Place A′.", points:{A:[-3,4]}, reflect:{kind:"xAxis"}},
+  {n:2,  type:"drag", text:"2) Reflect B(5, −2) across the y-axis. Place B′.", points:{B:[5,-2]}, reflect:{kind:"yAxis"}},
+  {n:3,  type:"drag", text:"3) Reflect C(−4, −1) across the origin. Place C′.", points:{C:[-4,-1]}, reflect:{kind:"origin"}},
+  {n:4,  type:"drag", text:"4) Reflect D(2, 7) across the line y = x. Place D′.", points:{D:[2,7]}, reflect:{kind:"yEqX"}},
+  {n:5,  type:"drag", text:"5) Reflect E(−6, 1) across the line y = −x. Place E′.", points:{E:[-6,1]}, reflect:{kind:"yEqNegX"}},
+  {n:6,  type:"drag", text:"6) Reflect P(6, −5) across x = −3. Place P′.", points:{P:[6,-5]}, reflect:{kind:"xEqA", a:-3}},
+  {n:7,  type:"drag", text:"7) Reflect Q(−2, 6) across y = 2. Place Q′.", points:{Q:[-2,6]}, reflect:{kind:"yEqB", b:2}},
+  {n:8,  type:"drag", text:"8) Triangle ABC: A(−4,1), B(−1,4), C(2,1). Reflect across x-axis. Place A′B′C′.", points:{A:[-4,1],B:[-1,4],C:[2,1]}, reflect:{kind:"xAxis"}},
+  {n:9,  type:"drag", text:"9) Rectangle JKLM: J(−5,5), K(−1,5), L(−1,3), M(−5,3). Reflect across y-axis. Place J′K′L′M′.", points:{J:[-5,5],K:[-1,5],L:[-1,3],M:[-5,3]}, reflect:{kind:"yAxis"}},
+  {n:10, type:"drag", text:"10) Reflect R(−7, −1) across x = 2. Place R′.", points:{R:[-7,-1]}, reflect:{kind:"xEqA", a:2}},
+  {n:11, type:"drag", text:"11) Triangle ABC: A(−5,5), B(−2,6), C(−1,3). Reflect across y = 2. Place A′B′C′.", points:{A:[-5,5],B:[-2,6],C:[-1,3]}, reflect:{kind:"yEqB", b:2}},
 
-  // Level 2 (11–20)
-  {n:11, type:"drag", text:"11) Rotate S(−3,4) 270° counterclockwise about origin. Write S′.", points:{S:[-3,4]}, rot:{angle:270, dir:"ccw", center:[0,0]}},
-  {n:12, type:"drag", text:"12) Segment PQ: P(3,2), Q(6,4). Rotate 90° CCW about origin. Give P′ and Q′.", points:{P:[3,2],Q:[6,4]}, rot:{angle:90, dir:"ccw", center:[0,0]}},
-  {n:13, type:"word", text:"13) A 180° rotation maps A(1,4) to A′(−5,2). Find the center of rotation.",
-    show:{orig:{A:[1,4]}, img:{A1:[-5,2]}},
-    keywords:["(-2,3)","-2,3"]},
-  {n:14, type:"word", text:"14) A 90° CCW rotation maps B(4,1) to B′(1,4). Find the center of rotation.",
-    show:{orig:{B:[4,1]}, img:{B1:[1,4]}},
-    keywords:["(1,1)","1,1"]},
-  {n:15, type:"drag", text:"15) Square ABCD: A(1,1), B(5,1), C(5,5), D(1,5). Rotate 90° CCW about its center. List new coordinates.",
-    points:{A:[1,1],B:[5,1],C:[5,5],D:[1,5]}, rot:{angle:90, dir:"ccw", center:[3,3]}},
-  {n:16, type:"word", text:"16) Two rotations about origin: first 90° CCW, then 180°. What single equivalent rotation?",
-    keywords:["270","ccw","90cw","90 cw"]},
-  {n:17, type:"word", text:"17) Is T(x,y)=(−y,x) a rotation? If yes, state angle, direction, center.",
-    keywords:["yes","90","ccw","origin"]},
-  {n:18, type:"word", text:"18) P(x,3) rotated 180° about origin becomes P′(−4,y). Find x and y.",
-    keywords:["x=4","y=-3","4,-3"]},
-  {n:19, type:"drag", text:"19) Triangle ABC: A(2,−1), B(6,−1), C(4,3). Rotate 90° clockwise about origin. List A′, B′, C′.",
-    points:{A:[2,-1],B:[6,-1],C:[4,3]}, rot:{angle:90, dir:"cw", center:[0,0]}},
-  {n:20, type:"word", text:"20) A rotation maps line y=x onto y=−x. Give one possible rotation (angle, direction, center).",
-    keywords:["90cw","90 cw","270ccw","270 ccw","origin"]},
+  // 12: pentagon from worksheet (you can change coords to match your exact PDF)
+  {n:12, type:"drag", text:"12) Reflect pentagon ABCDE across x = 1. Place A′B′C′D′E′.",
+    points:{A:[-2,1],B:[0,4],C:[3,3],D:[2,0],E:[0,-1]}, reflect:{kind:"xEqA", a:1}},
 
-  // Level 3 (21–30)
-  {n:21, type:"drag", text:"21) Rotate A(6,2) by 90° CCW about center C(2,−1). Write A′.", points:{A:[6,2]}, rot:{angle:90, dir:"ccw", center:[2,-1]}},
-  {n:22, type:"word", text:"22) A 180° rotation about center (1,2) sends P to P′(3,4). Find original point P.",
-    keywords:["(-1,0)","-1,0"]},
-  {n:23, type:"word", text:"23) A(−1,2)→A′(3,0) and B(2,5)→B′(6,3). a) Single rotation? b) If not, what does it look like?",
-    keywords:["no","translation","right4","down2","(4,-2)"]},
-  {n:24, type:"word", text:"24) Select all rotations about origin that keep (4,0) fixed: 90° CCW, 180°, 270° CCW, 360°. Explain.",
-    keywords:["360","only 360","360°"]},
-  {n:25, type:"word", text:"25) Regular hexagon centered at origin: a) smallest positive rotation onto itself b) # rotational symmetries.",
-    keywords:["60","6"]},
-  {n:26, type:"word", text:"26) Rotate (3,4) by 90° CCW about origin. Compare distance to origin before/after. What do you notice?",
-    keywords:["same","unchanged","equal"]},
-  {n:27, type:"word", text:"27) Two 90° CCW rotations about origin. What single rotation is equivalent?",
-    keywords:["180","180°"]},
-  {n:28, type:"word", text:"28) Find all points (x,y) such that after 90° CCW about origin, the image lies on the x-axis.",
-    keywords:["x=0","y-axis"]},
-  {n:29, type:"word", text:"29) Find all points (x,y) such that after 90° clockwise about origin, the image lies on the y-axis.",
-    keywords:["y=0","x-axis"]},
-  {n:30, type:"open", text:"30) Create your own example: draw any triangle, then rotate it 180° about the origin. Label original and image clearly."}
+  // Word/reasoning items (light keyword checks)
+  {n:13, type:"word", text:"13) A(−4,1)→(4,1) and B(−1,−3)→(1,−3). Find the line of reflection.", keywords:["x=0","y-axis"]},
+  {n:14, type:"word", text:"14) A(2,3)→(2,−5) and B(−4,0)→(−4,−2). Is it a reflection? If yes, line of reflection.", keywords:["y=-1","yes"]},
+  {n:15, type:"drag", text:"15) Triangle PQR: P(2,1), Q(5,3), R(3,6). Reflect across y=x. Place P′Q′R′.", points:{P:[2,1],Q:[5,3],R:[3,6]}, reflect:{kind:"yEqX"}},
+  {n:16, type:"word", text:"16) T(x,y) = (4 − x, y). Is it a reflection? If yes, mirror line?", keywords:["x=2","yes"]},
+  {n:17, type:"drag", text:"17) Reflect S(7, −1) across y = −3. Place S′.", points:{S:[7,-1]}, reflect:{kind:"yEqB", b:-3}},
+  {n:18, type:"word", text:"18) P(1,5) reflects to (7,5). Find the mirror line.", keywords:["x=4"]},
+  {n:19, type:"drag", text:"19) Segment AB: A(−6,2), B(−2,6). Reflect across y-axis. Place A′B′.", points:{A:[-6,2],B:[-2,6]}, reflect:{kind:"yAxis"}},
+  {n:20, type:"word", text:"20) Reflect across x-axis then y-axis. Give rule and name single transformation.", keywords:["(-x,-y)","180","rotation"]},
+
+  {n:21, type:"word", text:"21) Which points stay fixed under reflection across y=2?", keywords:["y=2","on y=2"]},
+  {n:22, type:"word", text:"22) Reflect across x=−1 then x=3. What single transformation results?", keywords:["translation","right8","8"]},
+  {n:23, type:"word", text:"23) A(1,4)→(5,4) and B(2,−1)→(6,−1). Find mirror line.", keywords:["x=3"]},
+  {n:24, type:"word", text:"24) Reflect across y=x then across y-axis. Name the resulting rotation.", keywords:["90","ccw","counterclockwise"]},
+  {n:25, type:"word", text:"25) Q(−2,6) reflects to (4,0). Find midpoint and mirror line.", keywords:["(1,3)","y=x+2"]},
+
+  {n:26, type:"drag", text:"26) Reflect P(4,−2) across y=x+2. Place P′.", points:{P:[4,-2]}, reflect:{kind:"yEqXPlusC", c:2}},
+  {n:27, type:"word", text:"27) A(0,3)→(0,−1) and B(5,3)→(5,−1). Reflection? If yes, mirror line.", keywords:["y=1","yes"]},
+  {n:28, type:"word", text:"28) Decide if red is a reflection of blue (diagram). Explain.", keywords:["no","translation"]},
+  {n:29, type:"word", text:"29) Why can’t two different points reflect to the same image point?", keywords:["one-to-one","injective","unique"]},
+  {n:30, type:"open", text:"30) Create your own shape and reflect it across the y-axis. Label original and image."}
 ];
 
-/* ===== SVG / Grid ===== */
+/* ===========================
+   SVG + coordinate system
+   =========================== */
 const svg = document.getElementById("svg");
 const qList = document.getElementById("qList");
 const qText = document.getElementById("qText");
@@ -285,10 +274,11 @@ const qRuleTag = document.getElementById("qRuleTag");
 const notes = document.getElementById("notes");
 const statusLine = document.getElementById("statusLine");
 
-let current=1;
-let dragState=null;
+let current = 1;
+let dragState = null;
 
-const GRID={ xmin:-8, xmax:8, ymin:-8, ymax:8, w:720, h:520, pad:45 };
+// Grid matches the worksheet vibe (edit if you want)
+const GRID = { xmin:-8, xmax:8, ymin:-8, ymax:8, w:720, h:520, pad:45 };
 
 function xToSvg(x){ const {xmin,xmax,w,pad}=GRID; const inner=w-2*pad; return pad+(x-xmin)*inner/(xmax-xmin); }
 function yToSvg(y){ const {ymin,ymax,h,pad}=GRID; const inner=h-2*pad; return pad+(ymax-y)*inner/(ymax-ymin); }
@@ -334,18 +324,38 @@ function labelAt(color, text, x, y){
   t.textContent=text; svg.appendChild(t);
 }
 
-function drawCenter(center){
-  const [cx,cy]=center;
-  const color="rgba(255,209,102,.95)";
-  // dot
-  svg.appendChild(el("circle",{cx:xToSvg(cx),cy:yToSvg(cy),r:5,fill:color}));
-  // crosshair
-  svg.appendChild(el("line",{x1:xToSvg(cx)-12,y1:yToSvg(cy),x2:xToSvg(cx)+12,y2:yToSvg(cy),stroke:color,"stroke-width":3}));
-  svg.appendChild(el("line",{x1:xToSvg(cx),y1:yToSvg(cy)-12,x2:xToSvg(cx),y2:yToSvg(cy)+12,stroke:color,"stroke-width":3}));
-  labelAt(color, `center (${cx},${cy})`, cx+0.4, cy+0.8);
+function drawMirror(ref){
+  if(!ref) return;
+  const stroke="rgba(255,209,102,.95)";
+  const dash="8 6";
+  if(ref.kind==="xAxis"){
+    svg.appendChild(el("line",{x1:xToSvg(GRID.xmin),y1:yToSvg(0),x2:xToSvg(GRID.xmax),y2:yToSvg(0),stroke,"stroke-width":3,"stroke-dasharray":dash}));
+    labelAt(stroke, "mirror y=0", -7.6, 0.6);
+  } else if(ref.kind==="yAxis"){
+    svg.appendChild(el("line",{x1:xToSvg(0),y1:yToSvg(GRID.ymin),x2:xToSvg(0),y2:yToSvg(GRID.ymax),stroke,"stroke-width":3,"stroke-dasharray":dash}));
+    labelAt(stroke, "mirror x=0", 0.4, 7.2);
+  } else if(ref.kind==="yEqX"){
+    svg.appendChild(el("line",{x1:xToSvg(-8),y1:yToSvg(-8),x2:xToSvg(8),y2:yToSvg(8),stroke,"stroke-width":3,"stroke-dasharray":dash}));
+    labelAt(stroke, "mirror y=x", 3.8, 6.8);
+  } else if(ref.kind==="yEqNegX"){
+    svg.appendChild(el("line",{x1:xToSvg(-8),y1:yToSvg(8),x2:xToSvg(8),y2:yToSvg(-8),stroke,"stroke-width":3,"stroke-dasharray":dash}));
+    labelAt(stroke, "mirror y=-x", 3.5, -6.8);
+  } else if(ref.kind==="xEqA"){
+    const a=ref.a;
+    svg.appendChild(el("line",{x1:xToSvg(a),y1:yToSvg(GRID.ymin),x2:xToSvg(a),y2:yToSvg(GRID.ymax),stroke,"stroke-width":3,"stroke-dasharray":dash}));
+    labelAt(stroke, `mirror x=${a}`, a+0.2, 7.2);
+  } else if(ref.kind==="yEqB"){
+    const b=ref.b;
+    svg.appendChild(el("line",{x1:xToSvg(GRID.xmin),y1:yToSvg(b),x2:xToSvg(GRID.xmax),y2:yToSvg(b),stroke,"stroke-width":3,"stroke-dasharray":dash}));
+    labelAt(stroke, `mirror y=${b}`, -7.6, b+0.6);
+  } else if(ref.kind==="yEqXPlusC"){
+    const c=ref.c;
+    svg.appendChild(el("line",{x1:xToSvg(-8),y1:yToSvg(-8+c),x2:xToSvg(8),y2:yToSvg(8+c),stroke,"stroke-width":3,"stroke-dasharray":dash}));
+    labelAt(stroke, `mirror y=x+${c}`, 2.6, 7.4);
+  }
 }
 
-function pointCircle(name, pt, color, draggable=false){
+function pointGroup(name, pt, color, draggable=false){
   const [x,y]=pt;
   const g=el("g",{"data-name":name});
   const c=el("circle",{cx:xToSvg(x),cy:yToSvg(y),r:7,fill:color,stroke:"rgba(255,255,255,.25)","stroke-width":1});
@@ -359,151 +369,57 @@ function pointCircle(name, pt, color, draggable=false){
   return g;
 }
 
-function polyline(pts, stroke, fill, id){
+function polylineFrom(pts, stroke, fill, id){
   const d=pts.map(p=>`${xToSvg(p[0])},${yToSvg(p[1])}`).join(" ");
   const e=el("polyline",{points:d,fill:fill||"none",stroke, "stroke-width":3, "stroke-linejoin":"round", "stroke-linecap":"round", opacity:0.9});
   if(id) e.setAttribute("id", id);
   return e;
 }
 
-function closeShapeFrom(pointsObj, suffix=""){
-  const ordered = Object.keys(pointsObj).slice().sort();
-  const pts = ordered.map(k=>pointsObj[k+suffix]);
-  const closed = pts.concat([pts[0]]);
-  return {ordered, closed};
-}
-
-function rotatePoint(pt, rot){
-  const [x,y]=pt;
-  const [a,b]=rot.center;
-  const dx=x-a, dy=y-b;
-  const ang=rot.angle % 360;
-  const dir=rot.dir;
-
-  // normalize: treat 270 CCW as 90 CW etc
-  let k=ang;
-  if(dir==="cw") k = (360-ang)%360;
-
-  let rx=dx, ry=dy;
-  if(k===90){ rx = -dy; ry = dx; }
-  else if(k===180){ rx = -dx; ry = -dy; }
-  else if(k===270){ rx = dy; ry = -dx; }
-  else if(k===0){ rx = dx; ry = dy; }
-
-  return [a+rx, b+ry];
+/* ===========================
+   Reflection math
+   =========================== */
+function reflectPoint([x,y], ref){
+  switch(ref.kind){
+    case "xAxis": return [x, -y];
+    case "yAxis": return [-x, y];
+    case "origin": return [-x, -y];
+    case "yEqX": return [y, x];
+    case "yEqNegX": return [-y, -x];
+    case "xEqA": return [2*ref.a - x, y];
+    case "yEqB": return [x, 2*ref.b - y];
+    case "yEqXPlusC": // y = x + c  => (x,y)->(y-c, x+c)
+      return [y - ref.c, x + ref.c];
+    default: return [x,y];
+  }
 }
 
 function expectedImagePoints(q){
   const out={};
-  for(const k in q.points) out[k+"'"]=rotatePoint(q.points[k], q.rot);
+  for(const base in q.points){
+    out[base+"'"] = reflectPoint(q.points[base], q.reflect);
+  }
   return out;
 }
 
-/* ===== UI / State ===== */
-function norm(s){ return (s||"").toLowerCase().replaceAll("−","-").replaceAll(" ","").replaceAll("\t","").replaceAll("\n",""); }
-
-function renderSidebar(){
-  qList.innerHTML="";
-  for(let i=1;i<=QUESTIONS.length;i++){
-    const b=document.createElement("div");
-    b.className="qbtn";
-    b.textContent=i;
-    b.onclick=()=>goTo(i);
-    if(i===current) b.classList.add("active");
-    if(isDone(i)) b.classList.add("done");
-    qList.appendChild(b);
+function ruleLabel(ref){
+  if(!ref) return "Rule";
+  switch(ref.kind){
+    case "xAxis": return "(x,y)->(x,-y)";
+    case "yAxis": return "(x,y)->(-x,y)";
+    case "origin": return "(x,y)->(-x,-y)";
+    case "yEqX": return "(x,y)->(y,x)";
+    case "yEqNegX": return "(x,y)->(-y,-x)";
+    case "xEqA": return `x' = 2(${ref.a}) - x`;
+    case "yEqB": return `y' = 2(${ref.b}) - y`;
+    case "yEqXPlusC": return `(x,y)->(y-${ref.c}, x+${ref.c})`;
+    default: return "Rule";
   }
 }
 
-function goTo(n){
-  current=n;
-  renderSidebar();
-  buildQuestionUI(QUESTIONS[current-1]);
-}
-function prevQ(){ if(current>1) goTo(current-1); }
-function nextQ(){ if(current<QUESTIONS.length) goTo(current+1); }
-
-function setStatus(msg, cls){ statusLine.innerHTML = `Status: <span class="${cls}">${msg}</span>`; }
-
-function ruleLabel(rot){
-  const [a,b]=rot.center;
-  let rule="";
-  if(a===0 && b===0){
-    if(rot.dir==="ccw" && rot.angle===90) rule="(x,y)->(-y,x)";
-    else if(rot.dir==="cw" && rot.angle===90) rule="(x,y)->(y,-x)";
-    else if(rot.angle===180) rule="(x,y)->(-x,-y)";
-    else rule=`${rot.angle}° ${rot.dir.toUpperCase()}`;
-  } else {
-    rule=`${rot.angle}° ${rot.dir.toUpperCase()} about (${a},${b})`;
-  }
-  return rule;
-}
-
-function buildQuestionUI(q){
-  clearSvg(); drawGrid();
-
-  qTag.textContent = `#${q.n}`;
-  qText.textContent = q.text;
-
-  notes.value = loadNotes(q.n);
-
-  if(q.type==="drag"){
-    qTypeTag.textContent="Rotation (drag on graph)";
-    qHelp.innerHTML="Drag the <b style='color:#fb7185'>red</b> image points to the rotated location.";
-    qRuleTag.textContent = ruleLabel(q.rot);
-
-    if(q.rot && q.rot.center) drawCenter(q.rot.center);
-
-    const names = Object.keys(q.points);
-    if(names.length>=3){
-      const sorted = names.slice().sort();
-      const pts = sorted.map(k=>q.points[k]);
-      svg.appendChild(polyline(pts.concat([pts[0]]), "rgba(123,223,242,.9)", "rgba(123,223,242,.10)"));
-    }
-    for(const k of names) svg.appendChild(pointCircle(k, q.points[k], "rgba(123,223,242,.95)", false));
-
-    const imgPts={};
-    for(const k of names) imgPts[k+"'"]=[...q.points[k]];
-    window.__imgPts=imgPts;
-
-    if(names.length>=3){
-      const {ordered, closed} = closeShapeFrom(imgPts, "");
-      const poly = polyline(closed, "rgba(251,113,133,.9)", "rgba(251,113,133,.10)", "imgPoly");
-      poly.setAttribute("data-order", ordered.join(","));
-      svg.appendChild(poly);
-    }
-    for(const k of names) svg.appendChild(pointCircle(k+"'", imgPts[k+"'"], "rgba(251,113,133,.95)", true));
-  }
-  else if(q.type==="word"){
-    qTypeTag.textContent="Rotation (written)";
-    qRuleTag.textContent="Explain / rule";
-    qHelp.innerHTML="Write your answer in Notes, then press <b>Check</b>.";
-    window.__imgPts=null;
-
-    if(q.show){
-      for(const k in q.show.orig) svg.appendChild(pointCircle("orig_"+k, q.show.orig[k], "rgba(123,223,242,.95)", false));
-      for(const k in q.show.img) svg.appendChild(pointCircle("img_"+k, q.show.img[k], "rgba(251,113,133,.95)", false));
-    }
-  }
-  else { // open
-    qTypeTag.textContent="Open task";
-    qRuleTag.textContent="Teacher check";
-    qHelp.innerHTML="Open task — use Notes. (Auto-check is off for this one.)";
-    window.__imgPts=null;
-  }
-
-  setStatus("Not checked yet.", "muted");
-}
-
-function updateImagePolygon(){
-  const poly=document.getElementById("imgPoly");
-  if(!poly || !window.__imgPts) return;
-  const order=(poly.getAttribute("data-order")||"").split(",").filter(Boolean);
-  const pts=order.map(k=>window.__imgPts[k+"'"]);
-  const closed=pts.concat([pts[0]]);
-  poly.setAttribute("points", closed.map(p=>`${xToSvg(p[0])},${yToSvg(p[1])}`).join(" "));
-}
-
+/* ===========================
+   Drag + polygon update
+   =========================== */
 function startDrag(ev, name){
   if(!window.__imgPts) return;
   const target=ev.target;
@@ -546,16 +462,94 @@ function onDragEnd(){
   dragState=null;
 }
 
-/* ===== Checking ===== */
+function updateImagePolygon(){
+  const poly=document.getElementById("imgPoly");
+  if(!poly || !window.__baseOrder || !window.__imgPts) return;
+
+  const pts = window.__baseOrder.map(b => window.__imgPts[b+"'"]);
+  if(pts.length < 3) return;
+
+  const closed = pts.concat([pts[0]]);
+  poly.setAttribute("points", closed.map(p=>`${xToSvg(p[0])},${yToSvg(p[1])}`).join(" "));
+}
+
+/* ===========================
+   UI building
+   =========================== */
+function setStatus(msg, cls){
+  statusLine.innerHTML = `Status: <span class="${cls}">${msg}</span>`;
+}
+
+function buildQuestionUI(q){
+  clearSvg(); drawGrid();
+  qTag.textContent = `#${q.n}`;
+  qText.textContent = q.text;
+  notes.value = loadNotes(q.n);
+
+  if(q.type==="drag"){
+    qTypeTag.textContent="Reflection (drag on graph)";
+    qRuleTag.textContent=ruleLabel(q.reflect);
+    qHelp.innerHTML="Drag the <b style='color:#fb7185'>red</b> image points to the reflected location.";
+    drawMirror(q.reflect);
+
+    const bases = Object.keys(q.points).slice().sort();
+    window.__baseOrder = bases;
+
+    // original poly (if 3+)
+    if(bases.length>=3){
+      const pts = bases.map(b => q.points[b]);
+      svg.appendChild(polylineFrom(pts.concat([pts[0]]), "rgba(123,223,242,.9)", "rgba(123,223,242,.10)"));
+    }
+    // original points
+    for(const b of bases) svg.appendChild(pointGroup(b, q.points[b], "rgba(123,223,242,.95)", false));
+
+    // image points start on top of originals (student drags)
+    const imgPts = {};
+    for(const b of bases) imgPts[b+"'"] = [...q.points[b]];
+    window.__imgPts = imgPts;
+
+    if(bases.length>=3){
+      const pts = bases.map(b => imgPts[b+"'"]);
+      const poly = polylineFrom(pts.concat([pts[0]]), "rgba(251,113,133,.9)", "rgba(251,113,133,.10)", "imgPoly");
+      svg.appendChild(poly);
+    }
+
+    for(const b of bases) svg.appendChild(pointGroup(b+"'", imgPts[b+"'"], "rgba(251,113,133,.95)", true));
+  }
+  else if(q.type==="word"){
+    qTypeTag.textContent="Reflection (written)";
+    qRuleTag.textContent="Explain / rule";
+    qHelp.innerHTML="Type your answer in Notes, then press <b>Check</b>.";
+    window.__imgPts = null;
+    window.__baseOrder = null;
+  }
+  else {
+    qTypeTag.textContent="Open task";
+    qRuleTag.textContent="Teacher check";
+    qHelp.innerHTML="Open task — use Notes. (Auto-check is off.)";
+    window.__imgPts = null;
+    window.__baseOrder = null;
+  }
+
+  setStatus("Not checked yet.", "muted");
+}
+
+/* ===========================
+   Checking / reveal
+   =========================== */
+function norm(s){
+  return (s||"").toLowerCase().replaceAll("−","-").replaceAll(" ","").replaceAll("\t","").replaceAll("\n","");
+}
+
 function checkQ(){
-  const q=QUESTIONS[current-1];
+  const q = QUESTIONS[current-1];
   markDone(q.n);
   saveNotes(q.n, notes.value);
 
   if(q.type==="drag"){
-    const exp=expectedImagePoints(q);
-    const got=window.__imgPts;
-    let ok=true;
+    const exp = expectedImagePoints(q);
+    const got = window.__imgPts;
+    let ok = true;
     for(const k in exp){
       const e=exp[k], g=got[k];
       if(!g || g[0]!==e[0] || g[1]!==e[1]) { ok=false; break; }
@@ -565,9 +559,9 @@ function checkQ(){
   }
 
   if(q.type==="word"){
-    const text=norm(notes.value);
-    const keys=q.keywords||[];
-    const hit=keys.some(k=>text.includes(norm(k)));
+    const text = norm(notes.value);
+    const keys = (q.keywords||[]).map(norm);
+    const hit = keys.length ? keys.some(k=>text.includes(k)) : true;
     setStatus(hit ? "Looks correct ✓" : "Not sure / missing key idea ✗", hit ? "ok" : "no");
     return;
   }
@@ -576,13 +570,13 @@ function checkQ(){
 }
 
 function showAnswer(){
-  const q=QUESTIONS[current-1];
+  const q = QUESTIONS[current-1];
   markDone(q.n);
 
   if(q.type==="drag"){
-    const exp=expectedImagePoints(q);
+    const exp = expectedImagePoints(q);
     for(const k in exp){
-      window.__imgPts[k]=[...exp[k]];
+      window.__imgPts[k] = [...exp[k]];
       const gg=[...svg.querySelectorAll("g")].find(x=>x.getAttribute("data-name")===k);
       if(gg){
         const c=gg.querySelector("circle");
@@ -601,7 +595,7 @@ function showAnswer(){
   if(q.type==="word"){
     notes.value = (notes.value||"") + (notes.value ? "\n\n" : "") +
       "— ANSWER GUIDE —\n" +
-      "State the rotation clearly (e.g., 90° CCW about origin, center (1,1), etc.).";
+      "State the mirror line clearly (e.g., x=3, y=-1, y=x+2), or the correct reflection rule.";
     saveNotes(q.n, notes.value);
     setStatus("Answer guide inserted into notes.", "ok");
     return;
@@ -610,16 +604,42 @@ function showAnswer(){
   setStatus("Open task — no single answer.", "muted");
 }
 
-/* ===== Local save ===== */
-const STORE_KEY="g8_rotations_noPhotos_v1";
-function loadStore(){ try{return JSON.parse(localStorage.getItem(STORE_KEY)||\"{}\");}catch{return{};} }
+/* ===========================
+   Navigation / sidebar
+   =========================== */
+function renderSidebar(){
+  qList.innerHTML="";
+  for(let i=1;i<=QUESTIONS.length;i++){
+    const b=document.createElement("div");
+    b.className="qbtn";
+    b.textContent=i;
+    b.onclick=()=>goTo(i);
+    if(i===current) b.classList.add("active");
+    if(isDone(i)) b.classList.add("done");
+    qList.appendChild(b);
+  }
+}
+
+function goTo(n){
+  current = n;
+  renderSidebar();
+  buildQuestionUI(QUESTIONS[current-1]);
+}
+function prevQ(){ if(current>1) goTo(current-1); }
+function nextQ(){ if(current<QUESTIONS.length) goTo(current+1); }
+
+/* ===========================
+   Local save
+   =========================== */
+const STORE_KEY="g8_reflections_noPhotos_FIXED_v1";
+function loadStore(){ try{return JSON.parse(localStorage.getItem(STORE_KEY)||"{}");}catch{return{};} }
 function saveStore(obj){ localStorage.setItem(STORE_KEY, JSON.stringify(obj)); }
-function loadNotes(n){ const st=loadStore(); return st[\"notes_\"+n]||\"\"; }
-function saveNotes(n,val){ const st=loadStore(); st[\"notes_\"+n]=val||\"\"; saveStore(st); }
-function markDone(n){ const st=loadStore(); st[\"done_\"+n]=true; saveStore(st); renderSidebar(); }
-function isDone(n){ const st=loadStore(); return !!st[\"done_\"+n]; }
-function resetAll(){ localStorage.removeItem(STORE_KEY); renderSidebar(); buildQuestionUI(QUESTIONS[current-1]); setStatus(\"Reset complete.\",\"muted\"); }
-notes.addEventListener(\"input\", ()=>saveNotes(current, notes.value));
+function loadNotes(n){ const st=loadStore(); return st["notes_"+n]||""; }
+function saveNotes(n,val){ const st=loadStore(); st["notes_"+n]=val||""; saveStore(st); }
+function markDone(n){ const st=loadStore(); st["done_"+n]=true; saveStore(st); renderSidebar(); }
+function isDone(n){ const st=loadStore(); return !!st["done_"+n]; }
+function resetAll(){ localStorage.removeItem(STORE_KEY); renderSidebar(); buildQuestionUI(QUESTIONS[current-1]); setStatus("Reset complete.","muted"); }
+notes.addEventListener("input", ()=>saveNotes(current, notes.value));
 
 /* init */
 renderSidebar();
