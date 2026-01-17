@@ -1,1033 +1,482 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>G7 • Unit 2 • Lesson 2 — Collecting Like Terms</title>
-
-<!-- Fonts & Tailwind -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-
-<!-- KaTeX (robust auto-render) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const run = (root = document.body) => {
-      if (!window.renderMathInElement) return;
-      window.renderMathInElement(root, {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '\\[', right: '\\]', display: true },
-          { left: '\\(', right: '\\)', display: false }
-        ],
-        throwOnError: false
-      });
-    };
-    if (window.renderMathInElement) run();
-    else {
-      const t = setInterval(() => { if (window.renderMathInElement) { clearInterval(t); run(); } }, 25);
-      setTimeout(() => clearInterval(t), 6000);
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grade 7 — Unit 2 (Expressions) | Lesson 2: Collecting Like Terms</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#111a33;
+      --ink:#eaf0ff;
+      --muted:#b9c5ff;
+      --line:#24315e;
+      --accent:#ffd166;
+      --accent2:#7bdff2;
+      --good:#4ade80;
+      --bad:#fb7185;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
-    window._rerenderMath = run;
-  });
-</script>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 800px at 20% 10%, #162457 0%, var(--bg) 55%);
+      color:var(--ink);
+      line-height:1.45;
+    }
+    header{
+      padding: 26px 18px 10px;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+    .topbar{
+      display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
+      padding:18px 18px;
+      background: linear-gradient(135deg, rgba(255,209,102,.16), rgba(123,223,242,.10));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .title h1{
+      margin:0;
+      font-size: 1.15rem;
+      letter-spacing:.2px;
+    }
+    .title p{
+      margin:6px 0 0;
+      color: var(--muted);
+      font-size:.95rem;
+    }
+    .meta{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      color: var(--muted);
+      font-size:.92rem;
+    }
+    .pill{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(17,26,51,.65);
+      padding:8px 10px;
+      border-radius: 999px;
+    }
 
-<style>
-  :root{--maroon:#6C1D45;--gold:#C7A34F;--dark:#2C2C2E;--light:#F5F5F5;--accent:#E8D5B7}
-  html,body{height:100%;background:#2d3748;color:#111;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    main{max-width:1060px; margin: 10px auto 70px; padding: 0 18px;}
+    .grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:16px;}
+    @media (max-width: 940px){ .grid{grid-template-columns: 1fr;} }
 
-  /* Stage */
-  #deck{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
-  #slides{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.35);overflow:hidden;border-radius:18px}
-  .slide{position:absolute;inset:0;padding:3.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;opacity:0;transform:translateY(14px) scale(.985);transition:.55s ease;pointer-events:none}
-  .slide.active{opacity:1;transform:none;pointer-events:auto}
-  .bg-maroon{background-color:var(--maroon)} .text-maroon{color:var(--maroon)} .text-gold{color:var(--gold)}
-  .banner{width:100%;height:120px;background:#fff center/contain no-repeat;border-bottom:3px solid var(--gold);border-radius:10px}
-  .card{border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
-  .chip{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.05);border-radius:9999px;padding:.35rem .75rem;cursor:pointer}
-  .chip:hover{outline:2px solid var(--gold)}
-  .btn{padding:.55rem 1rem;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font-weight:700}
-  .btn.maroon{background:var(--maroon);color:#fff;border-color:var(--maroon)}
-  .btn:hover{filter:brightness(0.98)}
-  #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.55);padding:.4rem .6rem;border-radius:999px;z-index:20;backdrop-filter:blur(6px)}
-  #controls button{width:42px;height:42px;border-radius:999px;border:none;background:#fff;cursor:pointer;font-weight:700}
-  #controls button:hover{transform:scale(1.06)}
-  #counter{color:#fff;font-weight:700;min-width:84px;text-align:center}
-  #progress{position:fixed;left:0;bottom:0;height:5px;width:0;background:var(--gold);z-index:30;transition:width .35s ease}
-  #fsHint{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);padding:.25rem .5rem;border-radius:8px;font-size:.8rem}
+    .card{
+      background: rgba(17,26,51,.78);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    h2{margin:0 0 10px; font-size:1.1rem}
+    h3{margin:14px 0 8px; font-size:1rem}
+    .muted{color:var(--muted)}
+    ul{margin:8px 0 0 18px; color:var(--ink)}
+    li{margin:6px 0}
+    .rule{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px dashed rgba(255,255,255,.18);
+      padding:8px 10px; border-radius:999px;
+      background: rgba(0,0,0,.18);
+      color: var(--muted);
+      font-size: .92rem;
+    }
+    code.kbd{
+      font-family: var(--mono);
+      font-size:.92rem;
+      padding:2px 6px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: var(--ink);
+    }
 
-  .hint{background:#fff3cd;border:1px solid #ffe69c;border-radius:10px;padding:.5rem .75rem}
-  .confetti{position:fixed;pointer-events:none;z-index:50}
+    .example{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      padding: 12px 12px;
+      border-radius: 14px;
+      margin-top:10px;
+    }
+    .math{
+      font-family: var(--mono);
+      font-size: 1.02rem;
+      letter-spacing:.2px;
+      white-space: nowrap;
+    }
+    .steps{margin:8px 0 0 0; padding-left: 18px; color:var(--muted)}
+    .steps li{margin:6px 0}
+    .btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    button{
+      cursor:pointer;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,209,102,.14);
+      color: var(--ink);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+    button.secondary{
+      background: rgba(123,223,242,.12);
+    }
+    button.ghost{
+      background: rgba(0,0,0,.18);
+    }
+    button:active{transform: translateY(1px)}
 
-  /* Popover */
-  #pop{position:fixed;display:none;max-width:420px;z-index:60;background:#fff;border:1px solid #e5e7eb;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.22);padding:12px}
-  #pop .close{float:right;cursor:pointer;font-weight:800;padding:2px 6px;border-radius:8px}
-  #pop .close:hover{background:#f3f4f6}
-
-  .pill{display:inline-flex;align-items:center;gap:.35rem;border:1px solid #e5e7eb;border-radius:999px;padding:.35rem .75rem;background:#fff;cursor:pointer}
-  .pill.active{border-color:#22c55e;box-shadow:0 0 0 2px rgba(34,197,94,.15)}
-
-  .workstep{border-left:4px solid var(--gold);padding:.6rem .8rem;background:#fff;border-radius:12px;border:1px solid #e5e7eb}
-</style>
+    .practice-head{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      margin-bottom: 10px;
+    }
+    .score{
+      color: var(--muted);
+      font-size:.95rem;
+    }
+    .section{
+      margin-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 12px;
+    }
+    details{
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,.16);
+      margin: 10px 0;
+    }
+    summary{
+      cursor:pointer;
+      font-weight:700;
+      color: var(--ink);
+      list-style:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    .q{
+      display:grid;
+      grid-template-columns: 60px 1fr 220px;
+      gap: 10px;
+      align-items:center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    @media (max-width: 720px){
+      .q{grid-template-columns: 60px 1fr;}
+      .q .ans{grid-column: 1 / -1;}
+    }
+    .q:last-child{border-bottom:none}
+    .num{
+      color: var(--accent2);
+      font-weight: 800;
+      font-family: var(--mono);
+    }
+    .expr{
+      font-family: var(--mono);
+      font-size: 1.02rem;
+    }
+    input{
+      width: 100%;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(17,26,51,.55);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: .98rem;
+      outline: none;
+    }
+    input::placeholder{color: rgba(185,197,255,.55)}
+    .mark{
+      display:inline-block;
+      min-width: 18px;
+      text-align:center;
+      margin-left:8px;
+      font-weight: 900;
+    }
+    .ok{color: var(--good)}
+    .no{color: var(--bad)}
+    .tiny{font-size:.9rem}
+    .note{
+      border-left: 4px solid rgba(255,209,102,.55);
+      padding: 10px 12px;
+      background: rgba(255,209,102,.08);
+      border-radius: 12px;
+      margin-top:10px;
+      color: var(--muted);
+    }
+    .footer{
+      margin-top: 18px;
+      color: rgba(185,197,255,.75);
+      font-size: .92rem;
+    }
+  </style>
 </head>
+
 <body>
-
-<div id="deck" aria-live="polite">
-  <div id="slides" class="relative">
-    <div id="fsHint">Press <strong>F</strong> for fullscreen</div>
-
-    <!-- 0 • Title -->
-    <section class="slide active bg-maroon text-white">
-      <div class="w-full h-16 banner mb-6 rounded-md" style="background-image:url('qla_banner.png')" aria-label="QLA Partner Banner"></div>
-      <div class="flex items-center gap-8">
-        <img src="qla_logo.png" alt="QLA Logo" class="h-24 w-auto" onerror="this.style.display='none'"/>
-        <div class="text-left">
-          <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight">Unit 2 — Expressions (Linear Expressions)</h1>
-          <p class="text-gold text-2xl md:text-3xl mt-2 font-semibold">Lesson 2 — Simplify by Collecting Like Terms</p>
-          <p class="mt-2 text-lg">Qatar Leadership Academy — Grade 7</p>
-        </div>
-      </div>
-      <div class="absolute bottom-6 text-sm text-gray-100">
-        Focus: identify like terms, combine coefficients, and simplify algebraic expressions.
-      </div>
-    </section>
-
-    <!-- 1 • Learning Outcomes & Keywords -->
-    <section class="slide">
-      <h2 class="text-4xl font-extrabold text-maroon mb-2">Learning Outcomes &amp; Keywords</h2>
-      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
-        <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Learning Outcomes</h3>
-          <ul class="list-disc list-inside space-y-1 text-lg">
-            <li>Identify terms, coefficients, and constants in an expression.</li>
-            <li>Recognize like terms (same variable part and same exponent).</li>
-            <li>Collect like terms by adding/subtracting coefficients.</li>
-            <li>Simplify expressions with positives and negatives accurately.</li>
-            <li>Check equivalence by substituting a value (sanity check).</li>
-          </ul>
-        </div>
-        <div class="card p-5">
-          <h3 class="text-2xl font-bold text-maroon mb-1">Keywords (tap for definitions)</h3>
-          <div class="flex flex-wrap gap-2 text-lg">
-            <span class="chip" data-key="term">term</span>
-            <span class="chip" data-key="like">like terms</span>
-            <span class="chip" data-key="coeff">coefficient</span>
-            <span class="chip" data-key="const">constant</span>
-            <span class="chip" data-key="simplify">simplify</span>
-            <span class="chip" data-key="combine">combine</span>
-            <span class="chip" data-key="variable">variable</span>
-            <span class="chip" data-key="distrib">distributive property</span>
-            <span class="chip" data-key="equiv">equivalent</span>
-          </div>
-          <div class="text-xs text-gray-500 mt-3">
-            Key idea: you can only combine terms that have the <strong>same variable part</strong>.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2 • Warm-Up: Like or Not Like? -->
-    <section class="slide" id="likeWarmSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Warm-Up: Are These Like Terms?</h2>
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="lwLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="lwNew" class="btn">New set</button>
-        <button id="lwCheck" class="btn maroon">Check</button>
-        <button id="lwExportCSV" class="btn">Export CSV</button>
-        <button id="lwExportJSON" class="btn">Export JSON</button>
-      </div>
-      <div class="card p-5 w-full max-w-5xl text-left">
-        <div class="grid lg:grid-cols-2 gap-3" id="lwList"></div>
-      </div>
-      <div id="lwFb" class="mt-2 h-6 font-semibold"></div>
-      <div class="hint mt-3 text-sm max-w-5xl text-left">
-        Like terms must match in <strong>variable</strong> and <strong>power</strong> (e.g., \(x\) with \(x\); \(x^2\) with \(x^2\)). Coefficients can differ.
-      </div>
-    </section>
-
-    <!-- 3 • Worked Examples -->
-    <section class="slide" id="wkExSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Worked Examples (Step by Step)</h2>
-      <div class="grid lg:grid-cols-3 gap-4 w-full max-w-6xl text-left">
-        <div class="card p-4">
-          <h3 class="font-bold text-maroon text-xl">Example 1</h3>
-          <div id="ex1" class="mt-2 text-lg"></div>
-          <button id="ex1Next" class="btn mt-2">Another</button>
-        </div>
-        <div class="card p-4">
-          <h3 class="font-bold text-maroon text-xl">Example 2 (negatives)</h3>
-          <div id="ex2" class="mt-2 text-lg"></div>
-          <button id="ex2Next" class="btn mt-2">Another</button>
-        </div>
-        <div class="card p-4">
-          <h3 class="font-bold text-maroon text-xl">Example 3 (two variables)</h3>
-          <div id="ex3" class="mt-2 text-lg"></div>
-          <button id="ex3Next" class="btn mt-2">Another</button>
-        </div>
-      </div>
-      <div class="hint mt-4 text-left text-sm max-w-6xl">
-        Strategy: group like terms (same letters/powers), then add/subtract coefficients. Keep constants together.
-      </div>
-    </section>
-
-    <!-- 4 • Practice A: Collect Like Terms -->
-    <section class="slide" id="cltSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice A — Collect Like Terms</h2>
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="clLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="clNew" class="btn">New set</button>
-        <button id="clCheck" class="btn maroon">Check</button>
-        <button id="clExportCSV" class="btn">Export CSV</button>
-        <button id="clExportJSON" class="btn">Export JSON</button>
-      </div>
-
-      <div id="clList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
-      <div id="clFb" class="mt-2 h-6 font-semibold"></div>
-
-      <div class="hint mt-3 text-left text-sm max-w-5xl">
-        Write answers in simplified form, e.g. <span class="font-mono">5x+2</span>, <span class="font-mono">-3x+7</span>, <span class="font-mono">2x+3y-4</span>.
-      </div>
-    </section>
-
-    <!-- 5 • Practice B: Sort Terms (drag-free) -->
-    <section class="slide" id="sortSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice B — Sort Terms Into Buckets</h2>
-
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="stLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="stNew" class="btn">New set</button>
-        <button id="stCheck" class="btn maroon">Check</button>
-        <button id="stExportCSV" class="btn">Export CSV</button>
-        <button id="stExportJSON" class="btn">Export JSON</button>
-      </div>
-
-      <div class="card p-5 w-full max-w-6xl text-left">
-        <div class="text-lg mb-3">Expression: <span id="stExpr" class="font-extrabold"></span></div>
-
-        <div class="grid md:grid-cols-3 gap-3">
-          <div class="card p-4 bg-white">
-            <h3 class="font-bold text-maroon mb-2">x-terms total coefficient</h3>
-            <div class="text-sm text-gray-500 mb-2">Add coefficients of terms with \(x\).</div>
-            <input id="stX" class="border rounded px-2 py-2 w-full" placeholder="e.g., 5 (means 5x)"/>
-          </div>
-          <div class="card p-4 bg-white">
-            <h3 class="font-bold text-maroon mb-2">y-terms total coefficient</h3>
-            <div class="text-sm text-gray-500 mb-2">Add coefficients of terms with \(y\).</div>
-            <input id="stY" class="border rounded px-2 py-2 w-full" placeholder="e.g., -2 (means -2y)"/>
-          </div>
-          <div class="card p-4 bg-white">
-            <h3 class="font-bold text-maroon mb-2">Constant total</h3>
-            <div class="text-sm text-gray-500 mb-2">Add numbers with no variable.</div>
-            <input id="stC" class="border rounded px-2 py-2 w-full" placeholder="e.g., 7"/>
-          </div>
-        </div>
-
-        <div class="mt-4 flex gap-2 items-center">
-          <span class="text-lg">Simplified expression:</span>
-          <input id="stAns" class="border rounded px-2 py-2 w-[320px] max-w-full" placeholder="e.g., 3x-2y+7"/>
-        </div>
-
-        <div class="mt-3 flex gap-2">
-          <button id="stHint" class="btn">Hint</button>
-        </div>
-
-        <div id="stHintBox" class="mt-3 text-sm"></div>
-        <div id="stFb" class="mt-2 h-6 font-semibold"></div>
-      </div>
-    </section>
-
-    <!-- 6 • Practice C: Simplify & Evaluate (equivalence check) -->
-    <section class="slide" id="sevSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Practice C — Simplify Then Evaluate</h2>
-
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="seLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="seNew" class="btn">New set</button>
-        <button id="seCheck" class="btn maroon">Check</button>
-        <button id="seExportCSV" class="btn">Export CSV</button>
-        <button id="seExportJSON" class="btn">Export JSON</button>
-      </div>
-
-      <div id="seList" class="grid md:grid-cols-2 gap-3 w-full max-w-5xl"></div>
-      <div id="seFb" class="mt-2 h-6 font-semibold"></div>
-
-      <div class="hint mt-3 text-left text-sm max-w-5xl">
-        Quick check: pick a value like \(x=2\) and verify original and simplified give the same number.
-      </div>
-    </section>
-
-    <!-- 7 • Error Analysis -->
-    <section class="slide" id="errSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Error Analysis — Diagnose the Mistake</h2>
-
-      <div class="flex items-center gap-3 mb-2">
-        <span>Level:</span>
-        <select id="errLevel" class="border rounded px-2 py-1">
-          <option value="easy" selected>easy</option>
-          <option value="med">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <button id="errNew" class="btn">New example</button>
-        <button id="errReveal" class="btn">Reveal correct work</button>
-      </div>
-
-      <div class="card p-5 w-full max-w-5xl text-left">
-        <div id="errBox" class="text-lg"></div>
-        <div class="mt-2">
-          <label><input type="radio" name="errChoice" value="A"> Combined unlike terms</label><br/>
-          <label><input type="radio" name="errChoice" value="B"> Sign error (missed a negative)</label><br/>
-          <label><input type="radio" name="errChoice" value="C"> Coefficient error (wrong add/subtract)</label><br/>
-          <label><input type="radio" name="errChoice" value="D"> Dropped a term/constant</label>
-        </div>
-
-        <div class="mt-2 flex gap-2">
-          <button id="errCheck" class="btn maroon">Check</button>
-          <button id="errExportCSV" class="btn">Export CSV</button>
-          <button id="errExportJSON" class="btn">Export JSON</button>
-        </div>
-
-        <div id="errFb" class="mt-2 h-6 font-semibold"></div>
-        <div id="errRevealBox" class="mt-2 text-sm"></div>
-      </div>
-    </section>
-
-    <!-- 8 • Mixed Generator -->
-    <section class="slide" id="mixSlide">
-      <h2 class="text-3xl font-extrabold text-maroon mb-2">Mixed Generator — Simplify</h2>
-      <div class="card p-5 w-full max-w-3xl text-left">
-        <div class="flex items-center gap-3">
-          <span>Level:</span>
-          <select id="mixLevel" class="border rounded px-2 py-1">
-            <option value="easy" selected>easy</option>
-            <option value="med">medium</option>
-            <option value="hard">hard</option>
-          </select>
-          <button id="mixNew" class="btn">New question</button>
-        </div>
-
-        <div class="mt-3 text-2xl">Task: Simplify <span id="mixQ" class="font-extrabold"></span></div>
-        <div class="mt-2">
-          <input id="mixAns" class="border rounded px-3 py-2 w-[420px] max-w-full" placeholder="enter simplified expression">
-          <button id="mixCheck" class="btn maroon">Check</button>
-          <button id="mixHint" class="btn">Hint</button>
-          <button id="mixExportCSV" class="btn">Export CSV</button>
-          <button id="mixExportJSON" class="btn">Export JSON</button>
-        </div>
-
-        <div id="mixHintBox" class="mt-3 text-sm"></div>
-        <div id="mixFb" class="mt-2 h-6 font-semibold"></div>
-      </div>
-    </section>
-
-    <!-- 9 • Exit Ticket -->
-    <section class="slide">
-      <h2 class="text-4xl font-extrabold text-maroon mb-2">Exit Ticket</h2>
-      <div class="grid md:grid-cols-2 gap-6 text-left max-w-5xl">
-        <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon">3–2–1 Reflect</h3>
-          <ul class="list-disc list-inside">
-            <li>3 rules you used to decide if terms are “like”</li>
-            <li>2 common sign mistakes to watch for</li>
-            <li>1 way to check your simplified answer quickly</li>
-          </ul>
-        </div>
-        <div class="card p-5">
-          <h3 class="text-xl font-bold text-maroon">Up Next</h3>
-          <p>We’ll simplify using the <strong>distributive property</strong> and then collect like terms.</p>
-        </div>
-      </div>
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[88%] h-[110px] banner rounded-md" style="background-image:url('qla_banner.png')"></div>
-    </section>
-
+<header>
+  <div class="topbar">
+    <div class="title">
+      <h1>Grade 7 — Unit 2: Expressions (Linear Expressions)</h1>
+      <p>Lesson 2: Simplify by Collecting Like Terms</p>
+    </div>
+    <div class="meta">
+      <span class="pill">Name: <span contenteditable="true" style="outline:none">__________</span></span>
+      <span class="pill">Date: <span contenteditable="true" style="outline:none">__________</span></span>
+      <span class="pill">Class/Period: <span contenteditable="true" style="outline:none">__________</span></span>
+    </div>
   </div>
-</div>
+</header>
 
-<!-- Controls -->
-<div id="controls" role="group" aria-label="Slideshow controls">
-  <button id="prev" title="Previous (←)">&laquo;</button>
-  <button id="fs" title="Toggle Fullscreen (F)">⤢</button>
-  <div id="counter">1 / 10</div>
-  <button id="next" title="Next (→)">&raquo;</button>
-</div>
-<div id="progress"></div>
+<main>
+  <div class="grid">
 
-<!-- Glossary popover -->
-<div id="pop" role="dialog" aria-modal="true" aria-live="polite">
-  <span class="close" title="Close">✕</span>
-  <div id="popBody"></div>
-</div>
+    <!-- LEFT: TEACH -->
+    <section class="card">
+      <h2>Key Concepts</h2>
+      <ul>
+        <li><b>Like terms</b> have the same variable part (same letters and exponents). Example: <span class="math">3x</span> and <span class="math">−5x</span> are like terms; <span class="math">3x</span> and <span class="math">3y</span> are not.</li>
+        <li>To combine like terms, add/subtract the <b>coefficients</b> (the numbers in front).</li>
+        <li><b>Constants</b> (numbers with no variable) combine with other constants.</li>
+        <li>Watch negative signs. A good habit: rewrite subtraction as adding a negative.</li>
+        <li><b>Simplify</b> means: write an equivalent expression with the fewest terms.</li>
+      </ul>
+
+      <div class="rule">
+        <span class="chip">Rule: <code class="kbd">ax + bx = (a+b)x</code></span>
+        <span class="chip">Rule: <code class="kbd">a − b = a + (−b)</code></span>
+        <span class="chip">Rule: constants + constants = constant</span>
+      </div>
+
+      <h3>Mini Lesson (Worked Examples)</h3>
+
+      <div class="example">
+        <div class="math"><b>Example A:</b> 3x + 5x</div>
+        <ol class="steps">
+          <li>Both terms have the same variable part: <span class="math">x</span>.</li>
+          <li>Add coefficients: <span class="math">3 + 5 = 8</span>.</li>
+          <li>Answer: <span class="math">8x</span></li>
+        </ol>
+      </div>
+
+      <div class="example">
+        <div class="math"><b>Example B:</b> 8 + 3k + 5 − k</div>
+        <ol class="steps">
+          <li>Rewrite subtraction: <span class="math">8 + 3k + 5 + (−k)</span></li>
+          <li>Combine like terms: <span class="math">3k + (−k) = 2k</span></li>
+          <li>Combine constants: <span class="math">8 + 5 = 13</span></li>
+          <li>Answer: <span class="math">2k + 13</span></li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <b>Common trap:</b> You <u>cannot</u> combine unlike terms. <span class="math">4y + 3</span> stays as <span class="math">4y + 3</span> (a variable term and a constant are different “species”).
+      </div>
+
+      <div class="btnrow">
+        <button class="secondary" onclick="openAll()">Open all practice sections</button>
+        <button class="ghost" onclick="closeAll()">Close all practice sections</button>
+      </div>
+
+      <div class="footer">
+        Built from the class worksheet: “Grade 7 Unit 2 — Expressions | Lesson 2: Simplify by Collecting Like Terms.” (Interactive version)
+      </div>
+    </section>
+
+    <!-- RIGHT: PRACTICE -->
+    <aside class="card">
+      <div class="practice-head">
+        <h2 style="margin:0">Practice</h2>
+        <div class="score" id="scoreBox">Score: 0 / 30</div>
+      </div>
+
+      <p class="muted tiny" style="margin-top:0">
+        Type your simplified answer, then press <b>Check</b>. Acceptable formats include: <span class="math">8x</span>, <span class="math">2p+9</span>, <span class="math">x+2y+5</span>.
+        Spaces don’t matter.
+      </p>
+
+      <div class="btnrow" style="margin-top:10px">
+        <button onclick="checkAll()">Check all</button>
+        <button class="secondary" onclick="revealAll()">Reveal answers</button>
+        <button class="ghost" onclick="resetAll()">Reset</button>
+      </div>
+
+      <details open class="section">
+        <summary>Level 1 — Foundations (1–10)</summary>
+        <div id="sec1"></div>
+      </details>
+
+      <details class="section">
+        <summary>Level 2 — Practice (11–20)</summary>
+        <div id="sec2"></div>
+      </details>
+
+      <details class="section">
+        <summary>Level 3 — Challenge (21–30)</summary>
+        <div id="sec3"></div>
+      </details>
+
+      <div class="note tiny" style="margin-top:14px">
+        For #22, #29, and #30 you’ll write a short explanation. The checker focuses on the simplified final expression/value.
+      </div>
+    </aside>
+  </div>
+</main>
 
 <script>
-/* --------------------- Core shell & utilities --------------------- */
-(function(){
-  const slides=[...document.querySelectorAll('.slide')];
-  const prev=id('prev'), next=id('next'), counter=id('counter'), progress=id('progress'), fsBtn=id('fs');
-  const deckTitle='G7_U2_L2_Collecting_Like_Terms';
-  let i=0;
+  // Answer key based on the worksheet content.
+  // Normalization removes spaces; we also allow a few equivalent variants.
+  const KEY = [
+    {n:1,  expr:"3x + 5x",                              ans:["8x"]},
+    {n:2,  expr:"9a − 2a",                               ans:["7a"]},
+    {n:3,  expr:"7y + y + 4y",                           ans:["12y"]},
+    {n:4,  expr:"6m − 3m + 2m",                          ans:["5m"]},
+    {n:5,  expr:"4p + 9 − 2p",                           ans:["2p+9","9+2p"]},
+    {n:6,  expr:"8 + 3k + 5 − k",                        ans:["2k+13","13+2k"]},
+    {n:7,  expr:"10t − 6 + 2t + 1",                      ans:["12t-5","-5+12t"]},
+    {n:8,  expr:"−3x + 7x",                              ans:["4x"]},
+    {n:9,  expr:"5b − 2 − 3b + 9",                       ans:["2b+7","7+2b"]},
+    {n:10, expr:"2n + 4 + n − 6",                        ans:["3n-2","-2+3n"]},
 
-  function show(k){
-    i=(k+slides.length)%slides.length;
-    slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
-    counter.textContent=(i+1)+' / '+slides.length;
-    progress.style.width=((i+1)/slides.length*100)+'%';
-    renderMath(slides[i]);
-  }
-  prev.addEventListener('click',()=>show(i-1));
-  next.addEventListener('click',()=>show(i+1));
-  document.addEventListener('keydown',e=>{
-    if(e.key==='ArrowRight') show(i+1);
-    if(e.key==='ArrowLeft') show(i-1);
-    if(e.key.toLowerCase()==='f') toggleFS();
-  });
-  function toggleFS(){
-    const el=id('slides');
-    if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);}
-    else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(el);}
-  }
-  fsBtn.addEventListener('click',toggleFS);
+    {n:11, expr:"3x + 2y + 5x − y",                      ans:["8x+y","y+8x"]},
+    {n:12, expr:"7a − 4 + 2 − 3a",                       ans:["4a-2","-2+4a"]},
+    {n:13, expr:"−5p + 2p − 8 + 3",                      ans:["-3p-5","-(3p+5)"]},
+    {n:14, expr:"4m − (2m − 7)",                         ans:["2m+7","7+2m"]},
+    {n:15, expr:"6x + (x − 4)",                          ans:["7x-4","-4+7x"]},
+    {n:16, expr:"12 − (x + 5) + 3x",                     ans:["2x+7","7+2x"]},
+    {n:17, expr:"5y − (y − 4)",                          ans:["4y+4","4+4y"]},
+    {n:18, expr:"(3k − 2) + (5k + 9)",                   ans:["8k+7","7+8k"]},
+    {n:19, expr:"(8 − 4t) + (3t − 5) + t",               ans:["3"]},
+    {n:20, expr:"2x − 3y + 7 − x + 5y − 2",              ans:["x+2y+5","2y+x+5","5+x+2y"]},
 
-  function id(x){return document.getElementById(x)}
-  function renderMath(root=document){ if(window._rerenderMath) window._rerenderMath(root); }
-  function confetti(x=window.innerWidth/2,y=window.innerHeight/2){
-    for(let k=0;k<18;k++){
-      const d=document.createElement('div'); d.className='confetti';
-      d.style.left=x+'px'; d.style.top=y+'px'; d.style.width='8px'; d.style.height='8px';
-      d.style.background=['#6C1D45','#C7A34F','#E8D5B7','#8a3d64'][k%4];
-      document.body.appendChild(d);
-      const dx=(Math.random()*2-1)*240, dy=(Math.random()*-1-0.3)*300, rot=Math.random()*720;
-      d.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`,opacity:0}],
-                {duration:900+Math.random()*700,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>d.remove();
-    }
-  }
-  function downloadJSON(filename, data){
-    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    const url=URL.createObjectURL(blob); const a=document.createElement('a');
-    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  }
-  function downloadCSV(filename, rows){
-    const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
-    const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
-    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  }
+    {n:21, expr:"Simplify, then evaluate when x = −2: 4x − 3 + 2x + 5", ans:["-10"]},
+    {n:22, expr:"True or false? 3x + 2x = 5x. (Explain)",               ans:["true"]},
+    {n:23, expr:"Simplify and solve: 5x − 2x − 9 = 0",                  ans:["x=3","3"]},
+    {n:24, expr:"−(2a − 5) + 3a − (a + 1)",                             ans:["4"]},
+    {n:25, expr:"7 − [3x − (2x − 4)]",                                  ans:["3-x","-(x-3)"]},
+    {n:26, expr:"(x + x + x) + (10 − x)",                               ans:["2x+10","10+2x"]},
+    {n:27, expr:"P = 2x + 3 + x + 5 + 4x. Simplify P.",                 ans:["7x+8","8+7x"]},
+    {n:28, expr:"0.5x + 2x − 1.5x",                                      ans:["x"]},
+    {n:29, expr:"Error check: A student says 4y + 3 = 7y. Explain and simplify correctly.", ans:["4y+3","3+4y"]},
+    {n:30, expr:"2n + 6 + 4n. Then classify (even/odd/neither).",        ans:["6n+6","6(n+1)","even","always even"]}
+  ];
 
-  /* ---------- Glossary ---------- */
-  const POP=id('pop'), POP_BODY=id('popBody');
-  const GLOS={
-    term:'<strong>Term</strong>: a part separated by +/− (e.g., in \(3x+5\), terms are \(3x\) and 5).',
-    like:'<strong>Like terms</strong>: terms with the same variable part (e.g., \(2x\) and \(-5x\); also \(7\) and \(-3\)).',
-    coeff:'<strong>Coefficient</strong>: the number multiplying a variable (in \(7x\), coefficient is 7).',
-    const:'<strong>Constant</strong>: a number with no variable (e.g., 9, \(-4\)).',
-    simplify:'<strong>Simplify</strong>: rewrite in a shorter equivalent form.',
-    combine:'<strong>Combine</strong>: add/subtract coefficients of like terms.',
-    variable:'<strong>Variable</strong>: a letter that represents a number.',
-    distrib:'<strong>Distributive property</strong>: \(a(b+c)=ab+ac\). (Next lesson!)',
-    equiv:'<strong>Equivalent</strong>: gives the same value for all substitutions.'
-  };
-  function showPop(html,anchor){
-    POP_BODY.innerHTML=html; POP.style.display='block';
-    const r=anchor?anchor.getBoundingClientRect():{left:20,top:window.innerHeight-120};
-    POP.style.left=Math.min(r.left, window.innerWidth-POP.offsetWidth-20)+'px';
-    POP.style.bottom=(window.innerHeight - r.top + 10)+'px';
-  }
-  POP.querySelector('.close').addEventListener('click',()=>POP.style.display='none');
-  document.addEventListener('click',e=>{
-    const el=e.target.closest('.chip[data-key]'); if(el){const key=el.dataset.key; if(GLOS[key]) showPop(GLOS[key], el);}
-  });
+  const normalize = s => (s ?? "")
+    .toLowerCase()
+    .replaceAll("−","-")
+    .replaceAll(" ", "")
+    .replaceAll("\t","")
+    .replaceAll("\n","");
 
-  /* -------------------- Helpers -------------------- */
-  function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
-  function choice(arr){ return arr[rand(0,arr.length-1)] }
-  function approxEq(a,b){ return Math.abs(a-b) < 1e-9; }
-
-  // Expression normalization and safe evaluation for equivalence checks
-  function normExpr(s){
-    if(s==null) return '';
-    s = String(s).trim();
-    s = s.replace(/−/g,'-').replace(/\s+/g,'');
-    s = s.replace(/×/g,'*').replace(/·/g,'*');
-    s = s.replace(/(\d)([a-zA-Z(])/g,'$1*$2');
-    s = s.replace(/([a-zA-Z])(\d)/g,'$1*$2');
-    s = s.replace(/([a-zA-Z])\(/g,'$1*(');
-    s = s.replace(/\)([a-zA-Z0-9])/g,')*$1');
-    s = s.replace(/[^0-9a-zA-Z+\-*/().]/g,'');
-    return s;
-  }
-  function isSafeExpr(s){ return /^[0-9a-zA-Z+\-*/().]*$/.test(s); }
-  function evalAt(expr, vars){
-    if(!isSafeExpr(expr)) return NaN;
-    const bad = ['constructor','__proto__','prototype','window','document','Function','eval'];
-    for(const b of bad){ if(expr.toLowerCase().includes(b)) return NaN; }
-    const keys=Object.keys(vars);
-    const vals=keys.map(k=>vars[k]);
-    try{
-      // eslint-disable-next-line no-new-func
-      const f = new Function(...keys, `return (${expr});`);
-      const v = f(...vals);
-      return (typeof v==='number' && isFinite(v)) ? v : NaN;
-    }catch(e){ return NaN; }
-  }
-
-  function checkEquiv(userRaw, keyRaw){
-    const user = normExpr(userRaw);
-    const key  = normExpr(keyRaw);
-    if(!user || !key) return false;
-
-    const letters = new Set((key.match(/[a-zA-Z]/g) || []));
-    const vars = {};
-    [...letters].forEach(L => { vars[L] = rand(-5, 6); });
-
-    for(let t=0;t<6;t++){
-      [...letters].forEach(L => { vars[L] = rand(-8, 9); });
-      const u = evalAt(user, vars);
-      const k = evalAt(key, vars);
-      if(isNaN(u) || isNaN(k) || !approxEq(u,k)) return false;
-    }
-    return true;
-  }
-
-  // Generate a linear expression as terms list, then simplify to key
-  function buildExpr(level){
-    const vars = level==='easy' ? ['x'] : level==='med' ? ['x'] : ['x','y'];
-    const useTwoVars = (level==='hard');
-    const terms=[];
-
-    const nTerms = level==='easy' ? 4 : level==='med' ? 5 : 6;
-
-    for(let i=0;i<nTerms;i++){
-      const kind = useTwoVars ? choice(['x','y','c']) : choice(['x','c']);
-      if(kind==='c'){
-        const c = rand(-12,12);
-        if(c!==0) terms.push({v:'', a:c});
-      } else if(kind==='x'){
-        const a = rand(-9,9);
-        if(a!==0) terms.push({v:'x', a});
-      } else {
-        const a = rand(-9,9);
-        if(a!==0) terms.push({v:'y', a});
-      }
-    }
-
-    // Ensure at least one variable term exists
-    if(!terms.some(t=>t.v==='x')) terms.push({v:'x', a:rand(1,9)});
-    if(useTwoVars && !terms.some(t=>t.v==='y')) terms.push({v:'y', a:rand(1,9)});
-
-    // Build unsimplified string with messy signs
-    function termToStr(t, isFirst){
-      const a=t.a;
-      const sign = a<0 ? '-' : (isFirst? '' : '+');
-      const abs=Math.abs(a);
-      if(t.v===''){
-        return `${sign}${abs}`;
-      }
-      // coefficient formatting
-      const coeff = (abs===1) ? '' : String(abs);
-      return `${sign}${coeff}${t.v}`;
-    }
-    const expr = terms.map((t,idx)=>termToStr(t, idx===0)).join('');
-
-    // Simplify
-    const sumX = terms.filter(t=>t.v==='x').reduce((s,t)=>s+t.a,0);
-    const sumY = terms.filter(t=>t.v==='y').reduce((s,t)=>s+t.a,0);
-    const sumC = terms.filter(t=>t.v==='').reduce((s,t)=>s+t.a,0);
-
-    function mono(a, v){
-      if(a===0) return '';
-      const sign = a<0 ? '-' : '+';
-      const abs=Math.abs(a);
-      const coeff = (abs===1) ? '' : String(abs);
-      return `${sign}${coeff}${v}`;
-    }
-    function con(a){
-      if(a===0) return '';
-      const sign = a<0 ? '-' : '+';
-      return `${sign}${Math.abs(a)}`;
-    }
-
-    let key='';
-    // standard order x then y then constant
-    const parts=[];
-    if(sumX!==0) parts.push(mono(sumX,'x'));
-    if(useTwoVars && sumY!==0) parts.push(mono(sumY,'y'));
-    if(sumC!==0) parts.push(con(sumC));
-
-    if(parts.length===0) key='0';
-    else{
-      key = parts.join('');
-      if(key[0]==='+') key=key.slice(1);
-    }
-
-    return {expr, key, sums:{x:sumX, y:sumY, c:sumC}};
-  }
-
-  /* -------------------- Slide 2: Like terms warm-up -------------------- */
-  const lwState={items:[]};
-  function makePair(level){
-    // returns {a,b,like:boolean}
-    if(level==='easy'){
-      const varA = choice(['x','x','x','']); // more x and constants
-      const varB = choice(['x','', 'x','']);
-      const powA = 1, powB = 1;
-      const a = (varA===''? String(rand(-9,9)||3) : `${rand(1,9)}${varA}`);
-      const b = (varB===''? String(rand(-9,9)||5) : `${rand(1,9)}${varB}`);
-      const like = (varA===varB); // only x or constant
-      return {a,b,like};
-    }
-    if(level==='med'){
-      const opts=['x','y','']; // include y
-      const varA=choice(opts), varB=choice(opts);
-      const aCoeff = rand(1,9), bCoeff = rand(1,9);
-      const a = varA===''? String(rand(-12,12)||4) : `${choice(['','-'])}${aCoeff}${varA}`;
-      const b = varB===''? String(rand(-12,12)||7) : `${choice(['','-'])}${bCoeff}${varB}`;
-      const like = (varA===varB);
-      return {a,b,like};
-    }
-    // hard: include powers (x^2 etc.)
-    const varA=choice(['x','y','x^2','y^2','']);
-    const varB=choice(['x','y','x^2','y^2','']);
-    function mk(v){
-      if(v==='') return String(rand(-12,12)||6);
-      const c=rand(1,9);
-      const sign=choice(['','-']);
-      return v.includes('^') ? `${sign}${c}${v.replace('^','^{')+'}'}` : `${sign}${c}${v}`;
-    }
-    const a=mk(varA), b=mk(varB);
-    const like = (varA===varB);
-    return {a,b,like};
-  }
-
-  function lwNew(){
-    const lvl=id('lwLevel').value; const box=id('lwList'); box.innerHTML=''; lwState.items=[];
-    for(let k=0;k<8;k++){
-      const p=makePair(lvl);
-      const row=document.createElement('div'); row.className='card p-4';
-      row.innerHTML = `
-        <div class="text-lg mb-2">Are these like terms? &nbsp; <span class="font-extrabold">\( ${p.a} \)</span> and <span class="font-extrabold">\( ${p.b} \)</span></div>
-        <select class="lwin border rounded px-2 py-1">
-          <option value="">— choose —</option>
-          <option value="like">Like terms</option>
-          <option value="not">Not like</option>
-        </select>
-      `;
-      row.dataset.like = p.like ? 'like' : 'not';
-      row.dataset.a = p.a; row.dataset.b = p.b;
-      box.appendChild(row);
-      lwState.items.push(p);
-    }
-    id('lwFb').textContent='';
-    renderMath(id('likeWarmSlide'));
-  }
-  id('lwNew').addEventListener('click',lwNew); lwNew();
-
-  id('lwCheck').addEventListener('click',()=>{
-    let ok=0; const rows=[...id('lwList').children];
-    rows.forEach(row=>{
-      const sel=row.querySelector('.lwin');
-      const good = sel.value && sel.value===row.dataset.like;
-      sel.style.borderColor = good ? '#22c55e' : '#ef4444';
-      if(good) ok++;
-    });
-    id('lwFb').textContent = ok===rows.length ? '✅ Perfect classification.' : `Score: ${ok}/${rows.length}`;
-    if(ok===rows.length) confetti();
-  });
-
-  id('lwExportCSV').addEventListener('click',()=>{
-    const rows=[['term1','term2','correct','user']];
-    [...id('lwList').children].forEach(row=>{
-      rows.push([row.dataset.a, row.dataset.b, row.dataset.like, row.querySelector('.lwin').value||'']);
-    });
-    downloadCSV(`${deckTitle}_like_terms_warmup.csv`, rows);
-  });
-  id('lwExportJSON').addEventListener('click',()=>{
-    const data=[...id('lwList').children].map(row=>({
-      term1:row.dataset.a, term2:row.dataset.b, correct:row.dataset.like, user:row.querySelector('.lwin').value||''
-    }));
-    downloadJSON(`${deckTitle}_like_terms_warmup.json`, data);
-  });
-
-  /* -------------------- Slide 3: Worked examples -------------------- */
-  function exOne(){
-    const a=rand(2,9), b=rand(1,9), c=rand(1,9);
-    const expr = `${a}x+${b}x+${c}`;
-    const key = `${a+b}x+${c}`;
-    id('ex1').innerHTML = `
-      <div class="workstep">
-        Combine \(x\)-terms: \( ${a}x+${b}x = (${a}+${b})x = ${a+b}x \)
+  function makeQuestionRow(q){
+    const id = "q" + q.n;
+    const row = document.createElement("div");
+    row.className = "q";
+    row.innerHTML = `
+      <div class="num">#${q.n}</div>
+      <div>
+        <div class="expr">${q.expr}</div>
+        <div class="muted tiny" id="${id}-reveal" style="display:none;margin-top:6px">
+          <b>Answer:</b> <span class="math">${q.ans[0]}</span>
+        </div>
       </div>
-      <div class="workstep mt-2">
-        So \( ${expr} = ${key} \)
+      <div class="ans">
+        <input id="${id}" placeholder="Type answer…" inputmode="text" autocomplete="off" />
+        <span class="mark" id="${id}-mark"></span>
       </div>
     `;
-    renderMath(id('wkExSlide'));
+    return row;
   }
-  function exTwo(){
-    const a=rand(2,9), b=rand(1,9), c=rand(1,12);
-    const expr = `${a}x-${b}x-${c}`;
-    const key = `${a-b}x-${c}`;
-    id('ex2').innerHTML = `
-      <div class="workstep">
-        Coefficients: \( ${a}x-${b}x = (${a}-${b})x = ${a-b}x \)
-      </div>
-      <div class="workstep mt-2">
-        Keep the constant: \( ${expr} = ${key} \)
-      </div>
-      <div class="text-xs text-gray-500 mt-2">Watch the minus sign: subtract \(b\), don’t add it.</div>
-    `;
-    renderMath(id('wkExSlide'));
-  }
-  function exThree(){
-    const ax=rand(-6,8) || 4;
-    const bx=rand(-6,8) || -3;
-    const ay=rand(-6,8) || 2;
-    const by=rand(-6,8) || 1;
-    const c=rand(-10,10) || 5;
-    const d=rand(-10,10) || -2;
-    const expr = `${ax}x+${ay}y${c<0?c:'+'+c}+${bx}x+${by}y${d<0?d:'+'+d}`;
-    const sx=ax+bx, sy=ay+by, sc=c+d;
-    let keyParts=[];
-    function addPart(a,v){
-      if(a===0) return;
-      const sign=a<0?'-':'+';
-      const abs=Math.abs(a);
-      const coeff = abs===1? '' : String(abs);
-      keyParts.push(`${sign}${coeff}${v}`);
-    }
-    function addConst(a){
-      if(a===0) return;
-      const sign=a<0?'-':'+';
-      keyParts.push(`${sign}${Math.abs(a)}`);
-    }
-    addPart(sx,'x'); addPart(sy,'y'); addConst(sc);
-    let key = keyParts.join('');
-    if(key.startsWith('+')) key=key.slice(1);
-    if(!key) key='0';
 
-    id('ex3').innerHTML = `
-      <div class="workstep">
-        Group \(x\)-terms and \(y\)-terms and constants.
-      </div>
-      <div class="workstep mt-2">
-        \( ${expr} = ${key} \)
-      </div>
-    `;
-    renderMath(id('wkExSlide'));
-  }
-  id('ex1Next').addEventListener('click',exOne); exOne();
-  id('ex2Next').addEventListener('click',exTwo); exTwo();
-  id('ex3Next').addEventListener('click',exThree); exThree();
+  function render(){
+    const sec1 = document.getElementById("sec1");
+    const sec2 = document.getElementById("sec2");
+    const sec3 = document.getElementById("sec3");
 
-  /* -------------------- Slide 4: Collect Like Terms practice -------------------- */
-  const clState={items:[]};
-  function clNew(){
-    const lvl=id('clLevel').value; const box=id('clList'); box.innerHTML=''; clState.items=[];
-    for(let k=0;k<6;k++){
-      const o=buildExpr(lvl==='hard'?'hard':lvl); // reuse builder
-      const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML = `
-        <div class="text-lg">Simplify: <span class="font-extrabold">\( ${o.expr} \)</span></div>
-        <div class="mt-2">Answer: <input class="clin border rounded px-2 py-1 w-[260px] max-w-full" placeholder="e.g., 5x-2y+7"></div>
-        <div class="mt-2 text-xs text-gray-500">Check: only combine terms with the same variable part.</div>
-      `;
-      row.dataset.key=o.key;
-      row.dataset.expr=o.expr;
-      box.appendChild(row); clState.items.push(o);
-    }
-    id('clFb').textContent='';
-    renderMath(id('cltSlide'));
-  }
-  id('clNew').addEventListener('click',clNew); clNew();
-
-  id('clCheck').addEventListener('click',()=>{
-    let ok=0; const rows=[...id('clList').children];
-    rows.forEach(row=>{
-      const inp=row.querySelector('.clin');
-      const good = checkEquiv(inp.value, row.dataset.key);
-      inp.style.borderColor = good ? '#22c55e' : '#ef4444';
-      if(good) ok++;
+    KEY.forEach(q=>{
+      const row = makeQuestionRow(q);
+      if(q.n <= 10) sec1.appendChild(row);
+      else if(q.n <= 20) sec2.appendChild(row);
+      else sec3.appendChild(row);
     });
-    id('clFb').textContent = ok===rows.length ? '✅ Great simplification.' : `Score: ${ok}/${rows.length}`;
-    if(ok===rows.length) confetti();
-  });
 
-  id('clExportCSV').addEventListener('click',()=>{
-    const rows=[['expression','correct','user']];
-    [...id('clList').children].forEach(row=>{
-      rows.push([row.dataset.expr, row.dataset.key, row.querySelector('.clin').value||'']);
+    // Enter key checks a single question quickly
+    KEY.forEach(q=>{
+      const input = document.getElementById("q"+q.n);
+      input.addEventListener("keydown", (e)=>{
+        if(e.key === "Enter"){ checkOne(q.n); }
+      });
     });
-    downloadCSV(`${deckTitle}_collect_like_terms.csv`, rows);
-  });
-  id('clExportJSON').addEventListener('click',()=>{
-    const data=[...id('clList').children].map(row=>({
-      expression:row.dataset.expr, correct:row.dataset.key, user:row.querySelector('.clin').value||''
-    }));
-    downloadJSON(`${deckTitle}_collect_like_terms.json`, data);
-  });
 
-  /* -------------------- Slide 5: Sorting buckets -------------------- */
-  const stState={cur:null};
-  function stNew(){
-    const lvl=id('stLevel').value;
-    // ensure x,y,constant present
-    const o=buildExpr(lvl==='easy'?'hard':lvl==='med'?'hard':'hard'); // always build x,y,c for this slide
-    // guarantee two vars by forcing builder hard
-    stState.cur=o;
-    id('stExpr').innerHTML = `\( ${o.expr} \)`;
-    id('stX').value=''; id('stY').value=''; id('stC').value=''; id('stAns').value='';
-    id('stFb').textContent=''; id('stHintBox').textContent='';
-    renderMath(id('sortSlide'));
+    updateScore();
   }
-  id('stNew').addEventListener('click',stNew); stNew();
 
-  id('stHint').addEventListener('click',()=>{
-    id('stHintBox').innerHTML = `<div class="hint">
-      Add coefficients separately:
-      \(x\)-coefficients together, \(y\)-coefficients together, constants together.
-      Example: \(3x-2x=1x\).
-    </div>`;
-    renderMath(id('sortSlide'));
-  });
+  function checkOne(n){
+    const q = KEY.find(x=>x.n===n);
+    const input = document.getElementById("q"+n);
+    const mark = document.getElementById("q"+n+"-mark");
+    const val = normalize(input.value);
 
-  id('stCheck').addEventListener('click',()=>{
-    const cur=stState.cur;
-    // expected sums
-    const sx=cur.sums.x || 0, sy=cur.sums.y || 0, sc=cur.sums.c || 0;
+    const ok = q.ans.some(a => normalize(a) === val);
 
-    function parseIntLoose(s){
-      const n=Number(String(s).trim());
-      return (isFinite(n) ? n : NaN);
-    }
-    const ux=parseIntLoose(id('stX').value);
-    const uy=parseIntLoose(id('stY').value);
-    const uc=parseIntLoose(id('stC').value);
-
-    const okX = isFinite(ux) && approxEq(ux, sx);
-    const okY = isFinite(uy) && approxEq(uy, sy);
-    const okC = isFinite(uc) && approxEq(uc, sc);
-
-    id('stX').style.borderColor = okX ? '#22c55e' : '#ef4444';
-    id('stY').style.borderColor = okY ? '#22c55e' : '#ef4444';
-    id('stC').style.borderColor = okC ? '#22c55e' : '#ef4444';
-
-    const ansOk = checkEquiv(id('stAns').value, cur.key);
-    id('stAns').style.borderColor = ansOk ? '#22c55e' : '#ef4444';
-
-    const allOk = okX && okY && okC && ansOk;
-    id('stFb').textContent = allOk ? '✅ Buckets correct and expression simplified.' : 'Some parts need a fix (check signs and buckets).';
-    if(allOk) confetti();
-  });
-
-  id('stExportCSV').addEventListener('click',()=>{
-    const cur=stState.cur;
-    downloadCSV(`${deckTitle}_sorting_buckets.csv`, [
-      ['expression','x_coeff_correct','y_coeff_correct','const_correct','simplified_correct','x_user','y_user','c_user','simplified_user'],
-      [cur.expr, cur.sums.x, cur.sums.y, cur.sums.c, cur.key, id('stX').value||'', id('stY').value||'', id('stC').value||'', id('stAns').value||'']
-    ]);
-  });
-  id('stExportJSON').addEventListener('click',()=>{
-    const cur=stState.cur;
-    downloadJSON(`${deckTitle}_sorting_buckets.json`, {
-      expression:cur.expr,
-      correct:{x:cur.sums.x,y:cur.sums.y,c:cur.sums.c,simplified:cur.key},
-      user:{x:id('stX').value||'',y:id('stY').value||'',c:id('stC').value||'',simplified:id('stAns').value||''}
-    });
-  });
-
-  /* -------------------- Slide 6: Simplify then evaluate -------------------- */
-  const seState={items:[]};
-  function seNew(){
-    const lvl=id('seLevel').value; const box=id('seList'); box.innerHTML=''; seState.items=[];
-    for(let k=0;k<4;k++){
-      const o=buildExpr(lvl==='hard'?'hard':lvl);
-      const V = (lvl==='hard') ? choice(['x','y']) : 'x';
-      const val = rand(-6,8);
-      const row=document.createElement('div'); row.className='card p-4 text-left';
-      row.innerHTML = `
-        <div class="text-lg">Simplify: <span class="font-extrabold">\( ${o.expr} \)</span></div>
-        <div class="mt-2">Simplified: <input class="sein border rounded px-2 py-1 w-[260px] max-w-full" placeholder="simplified expression"></div>
-        <div class="mt-2 text-sm">Then evaluate at \(x=${val}\) (and if \(y\) appears, use \(y=${val-1}\)):</div>
-        <div class="mt-2">Value: <input class="seval border rounded px-2 py-1 w-40" placeholder="number"></div>
-      `;
-      row.dataset.expr=o.expr;
-      row.dataset.key=o.key;
-      row.dataset.val=String(val);
-      box.appendChild(row); seState.items.push(o);
-    }
-    id('seFb').textContent='';
-    renderMath(id('sevSlide'));
-  }
-  id('seNew').addEventListener('click',seNew); seNew();
-
-  id('seCheck').addEventListener('click',()=>{
-    let ok=0; const rows=[...id('seList').children];
-    rows.forEach(row=>{
-      const simp=row.querySelector('.sein');
-      const valIn=row.querySelector('.seval');
-
-      const simpOk = checkEquiv(simp.value, row.dataset.key);
-      simp.style.borderColor = simpOk ? '#22c55e' : '#ef4444';
-
-      // Evaluate using x=val, y=val-1
-      const x = Number(row.dataset.val);
-      const y = x-1;
-      const origV = evalAt(normExpr(row.dataset.expr), {x,y});
-      const simpV = evalAt(normExpr(simp.value), {x,y});
-      const got = Number(String(valIn.value).trim());
-
-      const want = simpOk ? origV : origV; // always compare to original
-      const valOk = isFinite(got) && approxEq(got, want);
-
-      valIn.style.borderColor = valOk ? '#22c55e' : '#ef4444';
-
-      if(simpOk && valOk) ok++;
-    });
-    id('seFb').textContent = ok===rows.length ? '✅ Perfect: simplified forms and values match.' : `Score: ${ok}/${rows.length}`;
-    if(ok===rows.length) confetti();
-  });
-
-  id('seExportCSV').addEventListener('click',()=>{
-    const rows=[['original','simplified_correct','x','y','user_simplified','user_value']];
-    [...id('seList').children].forEach(row=>{
-      const x=Number(row.dataset.val), y=x-1;
-      rows.push([
-        row.dataset.expr,
-        row.dataset.key,
-        x, y,
-        row.querySelector('.sein').value||'',
-        row.querySelector('.seval').value||''
-      ]);
-    });
-    downloadCSV(`${deckTitle}_simplify_then_evaluate.csv`, rows);
-  });
-  id('seExportJSON').addEventListener('click',()=>{
-    const data=[...id('seList').children].map(row=>{
-      const x=Number(row.dataset.val), y=x-1;
-      return {
-        original:row.dataset.expr,
-        correct_simplified:row.dataset.key,
-        eval_at:{x,y},
-        user:{simplified:row.querySelector('.sein').value||'', value:row.querySelector('.seval').value||''}
-      };
-    });
-    downloadJSON(`${deckTitle}_simplify_then_evaluate.json`, data);
-  });
-
-  /* -------------------- Slide 7: Error analysis -------------------- */
-  function errBank(level){
-    const easy=[
-      {work:`Student: \(3x+2y=5xy\)`, correct:`You cannot combine unlike terms. \(x\) terms and \(y\) terms are different.`, key:'A'},
-      {work:`Student: \(5x-2x=7x\)`, correct:`Sign/coefficient error: \(5-2=3\), so \(5x-2x=3x\).`, key:'C'},
-      {work:`Student: \(x+x+x= x^3\)`, correct:`Repeated addition gives \(3x\), not \(x^3\).`, key:'A'}
-    ];
-    const med=[
-      {work:`Student: \(4x-(-3x)=1x\)`, correct:`Subtracting a negative becomes addition: \(4x+3x=7x\).`, key:'B'},
-      {work:`Student: \(2x+5+3x=5x\)`, correct:`Dropped the constant: correct is \(5x+5\).`, key:'D'}
-    ];
-    const hard=[
-      {work:`Student: \(-2x+7x-5= -9x-5\)`, correct:`Coefficient error: \(-2+7=5\). Answer: \(5x-5\).`, key:'C'},
-      {work:`Student: \(3x-2y+4x+2y=7xy\)`, correct:`\( -2y+2y=0\). Only \(x\)-terms combine: \(7x\).`, key:'A'}
-    ];
-    return level==='easy'?easy:level==='med'?med:hard;
-  }
-  const errState={item:null};
-  function errNew(){
-    const bank=errBank(id('errLevel').value);
-    errState.item=choice(bank);
-    id('errBox').innerHTML=`Student work:<br/><div class="mt-1 text-maroon">${errState.item.work}</div>`;
-    id('errFb').textContent=''; id('errRevealBox').textContent='';
-    [...document.querySelectorAll('input[name="errChoice"]')].forEach(r=>r.checked=false);
-    renderMath(id('errSlide'));
-  }
-  id('errNew').addEventListener('click',errNew); errNew();
-
-  id('errCheck').addEventListener('click',()=>{
-    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    if(!sel){ id('errFb').textContent='Choose a diagnosis.'; return; }
-    if(sel.value===errState.item.key){ id('errFb').textContent='✅ Correct diagnosis.'; confetti(); }
-    else { id('errFb').textContent='❌ Not quite. Try again or reveal the correct work.'; }
-  });
-  id('errReveal').addEventListener('click',()=>{
-    id('errRevealBox').innerHTML=`<div class="hint">${errState.item.correct}</div>`;
-    renderMath(id('errSlide'));
-  });
-  id('errExportCSV').addEventListener('click',()=>{
-    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    downloadCSV(`${deckTitle}_error_analysis.csv`, [['incorrect_work','correct_explanation','answer_key','user_choice'], [id('errBox').innerText.trim(), errState.item.correct, errState.item.key, sel?sel.value:'']]);
-  });
-  id('errExportJSON').addEventListener('click',()=>{
-    const sel=[...document.querySelectorAll('input[name="errChoice"]')].find(x=>x.checked);
-    downloadJSON(`${deckTitle}_error_analysis.json`, {incorrect:id('errBox').innerText.trim(), correct:errState.item.correct, key:errState.item.key, user: sel?sel.value:''});
-  });
-
-  /* -------------------- Slide 8: Mixed generator -------------------- */
-  const mixState={cur:null};
-  function mixNew(){
-    const lvl=id('mixLevel').value;
-    const o=buildExpr(lvl==='hard'?'hard':lvl);
-    mixState.cur=o;
-    id('mixQ').innerHTML = `\( ${o.expr} \)`;
-    id('mixAns').value='';
-    id('mixHintBox').textContent='';
-    id('mixFb').textContent='';
-    renderMath(id('mixSlide'));
-  }
-  id('mixNew').addEventListener('click',mixNew); mixNew();
-
-  id('mixHint').addEventListener('click',()=>{
-    id('mixHintBox').innerHTML = `<div class="hint">
-      1) Group \(x\)-terms, group \(y\)-terms, group constants.<br/>
-      2) Add/subtract coefficients carefully (watch negatives).<br/>
-      3) Write the simplified expression in standard order.
-    </div>`;
-    renderMath(id('mixSlide'));
-  });
-
-  id('mixCheck').addEventListener('click',()=>{
-    const ok = checkEquiv(id('mixAns').value, mixState.cur.key);
     if(ok){
-      id('mixFb').textContent=`✅ Correct! One simplified form: ${mixState.cur.key}`;
-      id('mixFb').className='mt-2 h-6 font-semibold text-green-700';
-      confetti();
-    } else {
-      id('mixFb').textContent='❌ Not quite. Check like terms and signs.';
-      id('mixFb').className='mt-2 h-6 font-semibold text-red-700';
+      mark.textContent = "✓";
+      mark.className = "mark ok";
+    }else{
+      mark.textContent = "✗";
+      mark.className = "mark no";
     }
-  });
+    updateScore();
+  }
 
-  id('mixExportCSV').addEventListener('click',()=>{
-    downloadCSV(`${deckTitle}_mixed_current.csv`, [['expression','correct','user'], [mixState.cur.expr, mixState.cur.key, id('mixAns').value||'']]);
-  });
-  id('mixExportJSON').addEventListener('click',()=>{
-    downloadJSON(`${deckTitle}_mixed_current.json`, {expression:mixState.cur.expr, correct:mixState.cur.key, user:id('mixAns').value||''});
-  });
+  function checkAll(){
+    KEY.forEach(q=>checkOne(q.n));
+  }
 
-  /* -------------------- Init -------------------- */
-  show(0);
+  function revealAll(){
+    KEY.forEach(q=>{
+      const reveal = document.getElementById("q"+q.n+"-reveal");
+      reveal.style.display = "block";
+    });
+  }
 
-})();
+  function resetAll(){
+    KEY.forEach(q=>{
+      const input = document.getElementById("q"+q.n);
+      const mark = document.getElementById("q"+q.n+"-mark");
+      const reveal = document.getElementById("q"+q.n+"-reveal");
+      input.value = "";
+      mark.textContent = "";
+      mark.className = "mark";
+      reveal.style.display = "none";
+    });
+    updateScore();
+  }
+
+  function updateScore(){
+    let correct = 0;
+    KEY.forEach(q=>{
+      const mark = document.getElementById("q"+q.n+"-mark");
+      if(mark && mark.textContent === "✓") correct++;
+    });
+    document.getElementById("scoreBox").textContent = `Score: ${correct} / 30`;
+  }
+
+  function openAll(){
+    document.querySelectorAll("details").forEach(d=>d.open=true);
+  }
+  function closeAll(){
+    document.querySelectorAll("details").forEach(d=>d.open=false);
+  }
+
+  render();
 </script>
 </body>
 </html>
