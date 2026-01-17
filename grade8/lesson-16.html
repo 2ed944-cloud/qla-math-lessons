@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grade 8 Transformations — Lesson 3: Rotations</title>
+  <style>
+    :root{--bg:#0b1020;--card:#111a33;--ink:#eaf0ff;--muted:#b9c5ff;--accent:#ffd166;--accent2:#7bdff2;--good:#4ade80;--bad:#fb7185;--shadow:0 10px 30px rgba(0,0,0,.35);--radius:18px;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);background:radial-gradient(1200px 800px at 20% 10%, #162457 0%, var(--bg) 55%);color:var(--ink);line-height:1.45;}
+    header{padding:26px 18px 10px;max-width:1060px;margin:0 auto;}
+    .topbar{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;padding:18px;background:linear-gradient(135deg, rgba(255,209,102,.16), rgba(123,223,242,.10));border:1px solid rgba(255,255,255,.10);border-radius:var(--radius);box-shadow:var(--shadow);}
+    .title h1{margin:0;font-size:1.15rem}
+    .title p{margin:6px 0 0;color:var(--muted);font-size:.95rem}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:.92rem}
+    .pill{border:1px solid rgba(255,255,255,.14);background:rgba(17,26,51,.65);padding:8px 10px;border-radius:999px}
+    main{max-width:1060px;margin:10px auto 70px;padding:0 18px}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+    @media(max-width:940px){.grid{grid-template-columns:1fr}}
+    .card{background:rgba(17,26,51,.78);border:1px solid rgba(255,255,255,.10);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    h2{margin:0 0 10px;font-size:1.1rem}
+    h3{margin:14px 0 8px;font-size:1rem}
+    .muted{color:var(--muted)}
+    ul{margin:8px 0 0 18px} li{margin:6px 0}
+    .rule{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .chip{display:inline-flex;align-items:center;gap:8px;border:1px dashed rgba(255,255,255,.18);padding:8px 10px;border-radius:999px;background:rgba(0,0,0,.18);color:var(--muted);font-size:.92rem}
+    code.kbd{font-family:var(--mono);font-size:.92rem;padding:2px 6px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.22);color:var(--ink)}
+    .example{border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);padding:12px;border-radius:14px;margin-top:10px}
+    .math{font-family:var(--mono);font-size:1.02rem;white-space:nowrap}
+    .steps{margin:8px 0 0 0;padding-left:18px;color:var(--muted)}
+    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    button{cursor:pointer;border:1px solid rgba(255,255,255,.14);background:rgba(255,209,102,.14);color:var(--ink);padding:10px 12px;border-radius:12px;font-weight:600}
+    button.secondary{background:rgba(123,223,242,.12)} button.ghost{background:rgba(0,0,0,.18)}
+    .practice-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .score{color:var(--muted);font-size:.95rem}
+    details{border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:10px 12px;background:rgba(0,0,0,.16);margin:10px 0}
+    summary{cursor:pointer;font-weight:700;list-style:none} summary::-webkit-details-marker{display:none}
+    .q{display:grid;grid-template-columns:60px 1fr 220px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+    @media(max-width:720px){.q{grid-template-columns:60px 1fr}.q .ans{grid-column:1 / -1}}
+    .num{color:var(--accent2);font-weight:800;font-family:var(--mono)}
+    .expr{font-family:var(--mono);font-size:1.02rem}
+    input{width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(17,26,51,.55);color:var(--ink);font-family:var(--mono);font-size:.98rem;outline:none}
+    .mark{display:inline-block;min-width:18px;text-align:center;margin-left:8px;font-weight:900}
+    .ok{color:var(--good)} .no{color:var(--bad)}
+    .note{border-left:4px solid rgba(255,209,102,.55);padding:10px 12px;background:rgba(255,209,102,.08);border-radius:12px;margin-top:10px;color:var(--muted)}
+    .tiny{font-size:.9rem}
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="topbar">
+    <div class="title">
+      <h1>Grade 8 — Transformations</h1>
+      <p>Worksheet 3: Rotations (Turning Around a Point)</p>
+    </div>
+    <div class="meta">
+      <span class="pill">Name: <span contenteditable="true" style="outline:none">__________</span></span>
+      <span class="pill">Date: <span contenteditable="true" style="outline:none">__________</span></span>
+      <span class="pill">Class/Period: <span contenteditable="true" style="outline:none">__________</span></span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+
+    <section class="card">
+      <h2>Key Concepts</h2>
+      <ul>
+        <li>A <b>rotation</b> turns a figure around a center point.</li>
+        <li>Rotations preserve lengths and angle measures.</li>
+        <li>About the origin:
+          <span class="math">90° CCW: (x,y)→(−y,x)</span>,
+          <span class="math">90° CW: (x,y)→(y,−x)</span>,
+          <span class="math">180°: (x,y)→(−x,−y)</span>.
+        </li>
+        <li>About center <span class="math">(a,b)</span>: shift to origin, rotate, shift back.</li>
+      </ul>
+
+      <div class="rule">
+        <span class="chip"><code class="kbd">90°CCW: (x,y)→(−y,x)</code></span>
+        <span class="chip"><code class="kbd">90°CW: (x,y)→(y,−x)</code></span>
+        <span class="chip"><code class="kbd">180°: (x,y)→(−x,−y)</code></span>
+      </div>
+
+      <h3>Worked Example</h3>
+      <div class="example">
+        <div class="math"><b>Example:</b> Rotate A(3,2) 90° CCW about origin</div>
+        <div class="muted" style="margin-top:6px">
+          Apply rule <span class="math">(x,y)→(−y,x)</span> → <span class="math">A′(−2,3)</span>
+        </div>
+      </div>
+
+      <div class="btnrow">
+        <button class="secondary" onclick="openAll()">Open all practice</button>
+        <button class="ghost" onclick="closeAll()">Close all practice</button>
+      </div>
+
+      <div class="note tiny">
+        Rotation about a center: translate so the center becomes (0,0), rotate, translate back.
+      </div>
+    </section>
+
+    <aside class="card">
+      <div class="practice-head">
+        <h2 style="margin:0">Practice</h2>
+        <div class="score" id="scoreBox">Score: 0 / 30</div>
+      </div>
+
+      <p class="muted tiny" style="margin-top:0">Enter answers like <span class="math">(−2,3)</span> or <span class="math">90° CCW</span>.</p>
+
+      <div class="btnrow" style="margin-top:10px">
+        <button onclick="checkAll()">Check all</button>
+        <button class="secondary" onclick="revealAll()">Reveal</button>
+        <button class="ghost" onclick="resetAll()">Reset</button>
+      </div>
+
+      <details open><summary>Level 1 — Foundations (1–10)</summary><div id="sec1"></div></details>
+      <details><summary>Level 2 — Skills (11–20)</summary><div id="sec2"></div></details>
+      <details><summary>Level 3 — Challenge & Tricky (21–30)</summary><div id="sec3"></div></details>
+    </aside>
+
+  </div>
+</main>
+
+<script>
+  // Worksheet 3 problems 1–30.
+  const KEY = [
+    {n:1, expr:"Rotate A(3,2) 90° CCW about origin → A′", ans:["(-2,3)"]},
+    {n:2, expr:"Rotate B(−4,1) 90° CW about origin → B′", ans:["(1,4)"]},
+    {n:3, expr:"Rotate C(5,−3) 180° about origin → C′", ans:["(-5,3)"]},
+    {n:4, expr:"Rotate D(−2,−6) 90° CCW about origin → D′", ans:["(6,-2)"]},
+    {n:5, expr:"Rotate triangle A(−4,1),B(−1,4),C(2,1) 90° CCW about origin", ans:["(-1,-4),(-4,-1),(-1,2)"]},
+    {n:6, expr:"Rotate triangle D(3,1),E(6,1),F(4,4) 180° about origin", ans:["(-3,-1),(-6,-1),(-4,-4)"]},
+    {n:7, expr:"Rotate J(−6,−1),K(−3,3),L(0,2),M(−2,−2) 90° CW about origin", ans:["(-1,6),(3,3),(2,0),(-2,2)"]},
+    {n:8, expr:"Rotate P(6,−2) by 180° about center O(2,−1) → P′", ans:["(-2,0)"]},
+    {n:9, expr:"Rotate Q(4,1) by 90° CCW about center C(1,1) → Q′", ans:["(1,4)"]},
+    {n:10, expr:"R(2,5) rotated about origin becomes (−5,2): what rotation?", ans:["90°ccw","90 ccw","90 counterclockwise"]},
+
+    {n:11, expr:"Rotate S(−3,4) 270° CCW about origin → S′", ans:["(4,3)"]},
+    {n:12, expr:"Rotate segment P(3,2),Q(6,4) 90° CCW about origin: P′,Q′", ans:["(-2,3),(-4,6)"]},
+    {n:13, expr:"180° rotation maps A(1,4) to A′(−5,2): find center", ans:["(-2,3)"]},
+    {n:14, expr:"90° CCW maps B(4,1) to B′(1,4): find center", ans:["(2,2)"]},
+    {n:15, expr:"Square A(1,1),B(5,1),C(5,5),D(1,5) rotated 90° CCW about its center: list new coords", ans:["(5,1),(5,5),(1,5),(1,1)","varies"]},
+    {n:16, expr:"90° CCW then 180° about origin: equivalent single rotation", ans:["270°ccw","270 ccw","90 cw"]},
+    {n:17, expr:"Is T(x,y)=(−y,x) a rotation? state angle/direction/center", ans:["yes;90°ccw;origin","90°ccw"]},
+    {n:18, expr:"P(x,3) rotated 180° about origin becomes (−4,y): find x,y", ans:["4,-3","x=4,y=-3"]},
+    {n:19, expr:"Rotate A(2,−1),B(6,−1),C(4,3) 90° CW about origin", ans:["(-1,-2),(-1,-6),(3,-4)"]},
+    {n:20, expr:"Rotation maps y=x onto y=−x: give one possible rotation", ans:["90°cw","90 cw","90°ccw","270°ccw"]},
+
+    {n:21, expr:"Rotate A(6,2) 90° CCW about C(2,−1) → A′", ans:["(-1,3)"]},
+    {n:22, expr:"180° about (1,2) sends P to (3,4): find original P", ans:["(-1,0)"]},
+    {n:23, expr:"A(−1,2)->(3,0) and B(2,5)->(6,3): single rotation? if not, what looks like?", ans:["no;translation","translation"]},
+    {n:24, expr:"Which rotations about origin keep (4,0) fixed: 90CCW,180,270CCW,360?", ans:["360 only","360"]},
+    {n:25, expr:"Regular hexagon centered at origin: (a) smallest positive rotation onto itself (b) # symmetries", ans:["60;6","60°,6","60,6"]},
+    {n:26, expr:"Rotate (3,4) 90° CCW: distance to origin before/after—what notice?", ans:["same","unchanged"]},
+    {n:27, expr:"Two 90° CCW rotations about origin: equivalent single rotation", ans:["180","180°"]},
+    {n:28, expr:"All points (x,y) such that after 90° CCW, image lies on x-axis", ans:["x=0","points on y-axis","x=0 (any y)"]},
+    {n:29, expr:"All points (x,y) such that after 90° CW, image lies on y-axis", ans:["x=0","points on y-axis","x=0 (any y)"]},
+    {n:30, expr:"Create triangle then rotate 180° about origin", ans:["varies"]}
+  ];
+
+  const norm = s => (s ?? "").toLowerCase().replaceAll("−","-").replaceAll(" ","").replaceAll("\t","").replaceAll("\n","");
+  function okMatch(user, answers){
+    const u = norm(user);
+    if(!u) return false;
+    return answers.some(a=>{
+      const na = norm(a);
+      if(na==="varies") return true;
+      if(na.includes("same") && (u.includes("same")||u.includes("unchanged"))) return true;
+      if(na.includes("translation") && u.includes("translat")) return true;
+      return na===u;
+    });
+  }
+
+  function makeRow(q){
+    const id="q"+q.n;
+    const row=document.createElement("div");
+    row.className="q";
+    row.innerHTML=`
+      <div class="num">#${q.n}</div>
+      <div>
+        <div class="expr">${q.expr}</div>
+        <div class="muted tiny" id="${id}-reveal" style="display:none;margin-top:6px"><b>Sample:</b> <span class="math">${q.ans[0]}</span></div>
+      </div>
+      <div class="ans">
+        <input id="${id}" placeholder="Type answer…" autocomplete="off" />
+        <span class="mark" id="${id}-mark"></span>
+      </div>`;
+    return row;
+  }
+
+  function render(){
+    const s1=document.getElementById("sec1"), s2=document.getElementById("sec2"), s3=document.getElementById("sec3");
+    KEY.forEach(q=>{
+      const row=makeRow(q);
+      if(q.n<=10) s1.appendChild(row); else if(q.n<=20) s2.appendChild(row); else s3.appendChild(row);
+      document.getElementById("q"+q.n).addEventListener("keydown", e=>{ if(e.key==="Enter") checkOne(q.n); });
+    });
+    updateScore();
+  }
+
+  function checkOne(n){
+    const q=KEY.find(x=>x.n===n);
+    const input=document.getElementById("q"+n);
+    const mark=document.getElementById("q"+n+"-mark");
+    const ok=okMatch(input.value,q.ans);
+    mark.textContent=ok?"✓":"✗";
+    mark.className="mark "+(ok?"ok":"no");
+    updateScore();
+  }
+  function checkAll(){KEY.forEach(q=>checkOne(q.n));}
+  function revealAll(){KEY.forEach(q=>document.getElementById("q"+q.n+"-reveal").style.display="block");}
+  function resetAll(){
+    KEY.forEach(q=>{
+      document.getElementById("q"+q.n).value="";
+      const mark=document.getElementById("q"+q.n+"-mark"); mark.textContent=""; mark.className="mark";
+      document.getElementById("q"+q.n+"-reveal").style.display="none";
+    });
+    updateScore();
+  }
+  function updateScore(){
+    let c=0; KEY.forEach(q=>{ if(document.getElementById("q"+q.n+"-mark").textContent==="✓") c++; });
+    document.getElementById("scoreBox").textContent=`Score: ${c} / 30`;
+  }
+  function openAll(){document.querySelectorAll("details").forEach(d=>d.open=true);}
+  function closeAll(){document.querySelectorAll("details").forEach(d=>d.open=false);}
+  render();
+</script>
+</body>
+</html>
